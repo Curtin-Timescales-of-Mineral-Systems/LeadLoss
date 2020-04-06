@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSignal, QObject
 
-from apps.abstract.model.row import AbstractRow
+from model.row import Row
 
 
 class Signals(QObject):
@@ -8,7 +8,7 @@ class Signals(QObject):
     csvImported = pyqtSignal([bool, str])
 
     # Row index, row
-    rowUpdated = pyqtSignal([int, AbstractRow])
+    rowUpdated = pyqtSignal([int, Row])
     # Rows
     allRowsUpdated = pyqtSignal(list)
     # Headers

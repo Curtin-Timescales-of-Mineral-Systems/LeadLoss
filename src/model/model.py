@@ -1,19 +1,15 @@
-from apps.leadLoss.model.row import Row
-from apps.leadLoss.process import processing
+from model.row import Row
+from model.settings.type import SettingsType
+from process import processing
 
-from apps.abstract.model.model import AbstractModel
-from apps.leadLoss.model.settings.calculation import LeadLossCalculationSettings
-from apps.type import ApplicationType
+from model.settings.calculation import LeadLossCalculationSettings
+from utils.settings import Settings
 
 
-class LeadLossModel(AbstractModel):
-
-    #################
-    ## Constructor ##
-    #################
+class LeadLossModel:
 
     def __init__(self, signals):
-        super().__init__(ApplicationType.LEAD_LOSS, signals)
+        self.signals = signals
 
         self.headers = []
         self.rows = []
@@ -35,6 +31,19 @@ class LeadLossModel(AbstractModel):
         self.signals.allRowsUpdated.emit(self.rows)
         self.signals.taskComplete.emit(True, "Successfully imported CSV file")
 
+    def updateRow(self, i, row):
+        self.rows[i] = row
+
+    def resetCalculations(self):
+        importSettings = Settings.get(SettingsType.IMPORT)
+        calculationSettings = Settings.get(SettingsType.CALCULATION)
+        headers = importSettings.getHeaders() + calculationSettings.getHeaders()
+
+        for row in self.rows:
+            row.resetCalculatedCells()
+
+        self.signals.headersUpdated.emit(headers)
+        self.signals.allRowsUpdated.emit(self.rows)
 
     def getProcessingFunction(self):
         return processing.process
@@ -49,19 +58,6 @@ class LeadLossModel(AbstractModel):
 
     def addProcessingOutput(self, output):
         pass
-        """
-        self.statistics = {}
-        self.reconstructedAges = {}
-        for rimAge, reconstructedAges, statistic in output[0]:
-            self.statistics[rimAge] = statistic
-            self.reconstructedAges[rimAge] = reconstructedAges
-
-        concordantAges = [row.calculatedCells[1].value for row in self.rows if row.concordant]
-        discordantAges = [row.calculatedCells[1].value for row in self.rows if not row.concordant]
-
-        self.view.onNewlyClassifiedPoints(self.rows, concordantAges, discordantAges)
-        self.view.onNewStatistics(self.statistics)
-        """
 
     def selectAgeToCompare(self, targetRimAge):
         if not self.statistics:

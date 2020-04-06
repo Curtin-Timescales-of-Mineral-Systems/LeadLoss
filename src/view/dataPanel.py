@@ -1,16 +1,18 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+from PyQt5.QtWidgets import QVBoxLayout, QTableWidgetItem, QGroupBox, QPushButton, QLineEdit, QWidget, QHBoxLayout, \
+    QTableWidget, QStyle
 
 from utils.ui import uiUtils
 
 
-class AbstractDataPanel(QGroupBox):
+class LeadLossDataPanel(QGroupBox):
 
     def __init__(self, controller, *args, **kwargs):
-        super(AbstractDataPanel, self).__init__("Data", *args, **kwargs)
+        super().__init__("Data", *args, **kwargs)
 
         self.controller = controller
+        self._initUI()
 
         self.controller.signals.headersUpdated.connect(self.onHeadersUpdated)
         self.controller.signals.rowUpdated.connect(self.onRowUpdated)
@@ -25,8 +27,21 @@ class AbstractDataPanel(QGroupBox):
     ## UI spec ##
     #############
 
-    def _initImportWidget(self):
+    def _initUI(self):
+        self._initImportWidget()
+        self._initDataTable()
+        self._initActionButtonsWidget()
 
+        layout = QVBoxLayout()
+        layout.addWidget(self.importWidget)
+        layout.addWidget(self.dataTable)
+        layout.addWidget(self.actionButtonsWidget)
+        self.setLayout(layout)
+
+        self.actionButtonsWidget.hide()
+
+
+    def _initImportWidget(self):
         self.importButton = QPushButton("  Import CSV")
         self.importButton.clicked.connect(self.controller.importCSV)
         self.importButton.setIcon(self.style().standardIcon(QStyle.SP_DialogOpenButton))
@@ -75,6 +90,9 @@ class AbstractDataPanel(QGroupBox):
         layout.addWidget(self.processButton)
         layout.addWidget(self.exportButton)
         self.actionButtonsWidget.setLayout(layout)
+
+    def getActionButtons(self):
+        return [self.importButton, self.processButton, self.exportButton]
 
     #############
     ## Updates ##
@@ -130,3 +148,18 @@ class AbstractDataPanel(QGroupBox):
             self.dataTable.setItem(i, j, tableCell)
         self.dataTable.viewport().update()
         self.dataTable.resizeColumnsToContents()
+
+    ############
+    ## Events ##
+    ############
+
+    def _refreshRowHeader(self, i, row):
+        header = QTableWidgetItem(str(i+1))
+
+        if row.processed:
+            colour = QColor(0, 255, 0, 27) if row.concordant else QColor(255, 165, 0, 27)
+            header.setBackground(colour)
+        self.dataTable.setVerticalHeaderItem(i, header)
+
+    def _selectionChanged(self):
+        pass

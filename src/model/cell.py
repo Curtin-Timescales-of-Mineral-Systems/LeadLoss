@@ -35,7 +35,7 @@ class UncalculatedCell(Cell):
         super().__init__(None, False)
 
     def isValid(self):
-        True
+        return True
 
     def getDisplayString(self):
         return ""

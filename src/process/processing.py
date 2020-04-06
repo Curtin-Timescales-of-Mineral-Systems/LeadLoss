@@ -2,7 +2,7 @@ from enum import Enum
 
 from scipy.stats import stats
 
-from apps.leadLoss.model.column import Column
+from model.column import Column
 from utils import errorUtils, calculations
 
 

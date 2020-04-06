@@ -1,10 +1,10 @@
-from apps.leadLoss.process.dissimilarityTests import DissimilarityTest
-from apps.type import ApplicationType, SettingsType
+from process.dissimilarityTests import DissimilarityTest
+from model.settings.type import SettingsType
 
 
 class LeadLossCalculationSettings:
 
-    KEY = (ApplicationType.LEAD_LOSS, SettingsType.CALCULATION)
+    KEY = SettingsType.CALCULATION
 
     def __init__(self):
         self.discordanceType = "Percentages"

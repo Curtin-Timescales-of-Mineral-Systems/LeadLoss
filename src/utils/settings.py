@@ -2,12 +2,9 @@ import pickle
 from os import path
 
 from utils import stringUtils
-from apps.leadLoss.model.settings.exports import LeadLossExportSettings
-from apps.leadLoss.model.settings.imports import LeadLossImportSettings
-from apps.leadLoss.model.settings.calculation import LeadLossCalculationSettings
-from apps.unmix.model.settings.exports import UnmixExportSettings
-from apps.unmix.model.settings.imports import UnmixImportSettings
-from apps.unmix.model.settings.calculation import UnmixCalculationSettings
+from model.settings.exports import LeadLossExportSettings
+from model.settings.imports import LeadLossImportSettings
+from model.settings.calculation import LeadLossCalculationSettings
 
 
 class Settings:
@@ -15,20 +12,15 @@ class Settings:
 
     def __init__(self):
         self.contents = {
-            UnmixImportSettings.KEY: UnmixImportSettings(),
-            UnmixCalculationSettings.KEY: UnmixCalculationSettings(),
-            UnmixExportSettings.KEY: UnmixExportSettings(),
-
             LeadLossImportSettings.KEY: LeadLossImportSettings(),
             LeadLossCalculationSettings.KEY: LeadLossCalculationSettings(),
             LeadLossExportSettings.KEY: LeadLossExportSettings(),
         }
 
     @classmethod
-    def get(cls, tabType, settingsType):
+    def get(cls, settingsType):
         cls.__ensureInstance()
-        return cls.__instance.contents[(tabType, settingsType)]
-        # raise Exception("Unknown tab and settingsDialogs: " + type(tabType) + " " + type(settingsType))]
+        return cls.__instance.contents[settingsType]
 
     @classmethod
     def update(cls, newSettings):

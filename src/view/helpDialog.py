@@ -1,10 +1,10 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QTabWidget, QVBoxLayout, QWidget, QLabel
+from PyQt5.QtWidgets import QDialog, QLabel, QTabWidget, QVBoxLayout, QWidget
 
-from utils import stringUtils, calculations
+from utils import config, stringUtils, calculations
 
 
-class AbstractHelpDialog(QDialog):
+class LeadLossHelpDialog(QDialog):
 
     def __init__(self):
         super().__init__()
@@ -65,3 +65,26 @@ class AbstractHelpDialog(QDialog):
             "<br><br>" \
             "When the calculated values are exported back to a CSV file, the values are appended to the end of the " \
             "columns of the original CSV file."
+
+    def getTitle(self):
+        return config.LEAD_LOSS_TITLE
+
+    def getInputsHelpText(self):
+        return \
+            "Input data required: <ul>" \
+            "<li> measured ²³⁸U/²⁰⁶Pb and ²⁰⁷Pb/²⁰⁶Pb ratios" \
+            "<li> uncertainties for all of the above" \
+            "</ul>" + \
+            self._getStandardInputHelp()
+
+    def getProcessingHelpText(self):
+        return \
+            "PROCESSING HELP" \
+            "<br><br>" + \
+            self._getStandardProcessingHelp()
+
+    def getOutputsHelpText(self):
+        return \
+            "OUTPUTS HELP" \
+            "<br><br>" + \
+            self._getStandardOutputsHelp()

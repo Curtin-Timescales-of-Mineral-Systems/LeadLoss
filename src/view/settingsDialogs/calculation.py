@@ -1,21 +1,22 @@
 from PyQt5.QtWidgets import QVBoxLayout, QGroupBox, QFormLayout, QLabel, QWidget
 
-from apps.leadLoss.process.dissimilarityTests import DissimilarityTest
+from process.dissimilarityTests import DissimilarityTest
+from model.settings.type import SettingsType
 from utils import stringUtils
-from apps.abstract.view.settingsDialogs.calculation import AbstractCalculationSettingsDialog
-from apps.leadLoss.model.settings.calculation import LeadLossCalculationSettings
-from apps.type import ApplicationType, SettingsType
+from model.settings.calculation import LeadLossCalculationSettings
 from utils.ui.numericInput import PercentageInput, AgeInput, IntInput
 from utils.ui.radioButtons import RadioButtons, IntRadioButtonGroup, EnumRadioButtonGroup
+from view.settingsDialogs.abstract import AbstractSettingsDialog
 
 
-class LeadLossCalculationSettingsDialog(AbstractCalculationSettingsDialog):
+class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
-    KEY = (ApplicationType.LEAD_LOSS, SettingsType.CALCULATION)
+    KEY = SettingsType.CALCULATION
 
     def __init__(self, defaultSettings, *args, **kwargs):
         super().__init__(defaultSettings, *args, **kwargs)
 
+        self.setWindowTitle("Calculation settings")
         self._onDiscordanceTypeChanged()
         self._alignLabels()
 

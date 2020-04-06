@@ -5,6 +5,7 @@ from PyQt5.QtGui import QPixmap, QDesktopServices, QCursor
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
+from utils import resourceUtils
 from utils.ui import uiUtils
 
 
@@ -24,7 +25,7 @@ class StatusBarWidget(QWidget):
         self.icon = QLabel()
         self._setIcon(False)
 
-        logoPix = QPixmap('../resources/logo-linear.png')
+        logoPix = QPixmap(resourceUtils.getResourcePath('logo-linear.png'))
         logo = QLabel()
         logo.setPixmap(logoPix)
         logo.setCursor(QCursor(Qt.PointingHandCursor))

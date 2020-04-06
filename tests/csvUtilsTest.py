@@ -3,7 +3,7 @@ from utils.csvUtils import *
 
 class CSVUtilsMethods(unittest.TestCase):
 
-    def testColumnLettersToNumbers(self):
+    def testColumnLettersToNumber(self):
         self.assertEqual(columnLettersToNumber("A", False), 1)
         self.assertEqual(columnLettersToNumber("B", False), 2)
         self.assertEqual(columnLettersToNumber("AA", False), 27)
@@ -16,7 +16,7 @@ class CSVUtilsMethods(unittest.TestCase):
         self.assertEqual(columnLettersToNumber("AB", True), 27)
         self.assertEqual(columnLettersToNumber("BA", True), 52)
 
-    def testColumnLettersToNumbers(self):
+    def testColumnNumberToLetters(self):
         self.assertEqual(columnNumberToLetters(1, False), "A")
         self.assertEqual(columnNumberToLetters(2, False), "B")
         self.assertEqual(columnNumberToLetters(27, False), "AA")
