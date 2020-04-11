@@ -21,8 +21,8 @@ class LeadLossView(QWidget):
         self.controller.signals.csvImported.connect(self.onCSVImportFinished)
 
     def initUI(self):
-        self.graphPanel = self.createGraphWidget()
-        self.dataPanel = self.createDataWidget()
+        self.graphPanel = LeadLossGraphPanel(self.controller)
+        self.dataPanel = LeadLossDataPanel(self.controller)
         self.statusBar = StatusBarWidget(self.controller.signals)
 
         splitter = QSplitter(Qt.Horizontal)
@@ -36,31 +36,9 @@ class LeadLossView(QWidget):
         layout.addWidget(self.statusBar, 0)
         self.setLayout(layout)
 
-    def createDataWidget(self):
-        return LeadLossDataPanel(self.controller)
-
-    def createGraphWidget(self):
-        return LeadLossGraphPanel(self.controller)
-
-    def getSettingsDialog(self, settingsType):
-        defaultSettings = Settings.get(settingsType)
-        if settingsType == SettingsType.IMPORT:
-            return LeadLossImportSettingsDialog(defaultSettings)
-        if settingsType == SettingsType.CALCULATION:
-            return LeadLossCalculationSettingsDialog(defaultSettings)
-
-        raise Exception("Unknown settingsDialogs " + str(type(settingsType)))
-
     ############
     ## Events ##
     ############
-
-    def onNewlyClassifiedPoints(self, rows, concordantAges, discordantAges):
-        self.graphPanel.plotDataPointsOnConcordiaAxis(rows)
-        self.graphPanel.plotHistogram(concordantAges, discordantAges)
-
-    def onNewStatistics(self, statistics):
-        self.graphPanel.plotStatistics(statistics)
 
     def onCSVImportFinished(self, result, inputFile):
         if not result:
@@ -68,19 +46,6 @@ class LeadLossView(QWidget):
             return
 
         self.dataPanel.afterSuccessfulCSVImport(inputFile)
-
-    def onProcessingProgress(self, progress, *args):
-        self.updateTask(progress)
-
-    def onProcessingCompleted(self):
-        self.endTask(True, "Successfully processed data")
-
-    def onProcessingCancelled(self):
-        pass
-
-    def onProcessingErrored(self, exception):
-        self.endTask(False, "Error during processing of data")
-        QMessageBox.critical(None, "Error", "An error occurred during processing: \n\n" + exception.__class__.__name__ + ": " + str(exception))
 
     ########
     ## IO ##
@@ -100,7 +65,7 @@ class LeadLossView(QWidget):
         )[0]
 
     def getSettings(self, settingsType, callback):
-        settingsPopup = self.getSettingsDialog(settingsType)
+        settingsPopup = self._getSettingsDialog(settingsType)
 
         def outerCallback(result):
             if result == QDialog.Rejected:
@@ -110,16 +75,11 @@ class LeadLossView(QWidget):
         settingsPopup.finished.connect(outerCallback)
         settingsPopup.show()
 
-    ############
-    ## Events ##
-    ############
+    def _getSettingsDialog(self, settingsType):
+        defaultSettings = Settings.get(settingsType)
+        if settingsType == SettingsType.IMPORT:
+            return LeadLossImportSettingsDialog(defaultSettings)
+        if settingsType == SettingsType.CALCULATION:
+            return LeadLossCalculationSettingsDialog(defaultSettings)
 
-    def displayAgeComparison(self, rimAge, ages):
-        self.graphPanel.plotAgeComparison(rimAge, ages)
-
-    ##############
-    ## Clean-up ##
-    ##############
-
-    def closeEvent(self, event):
-        self.haltEvent.set()
+        raise Exception("Unknown settingsDialogs " + str(type(settingsType)))

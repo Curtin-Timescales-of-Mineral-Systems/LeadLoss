@@ -33,6 +33,7 @@ class LeadLossCalculationSettings:
 
     def getHeaders(self):
         headers = []
+        headers.append("Concordant")
         if self.discordanceType == "Percentages":
             headers.append("Discordance (%)")
         headers.append("Age (Ma)")
@@ -41,6 +42,7 @@ class LeadLossCalculationSettings:
     @staticmethod
     def getDefaultHeaders():
         return [
+            "Concordant",
             "Discordance (%)",
-            "Age (Ma)"
+            "Age (Ma)",
         ]

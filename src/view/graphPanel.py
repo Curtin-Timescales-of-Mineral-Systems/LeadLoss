@@ -37,6 +37,8 @@ class LeadLossGraphPanel(QGroupBox):
         self.controller = controller
 
         controller.signals.allRowsUpdated.connect(self.plotDataPointsOnConcordiaAxis)
+        controller.signals.rimAgeSelected.connect(self.onRimAgeSelected)
+        controller.signals.statisticsUpdated.connect(self.onNewStatistics)
 
         self.mouseOnStatisticsAxes = False
 
@@ -157,14 +159,18 @@ class LeadLossGraphPanel(QGroupBox):
             bins=self._bars,
             cumulative=True,
             weights=concordantWeights,
-            range=(self._barMin, self._barMax)
+            range=(self._barMin, self._barMax),
+            edgecolor=(0, 0, 1, 1),
+            facecolor=(0, 0, 0, 0)
         )
         self.histogramAxis.hist(
             scaledDiscordantValues,
             bins=self._bars,
             cumulative=True,
             weights=discordantWeights,
-            range=(self._barMin, self._barMax)
+            range=(self._barMin, self._barMax),
+            edgecolor=(1, 0, 0, 1),
+            facecolor=(0, 0, 0, 0)
         )
 
         self.canvas.draw()
@@ -201,6 +207,15 @@ class LeadLossGraphPanel(QGroupBox):
     #######################
     ## Mouse interaction ##
     #######################
+
+    def onRimAgeSelected(self, rimAge, concordantAges, discordantAges):
+        self.plotHistogram(concordantAges, discordantAges)
+
+    def onNewlyClassifiedPoints(self, rows):
+        self.plotDataPointsOnConcordiaAxis(rows)
+
+    def onNewStatistics(self, statisticsByAge):
+        self.plotStatistics(statisticsByAge)
 
     def onAllRowsUpdated(self, rows):
         self.plotDataPointsOnConcordiaAxis(rows)

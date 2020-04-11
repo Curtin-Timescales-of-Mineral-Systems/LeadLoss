@@ -21,6 +21,11 @@ class Signals(QObject):
     # Success, success description
     taskComplete = pyqtSignal([bool, str])
 
+    # age, concordant values, discordant values
+    rimAgeSelected = pyqtSignal([float, list, list])
+    statisticsUpdated = pyqtSignal(dict)
+
+class ProcessingSignals(QObject):
     processingStarted = pyqtSignal()
     processingProgress = pyqtSignal(object)
     processingCompleted = pyqtSignal(object)

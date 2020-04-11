@@ -16,9 +16,26 @@
    version="1.1"
    id="svg8"
    sodipodi:docname="unmix_icon.svg"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   inkscape:export-filename="C:\Users\mdagg\Documents\Programming\LeadLoss\resources\icon.png"
+   inkscape:export-xdpi="57.930099"
+   inkscape:export-ydpi="57.930099">
   <defs
      id="defs2">
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow2Lend"
+       style="overflow:visible;"
+       inkscape:isstock="true">
+      <path
+         id="path1181"
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#000000;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(1.1) rotate(180) translate(1,0)" />
+    </marker>
     <linearGradient
        inkscape:collect="always"
        id="linearGradient3286">
@@ -35,11 +52,11 @@
        inkscape:collect="always"
        id="linearGradient849">
       <stop
-         style="stop-color:#00638e;stop-opacity:1"
+         style="stop-color:#d9638e;stop-opacity:1"
          offset="0"
          id="stop2361" />
       <stop
-         style="stop-color:#67abcf;stop-opacity:1"
+         style="stop-color:#f171cf;stop-opacity:1"
          offset="1"
          id="stop2363" />
     </linearGradient>
@@ -75,10 +92,10 @@
        inkscape:collect="always"
        xlink:href="#linearGradient849"
        id="linearGradient851"
-       x1="69.222305"
-       y1="277.79156"
-       x2="45.714893"
-       y2="213.87764"
+       x1="75.269638"
+       y1="215.97444"
+       x2="22.197496"
+       y2="274.01498"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.125054,0,0,1.125054,-6.252702,-30.888346)" />
     <linearGradient
@@ -98,16 +115,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="376.16073"
-     inkscape:cy="94.698399"
+     inkscape:zoom="0.7"
+     inkscape:cx="307.02557"
+     inkscape:cy="182.56284"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1293"
-     inkscape:window-height="713"
-     inkscape:window-x="67"
-     inkscape:window-y="27"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:snap-global="false" />
   <metadata
@@ -178,7 +195,7 @@
          id="tspan878"
          x="47.625"
          y="225.5625"
-         style="stroke-width:0.26458332px"> </tspan></text>
+         style="stroke-width:0.26458332px" /></text>
     <g
        id="g2436"
        transform="matrix(0.94038164,0,0,0.94038164,0.10975776,16.37949)">
@@ -215,7 +232,7 @@
        style="fill:url(#linearGradient3288)" />
     <g
        id="g988"
-       transform="rotate(2.1505707,-58.156638,132.03886)">
+       transform="rotate(2.1505707,-418.68979,1584.2031)">
       <g
          transform="translate(-72.109049,-34.93134)"
          id="g911">
@@ -230,7 +247,7 @@
              d="m 137.87352,281.42286 -8.61096,-20.01078 8.61096,-20.17556 h 8.61094 l 8.61095,20.17556 -8.61095,20.01078 z"
              inkscape:transform-center-x="-0.33322079"
              style="opacity:0.98999999;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:#303132;stroke-width:10.87843895;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
-             inkscape:transform-center-y="-1.8307154e-06" />
+             inkscape:transform-center-y="-1.8307154e-006" />
           <path
              sodipodi:nodetypes="ccccccc"
              inkscape:connector-curvature="0"
@@ -238,7 +255,7 @@
              d="m 140.57854,273.02771 -5.00053,-11.51588 5.00053,-11.93109 h 3.51282 l 4.75258,11.93109 -4.75258,11.51588 z"
              inkscape:transform-center-x="-0.171117"
              style="opacity:0.98999999;vector-effect:none;fill:#303233;fill-opacity:1;stroke:none;stroke-width:2.473948;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
-             inkscape:transform-center-y="-1.7449369e-06" />
+             inkscape:transform-center-y="-1.7449369e-006" />
         </g>
       </g>
       <path
@@ -335,5 +352,77 @@
          d="m 90.491681,248.57034 c 0,0 -4.307807,1.33005 -4.40015,0.33888 -0.819019,-8.79133 2.48344,-14.59005 2.48344,-14.59005 l 4.814684,1.68873 c -2.216235,4.6916 -2.829733,7.23315 -2.897974,12.56244 z"
          style="fill:#313231;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     </g>
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#303132;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 47.789506,253.6537 14.97902,-36.90562"
+       id="path917"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#303132;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 61.055167,260.25613 82.262659,238.27245"
+       id="path917-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#303132;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 60.266789,276.61981 26.121186,-1.195"
+       id="path917-6-4"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:type="star"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#303132;stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1328"
+       sodipodi:sides="3"
+       sodipodi:cx="68.035713"
+       sodipodi:cy="212.71132"
+       sodipodi:r1="1.1339285"
+       sodipodi:r2="0.56696427"
+       sodipodi:arg1="1.5707963"
+       sodipodi:arg2="2.6179939"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 68.035713,213.84525 -0.491005,-0.85045 -0.491006,-0.85045 0.982011,0 0.982011,0 -0.491005,0.85045 z"
+       inkscape:transform-center-y="-0.088987741"
+       transform="rotate(-39.030167,65.612592,217.85473)"
+       inkscape:transform-center-x="0.20290309" />
+    <path
+       sodipodi:type="star"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#303132;stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1328-9"
+       sodipodi:sides="3"
+       sodipodi:cx="68.035713"
+       sodipodi:cy="212.71132"
+       sodipodi:r1="1.1339285"
+       sodipodi:r2="0.56696427"
+       sodipodi:arg1="1.5707963"
+       sodipodi:arg2="2.6179939"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 68.035713,213.84525 -0.491005,-0.85045 -0.491006,-0.85045 0.982011,0 0.982011,0 -0.491005,0.85045 z"
+       inkscape:transform-center-y="0.15275112"
+       transform="rotate(-14.370371,165.10061,157.21682)"
+       inkscape:transform-center-x="0.14071433" />
+    <path
+       sodipodi:type="star"
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:#303132;stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1328-9-1"
+       sodipodi:sides="3"
+       sodipodi:cx="68.035713"
+       sodipodi:cy="212.71132"
+       sodipodi:r1="1.1339285"
+       sodipodi:r2="0.56696427"
+       sodipodi:arg1="1.5707963"
+       sodipodi:arg2="2.6179939"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 68.035713,213.84525 -0.491005,-0.85045 -0.491006,-0.85045 0.982011,0 0.982011,0 -0.491005,0.85045 z"
+       inkscape:transform-center-y="0.0036830271"
+       transform="rotate(29.627871,-41.772217,274.93038)"
+       inkscape:transform-center-x="-0.28028541" />
   </g>
 </svg>

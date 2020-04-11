@@ -11,20 +11,19 @@ class LeadLossImportSettings:
     KEY = SettingsType.IMPORT
 
     @staticmethod
-    def getImportedColumnSpecs():
+    def getImportedColumnNames():
         return [
-            ColumnSpec(Column.U_PB_VALUE),
-            ColumnSpec(Column.U_PB_ERROR),
-            ColumnSpec(Column.PB_PB_VALUE),
-            ColumnSpec(Column.PB_PB_ERROR),
+            Column.U_PB_VALUE,
+            Column.U_PB_ERROR,
+            Column.PB_PB_VALUE,
+            Column.PB_PB_ERROR,
         ]
 
     def __init__(self):
         self.delimiter = ","
         self.hasHeaders = True
         self.columnReferenceType = ColumnReferenceType.LETTERS
-        self._columnRefs = {spec.type: i for i, spec in enumerate(LeadLossImportSettings.getImportedColumnSpecs())}
-
+        self._columnRefs = {name: i for i, name in enumerate(LeadLossImportSettings.getImportedColumnNames())}
 
         self.uPbErrorType = "Absolute"
         self.uPbErrorSigmas = 2

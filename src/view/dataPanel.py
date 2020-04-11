@@ -18,10 +18,10 @@ class LeadLossDataPanel(QGroupBox):
         self.controller.signals.rowUpdated.connect(self.onRowUpdated)
         self.controller.signals.allRowsUpdated.connect(self.onAllRowsUpdated)
 
-        self.controller.signals.processingStarted.connect(self.onProcessingStart)
-        self.controller.signals.processingCompleted.connect(self.onProcessingEnd)
-        self.controller.signals.processingErrored.connect(self.onProcessingEnd)
-        self.controller.signals.processingCancelled.connect(self.onProcessingEnd)
+        self.controller.processingSignals.processingStarted.connect(self.onProcessingStart)
+        self.controller.processingSignals.processingCompleted.connect(self.onProcessingEnd)
+        self.controller.processingSignals.processingErrored.connect(self.onProcessingEnd)
+        self.controller.processingSignals.processingCancelled.connect(self.onProcessingEnd)
 
     #############
     ## UI spec ##

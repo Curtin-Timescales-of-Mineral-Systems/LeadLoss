@@ -56,21 +56,26 @@ class LeadLossModel:
         row.setConcordantAge(discordance, concordantAge)
         self.signals.rowUpdated.emit(i, row)
 
-    def addProcessingOutput(self, output):
-        pass
+    def addRimAgeStats(self, rimAge, discordantAges, statistic):
+        self.statistics[rimAge] = statistic
+        self.reconstructedAges[rimAge] = discordantAges
 
-    def selectAgeToCompare(self, targetRimAge):
+        if len(self.statistics) % 5 == 0:
+            self.signals.statisticsUpdated.emit(self.statistics)
+
+    def getDataForAge(self, requestedRimAge):
         if not self.statistics:
-            return
+            return None
 
-        if targetRimAge is not None:
-            chosenRimAge = min(self.statistics, key=lambda a: abs(a-targetRimAge))
+        if requestedRimAge is not None:
+            actualRimAge = min(self.statistics, key=lambda a: abs(a-requestedRimAge))
         else:
-            chosenRimAge = max(self.statistics, key=lambda a: self.statistics[a])
+            actualRimAge = max(self.statistics, key=lambda a: self.statistics[a])
 
-        agesToCompare = []
-        for reconstructedAge in self.reconstructedAges[chosenRimAge]:
+        discordantAges = []
+        for reconstructedAge in self.reconstructedAges[actualRimAge]:
             if reconstructedAge is not None:
-                agesToCompare.append(reconstructedAge.values[0])
-        #self.view.displayAgeComparison(chosenRimAge, agesToCompare)
+                discordantAges.append(reconstructedAge.values[0])
+        concordantAges = [row.concordantAge for row in self.rows if row.concordant]
 
+        return actualRimAge, discordantAges, concordantAges

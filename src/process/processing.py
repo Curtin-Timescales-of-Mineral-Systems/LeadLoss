@@ -4,7 +4,9 @@ from scipy.stats import stats
 
 from model.column import Column
 from utils import errorUtils, calculations
+import time
 
+TIME_PER_TASK = 0.5
 
 class ProgressType(Enum):
     CONCORDANCE = 0,
@@ -21,15 +23,17 @@ def process(signals, rows, importSettings, calculationSettings):
     if not completed:
         return
 
-    completed = _performRimAgeSampling(signals, rows, calculationSettings)
+    completed, bestAge = _performRimAgeSampling(signals, rows, calculationSettings)
     if not completed:
         return
 
-    signals.completed(None)
+    signals.completed(bestAge)
 
 
 def _calculateErrors(signals, rows):
+    timePerRow = TIME_PER_TASK/len(rows)
     for i, row in enumerate(rows):
+        time.sleep(timePerRow)
         if signals.halt():
             signals.cancelled()
             return False
@@ -50,7 +54,9 @@ def _calculateErrors(signals, rows):
 
 
 def _calculateConcordantAges(signals, rows, calculationSettings):
+    timePerRow = TIME_PER_TASK/len(rows)
     for i, row in enumerate(rows):
+        time.sleep(timePerRow)
         if signals.halt():
             signals.cancelled()
             return False
@@ -68,11 +74,13 @@ def _performRimAgeSampling(signals, rows, calculationSettings):
     minAge = calculationSettings.minimumRimAge  # 500 * (10 ** 6)
     maxAge = calculationSettings.maximumRimAge  # 5000 * (10 ** 6)
     samples = calculationSettings.rimAgesSampled
+    timePerSample = TIME_PER_TASK/samples
 
     concordantAges = [row.concordantAge for row in rows if row.concordant]
 
-    outputs = []
+    results = []
     for i in range(samples):
+        time.sleep(timePerSample)
         rimAge = minAge + i * ((maxAge - minAge) / (samples - 1))
         rimUPb = calculations.u238pb206_from_age(rimAge)
         rimPbPb = calculations.pb207pb206_from_age(rimAge)
@@ -81,7 +89,7 @@ def _performRimAgeSampling(signals, rows, calculationSettings):
         for j, row in enumerate(rows):
             if signals.halt():
                 signals.cancelled()
-                return False
+                return False, None
 
             if row.concordant:
                 reconstructedAge = None
@@ -90,11 +98,13 @@ def _performRimAgeSampling(signals, rows, calculationSettings):
             discordantAges.append(reconstructedAge)
 
         statistic = _calculateStatistics(concordantAges, discordantAges)
-        outputs.append((rimAge, discordantAges, statistic))
+        results.append((rimAge, statistic))
 
         progress = (i + 1) / samples
-        signals.progress(ProgressType.SAMPLING, progress, i)
-    return True
+        signals.progress(ProgressType.SAMPLING, progress, i, rimAge, discordantAges, statistic)
+
+    bestAge = max(results, key= lambda v:v[1])[0]
+    return True, bestAge
 
 
 def _calculateStatistics(concordantAges, reconstructedAges):
@@ -107,5 +117,4 @@ def _calculateStatistics(concordantAges, reconstructedAges):
         return 0
 
     pValue = stats.ks_2samp(concordantAges, discordantAges)[1]
-    print(pValue)
     return pValue

@@ -43,5 +43,9 @@ class Row:
     def setConcordantAge(self, discordance, concordantAge):
         self.processed = True
         self.concordant = concordantAge is not None
-        self.calculatedCells[0] = CalculatedCell(discordance*100)
-        self.calculatedCells[1] = CalculatedCell(None if concordantAge is None else concordantAge/(10**6))
+        self.concordantAge = concordantAge
+        self.calculatedCells = [
+            CalculatedCell("Yes" if self.concordant else "No"),
+            CalculatedCell(discordance * 100),
+            CalculatedCell(None if concordantAge is None else concordantAge / (10 ** 6))
+        ]
