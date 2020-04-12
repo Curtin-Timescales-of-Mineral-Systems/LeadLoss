@@ -102,7 +102,7 @@ jobs:
       - name: Build with pyinstaller
         shell: bash
         run: |
-          pyinstaller --onefile --hidden-import='pkg_resources.py2_warn' --icon=./resources/unmix_icon.ico src/unmixApp.py
+          pyinstaller --onefile --hidden-import='pkg_resources.py2_warn' --icon=./resources/icon.ico src/unmixApp.py
 
       - name: Upload release asset
         id: upload-release-asset
