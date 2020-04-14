@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QGridLayout, QWidget, QGroupBox, QLineEdit, QCheckBox, QFormLayout
 
 from model.column import Column
@@ -8,9 +9,10 @@ from utils.ui import uiUtils
 from utils.ui.columnReferenceInput import ColumnReferenceInput
 from utils.ui.columnReferenceTypeInput import ColumnReferenceTypeInput
 from utils.ui.errorTypeInput import ErrorTypeInput
+from view.settingsDialogs.abstract import AbstractSettingsDialog
 
 
-class LeadLossImportSettingsDialog:
+class LeadLossImportSettingsDialog(AbstractSettingsDialog):
 
     def __init__(self, defaultSettings, *args, **kwargs):
         super().__init__(defaultSettings, *args, **kwargs)
@@ -92,7 +94,7 @@ class LeadLossImportSettingsDialog:
         settings.pbPbErrorSigmas = self._pbPbWidget.getErrorSigmas()
         return settings
 
-    def getWarning(self):
+    def getWarning(self, settings):
         return None
 
 # Widget for displaying general CSV import settings

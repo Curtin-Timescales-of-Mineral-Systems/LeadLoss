@@ -60,7 +60,7 @@ class LeadLossModel:
         self.reconstructedAges[rimAge] = discordantAges
 
         if len(self.statistics) % 5 == 0:
-            self.signals.statisticsUpdated.emit(self.statistics, ())
+            self.signals.statisticsUpdated.emit(self.statistics)
 
     def getAgeRange(self):
         concordantAges = [row.concordantAge for row in self.rows if row.concordant]

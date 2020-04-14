@@ -31,7 +31,7 @@ class LeadLossTabController:
         self.model = LeadLossModel(self.signals)
         self.view = LeadLossView(self)
 
-        self.cheatLoad()
+        #self.cheatLoad()
 
     ############
     ## Events ##
@@ -40,7 +40,8 @@ class LeadLossTabController:
     def onProcessingCompleted(self, output):
         bestRimAge = output[0]
         self.signals.taskComplete.emit(True, "Processing complete")
-        self.signals.statisticsUpdated.emit(self.model.statistics, self.model.getAgeRange())
+        self.signals.optimalRimAgeFound.emit(bestRimAge, self.model.getAgeRange())
+        self.signals.statisticsUpdated.emit(self.model.statistics)
         self.selectAgeToCompare(bestRimAge)
 
     def onProcessingCancelled(self):
@@ -80,7 +81,7 @@ class LeadLossTabController:
         if not self.inputFile:
             return
 
-        self.view.getSettings(SettingsType.IMPORT, self._importCSVWithSettings)
+        self.view.getSettings(SettingsType.IMPORT, self.model.rows, self._importCSVWithSettings)
 
     def _importCSVWithSettings(self, importSettings):
         if not importSettings:

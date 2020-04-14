@@ -80,12 +80,24 @@ class LeadLossHelpDialog(QDialog):
 
     def getProcessingHelpText(self):
         return \
-            "PROCESSING HELP" \
+            "Processing the data will attempt to reconstruct the expected distribution of ages " \
+            "for a variety of different rim ages. These distributions are then compared against the " \
+            "distribution of concordant ages using the chosen statistic. The optimal rim age is then chosen to " \
+            "maximise this statistic." \
+            "<br><br>" \
+            "Concordant rows will be highlighted in <font color='green'>GREEN</font>." \
+            "<br><br>" \
+            "Discordant rows will be highlighted in <font color='orange'>ORANGE</font>." \
             "<br><br>" + \
             self._getStandardProcessingHelp()
 
     def getOutputsHelpText(self):
         return \
-            "OUTPUTS HELP" \
-            "<br><br>" + \
+            "The concordant and discordant points will be highlighted on the main concordia plot." \
+            "The value of the chosen statistic as a function of the rim age will be plotted on the bottom left, " \
+            "and the optimal age found will be highlighted in <font color='purple'>PURPLE</font>. " \
+            "The distribution of the concordant and reconstructed distribution will plotted on the bottom right." \
+            "<br><br>" \
+            "Moving the mouse over the statistic plot will allow you see the distribution for the selected rim age." \
+            "<br><br>"  + \
             self._getStandardOutputsHelp()

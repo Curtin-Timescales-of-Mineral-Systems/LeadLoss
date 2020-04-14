@@ -23,7 +23,8 @@ class Signals(QObject):
 
     # age, rows
     rimAgeSelected = pyqtSignal([float, list, list])
-    statisticsUpdated = pyqtSignal(dict, tuple)
+    statisticsUpdated = pyqtSignal(dict)
+    optimalRimAgeFound = pyqtSignal(float, tuple)
 
 class ProcessingSignals(QObject):
     processingStarted = pyqtSignal()
