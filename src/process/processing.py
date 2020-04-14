@@ -3,10 +3,12 @@ from enum import Enum
 from scipy.stats import stats
 
 from model.column import Column
-from utils import errorUtils, calculations
+from src.model.settings.calculation import DiscordanceClassificationMethod
+from utils import errorUtils
+from process import calculations
 import time
 
-TIME_PER_TASK = 0.5
+TIME_PER_TASK = 0.0
 
 class ProgressType(Enum):
     CONCORDANCE = 0,
@@ -19,7 +21,7 @@ def process(signals, rows, importSettings, calculationSettings):
     if not completed:
         return
 
-    completed = _calculateConcordantAges(signals, rows, calculationSettings)
+    completed = _calculateConcordantAges(signals, rows, importSettings, calculationSettings)
     if not completed:
         return
 
@@ -53,7 +55,7 @@ def _calculateErrors(signals, rows):
     return True
 
 
-def _calculateConcordantAges(signals, rows, calculationSettings):
+def _calculateConcordantAges(signals, rows, importSettings, calculationSettings):
     timePerRow = TIME_PER_TASK/len(rows)
     for i, row in enumerate(rows):
         time.sleep(timePerRow)
@@ -61,8 +63,19 @@ def _calculateConcordantAges(signals, rows, calculationSettings):
             signals.cancelled()
             return False
 
-        discordance = calculations.discordance(row.uPbValue(), row.pbPbValue())
-        row.concordant = discordance < calculationSettings.discordancePercentageCutoff
+        if calculationSettings.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
+            discordance = calculations.discordance(row.uPbValue(), row.pbPbValue())
+            row.concordant = discordance < calculationSettings.discordancePercentageCutoff
+        else:
+            discordance = None
+            row.concordant = calculations.isConcordantErrorEllipse(
+                row.uPbValue(),
+                row.uPbStDev(importSettings),
+                row.pbPbValue(),
+                row.pbPbStDev(importSettings),
+                calculationSettings.discordanceEllipseSigmas
+            )
+
         row.concordantAge = calculations.concordant_age(row.uPbValue(), row.pbPbValue()) if row.concordant else None
         signals.progress(ProgressType.CONCORDANCE, (i+1)/len(rows), i, row.concordantAge, discordance)
 
@@ -112,6 +125,8 @@ def _calculateStatistics(concordantAges, reconstructedAges):
     for reconstructedAge in reconstructedAges:
         if reconstructedAge is not None:
             discordantAges.append(reconstructedAge.values[0])
+        else:
+            discordantAges.append(0)
 
     if not discordantAges or not concordantAges:
         return 0

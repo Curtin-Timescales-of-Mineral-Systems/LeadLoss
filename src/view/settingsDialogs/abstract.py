@@ -18,7 +18,7 @@ class AbstractSettingsDialog(QDialog):
     def initUI(self):
         self.layout = QVBoxLayout()
         self.layout.addWidget(self.initMainSettings())
-        self.layout.addWidget(self.initErrorLabel())
+        self.layout.addWidget(self.initErrorAndWarningLabels())
         self.layout.addWidget(self.initButtons())
         self.setLayout(self.layout)
 
@@ -43,13 +43,24 @@ class AbstractSettingsDialog(QDialog):
         widget.setLayout(layout)
         return widget
 
-    def initErrorLabel(self):
+    def initErrorAndWarningLabels(self):
         self.errorLabel = QLabel()
-        self.errorLabel.setVisible(False)
         self.errorLabel.setStyleSheet("QLabel { color : red; }")
-        self.errorLabel.setWordWrap(True)
-        self.errorLabel.setAlignment(Qt.AlignCenter)
-        return self.errorLabel
+        self.warningLabel = QLabel()
+        self.warningLabel.setStyleSheet("QLabel { color : orange; }")
+
+        for label in (self.errorLabel, self.warningLabel):
+            label.setVisible(False)
+            label.setWordWrap(True)
+            label.setAlignment(Qt.AlignCenter)
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.errorLabel)
+        layout.addWidget(self.warningLabel)
+
+        widget = QWidget()
+        widget.setLayout(layout)
+        return widget
 
     def _registerFormLayoutForAlignment(self, formLayout):
         self.__aligned_form_layouts.append(formLayout)
@@ -77,12 +88,17 @@ class AbstractSettingsDialog(QDialog):
     def _validate(self):
         settings = self._createSettings()
         error = settings.validate()
+        warning = self.getWarning(settings)
 
         self.okButton.setEnabled(error is None)
         self.errorLabel.setVisible(error is not None)
+        self.warningLabel.setVisible(error is None and warning is not None)
         if error is not None:
             self.errorLabel.setText(error)
+        elif warning is not None:
+            self.warningLabel.setText(warning)
         self.settings = settings
+        self.updateGeometry()
 
     def createLabelWithHelp(self, labelText, helpText):
 

@@ -70,4 +70,4 @@ class StatusBarWidget(QWidget):
         self.icon.setPixmap(icon.pixmap(QSize(20, 20)))
 
     def openLink(self, e):
-        QDesktopServices.openUrl(QUrl("https://github.com/Curtin-Timescales-of-Mineral-Systems/ConcordiaApplications"))
+        QDesktopServices.openUrl(QUrl("https://scieng.curtin.edu.au/research/timescales-of-mineral-systems/"))

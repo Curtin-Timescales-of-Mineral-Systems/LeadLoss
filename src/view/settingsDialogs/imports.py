@@ -86,14 +86,14 @@ class LeadLossImportSettingsDialog:
             Column.PB_PB_ERROR: self._pbPbWidget.getErrorColumn()
         }
 
-        print(settings._columnRefs)
-
         settings.uPbErrorType = self._uPbWidget.getErrorType()
         settings.uPbErrorSigmas = self._uPbWidget.getErrorSigmas()
         settings.pbPbErrorType = self._pbPbWidget.getErrorType()
         settings.pbPbErrorSigmas = self._pbPbWidget.getErrorSigmas()
         return settings
 
+    def getWarning(self):
+        return None
 
 # Widget for displaying general CSV import settings
 class GeneralSettingsWidget(QGroupBox):

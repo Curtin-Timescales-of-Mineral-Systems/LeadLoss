@@ -1,6 +1,9 @@
 from model.cell import CalculatedCell, ImportedCell, UncalculatedCell
 from model.column import Column
 from model.settings.calculation import LeadLossCalculationSettings
+from model.settings.type import SettingsType
+from process import calculations
+from utils.settings import Settings
 
 
 class Row:
@@ -37,8 +40,30 @@ class Row:
     def uPbValue(self):
         return self.importedCellsByCol[Column.U_PB_VALUE].value
 
+    def uPbError(self):
+        return self.importedCellsByCol[Column.U_PB_ERROR].value
+
+    def uPbStDev(self, importSettings):
+        return calculations.convert_to_stddev(
+            self.uPbValue(),
+            self.uPbError(),
+            importSettings.uPbErrorType,
+            importSettings.uPbErrorSigmas
+        )
+
     def pbPbValue(self):
-        return self.importedCellsByCol[Column.U_PB_VALUE].value
+        return self.importedCellsByCol[Column.PB_PB_VALUE].value
+
+    def pbPbError(self):
+        return self.importedCellsByCol[Column.PB_PB_ERROR].value
+
+    def pbPbStDev(self, importSettings):
+        return calculations.convert_to_stddev(
+            self.pbPbValue(),
+            self.pbPbError(),
+            importSettings.pbPbErrorType,
+            importSettings.pbPbErrorSigmas
+        )
 
     def setConcordantAge(self, discordance, concordantAge):
         self.processed = True
@@ -46,6 +71,6 @@ class Row:
         self.concordantAge = concordantAge
         self.calculatedCells = [
             CalculatedCell("Yes" if self.concordant else "No"),
-            CalculatedCell(discordance * 100),
+            CalculatedCell(discordance * 100 if discordance else None),
             CalculatedCell(None if concordantAge is None else concordantAge / (10 ** 6))
         ]

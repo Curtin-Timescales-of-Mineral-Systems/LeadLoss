@@ -1,7 +1,8 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QLabel, QTabWidget, QVBoxLayout, QWidget
 
-from utils import config, stringUtils, calculations
+from utils import config, stringUtils
+from process import calculations
 
 
 class LeadLossHelpDialog(QDialog):

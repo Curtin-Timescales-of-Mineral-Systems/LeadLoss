@@ -2,9 +2,7 @@
 ## General settings ##
 ######################
 
-# App titles
-U_PB_UNMIXER_TITLE = "U-Pb Unmixer"
-LEAD_LOSS_TITLE = "Lead loss"
+LEAD_LOSS_TITLE = "LeadLoss"
 
 # Size of the confidence interval -- 1 or 2
 SIGMAS_MIXED_POINT_ERROR = 1
@@ -54,7 +52,10 @@ LABEL_RECONSTRUCTED_AGE = "Reconstructed age"
 LABEL_RECONSTRUCTED_AGE_ERROR = "Reconstructed age error"
 
 # Graph colors
-COLOUR_CONCORDIA_CURVE = 'b'
-COLOUR_RIM_AGE = 'y'
-COLOUR_MIXED_POINT = 'g'
-COLOUR_RECONSTRUCTED_AGE = 'r'
+UNCLASSIFIED_COLOUR_255 = (0, 0, 0, 27)
+CONCORDANT_COLOUR_255 = (0, 255, 0, 27)
+DISCORDANT_COLOUR_255 = (255, 165, 0, 27)
+
+UNCLASSIFIED_COLOUR_1 = tuple(v/255.0 for v in UNCLASSIFIED_COLOUR_255[0:3])
+CONCORDANT_COLOUR_1 = tuple(v/255.0 for v in CONCORDANT_COLOUR_255[0:3])
+DISCORDANT_COLOUR_1 = tuple(v/255.0 for v in DISCORDANT_COLOUR_255[0:3])

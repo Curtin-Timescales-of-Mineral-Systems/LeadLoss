@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QVBoxLayout, QGroupBox, QFormLayout, QLabel, QWidget
 
 from process.dissimilarityTests import DissimilarityTest
 from model.settings.type import SettingsType
+from src.model.settings.calculation import DiscordanceClassificationMethod
 from utils import stringUtils
 from model.settings.calculation import LeadLossCalculationSettings
 from utils.ui.numericInput import PercentageInput, AgeInput, IntInput
@@ -13,9 +14,10 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
     KEY = SettingsType.CALCULATION
 
-    def __init__(self, defaultSettings, *args, **kwargs):
-        super().__init__(defaultSettings, *args, **kwargs)
+    def __init__(self, defaultSettings, rows, *args, **kwargs):
+        self.pointWithNoErrors = any(row.uPbError() == 0.0 and row.pbPbError() == 0.0 for row in rows)
 
+        super().__init__(defaultSettings, *args, **kwargs)
         self.setWindowTitle("Calculation settings")
         self._onDiscordanceTypeChanged()
         self._alignLabels()
@@ -34,7 +36,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
     def _initDiscordanceSettings(self):
         defaults = self.defaultSettings
 
-        self.discordanceTypeRB = RadioButtons(stringUtils.DISCORDANCE_OPTIONS, self._validate, defaults.discordanceType)
+        self.discordanceTypeRB = EnumRadioButtonGroup(DiscordanceClassificationMethod, self._validate, defaults.discordanceClassificationMethod)
         self.discordanceTypeRB.group.buttonClicked.connect(self._onDiscordanceTypeChanged)
 
         self.discordancePercentageCutoffLE = PercentageInput(
@@ -92,7 +94,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
     def _onDiscordanceTypeChanged(self):
         type = self.discordanceTypeRB.selection()
-        percentages = type == "Percentages"
+        percentages = type == DiscordanceClassificationMethod.PERCENTAGE
         self.discordancePercentageCutoffLabel.setVisible(percentages)
         self.discordancePercentageCutoffLE.setVisible(percentages)
         self.discordanceEllipseSigmasLabel.setVisible(not percentages)
@@ -102,11 +104,17 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
     ## Create settings ##
     #####################
 
+    def getWarning(self, settings):
+        if self.pointWithNoErrors and settings.discordanceClassificationMethod == DiscordanceClassificationMethod.ERROR_ELLIPSE:
+            return "Warning: there exist points with no associated errors in the data set. " \
+                   "Such points will never be classified as concordant using the error ellipse method" \
+                   "unless they lie exactly on the concordia curve."
+
     def _createSettings(self):
         settings = LeadLossCalculationSettings()
 
-        settings.discordanceType = self.discordanceTypeRB.selection()
-        if settings.discordanceType == "Percentages":
+        settings.discordanceClassificationMethod = self.discordanceTypeRB.selection()
+        if settings.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
             settings.discordancePercentageCutoff = self.discordancePercentageCutoffLE.value()
         else:
             settings.discordanceEllipseSigmas = self.discordanceEllipseSigmasRB.selection()

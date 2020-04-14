@@ -3,13 +3,14 @@ from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QVBoxLayout, QTableWidgetItem, QGroupBox, QPushButton, QLineEdit, QWidget, QHBoxLayout, \
     QTableWidget, QStyle
 
+from utils import config
 from utils.ui import uiUtils
 
 
 class LeadLossDataPanel(QGroupBox):
 
     def __init__(self, controller, *args, **kwargs):
-        super().__init__("Data", *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.controller = controller
         self._initUI()
@@ -157,8 +158,8 @@ class LeadLossDataPanel(QGroupBox):
         header = QTableWidgetItem(str(i+1))
 
         if row.processed:
-            colour = QColor(0, 255, 0, 27) if row.concordant else QColor(255, 165, 0, 27)
-            header.setBackground(colour)
+            rgba = config.CONCORDANT_COLOUR_255 if row.concordant else config.DISCORDANT_COLOUR_255
+            header.setBackground(QColor(*rgba))
         self.dataTable.setVerticalHeaderItem(i, header)
 
     def _selectionChanged(self):

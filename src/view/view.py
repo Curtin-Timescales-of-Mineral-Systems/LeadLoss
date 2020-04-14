@@ -1,4 +1,5 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QSplitter, QVBoxLayout, QFileDialog, QDialog, QMessageBox, QWidget
 
 from utils.settings import Settings
@@ -9,7 +10,6 @@ from view.settingsDialogs.calculation import LeadLossCalculationSettingsDialog
 from view.settingsDialogs.imports import LeadLossImportSettingsDialog
 from model.settings.type import SettingsType
 from utils.ui.statusBar import StatusBarWidget
-
 
 class LeadLossView(QWidget):
 
@@ -56,7 +56,7 @@ class LeadLossView(QWidget):
             caption='Open CSV file',
             directory='/home/matthew/Dropbox/Academia/Code/Python/UnmixConcordia/tests'
         )[0]
-        #return '/home/matthew/Dropbox/Academia/Code/Python/UnmixConcordia/data/unmixTest.csv'
+        # return '/home/matthew/Dropbox/Academia/Code/Python/UnmixConcordia/data/unmixTest.csv'
 
     def getOutputFile(self):
         return QFileDialog.getSaveFileName(
@@ -64,8 +64,8 @@ class LeadLossView(QWidget):
             directory='/home/matthew/Dropbox/Academia/Code/Python/UnmixConcordia/tests'
         )[0]
 
-    def getSettings(self, settingsType, callback):
-        settingsPopup = self._getSettingsDialog(settingsType)
+    def getSettings(self, settingsType, rows, callback):
+        settingsPopup = self._getSettingsDialog(settingsType, rows)
 
         def outerCallback(result):
             if result == QDialog.Rejected:
@@ -75,11 +75,11 @@ class LeadLossView(QWidget):
         settingsPopup.finished.connect(outerCallback)
         settingsPopup.show()
 
-    def _getSettingsDialog(self, settingsType):
+    def _getSettingsDialog(self, settingsType, rows):
         defaultSettings = Settings.get(settingsType)
         if settingsType == SettingsType.IMPORT:
             return LeadLossImportSettingsDialog(defaultSettings)
         if settingsType == SettingsType.CALCULATION:
-            return LeadLossCalculationSettingsDialog(defaultSettings)
+            return LeadLossCalculationSettingsDialog(defaultSettings, rows)
 
         raise Exception("Unknown settingsDialogs " + str(type(settingsType)))

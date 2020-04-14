@@ -38,7 +38,6 @@ class LeadLossModel:
         importSettings = Settings.get(SettingsType.IMPORT)
         calculationSettings = Settings.get(SettingsType.CALCULATION)
         headers = importSettings.getHeaders() + calculationSettings.getHeaders()
-
         for row in self.rows:
             row.resetCalculatedCells()
 
@@ -61,21 +60,22 @@ class LeadLossModel:
         self.reconstructedAges[rimAge] = discordantAges
 
         if len(self.statistics) % 5 == 0:
-            self.signals.statisticsUpdated.emit(self.statistics)
+            self.signals.statisticsUpdated.emit(self.statistics, ())
 
-    def getDataForAge(self, requestedRimAge):
+    def getAgeRange(self):
+        concordantAges = [row.concordantAge for row in self.rows if row.concordant]
+        recAges = [recAge for ages in self.reconstructedAges.values() for recAge in ages]
+        discordantAges = [recAge.values[0] for recAge in recAges if recAge]
+        allAges = concordantAges + discordantAges
+        return min(allAges), max(allAges)
+
+    def getNearestSampledAge(self, requestedRimAge):
         if not self.statistics:
-            return None
+            return None, []
 
         if requestedRimAge is not None:
             actualRimAge = min(self.statistics, key=lambda a: abs(a-requestedRimAge))
         else:
             actualRimAge = max(self.statistics, key=lambda a: self.statistics[a])
 
-        discordantAges = []
-        for reconstructedAge in self.reconstructedAges[actualRimAge]:
-            if reconstructedAge is not None:
-                discordantAges.append(reconstructedAge.values[0])
-        concordantAges = [row.concordantAge for row in self.rows if row.concordant]
-
-        return actualRimAge, discordantAges, concordantAges
+        return actualRimAge, self.reconstructedAges[actualRimAge]

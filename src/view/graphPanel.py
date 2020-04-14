@@ -1,17 +1,24 @@
+import math
+
 import numpy as np
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 
 import matplotlib
+from matplotlib.collections import LineCollection
+from matplotlib.patches import Ellipse
 
-from model.column import Column
+from model.settings.calculation import DiscordanceClassificationMethod
+from model.settings.type import SettingsType
+from utils import config
+from utils.settings import Settings
 
 matplotlib.use('QT5Agg')
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
-import utils.calculations as calculations
+import process.calculations as calculations
 
 
 class LeadLossGraphPanel(QGroupBox):
@@ -26,6 +33,8 @@ class LeadLossGraphPanel(QGroupBox):
     _barMin = 0
     _bars = int((_barMax - _barMin) / _barResolution)
 
+    _age_color=(1,0,0,1)
+
     def __init__(self, controller, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -36,7 +45,7 @@ class LeadLossGraphPanel(QGroupBox):
 
         self.controller = controller
 
-        controller.signals.allRowsUpdated.connect(self.plotDataPointsOnConcordiaAxis)
+        controller.signals.allRowsUpdated.connect(self.plotDataOnConcordiaAxis)
         controller.signals.rimAgeSelected.connect(self.onRimAgeSelected)
         controller.signals.statisticsUpdated.connect(self.onNewStatistics)
 
@@ -85,7 +94,7 @@ class LeadLossGraphPanel(QGroupBox):
         self.statisticAxis = plt.subplot(223)
         self.histogramAxis = plt.subplot(224)
 
-        plt.subplots_adjust(hspace = 0.9, wspace=0.4)
+        plt.subplots_adjust(hspace = 0.7, wspace=0.4)
 
         # plot
         self.canvas = FigureCanvas(fig)
@@ -103,7 +112,7 @@ class LeadLossGraphPanel(QGroupBox):
         self.cid3 = fig.canvas.mpl_connect('axes_leave_event', self.onMouseExitAxes)
 
         self.plotConcordia()
-        self.plotHistogram([], [])
+        self.plotHistogram([], [], None)
         self.plotStatistics({})
         return widget
 
@@ -111,13 +120,22 @@ class LeadLossGraphPanel(QGroupBox):
         self.concordiaAxis.set_xlim(*self._default_xlim)
         self.concordiaAxis.set_ylim(*self._default_ylim)
         self._setupConcordiaPlot(self.concordiaAxis)
-        self.concordiaAxis.userAge = self.concordiaAxis.scatter([],[])
         self.concordiaAxis.set_title("TW concordia plot")
 
-        self.concordiaAxis.chosenAgePoint = self.concordiaAxis.plot([], [], marker='o')[0]
+        self.concordiaAxis.chosenAgePoint = self.concordiaAxis.plot([], [], marker='o', color=self._age_color)[0]
         self.concordiaAxis.unclassifiedDataPoints = self.concordiaAxis.plot([],[],label='toto',marker='o',ls='',color='k')[0]
         self.concordiaAxis.concordantDataPoints = self.concordiaAxis.plot([],[],label='toto',marker='o',ls='')[0]
         self.concordiaAxis.discordantDataPoints = self.concordiaAxis.plot([],[],label='toto',marker='o',ls='')[0]
+        self.concordiaAxis.reconstructedLines = None
+
+    def plotDataOnConcordiaAxis(self, rows):
+        importSettings = Settings.get(SettingsType.IMPORT)
+        calculationSettings = Settings.get(SettingsType.CALCULATION)
+
+        if calculationSettings.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
+            self.plotDataPointsOnConcordiaAxis(rows)
+        else:
+            self.plotDataEllipsesOnConcordiaAxis(rows, importSettings, calculationSettings)
 
     def plotDataPointsOnConcordiaAxis(self, rows):
         uxs = []
@@ -133,67 +151,116 @@ class LeadLossGraphPanel(QGroupBox):
                 xs, ys = cxs, cys
             else:
                 xs, ys = dxs, dys
-            xs.append(row.importedCellsByCol[Column.U_PB_VALUE].value)
-            ys.append(row.importedCellsByCol[Column.PB_PB_VALUE].value)
+            xs.append(row.uPbValue())
+            ys.append(row.pbPbValue())
 
         self.concordiaAxis.unclassifiedDataPoints.set_data(uxs, uys)
         self.concordiaAxis.concordantDataPoints.set_data(cxs,cys)
         self.concordiaAxis.discordantDataPoints.set_data(dxs,dys)
+
+    def plotDataEllipsesOnConcordiaAxis(self, rows, importSettings, calculationSettings):
+        rs = math.sqrt(calculations.mahalanobisRadius(calculationSettings.discordanceEllipseSigmas))
+        for row in rows:
+            semi_minor = row.uPbStDev(importSettings) * rs
+            semi_major = row.pbPbStDev(importSettings) * rs
+
+            if not row.processed:
+                rgba = config.UNCLASSIFIED_COLOUR_1
+            elif row.concordant:
+                rgba = config.CONCORDANT_COLOUR_1
+            else:
+                rgba = config.DISCORDANT_COLOUR_1
+
+            ellipse = Ellipse(
+                xy=(row.uPbValue(), row.pbPbValue()),
+                width=semi_minor*2,
+                height=semi_major*2,
+                lw=2,
+                edgecolor="k",
+                facecolor=rgba,
+                alpha=1,
+                clip_box=self.concordiaAxis.bbox
+            )
+            self.concordiaAxis.add_artist(ellipse)
+
+    def plotReconstructedLinesOnConcordia(self, rimAge, concordantAges, discordantAges):
+        if self.concordiaAxis.reconstructedLines is not None:
+            self.concordiaAxis.reconstructedLines.remove()
+
+        lines = []
+        for c, d in zip(concordantAges, discordantAges):
+            if d is None:
+                line = []
+            else:
+                line = [
+                    (calculations.u238pb206_from_age(rimAge), calculations.pb207pb206_from_age(rimAge)),
+                    (calculations.u238pb206_from_age(d), calculations.pb207pb206_from_age(d))
+                ]
+            lines.append(line)
+
+        self.concordiaAxis.reconstructedLines = LineCollection(
+            lines,
+            linewidths=2,
+            colors=self._age_color
+        )
+        self.concordiaAxis.add_collection(self.concordiaAxis.reconstructedLines)
 
     def _scale(self, values):
         scaledValues = [v/(10**6) for v in values]
         weights = [1/len(values)]*len(values) if values else []
         return scaledValues, weights
 
-    def plotHistogram(self, concordantValues, discordantValues):
-        scaledConcordantValues, concordantWeights = self._scale(concordantValues)
-        scaledDiscordantValues, discordantWeights = self._scale(discordantValues)
-
+    def plotHistogram(self, concordantValues, discordantValues, calculationSettings):
         self.histogramAxis.clear()
-        self.histogramAxis.set_title("Concordant distribution")
+        self.histogramAxis.set_title("CDF")
         self.histogramAxis.set_xlabel("Age (Ma)")
-        self.histogramAxis.set_xlim(*self._age_xlim)
         self.histogramAxis.set_ylim(0, 1.0)
+        if not concordantValues:
+            self.histogramAxis.set_xlim(*self._age_xlim)
+            return
+
         self.histogramAxis.hist(
-            scaledConcordantValues,
+            [v/(10**6) for v in concordantValues],
             bins=self._bars,
             cumulative=True,
-            weights=concordantWeights,
-            range=(self._barMin, self._barMax),
-            edgecolor=(0, 0, 1, 1),
+            density=True,
+            histtype='step',
+            edgecolor=config.CONCORDANT_COLOUR_1,
             facecolor=(0, 0, 0, 0)
         )
         self.histogramAxis.hist(
-            scaledDiscordantValues,
+            [v/(10**6) for v in discordantValues],
             bins=self._bars,
             cumulative=True,
-            weights=discordantWeights,
-            range=(self._barMin, self._barMax),
-            edgecolor=(1, 0, 0, 1),
+            density=True,
+            histtype='step',
+            edgecolor=config.DISCORDANT_COLOUR_1,
             facecolor=(0, 0, 0, 0)
         )
+        self.histogramAxis.set_xlim(*self.histogramAxis.calculatedXLims)
 
         self.canvas.draw()
 
     def plotStatistics(self, statistics):
-        xs = [age/(10**6) for age in statistics.keys()]
-        ys = list(statistics.values())
-
         self.statisticAxis.clear()
         self.statisticAxis.set_title("KS statistic")
         self.statisticAxis.set_xlabel("Age (Ma)")
         self.statisticAxis.set_ylabel("p value")
-        self.statisticAxis.set_xlim(*self._age_xlim)
-        self.statisticAxis.set_ylim((0,self._statistic_ymax))
+        self.statisticAxis.chosenAgeLine = self.statisticAxis.plot([],[],color=self._age_color)[0]
+
+        if not statistics:
+            self.statisticAxis.set_xlim(*self._age_xlim)
+            self.statisticAxis.set_ylim((0,self._statistic_ymax))
+            return
+
+        xs = [age/(10**6) for age in statistics.keys()]
+        ys = list(statistics.values())
         self.statisticAxis.plot(xs, ys)
-
-        self.statisticAxis.chosenAgeLine = self.statisticAxis.plot([],[])[0]
-
         self.canvas.draw()
 
-    def plotAgeComparison(self, rimAge, ages):
-        self.plotDiscordantHistogram(ages)
-
+    def plotAgeComparison(self, rimAge):
+        if rimAge is None:
+            return
         scaledAge = rimAge/(10**6)
         self.statisticAxis.chosenAgeLine.set_xdata([scaledAge, scaledAge])
         self.statisticAxis.chosenAgeLine.set_ydata([0, self._statistic_ymax])
@@ -208,14 +275,26 @@ class LeadLossGraphPanel(QGroupBox):
     ## Mouse interaction ##
     #######################
 
-    def onRimAgeSelected(self, rimAge, concordantAges, discordantAges):
-        self.plotHistogram(concordantAges, discordantAges)
+    def onRimAgeSelected(self, rimAge, rows, reconstructedAges):
+        calculationSettings = Settings.get(SettingsType.CALCULATION)
+
+        discordantAges = []
+        for reconstructedAge in reconstructedAges:
+            if reconstructedAge is not None:
+                discordantAges.append(reconstructedAge.values[0])
+        concordantAges = [row.concordantAge for row in rows if row.concordant]
+
+        self.plotHistogram(concordantAges, discordantAges, calculationSettings)
+        self.plotAgeComparison(rimAge)
+        self.plotReconstructedLinesOnConcordia(rimAge, concordantAges, discordantAges)
 
     def onNewlyClassifiedPoints(self, rows):
         self.plotDataPointsOnConcordiaAxis(rows)
 
-    def onNewStatistics(self, statisticsByAge):
+    def onNewStatistics(self, statisticsByAge, ageRange):
         self.plotStatistics(statisticsByAge)
+        if ageRange:
+            self.histogramAxis.calculatedXLims = [v/(10**6) for v in ageRange]
 
     def onAllRowsUpdated(self, rows):
         self.plotDataPointsOnConcordiaAxis(rows)

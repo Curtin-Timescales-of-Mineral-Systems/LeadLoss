@@ -1,11 +1,14 @@
-from scipy.optimize import root_scalar
+import math
+
+from scipy.optimize import root_scalar, minimize_scalar
 
 import utils.errorUtils as errors
 
 ###############
 ## Constants ##
 ###############
-from utils.reconstructedAge import ReconstructedAge
+
+from process.reconstructedAge import ReconstructedAge
 
 U238_DECAY_CONSTANT = 1.55125*(10**-10)
 U235_DECAY_CONSTANT = 9.8485*(10**-10)
@@ -38,6 +41,10 @@ def pb207pb206_from_age(age):
 def pb207pb206_from_u238pb206(u238pb206):
     age = age_from_u238pb206(u238pb206)
     return pb207pb206_from_age(age)
+
+def u238pb206_from_pb207pb206(pb207pb206):
+    age = age_from_pb207pb206(pb207pb206)
+    return u238pb206_from_age(age)
 
 def discordance(u238pb206, pb207pb206):
     uPbAge = age_from_u238pb206(u238pb206)
@@ -98,6 +105,49 @@ def discordant_age(x1, y1, x2, y2, outputSigmas):
     upper_bound = solve_for_t(1)
     return ReconstructedAge(value, lower_bound, upper_bound)
 
+def mahalanobisRadius(sigmas):
+    if sigmas == 1:
+        p = 0.6827
+    elif sigmas == 2:
+        p = 0.9545
+    else:
+        raise Exception("Unable to handle " + str(sigmas) + " sigmas")
+    return -2 * math.log(1 - p)
+
+def isConcordantErrorEllipse(uPbValue, uPbError, pbPbValue, pbPbError, ellipseSigmas):
+    """
+    See https://www.xarg.org/2018/04/how-to-plot-a-covariance-error-ellipse/
+
+    Keyword arguments:
+    uPbValue -- the coordinate in TW concordia space
+    uPbError -- the error associated with the U/Pb value (1 standard deviation)
+    pbPbValue -- the x coordinate in TW concordia space
+    pbPbError -- the error associated with the Pb/Pb value (1 standard deviation)
+    """
+    s = mahalanobisRadius(ellipseSigmas)
+
+    # Handle degenerate cases
+    if uPbError == 0:
+        localPbPb = pb207pb206_from_u238pb206(uPbValue)
+        root_s = math.sqrt(s)
+        return abs(localPbPb-pbPbValue) <= pbPbError*root_s
+    if pbPbError == 0:
+        localUPb = u238pb206_from_pb207pb206(pbPbValue)
+        root_s = math.sqrt(s)
+        return abs(localUPb-uPbValue) <= uPbError*root_s
+
+
+    # Otherwise minimise for distance in elliptical space
+    def distanceToEllipse(t):
+        x = u238pb206_from_age(t)
+        y = pb207pb206_from_age(t)
+        value = ((uPbValue-x)/uPbError)**2 + ((pbPbValue-y)/pbPbError)**2
+        return value
+
+    result = minimize_scalar(distanceToEllipse, bracket=(1,5.*(10**9)))
+    if not result.success:
+        raise Exception("Exception occurred while minimising distance to error ellipse:\n\n" + result.message)
+    return result.fun <= s
 
 #############
 ## General ##

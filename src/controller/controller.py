@@ -40,7 +40,7 @@ class LeadLossTabController:
     def onProcessingCompleted(self, output):
         bestRimAge = output[0]
         self.signals.taskComplete.emit(True, "Processing complete")
-        self.signals.statisticsUpdated.emit(self.model.statistics)
+        self.signals.statisticsUpdated.emit(self.model.statistics, self.model.getAgeRange())
         self.selectAgeToCompare(bestRimAge)
 
     def onProcessingCancelled(self):
@@ -97,7 +97,7 @@ class LeadLossTabController:
         self.view.onCSVImportFinished(success, inputFile)
 
     def process(self):
-        self.view.getSettings(SettingsType.CALCULATION, self._processWithSettings)
+        self.view.getSettings(SettingsType.CALCULATION, self.model.rows, self._processWithSettings)
 
     def _processWithSettings(self, processingSettings):
         if not processingSettings:
@@ -105,7 +105,7 @@ class LeadLossTabController:
         Settings.update(processingSettings)
 
         self.processingSignals.processingStarted.emit()
-        self.signals.taskStarted.emit("Processing data...")
+        self.signals.taskStarted.emit("Calculating error distributions...")
 
         self.model.resetCalculations()
         self._process(processingSettings)
@@ -116,8 +116,8 @@ class LeadLossTabController:
         self.worker.start()
 
     def selectAgeToCompare(self, requestedRimAge):
-        actualRimAge, concordantAges, discordantAges = self.model.getDataForAge(requestedRimAge)
-        self.signals.rimAgeSelected.emit(actualRimAge, concordantAges, discordantAges)
+        actualRimAge, reconstructedAges = self.model.getNearestSampledAge(requestedRimAge)
+        self.signals.rimAgeSelected.emit(actualRimAge, self.model.rows, reconstructedAges)
 
     def showHelp(self):
         dialog = LeadLossHelpDialog()
@@ -140,7 +140,7 @@ class LeadLossTabController:
 
     def cheatLoad(self):
         try:
-            inputFile = "../tests/leadLossTest2.csv"
+            inputFile = "../tests/leadLossTest_with_errors.csv"
             self._importCSV(inputFile, Settings.get(SettingsType.IMPORT))
         except:
             print(traceback.format_exc(), file=sys.stderr)

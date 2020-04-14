@@ -1,13 +1,22 @@
+from enum import Enum
+
 from process.dissimilarityTests import DissimilarityTest
 from model.settings.type import SettingsType
 
+
+class DiscordanceClassificationMethod(Enum):
+    PERCENTAGE="Percentage"
+    ERROR_ELLIPSE="Error ellipse"
+
+    def __eq__(self, other):
+        return self.value == other.value
 
 class LeadLossCalculationSettings:
 
     KEY = SettingsType.CALCULATION
 
     def __init__(self):
-        self.discordanceType = "Percentages"
+        self.discordanceClassificationMethod = DiscordanceClassificationMethod.PERCENTAGE
         self.discordancePercentageCutoff = 0.1
         self.discordanceEllipseSigmas = 2
 
@@ -19,7 +28,7 @@ class LeadLossCalculationSettings:
 
 
     def validate(self):
-        if self.discordanceType == "Percentages":
+        if self.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
             if self.discordancePercentageCutoff < 0 or self.discordancePercentageCutoff > 1.0:
                 return "Discordance percentage cutoff must be between 0 and 100%"
 
@@ -34,7 +43,7 @@ class LeadLossCalculationSettings:
     def getHeaders(self):
         headers = []
         headers.append("Concordant")
-        if self.discordanceType == "Percentages":
+        if self.discordanceClassificationMethod.value == DiscordanceClassificationMethod.PERCENTAGE.value:
             headers.append("Discordance (%)")
         headers.append("Age (Ma)")
         return headers

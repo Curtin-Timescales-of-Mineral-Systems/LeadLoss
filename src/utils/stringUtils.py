@@ -10,7 +10,6 @@ PB_PB_STR = "²⁰⁷Pb/²⁰⁶Pb"
 
 ERROR_SIGMA_OPTIONS = [2, 1]
 ERROR_TYPE_OPTIONS = ["Absolute", "Percentage"]
-DISCORDANCE_OPTIONS = ["Percentages", "Error ellipse"]
 
 SAVE_FILE = "../concordia_save_data.pkl"
 
