@@ -1,4 +1,3 @@
-from model.columnSpec import ColumnSpec
 from model.column import Column
 from utils import stringUtils, csvUtils
 
