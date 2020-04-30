@@ -94,7 +94,7 @@ class LeadLossTabController:
             return
         Settings.update(importSettings)
 
-        self._importCSV(self.inputFile)
+        self._importCSV(self.inputFile, importSettings)
 
     def _importCSV(self, inputFile, importSettings):
         results = csvUtils.read_input(inputFile, importSettings)
