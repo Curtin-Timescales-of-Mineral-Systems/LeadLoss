@@ -66,12 +66,12 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         self.rimAgesSampledInput = IntInput(validation=self._validate, defaultValue=defaults.rimAgesSampled)
 
         layout = QFormLayout()
-        layout.addRow(QLabel("Minimum rim age"), self.minimumRimAgeInput)
-        layout.addRow("Maximum rim age", self.maximumRimAgeInput)
+        layout.addRow(QLabel("Minimum"), self.minimumRimAgeInput)
+        layout.addRow("Maximum", self.maximumRimAgeInput)
         layout.addRow("Number of samples", self.rimAgesSampledInput)
         self._registerFormLayoutForAlignment(layout)
 
-        box = QGroupBox("Rim age sampling")
+        box = QGroupBox("Time of radiogenic-Pb loss")
         box.setLayout(layout)
         return box
 
@@ -107,7 +107,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
     def getWarning(self, settings):
         if self.pointWithNoErrors and settings.discordanceClassificationMethod == DiscordanceClassificationMethod.ERROR_ELLIPSE:
             return "Warning: there exist points with no associated errors in the data set. " \
-                   "Such points will never be classified as concordant using the error ellipse method" \
+                   "Such points will never be classified as concordant using the error ellipse method " \
                    "unless they lie exactly on the concordia curve."
 
     def _createSettings(self):

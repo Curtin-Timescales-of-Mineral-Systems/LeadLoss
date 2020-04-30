@@ -16,10 +16,15 @@ class LeadLossModel:
         self.concordantRows = []
         self.discordantRows = []
 
-        self.statistics = {}
+        self.pValuesByAge = {}
+        self.dValuesByAge = {}
         self.reconstructedAges = {}
 
-    def loadRawData(self, importSettings, rawHeaders, rawRows):
+    ################
+    ## Input data ##
+    ################
+
+    def loadInputData(self, inputFile, importSettings, rawHeaders, rawRows):
         self.headers = rawHeaders
         self.rows = [Row(row, importSettings) for row in rawRows]
 
@@ -27,22 +32,22 @@ class LeadLossModel:
         calculationHeaders = LeadLossCalculationSettings.getDefaultHeaders()
         headers = importHeaders + calculationHeaders
 
-        self.signals.headersUpdated.emit(headers)
-        self.signals.allRowsUpdated.emit(self.rows)
+        self.signals.inputDataLoaded.emit(inputFile, headers, self.rows)
         self.signals.taskComplete.emit(True, "Successfully imported CSV file")
 
-    def updateRow(self, i, row):
-        self.rows[i] = row
+    def clearInputData(self):
+        self.headers = []
+        self.rows = []
+        self.concordantRows = []
+        self.discordantRows = []
 
-    def resetCalculations(self):
-        importSettings = Settings.get(SettingsType.IMPORT)
-        calculationSettings = Settings.get(SettingsType.CALCULATION)
-        headers = importSettings.getHeaders() + calculationSettings.getHeaders()
-        for row in self.rows:
-            row.resetCalculatedCells()
+        self.pValuesByAge = {}
+        self.dValuesByAge = {}
+        self.reconstructedAges = {}
 
-        self.signals.headersUpdated.emit(headers)
-        self.signals.allRowsUpdated.emit(self.rows)
+    #################
+    ## Calculation ##
+    #################
 
     def getProcessingFunction(self):
         return processing.process
@@ -55,12 +60,35 @@ class LeadLossModel:
         row.setConcordantAge(discordance, concordantAge)
         self.signals.rowUpdated.emit(i, row)
 
-    def addRimAgeStats(self, rimAge, discordantAges, statistic):
-        self.statistics[rimAge] = statistic
+    def updateRow(self, i, row):
+        self.rows[i] = row
+
+    def addRimAgeStats(self, rimAge, discordantAges, pValue, dValue):
+        self.pValuesByAge[rimAge] = pValue
+        self.dValuesByAge[rimAge] = dValue
         self.reconstructedAges[rimAge] = discordantAges
 
-        if len(self.statistics) % 5 == 0:
-            self.signals.statisticsUpdated.emit(self.statistics)
+        self.signals.statisticUpdated.emit(len(self.dValuesByAge)-1, pValue, dValue)
+        if len(self.dValuesByAge) % 10 == 0:
+            self.signals.allStatisticsUpdated.emit(self.dValuesByAge)
+
+    def resetCalculation(self):
+        self.pValuesByAge = {}
+        self.dValuesByAge = {}
+        for row in self.rows:
+            row.resetCalculatedCells()
+        self.signals.processingCleared.emit()
+
+        importSettings = Settings.get(SettingsType.IMPORT)
+        calculationSettings = Settings.get(SettingsType.CALCULATION)
+        headers = importSettings.getHeaders() + calculationSettings.getHeaders()
+        self.signals.headersUpdated.emit(headers)
+        self.signals.allRowsUpdated.emit(self.rows)
+
+
+    #############
+    ## Getters ##
+    #############
 
     def getAgeRange(self):
         concordantAges = [row.concordantAge for row in self.rows if row.concordant]
@@ -69,13 +97,13 @@ class LeadLossModel:
         allAges = concordantAges + discordantAges
         return min(allAges), max(allAges)
 
-    def getNearestSampledAge(self, requestedRimAge):
-        if not self.statistics:
+    def getNearestSampledAge(self, requestedAge):
+        if not self.dValuesByAge:
             return None, []
 
-        if requestedRimAge is not None:
-            actualRimAge = min(self.statistics, key=lambda a: abs(a-requestedRimAge))
+        if requestedAge is not None:
+            actualAge = min(self.dValuesByAge, key=lambda a: abs(a-requestedAge))
         else:
-            actualRimAge = max(self.statistics, key=lambda a: self.statistics[a])
+            actualAge = min(self.dValuesByAge, key=lambda a: self.dValuesByAge[a])
 
-        return actualRimAge, self.reconstructedAges[actualRimAge]
+        return actualAge, self.pValuesByAge[actualAge], self.dValuesByAge[actualAge], self.reconstructedAges[actualAge]

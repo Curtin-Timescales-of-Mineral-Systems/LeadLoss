@@ -39,9 +39,11 @@ class LeadLossTabController:
 
     def onProcessingCompleted(self, output):
         bestRimAge = output[0]
+        _, pValue, dValue, reconstructedAges = self.model.getNearestSampledAge(bestRimAge)
+
         self.signals.taskComplete.emit(True, "Processing complete")
-        self.signals.optimalRimAgeFound.emit(bestRimAge, self.model.getAgeRange())
-        self.signals.statisticsUpdated.emit(self.model.statistics)
+        self.signals.optimalAgeFound.emit(bestRimAge, pValue, dValue, reconstructedAges, self.model.getAgeRange())
+        self.signals.allStatisticsUpdated.emit(self.model.dValuesByAge)
         self.selectAgeToCompare(bestRimAge)
 
     def onProcessingCancelled(self):
@@ -65,11 +67,11 @@ class LeadLossTabController:
             self.model.updateConcordance(i, discordance, concordantAge)
             self.signals.taskProgress.emit(progress)
             if progress == 1.0:
-                self.signals.allRowsUpdated.emit(self.model.rows)
+                self.signals.concordancyClassification.emit(self.model.rows)
                 self.signals.taskStarted.emit("Sampling rim age distribution...")
         elif type == ProgressType.SAMPLING:
-            progress, i, rimAge, discordantAges, statistic = progressArgs[1:]
-            self.model.addRimAgeStats(rimAge, discordantAges, statistic)
+            progress, i, rimAge, discordantAges, pValue, dValue = progressArgs[1:]
+            self.model.addRimAgeStats(rimAge, discordantAges, pValue, dValue)
             self.signals.taskProgress.emit(progress)
 
     #############
@@ -81,48 +83,50 @@ class LeadLossTabController:
         if not self.inputFile:
             return
 
-        self.view.getSettings(SettingsType.IMPORT, self.model.rows, self._importCSVWithSettings)
+        self.view.getSettings(
+            settingsType=SettingsType.IMPORT,
+            rows=self.model.rows,
+            callback=self._importCSVWithSettings
+        )
 
     def _importCSVWithSettings(self, importSettings):
         if not importSettings:
             return
         Settings.update(importSettings)
 
-        self._importCSV(self.inputFile, importSettings)
+        self._importCSV(self.inputFile)
 
     def _importCSV(self, inputFile, importSettings):
         results = csvUtils.read_input(inputFile, importSettings)
         success = results is not None
         if success:
-            self.model.loadRawData(importSettings, *results)
-        self.view.onCSVImportFinished(success, inputFile)
+            self.model.loadInputData(inputFile, importSettings, *results)
+
+    ################
+    ## Processing ##
+    ################
 
     def process(self):
-        self.view.getSettings(SettingsType.CALCULATION, self.model.rows, self._processWithSettings)
+        self.view.getSettings(
+            settingsType=SettingsType.CALCULATION,
+            rows=self.model.rows,
+            callback=self._processWithSettings
+        )
 
     def _processWithSettings(self, processingSettings):
         if not processingSettings:
             return
         Settings.update(processingSettings)
 
-        self.processingSignals.processingStarted.emit()
+        self.model.resetCalculation()
         self.signals.taskStarted.emit("Calculating error distributions...")
-
-        self.model.resetCalculations()
+        self.signals.processingStarted.emit()
         self._process(processingSettings)
 
     def _process(self, calculationSettings):
         importSettings = Settings.get(SettingsType.IMPORT)
         self.worker = AsyncTask(self.processingSignals, self.model.getProcessingFunction(), self.model.getProcessingData(), importSettings, calculationSettings)
         self.worker.start()
-
-    def selectAgeToCompare(self, requestedRimAge):
-        actualRimAge, reconstructedAges = self.model.getNearestSampledAge(requestedRimAge)
-        self.signals.rimAgeSelected.emit(actualRimAge, self.model.rows, reconstructedAges)
-
-    def showHelp(self):
-        dialog = LeadLossHelpDialog()
-        dialog.exec_()
 
     def cancelProcessing(self):
         if self.worker is not None:
@@ -139,9 +143,21 @@ class LeadLossTabController:
     ## Other ##
     ###########
 
+    def showHelp(self):
+        dialog = LeadLossHelpDialog()
+        dialog.exec_()
+
+    def selectAgeToCompare(self, requestedRimAge):
+        if requestedRimAge is None:
+            self.signals.ageDeselected.emit()
+            return
+
+        actualRimAge, pValue, dValue, reconstructedAges = self.model.getNearestSampledAge(requestedRimAge)
+        self.signals.ageSelected.emit(actualRimAge, reconstructedAges)
+
     def cheatLoad(self):
         try:
-            inputFile = "../tests/leadLossTest_with_errors.csv"
+            inputFile = "../tests/leadLossTest_without_errors.csv"
             self._importCSV(inputFile, Settings.get(SettingsType.IMPORT))
         except:
             print(traceback.format_exc(), file=sys.stderr)

@@ -40,7 +40,7 @@ class LeadLossApplication:
 
     @staticmethod
     def getVersion():
-        return "0.1"
+        return "0.2"
 
     @staticmethod
     def getIcon():

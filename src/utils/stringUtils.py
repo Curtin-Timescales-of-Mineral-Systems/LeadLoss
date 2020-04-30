@@ -33,7 +33,7 @@ def getPbPbStr(useSuperscripts):
 def print_warning(message):
     print("\033[93m" + message + "\033[0m")
 
-def round_to_sf(x, sf=2):
+def round_to_sf(x, sf=5):
     if isinstance(x, str):
         try:
             x = float(x)

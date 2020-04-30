@@ -3,7 +3,8 @@ from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QSplitter, QVBoxLayout, QFileDialog, QDialog, QMessageBox, QWidget
 
 from utils.settings import Settings
-from view.dataPanel import LeadLossDataPanel
+from view.calculatedDataPanel import CalculatedDataPanel
+from view.importedDataPanel import ImportedDataPanel
 from view.graphPanel import LeadLossGraphPanel
 
 from view.settingsDialogs.calculation import LeadLossCalculationSettingsDialog
@@ -18,34 +19,23 @@ class LeadLossView(QWidget):
         self.controller = controller
         self.initUI()
 
-        self.controller.signals.csvImported.connect(self.onCSVImportFinished)
-
     def initUI(self):
         self.graphPanel = LeadLossGraphPanel(self.controller)
-        self.dataPanel = LeadLossDataPanel(self.controller)
+        self.importedDataPanel = ImportedDataPanel(self.controller)
+        self.calculatedDataPanel = CalculatedDataPanel(self.controller)
         self.statusBar = StatusBarWidget(self.controller.signals)
 
         splitter = QSplitter(Qt.Horizontal)
-        splitter.addWidget(self.dataPanel)
+        splitter.addWidget(self.importedDataPanel)
+        splitter.addWidget(self.calculatedDataPanel)
         splitter.addWidget(self.graphPanel)
-        splitter.setSizes([10000, 10000])
+        splitter.setSizes([10000, 10000, 10000])
         splitter.setContentsMargins(1, 1, 1, 1)
 
         layout = QVBoxLayout()
         layout.addWidget(splitter, 1)
         layout.addWidget(self.statusBar, 0)
         self.setLayout(layout)
-
-    ############
-    ## Events ##
-    ############
-
-    def onCSVImportFinished(self, result, inputFile):
-        if not result:
-            self.endTask(False, "Failed to import CSV file")
-            return
-
-        self.dataPanel.afterSuccessfulCSVImport(inputFile)
 
     ########
     ## IO ##

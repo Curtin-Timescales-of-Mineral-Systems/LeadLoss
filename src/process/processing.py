@@ -98,38 +98,36 @@ def _performRimAgeSampling(signals, rows, calculationSettings):
         rimUPb = calculations.u238pb206_from_age(rimAge)
         rimPbPb = calculations.pb207pb206_from_age(rimAge)
 
-        discordantAges = []
+        allReconstructedAges = []
+        reconstructedAges = []
         for j, row in enumerate(rows):
             if signals.halt():
                 signals.cancelled()
                 return False, None
 
             if row.concordant:
-                reconstructedAge = None
+                allReconstructedAges.append(None)
             else:
                 reconstructedAge = calculations.discordant_age(rimUPb, rimPbPb, row.uPb, row.pbPb, 1)
-            discordantAges.append(reconstructedAge)
+                allReconstructedAges.append(reconstructedAge)
 
-        statistic = _calculateStatistics(concordantAges, discordantAges)
-        results.append((rimAge, statistic))
+                if reconstructedAge is None:
+                    reconstructedAges.append(0.0)
+                else:
+                    reconstructedAges.append(reconstructedAge.values[0])
+
+        pValue, dValue = _calculateStatistics(concordantAges, reconstructedAges)
+        results.append((rimAge, pValue, dValue))
 
         progress = (i + 1) / samples
-        signals.progress(ProgressType.SAMPLING, progress, i, rimAge, discordantAges, statistic)
+        signals.progress(ProgressType.SAMPLING, progress, i, rimAge, allReconstructedAges, pValue, dValue)
 
-    bestAge = max(results, key= lambda v:v[1])[0]
+    bestAge = min(results, key= lambda v:v[2])[0]
     return True, bestAge
 
 
 def _calculateStatistics(concordantAges, reconstructedAges):
-    discordantAges = []
-    for reconstructedAge in reconstructedAges:
-        if reconstructedAge is not None:
-            discordantAges.append(reconstructedAge.values[0])
-        else:
-            discordantAges.append(0)
-
-    if not discordantAges or not concordantAges:
+    if not reconstructedAges or not concordantAges:
         return 0
-
-    pValue = stats.ks_2samp(concordantAges, discordantAges)[1]
-    return pValue
+    dValue, pValue = stats.ks_2samp(concordantAges, reconstructedAges)
+    return pValue, dValue

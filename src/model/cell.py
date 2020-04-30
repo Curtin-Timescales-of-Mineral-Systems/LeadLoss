@@ -50,4 +50,6 @@ class CalculatedCell(Cell):
     def getDisplayString(self):
         if self.value is None:
             return ""
+        if isinstance(self.value, float) and self.value < 10**-10:
+            return "0.0"
         return str(stringUtils.round_to_sf(self.value, 5))

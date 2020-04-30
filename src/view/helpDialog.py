@@ -81,9 +81,9 @@ class LeadLossHelpDialog(QDialog):
     def getProcessingHelpText(self):
         return \
             "Processing the data will attempt to reconstruct the expected distribution of ages " \
-            "for a variety of different rim ages. These distributions are then compared against the " \
-            "distribution of concordant ages using the chosen statistic. The optimal rim age is then chosen to " \
-            "maximise this statistic." \
+            "for a variety of different times of radiogenic-Pb. These distributions are then compared against the " \
+            "distribution of concordant ages using the chosen statistic. The optimal time for radiogenic-Pb loss " \
+            "is then chosen to maximise this statistic." \
             "<br><br>" \
             "Concordant rows will be highlighted in <font color='green'>GREEN</font>." \
             "<br><br>" \

@@ -4,30 +4,29 @@ from model.row import Row
 
 
 class Signals(QObject):
-    # Success, file name
-    csvImported = pyqtSignal([bool, str])
+    inputDataLoaded = pyqtSignal(str, list, list)  # Input file, headers, rows
+    inputDataCleared = pyqtSignal()
 
-    # Row index, row
-    rowUpdated = pyqtSignal([int, Row])
-    # Rows
-    allRowsUpdated = pyqtSignal(list)
-    # Headers
-    headersUpdated = pyqtSignal(list)
+    headersUpdated = pyqtSignal(list)  # Headers
+    rowUpdated = pyqtSignal([int, Row])  # Row index, row
+    allRowsUpdated = pyqtSignal(list)  # Rows
 
-    # Task description
-    taskStarted = pyqtSignal(str)
-    # Progress (0.0 - 1.0)
-    taskProgress = pyqtSignal(float)
-    # Success, success description
-    taskComplete = pyqtSignal([bool, str])
+    taskStarted = pyqtSignal(str)  # Task description
+    taskProgress = pyqtSignal(float)  # Progress (0.0 - 1.0)
+    taskComplete = pyqtSignal([bool, str])  # Success, success description
 
-    # age, rows
-    rimAgeSelected = pyqtSignal([float, list, list])
-    statisticsUpdated = pyqtSignal(dict)
-    optimalRimAgeFound = pyqtSignal(float, tuple)
+    processingCleared = pyqtSignal()
+    processingStarted = pyqtSignal()
+
+    concordancyClassification = pyqtSignal(list) # rows
+    statisticUpdated = pyqtSignal(int, float, float) # rowNumber, pValue, dValue
+    allStatisticsUpdated = pyqtSignal(dict)
+    optimalAgeFound = pyqtSignal(float, float, float, list, tuple) # age, pValue, dValue, reconstructedAges, maximumRangeOfReconstructedAges
+    ageDeselected = pyqtSignal()
+    ageSelected = pyqtSignal([float, list]) # age, reconstructedAges
+
 
 class ProcessingSignals(QObject):
-    processingStarted = pyqtSignal()
     processingProgress = pyqtSignal(object)
     processingCompleted = pyqtSignal(object)
     processingCancelled = pyqtSignal()

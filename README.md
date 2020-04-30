@@ -2,7 +2,7 @@
 
 ## Lead-loss
 
-![Building](https://github.com/MatthewDaggitt/LeadLoss/workflows/Build%20Python%20executable/badge.svg)
+![Building](https://github.com/MatthewDaggitt/LeadLoss/workflows/Python%20executable/badge.svg)
 
 A program for reconstructing the ages of samples that have undergone lead loss.
 

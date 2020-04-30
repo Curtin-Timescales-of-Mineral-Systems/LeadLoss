@@ -1,4 +1,4 @@
-name: Build Python executables
+name: Python executables
 
 on:
   push:

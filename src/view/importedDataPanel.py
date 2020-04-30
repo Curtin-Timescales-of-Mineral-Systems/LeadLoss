@@ -1,13 +1,14 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QVBoxLayout, QTableWidgetItem, QGroupBox, QPushButton, QLineEdit, QWidget, QHBoxLayout, \
-    QTableWidget, QStyle
+    QTableWidget, QStyle, QFormLayout
 
 from utils import config
 from utils.ui import uiUtils
+from utils.ui.numericInput import AgeInput
 
 
-class LeadLossDataPanel(QGroupBox):
+class ImportedDataPanel(QGroupBox):
 
     def __init__(self, controller, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -15,14 +16,20 @@ class LeadLossDataPanel(QGroupBox):
         self.controller = controller
         self._initUI()
 
+        self.controller.signals.inputDataLoaded.connect(self.onInputDataLoaded)
         self.controller.signals.headersUpdated.connect(self.onHeadersUpdated)
         self.controller.signals.rowUpdated.connect(self.onRowUpdated)
         self.controller.signals.allRowsUpdated.connect(self.onAllRowsUpdated)
 
-        self.controller.processingSignals.processingStarted.connect(self.onProcessingStart)
+        self.controller.signals.processingStarted.connect(self.onProcessingStart)
+
         self.controller.processingSignals.processingCompleted.connect(self.onProcessingEnd)
         self.controller.processingSignals.processingErrored.connect(self.onProcessingEnd)
         self.controller.processingSignals.processingCancelled.connect(self.onProcessingEnd)
+
+        # Remove once flashing removed
+        self.timer = QTimer(self)
+        self.timer.setInterval(500)
 
     #############
     ## UI spec ##
@@ -41,7 +48,6 @@ class LeadLossDataPanel(QGroupBox):
 
         self.actionButtonsWidget.hide()
 
-
     def _initImportWidget(self):
         self.importButton = QPushButton("  Import CSV")
         self.importButton.clicked.connect(self.controller.importCSV)
@@ -59,7 +65,7 @@ class LeadLossDataPanel(QGroupBox):
         layout.addWidget(self.importButton)
         layout.addWidget(self.importFileText)
         layout.addWidget(self.helpButton)
-        layout.setContentsMargins(0,0,0,5)
+        layout.setContentsMargins(0, 0, 0, 5)
         self.importWidget.setLayout(layout)
 
     def _initDataTable(self):
@@ -67,7 +73,6 @@ class LeadLossDataPanel(QGroupBox):
         self.dataTable.resizeColumnsToContents()
         self.dataTable.resizeRowsToContents()
         self.dataTable.hide()
-        self.dataTable.itemSelectionChanged.connect(self._selectionChanged)
         uiUtils.retainSizeWhenHidden(self.dataTable)
 
     def _initTableWidgetItem(self, content):
@@ -86,24 +91,95 @@ class LeadLossDataPanel(QGroupBox):
         self.exportButton.setEnabled(False)
         self.exportButton.setIcon(self.style().standardIcon(QStyle.SP_DialogSaveButton))
 
-        self.actionButtonsWidget = QWidget()
         layout = QHBoxLayout()
         layout.addWidget(self.processButton)
         layout.addWidget(self.exportButton)
+        layout.setContentsMargins(0, 0, 0, 5)
+
+        self.actionButtonsWidget = QWidget()
         self.actionButtonsWidget.setLayout(layout)
 
     def getActionButtons(self):
         return [self.importButton, self.processButton, self.exportButton]
 
     #############
-    ## Updates ##
+    ## Actions ##
     #############
 
-    def afterSuccessfulCSVImport(self, inputFile):
-        self.importFileText.setText(inputFile)
+    def _setColumnHeaders(self, headers):
+        self.dataTable.setColumnCount(len(headers))
+        self.dataTable.setHorizontalHeaderLabels(headers)
 
+    def _getRowHeaderColour(self, row):
+        if not row.processed:
+            return None
+        if row.concordant:
+            return config.CONCORDANT_COLOUR_255
+        return config.DISCORDANT_COLOUR_255
+
+    def _setRowData(self, i, row):
+        for j, cell in enumerate(row.getDisplayCells()):
+            tableCell = self._initTableWidgetItem(cell.getDisplayString())
+            if not cell.isValid():
+                if cell.isImported():
+                    tableCell.setBackground(QColor(255, 0, 0, 27))
+                elif row.validImports and row.processed:
+                    tableCell.setBackground(QColor(255, 165, 0, 27))
+            self.dataTable.setItem(i, j, tableCell)
+
+        header = QTableWidgetItem(str(i + 1))
+        headerColour = self._getRowHeaderColour(row)
+        if headerColour:
+            header.setBackground( QColor(*headerColour))
+        self.dataTable.setVerticalHeaderItem(i, header)
+
+    def _setAllData(self, rows):
+        self.dataTable.setRowCount(len(rows))
+        for index, row in enumerate(rows):
+            self._setRowData(index, row)
+
+    def _resizeTable(self):
+        self.dataTable.resizeColumnsToContents()
+        self.dataTable.resizeRowsToContents()
+        self.dataTable.viewport().update()
+        self.dataTable.resizeColumnsToContents()
+
+    #######################
+    ## Input data events ##
+    #######################
+
+    def onInputDataLoaded(self, inputFile, headers, rows):
+        self._setColumnHeaders(headers)
+        self._setAllData(rows)
+        self.importFileText.setText(inputFile)
         self.dataTable.show()
         self.actionButtonsWidget.show()
+        self._resizeTable()
+
+    def onInputDataCleared(self):
+        self.importFileText.setText("")
+        self.dataTable.hide()
+        self.actionButtonsWidget.hide()
+
+    ########################
+    ## Calculation events ##
+    ########################
+
+    def onHeadersUpdated(self, headers):
+        self._setColumnHeaders(headers)
+        self._resizeTable()
+
+    def onAllRowsUpdated(self, rows):
+        self._setAllData(rows)
+        self._resizeTable()
+
+    def onRowUpdated(self, i, row):
+        self._setRowData(i, row)
+        self._resizeTable()
+
+    #######################
+    ## Processing events ##
+    #######################
 
     def onProcessingStart(self):
         for button in self.getActionButtons():
@@ -121,46 +197,3 @@ class LeadLossDataPanel(QGroupBox):
         self.processButton.setIcon(self.style().standardIcon(QStyle.SP_ArrowForward))
         self.processButton.clicked.disconnect(self.controller.cancelProcessing)
         self.processButton.clicked.connect(self.controller.process)
-
-    def onHeadersUpdated(self, headers):
-        self.dataTable.setColumnCount(len(headers))
-        self.dataTable.setHorizontalHeaderLabels(headers)
-
-    def onAllRowsUpdated(self, rows):
-        self.dataTable.setRowCount(len(rows))
-        for index, row in enumerate(rows):
-            self.onRowUpdated(index, row)
-
-    def onRowUpdated(self, i, row):
-        self._refreshRowHeader(i, row)
-        self._refreshRowData(i, row)
-
-        self.dataTable.resizeColumnsToContents()
-        self.dataTable.resizeRowsToContents()
-
-    def _refreshRowData(self, i, row):
-        for j, cell in enumerate(row.getDisplayCells()):
-            tableCell = self._initTableWidgetItem(cell.getDisplayString())
-            if not cell.isValid():
-                if cell.isImported():
-                    tableCell.setBackground(QColor(255, 0, 0, 27))
-                elif row.validImports and row.processed:
-                    tableCell.setBackground(QColor(255, 165, 0, 27))
-            self.dataTable.setItem(i, j, tableCell)
-        self.dataTable.viewport().update()
-        self.dataTable.resizeColumnsToContents()
-
-    ############
-    ## Events ##
-    ############
-
-    def _refreshRowHeader(self, i, row):
-        header = QTableWidgetItem(str(i+1))
-
-        if row.processed:
-            rgba = config.CONCORDANT_COLOUR_255 if row.concordant else config.DISCORDANT_COLOUR_255
-            header.setBackground(QColor(*rgba))
-        self.dataTable.setVerticalHeaderItem(i, header)
-
-    def _selectionChanged(self):
-        pass

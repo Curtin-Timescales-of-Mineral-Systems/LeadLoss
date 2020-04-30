@@ -71,6 +71,6 @@ class Row:
         self.concordantAge = concordantAge
         self.calculatedCells = [
             CalculatedCell("Yes" if self.concordant else "No"),
-            CalculatedCell(discordance * 100 if discordance else None),
+            CalculatedCell(discordance * 100 if discordance is not None else None),
             CalculatedCell(None if concordantAge is None else concordantAge / (10 ** 6))
         ]
