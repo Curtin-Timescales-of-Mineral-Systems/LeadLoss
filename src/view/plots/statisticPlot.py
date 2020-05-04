@@ -16,7 +16,7 @@ class StatisticPlot:
         self.axis.clear()
         self.axis.set_title("KS statistic")
         self.axis.set_xlabel("Age (Ma)")
-        self.axis.set_ylabel("p value")
+        self.axis.set_ylabel("D value")
 
         self.optimalAgeLine = self.axis.plot([], [], color=config.OPTIMAL_COLOUR_1)[0]
         self.selectedAgeLine = self.axis.plot([], [], color=config.PREDICTION_COLOUR_1)[0]

@@ -1,3 +1,5 @@
+import time
+
 from model.row import Row
 from model.settings.type import SettingsType
 from process import processing
@@ -7,6 +9,8 @@ from utils.settings import Settings
 
 
 class LeadLossModel:
+
+    UPDATE_INTERVAL = 0.5
 
     def __init__(self, signals):
         self.signals = signals
@@ -19,6 +23,8 @@ class LeadLossModel:
         self.pValuesByAge = {}
         self.dValuesByAge = {}
         self.reconstructedAges = {}
+
+        self.lastUpdateTime = 0
 
     ################
     ## Input data ##
@@ -45,9 +51,28 @@ class LeadLossModel:
         self.dValuesByAge = {}
         self.reconstructedAges = {}
 
+        self.signals.inputDataCleared.emit()
+
     #################
     ## Calculation ##
     #################
+
+    def resetCalculation(self):
+        self.optimalAge = None
+        self.pValuesByAge = {}
+        self.dValuesByAge = {}
+
+        for row in self.rows:
+            row.resetCalculatedCells()
+        self.signals.processingCleared.emit()
+
+        importSettings = Settings.get(SettingsType.IMPORT)
+        calculationSettings = Settings.get(SettingsType.CALCULATION)
+        headers = importSettings.getHeaders() + calculationSettings.getHeaders()
+        self.signals.headersUpdated.emit(headers)
+        self.signals.allRowsUpdated.emit(self.rows)
+
+        self.lastUpdateTime = time.time()
 
     def getProcessingFunction(self):
         return processing.process
@@ -63,28 +88,19 @@ class LeadLossModel:
     def updateRow(self, i, row):
         self.rows[i] = row
 
-    def addRimAgeStats(self, rimAge, discordantAges, pValue, dValue):
-        self.pValuesByAge[rimAge] = pValue
+    def addRimAgeStats(self, rimAge, discordantAges, dValue, pValue):
         self.dValuesByAge[rimAge] = dValue
+        self.pValuesByAge[rimAge] = pValue
         self.reconstructedAges[rimAge] = discordantAges
 
-        self.signals.statisticUpdated.emit(len(self.dValuesByAge)-1, pValue, dValue)
-        if len(self.dValuesByAge) % 10 == 0:
+        self.signals.statisticUpdated.emit(len(self.dValuesByAge)-1, dValue, pValue)
+        now = time.time()
+        if now - self.lastUpdateTime > self.UPDATE_INTERVAL:
             self.signals.allStatisticsUpdated.emit(self.dValuesByAge)
+            self.lastUpdateTime = now
 
-    def resetCalculation(self):
-        self.pValuesByAge = {}
-        self.dValuesByAge = {}
-        for row in self.rows:
-            row.resetCalculatedCells()
-        self.signals.processingCleared.emit()
-
-        importSettings = Settings.get(SettingsType.IMPORT)
-        calculationSettings = Settings.get(SettingsType.CALCULATION)
-        headers = importSettings.getHeaders() + calculationSettings.getHeaders()
-        self.signals.headersUpdated.emit(headers)
-        self.signals.allRowsUpdated.emit(self.rows)
-
+    def setOptimalAge(self, optimalAge):
+        self.optimalAge = optimalAge
 
     #############
     ## Getters ##
@@ -104,6 +120,6 @@ class LeadLossModel:
         if requestedAge is not None:
             actualAge = min(self.dValuesByAge, key=lambda a: abs(a-requestedAge))
         else:
-            actualAge = min(self.dValuesByAge, key=lambda a: self.dValuesByAge[a])
+            actualAge = self.optimalAge
 
-        return actualAge, self.pValuesByAge[actualAge], self.dValuesByAge[actualAge], self.reconstructedAges[actualAge]
+        return actualAge, self.dValuesByAge[actualAge], self.pValuesByAge[actualAge], self.reconstructedAges[actualAge]

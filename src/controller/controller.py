@@ -37,15 +37,6 @@ class LeadLossTabController:
     ## Events ##
     ############
 
-    def onProcessingCompleted(self, output):
-        bestRimAge = output[0]
-        _, pValue, dValue, reconstructedAges = self.model.getNearestSampledAge(bestRimAge)
-
-        self.signals.taskComplete.emit(True, "Processing complete")
-        self.signals.optimalAgeFound.emit(bestRimAge, pValue, dValue, reconstructedAges, self.model.getAgeRange())
-        self.signals.allStatisticsUpdated.emit(self.model.dValuesByAge)
-        self.selectAgeToCompare(bestRimAge)
-
     def onProcessingCancelled(self):
         self.signals.taskComplete.emit(False, "Cancelled processing of data")
 
@@ -70,9 +61,19 @@ class LeadLossTabController:
                 self.signals.concordancyClassification.emit(self.model.rows)
                 self.signals.taskStarted.emit("Sampling rim age distribution...")
         elif type == ProgressType.SAMPLING:
-            progress, i, rimAge, discordantAges, pValue, dValue = progressArgs[1:]
-            self.model.addRimAgeStats(rimAge, discordantAges, pValue, dValue)
+            progress, i, rimAge, discordantAges, dValue, pValue = progressArgs[1:]
+            self.model.addRimAgeStats(rimAge, discordantAges, dValue, pValue)
             self.signals.taskProgress.emit(progress)
+
+    def onProcessingCompleted(self, output):
+        optimalAge = output[0]
+        self.model.setOptimalAge(optimalAge)
+        _, dValue, pValue, reconstructedAges = self.model.getNearestSampledAge(optimalAge)
+
+        self.signals.taskComplete.emit(True, "Processing complete")
+        self.signals.optimalAgeFound.emit(optimalAge, dValue, pValue, reconstructedAges, self.model.getAgeRange())
+        self.signals.allStatisticsUpdated.emit(self.model.dValuesByAge)
+        self.selectAgeToCompare(optimalAge)
 
     #############
     ## Actions ##
@@ -94,6 +95,7 @@ class LeadLossTabController:
             return
         Settings.update(importSettings)
 
+        self.model.clearInputData()
         self._importCSV(self.inputFile, importSettings)
 
     def _importCSV(self, inputFile, importSettings):
@@ -119,7 +121,7 @@ class LeadLossTabController:
         Settings.update(processingSettings)
 
         self.model.resetCalculation()
-        self.signals.taskStarted.emit("Calculating error distributions...")
+        self.signals.taskStarted.emit("Pre-calculating error distributions...")
         self.signals.processingStarted.emit()
         self._process(processingSettings)
 
@@ -152,12 +154,12 @@ class LeadLossTabController:
             self.signals.ageDeselected.emit()
             return
 
-        actualRimAge, pValue, dValue, reconstructedAges = self.model.getNearestSampledAge(requestedRimAge)
+        actualRimAge, dValue, pValue, reconstructedAges = self.model.getNearestSampledAge(requestedRimAge)
         self.signals.ageSelected.emit(actualRimAge, reconstructedAges)
 
     def cheatLoad(self):
         try:
-            inputFile = "../tests/leadLossTest_without_errors.csv"
+            inputFile = "../tests/hugoTest.csv"
             self._importCSV(inputFile, Settings.get(SettingsType.IMPORT))
         except:
             print(traceback.format_exc(), file=sys.stderr)

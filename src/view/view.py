@@ -29,7 +29,7 @@ class LeadLossView(QWidget):
         splitter.addWidget(self.importedDataPanel)
         splitter.addWidget(self.calculatedDataPanel)
         splitter.addWidget(self.graphPanel)
-        splitter.setSizes([10000, 10000, 10000])
+        splitter.setSizes([10000, 5000, 10000])
         splitter.setContentsMargins(1, 1, 1, 1)
 
         layout = QVBoxLayout()

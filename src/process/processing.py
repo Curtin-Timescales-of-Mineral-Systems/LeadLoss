@@ -116,13 +116,13 @@ def _performRimAgeSampling(signals, rows, calculationSettings):
                 else:
                     reconstructedAges.append(reconstructedAge.values[0])
 
-        pValue, dValue = _calculateStatistics(concordantAges, reconstructedAges)
-        results.append((rimAge, pValue, dValue))
+        dValue, pValue = _calculateStatistics(concordantAges, reconstructedAges)
+        results.append((rimAge, dValue, pValue))
 
         progress = (i + 1) / samples
-        signals.progress(ProgressType.SAMPLING, progress, i, rimAge, allReconstructedAges, pValue, dValue)
+        signals.progress(ProgressType.SAMPLING, progress, i, rimAge, allReconstructedAges, dValue, pValue)
 
-    bestAge = min(results, key= lambda v:v[2])[0]
+    bestAge = _findOptimalAge(results)
     return True, bestAge
 
 
@@ -130,4 +130,19 @@ def _calculateStatistics(concordantAges, reconstructedAges):
     if not reconstructedAges or not concordantAges:
         return 0
     dValue, pValue = stats.ks_2samp(concordantAges, reconstructedAges)
-    return pValue, dValue
+    return dValue, pValue
+
+def _findOptimalAge(results):
+    minIndex, minArgs = min(enumerate(results), key=lambda v:v[1][1])
+
+    startMinIndex = minIndex
+    while startMinIndex > 0 and results[startMinIndex-1][1] == minArgs[1]:
+        startMinIndex -=1
+
+    endMinIndex = minIndex
+    while endMinIndex < len(results) - 1 and results[endMinIndex+1][1] == minArgs[1]:
+        endMinIndex += 1
+
+    middleMinIndex = (endMinIndex + startMinIndex) // 2
+    print(startMinIndex, middleMinIndex, endMinIndex)
+    return results[middleMinIndex][0]

@@ -7,6 +7,7 @@ from matplotlib.patches import Ellipse
 from model.settings.type import SettingsType
 from process import calculations
 from utils import config
+from utils.errorbarPlot import Errorbars
 from utils.settings import Settings
 
 
@@ -52,10 +53,11 @@ class ConcordiaPlot:
 
         self.optimalAge = self.axis.plot([], [], marker='o', color=config.PREDICTION_COLOUR_1)[0]
         self.selectedAge = self.axis.plot([], [], marker='o', color=config.PREDICTION_COLOUR_1)[0]
-        self.unclassifiedDataPoints = self.axis.plot([],[],label='toto',marker='o',ls='',color='k')[0]
-        self.concordantDataPoints = self.axis.plot([],[],label='toto',marker='o',ls='',color=config.CONCORDANT_COLOUR_1)[0]
-        self.discordantDataPoints = self.axis.plot([],[],label='toto',marker='o',ls='',color=config.DISCORDANT_COLOUR_1)[0]
+        self.unclassifiedDataPoints = Errorbars(self.axis.errorbar([],[],xerr=[], yerr=[], fmt='+', linestyle='',color=config.UNCLASSIFIED_COLOUR_1))
+        self.concordantDataPoints = Errorbars(self.axis.errorbar([],[],xerr=[], yerr=[], fmt='+', linestyle='',color=config.CONCORDANT_COLOUR_1))
+        self.discordantDataPoints = Errorbars(self.axis.errorbar([],[],xerr=[], yerr=[], fmt='+', linestyle='',color=config.DISCORDANT_COLOUR_1))
         self.reconstructedLines = None
+        self.errorEllipses = []
 
     ################
     ## Input data ##
@@ -67,20 +69,30 @@ class ConcordiaPlot:
 
         rs = math.sqrt(calculations.mahalanobisRadius(calculationSettings.discordanceEllipseSigmas))
 
+        concordantData = []
+        discordantData = []
+        unclassifiedData = []
+
         for row in rows:
             semi_minor = row.uPbStDev(importSettings) * rs
             semi_major = row.pbPbStDev(importSettings) * rs
 
-            if not row.processed:
-                rgba = config.UNCLASSIFIED_COLOUR_1
-            elif row.concordant:
-                rgba = config.CONCORDANT_COLOUR_1
-            else:
-                rgba = config.DISCORDANT_COLOUR_1
-
             if semi_minor == 0 or semi_major == 0:
-                self.axis.errorbar(x=row.uPbValue(), y=row.pbPbValue(), xerr=semi_minor, yerr=semi_major, fmt='+', linestyle='', color=rgba)
+                if not row.processed:
+                    data = unclassifiedData
+                elif row.concordant:
+                    data = concordantData
+                else:
+                    data = discordantData
+                data.append((row.uPbValue(), row.pbPbValue(), semi_minor, semi_major))
             else:
+                if not row.processed:
+                    rgba = config.UNCLASSIFIED_COLOUR_1
+                elif row.concordant:
+                    rgba = config.CONCORDANT_COLOUR_1
+                else:
+                    rgba = config.DISCORDANT_COLOUR_1
+
                 ellipse = Ellipse(
                     xy=(row.uPbValue(), row.pbPbValue()),
                     width=semi_minor*2,
@@ -92,9 +104,28 @@ class ConcordiaPlot:
                     clip_box=self.axis.bbox
                 )
                 self.axis.add_artist(ellipse)
+                self.errorEllipses.append(ellipse)
+
+        if concordantData:
+            self.concordantDataPoints.set_data(*zip(*concordantData))
+        else:
+            self.concordantDataPoints.clear_data()
+
+        if discordantData:
+            self.discordantDataPoints.set_data(*zip(*discordantData))
+        else:
+            self.discordantDataPoints.clear_data()
+
+        if unclassifiedData:
+            self.unclassifiedDataPoints.set_data(*zip(*unclassifiedData))
+        else:
+            self.unclassifiedDataPoints.clear_data()
 
     def clearInputData(self):
-        pass
+        self.clearSelectedAge()
+        for ellipse in self.errorEllipses:
+            ellipse.remove()
+        self.errorEllipses = []
 
     ##################
     ## Selected age ##

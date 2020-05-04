@@ -12,7 +12,7 @@ from utils.ui.numericInput import AgeInput, FloatInput
 
 class CalculatedDataPanel(QGroupBox):
 
-    HEADERS = ["Pb-loss age (Ma)", "D value", "p Value"]
+    HEADERS = ["Pb-loss age (Ma)", "D value", "p value"]
 
     def __init__(self, controller, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -23,6 +23,7 @@ class CalculatedDataPanel(QGroupBox):
         self.controller.signals.statisticUpdated.connect(self.onStatisticUpdated)
         self.controller.signals.optimalAgeFound.connect(self.onOptimalAgeFound)
 
+        self.controller.signals.inputDataCleared.connect(self.onInputDataCleared)
         self.controller.signals.processingCleared.connect(self.onProcessingCleared)
         self.controller.signals.processingStarted.connect(self.onProcessingStart)
 
@@ -89,7 +90,7 @@ class CalculatedDataPanel(QGroupBox):
         self.dValue.setReadOnly(True)
 
         layout = QFormLayout()
-        layout.addRow("Optimal radiogenic-Pb loss age", self.optimalLeadLossAge)
+        layout.addRow("Optimal Pb-loss age", self.optimalLeadLossAge)
         layout.addRow("D value", self.dValue)
         layout.addRow("p value", self.pValue)
         layout.setContentsMargins(0, 5, 0, 5)
@@ -119,6 +120,9 @@ class CalculatedDataPanel(QGroupBox):
     ## Processing events ##
     #######################
 
+    def onInputDataCleared(self):
+        self.onProcessingCleared()
+
     def onProcessingCleared(self):
         self.optimalLeadLossAge.setValue(None)
         self.pValue.setValue(None)
@@ -147,7 +151,7 @@ class CalculatedDataPanel(QGroupBox):
         else:
             self.dataTable.viewport().update()
 
-    def onOptimalAgeFound(self, rimAge, pValue, dValue, reconstructedAges, reconstructedAgeRange):
+    def onOptimalAgeFound(self, rimAge, dValue, pValue, reconstructedAges, reconstructedAgeRange):
         self.optimalLeadLossAge.setValue(rimAge)
         self.pValue.setValue(stringUtils.round_to_sf(pValue))
         self.dValue.setValue(stringUtils.round_to_sf(dValue))
