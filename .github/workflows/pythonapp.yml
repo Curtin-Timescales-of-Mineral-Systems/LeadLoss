@@ -111,6 +111,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-          asset_path: ./dist/application{{matrix.EXTENSION}}
+          asset_path: ./dist/application${{matrix.EXTENSION}}
           asset_name: LeadLoss-${{ steps.get_version.outputs.version }}-${{ matrix.OS_NAME }}${{matrix.EXTENSION}}
           asset_content_type: application/zip
