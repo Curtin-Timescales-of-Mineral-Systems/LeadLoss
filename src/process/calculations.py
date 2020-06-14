@@ -14,6 +14,9 @@ U238_DECAY_CONSTANT = 1.55125*(10**-10)
 U235_DECAY_CONSTANT = 9.8485*(10**-10)
 U238U235_RATIO = 137.818
 
+UPPER_AGE = 6000 * (10 ** 6)
+LOWER_AGE = 1 * (10 ** 6)
+
 ################
 ## Geological ##
 ################
@@ -49,26 +52,23 @@ def u238pb206_from_pb207pb206(pb207pb206):
 def discordance(u238pb206, pb207pb206):
     uPbAge = age_from_u238pb206(u238pb206)
     pbPbAge = age_from_pb207pb206(pb207pb206)
-    return (pbPbAge - uPbAge) / pbPbAge
+    result = (pbPbAge - uPbAge) / pbPbAge
+
+    # Get rid of floating point inaccuracies
+    if result > 10 ** -10:
+        return result
+    return 0.0
 
 def concordant_age(u238pb206, pb207pb206):
-    """
-    def dist(ts):
-        global i
-        i += 1
-        t = ts[0]
+    def distance(t):
         x = u238pb206 - u238pb206_from_age(t)
         y = pb207pb206 - pb207pb206_from_age(t)
-        h = math.hypot(x, y)
-        print(i, u238pb206, pb207pb206, t, h)
-        return h
+        d = math.hypot(x, y)
+        return d
+    result = minimize_scalar(distance, bracket=[LOWER_AGE, UPPER_AGE])
+    return result.x
 
-    solution = minimize(dist, 500*(10**6))
-    return solution.x[0]
-    """
-    return age_from_u238pb206(u238pb206)
-
-def discordant_age(x1, y1, x2, y2, outputSigmas):
+def discordant_age(x1, y1, x2, y2):
     if x1 <= x2:
         return None
 
@@ -76,34 +76,22 @@ def discordant_age(x1, y1, x2, y2, outputSigmas):
     c = y1 - m*x1
 
     lower_limit = age_from_u238pb206(min(errors.value(x1), errors.value(x2)))
-    upper_limit = 5*(10**9)
+    upper_limit = UPPER_AGE
 
-    def solve_for_t(error_sign):
-        def func(t):
-            curve_pb207pb206_value = pb207pb206_from_age(t)
-            line_pb207pb206 = m*u238pb206_from_age(t) + c
-            line_pb207pb206_value = errors.value(line_pb207pb206) + error_sign * outputSigmas * errors.stddev(line_pb207pb206)
-            return curve_pb207pb206_value - line_pb207pb206_value
+    def func(t):
+        curve_pb207pb206_value = pb207pb206_from_age(t)
+        line_pb207pb206 = m*u238pb206_from_age(t) + c
+        line_pb207pb206_value = line_pb207pb206
+        return curve_pb207pb206_value - line_pb207pb206_value
 
-        v1 = func(lower_limit)
-        v2 = func(upper_limit)
-        if (v1 > 0 and v2 > 0) or (v1 < 0 and v2 < 0):
-            return None
-        
-        result = root_scalar(func, bracket=(lower_limit, upper_limit))
-
-        t = result.root
-        x = u238pb206_from_age(t)
-        y = pb207pb206_from_age(t)
-        return (t, x, y)
-
-    value = solve_for_t(0)
-    if value is None:
+    v1 = func(lower_limit)
+    v2 = func(upper_limit)
+    if (v1 > 0 and v2 > 0) or (v1 < 0 and v2 < 0):
         return None
 
-    lower_bound = solve_for_t(-1)
-    upper_bound = solve_for_t(1)
-    return ReconstructedAge(value, lower_bound, upper_bound)
+    result = root_scalar(func, bracket=(lower_limit, upper_limit))
+    return result.root
+
 
 def mahalanobisRadius(sigmas):
     if sigmas == 1:
@@ -153,12 +141,12 @@ def isConcordantErrorEllipse(uPbValue, uPbError, pbPbValue, pbPbError, ellipseSi
 ## General ##
 #############
 
-def convert_to_stddev(value, error, form, sigmas):
+def to1StdDev(value, error, form, sigmas):
     if form == "Percentage":
         error = (error/100.0) * value
     return error/sigmas
 
-def convert_from_stddev_with_sigmas(value, error, form, sigmas):
+def from1StdDev(value, error, form, sigmas):
     res = error*sigmas
     if form == "Percentage":
         return 100.0*res/value

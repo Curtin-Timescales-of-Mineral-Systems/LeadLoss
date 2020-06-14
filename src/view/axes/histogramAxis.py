@@ -1,7 +1,7 @@
 from utils import config
 
 
-class HistogramPlot:
+class HistogramAxis:
 
     _age_xlim = (0, 5000)
 
@@ -14,7 +14,6 @@ class HistogramPlot:
         self.axis = axis
 
         self.calculatedXLimits = self._age_xlim
-        self.concordantAges = []
 
         self._setupAxis()
 
@@ -31,39 +30,9 @@ class HistogramPlot:
     def setReconstructedAgeRange(self, reconstructedAgeRange):
         self.reconstructedAgeRange = [v / (10 ** 6) for v in reconstructedAgeRange]
 
-    #############################
-    ## Concordant distribution ##
-    #############################
-
-    # Haven't yet found a way of neatly updating histograms so we just crudely clear and redraw
-
-    def plotConcordantDistribution(self, concordantAges):
-        self.concordantAges = concordantAges
+    def plotDistributions(self, concordantAges, reconstructedAges):
         self._clearDistributions()
-        self._drawDistributions(self.concordantAges, [])
-
-    def clearConcordantDistribution(self):
-        self.reconstructedAgeRange = self._age_xlim
-        self.concordantAges = []
-        self._clearDistributions()
-
-    ################################
-    ## Reconstructed distribution ##
-    ################################
-
-    def plotOptimalReconstructedDistribution(self, reconstructedAges):
-        self.optimalReconstructedAges = reconstructedAges
-        self._clearDistributions()
-        self._drawDistributions(self.concordantAges, [])
-
-    def plotReconstructedDistribution(self, reconstructedAges):
-        self._clearDistributions()
-        self._drawDistributions(self.concordantAges, reconstructedAges)
-
-    def clearReconstructedDistribution(self):
-        self._clearDistributions()
-        if self.concordantAges:
-            self._drawDistributions(self.concordantAges, None)
+        self._drawDistributions(concordantAges, reconstructedAges)
 
     #########
     ## All ##
@@ -85,7 +54,7 @@ class HistogramPlot:
         )
 
         if reconstructedAges is not None:
-            edgecolor=config.PREDICTION_COLOUR_1
+            edgecolor=config.OPTIMAL_COLOUR_1
         else:
             reconstructedAges = self.optimalReconstructedAges
             edgecolor=config.OPTIMAL_COLOUR_1
@@ -99,4 +68,4 @@ class HistogramPlot:
             edgecolor=edgecolor,
             facecolor=(0, 0, 0, 0)
         )
-        self.axis.set_xlim(*self.reconstructedAgeRange)
+        #self.axis.set_xlim(*self.reconstructedAgeRange)

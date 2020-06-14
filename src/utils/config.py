@@ -2,7 +2,7 @@
 ## General settings ##
 ######################
 
-LEAD_LOSS_TITLE = "LeadLoss"
+LEAD_LOSS_TITLE = "Pb-loss"
 
 # Size of the confidence interval -- 1 or 2
 SIGMAS_MIXED_POINT_ERROR = 1
@@ -15,11 +15,11 @@ ERROR_TYPE_RIM_AGE = "Percentage"
 ERROR_TYPE_OUTPUT = "Absolute"
 
 # Other
-OUTPUT_SIGNIFICANT_FIGURES = 3
-CONSTANT_SIGNIFICANT_FIGURES = 6
+DISPLAY_SF = 5
+CONSTANT_SF = 6
 
 ##################
-## CSV settingsDialogs ##
+## CSV dialogs ##
 ##################
 
 # Delimiter
@@ -38,7 +38,7 @@ COLUMN_RIM_AGE_ERROR = "T"
 COLUMN_SAMPLE_NAME = 0
 
 ##################
-## GUI settingsDialogs ##
+## GUI dialogs ##
 ##################
 
 # Graph labels
@@ -52,7 +52,8 @@ LABEL_RECONSTRUCTED_AGE = "Reconstructed age"
 LABEL_RECONSTRUCTED_AGE_ERROR = "Reconstructed age error"
 
 # Graph colors
-UNCLASSIFIED_COLOUR_255 = (0, 0, 0, 27)
+INVALID_COLOUR_255 = (255, 0, 0, 27)
+UNCLASSIFIED_COLOUR_255 = (127, 127, 127, 127)
 CONCORDANT_COLOUR_255 = (0, 255, 0, 27)
 DISCORDANT_COLOUR_255 = (255, 165, 0, 27)
 PREDICTION_COLOUR_255 = (255, 0, 0, 27)

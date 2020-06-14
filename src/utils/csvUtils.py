@@ -102,35 +102,3 @@ def write_output(headers, rows, output_file):
         writer.writerow(headers)
         for row in rows:
             writer.writerow(row)
-
-
-###########
-## Other ##
-###########
-
-"""
-def perform_all_calculations(headers, rows, figure_dir, progress_callback):
-    error_strings = ["-" + stringUtils.ERROR_STR_OUTPUT, "+" + stringUtils.ERROR_STR_OUTPUT]
-    headers.extend(
-        ["Recon. age"] + error_strings + ["Recon. U238/Pb206"] + error_strings + ["Recon. Pb207/Pb206"] + error_strings)
-
-    progress_callback(0)
-    for i, row in enumerate(rows[1:]):
-        progress_callback(i + 1)
-        try:
-            _perform_calculations(i + 1, row, figure_dir)
-        except ValueError as e:
-            stringUtils.print_warning("\rIgnoring row " + str(i) + ": " + str(e))
-    progress_callback(len(rows))
-
-def _parse(column_ref, row, row_number, column_name=None):
-    column_number = stringUtils.get_column_number(column_ref)
-    string = row[column_number]
-    try:
-        return float(string)
-    except:
-        column_text = column_name if column_name else ("column " + column_number)
-        raise ValueError(
-            "Invalid value '" + string + "' for '" + column_text + "' in row " + str(row_number) + " column " + str(
-                column_number))
-"""

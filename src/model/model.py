@@ -1,6 +1,8 @@
 import time
+from collections import defaultdict
 
-from model.row import Row
+from model.sample import Sample
+from model.spot import Spot
 from model.settings.type import SettingsType
 from process import processing
 
@@ -14,15 +16,9 @@ class LeadLossModel:
 
     def __init__(self, signals):
         self.signals = signals
-
         self.headers = []
-        self.rows = []
-        self.concordantRows = []
-        self.discordantRows = []
-
-        self.pValuesByAge = {}
-        self.dValuesByAge = {}
-        self.reconstructedAges = {}
+        self.samples = []
+        self.samplesByName = {}
 
         self.lastUpdateTime = 0
 
@@ -30,15 +26,22 @@ class LeadLossModel:
     ## Input data ##
     ################
 
-    def loadInputData(self, inputFile, importSettings, rawHeaders, rawRows):
+    def loadInputData(self, inputFile, importSettings, rawHeaders, rawSpotData):
         self.headers = rawHeaders
-        self.rows = [Row(row, importSettings) for row in rawRows]
 
-        importHeaders = importSettings.getHeaders()
-        calculationHeaders = LeadLossCalculationSettings.getDefaultHeaders()
-        headers = importHeaders + calculationHeaders
+        spotsBySampleName = defaultdict(list)
+        for row in rawSpotData:
+            spot = Spot(row, importSettings)
+            spotsBySampleName[spot.sampleName].append(spot)
 
-        self.signals.inputDataLoaded.emit(inputFile, headers, self.rows)
+        self.samples = []
+        self.samplesByName = {}
+        for id, (sampleName, sampleRows) in enumerate(spotsBySampleName.items()):
+            sample = Sample(id, sampleName, sampleRows)
+            self.samples.append(sample)
+            self.samplesByName[sampleName] = sample
+
+        self.signals.inputDataLoaded.emit(inputFile, self.samples)
         self.signals.taskComplete.emit(True, "Successfully imported CSV file")
 
     def clearInputData(self):
@@ -47,46 +50,41 @@ class LeadLossModel:
         self.concordantRows = []
         self.discordantRows = []
 
-        self.pValuesByAge = {}
-        self.dValuesByAge = {}
-        self.reconstructedAges = {}
-
         self.signals.inputDataCleared.emit()
 
     #################
     ## Calculation ##
     #################
 
-    def resetCalculation(self):
-        self.optimalAge = None
-        self.pValuesByAge = {}
-        self.dValuesByAge = {}
-
-        for row in self.rows:
-            row.resetCalculatedCells()
-        self.signals.processingCleared.emit()
-
-        importSettings = Settings.get(SettingsType.IMPORT)
-        calculationSettings = Settings.get(SettingsType.CALCULATION)
-        headers = importSettings.getHeaders() + calculationSettings.getHeaders()
-        self.signals.headersUpdated.emit(headers)
-        self.signals.allRowsUpdated.emit(self.rows)
+    def clearCalculation(self):
+        for sample in self.samples:
+            sample.clearCalculation()
 
         self.lastUpdateTime = time.time()
 
     def getProcessingFunction(self):
-        return processing.process
+        return processing.processSamples
 
     def getProcessingData(self):
-        return self.rows
+        return [sample.createProcessingCopy() for sample in self.samples]
 
-    def updateConcordance(self, i, discordance, concordantAge):
-        row = self.rows[i]
-        row.setConcordantAge(discordance, concordantAge)
-        self.signals.rowUpdated.emit(i, row)
+    def updateConcordance(self, sampleName, concordantAges, discordances):
+        sample = self.samplesByName[sampleName]
+        sampleNumber = self.samples.index(sample)
+        sample.updateConcordance(concordantAges, discordances)
 
-    def updateRow(self, i, row):
-        self.rows[i] = row
+    def addMonteCarloRun(self, sampleName, run):
+        sample = self.samplesByName[sampleName]
+        sample.addMonteCarloRun(run)
+
+
+    def setOptimalAge(self, sampleName, args):
+        sample = self.samplesByName[sampleName]
+        sample.setOptimalAge(args)
+
+    #############
+    ## Getters ##
+    #############
 
     def addRimAgeStats(self, rimAge, discordantAges, dValue, pValue):
         self.dValuesByAge[rimAge] = dValue
@@ -98,13 +96,6 @@ class LeadLossModel:
         if now - self.lastUpdateTime > self.UPDATE_INTERVAL:
             self.signals.allStatisticsUpdated.emit(self.dValuesByAge)
             self.lastUpdateTime = now
-
-    def setOptimalAge(self, optimalAge):
-        self.optimalAge = optimalAge
-
-    #############
-    ## Getters ##
-    #############
 
     def getAgeRange(self):
         concordantAges = [row.concordantAge for row in self.rows if row.concordant]

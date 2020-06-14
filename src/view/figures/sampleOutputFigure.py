@@ -1,91 +1,43 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import *
-
-import matplotlib
-
 from model.settings.type import SettingsType
 from utils.settings import Settings
-from view.plots.concordiaPlot import ConcordiaPlot
-from view.plots.histogramPlot import HistogramPlot
-from view.plots.statisticPlot import StatisticPlot
+from view.axes.concordia.sampleMonteCarloConcordiaAxis import SampleMonteCarloConcordiaAxis
+from view.axes.heatmapAxis import HeatmapAxis
+from view.axes.histogramAxis import HistogramAxis
+from view.axes.statisticAxis import StatisticAxis
+from view.figures.abstractFigure import AbstractFigure
 
-matplotlib.use('QT5Agg')
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_qt5agg import FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+class SampleOutputFigure(AbstractFigure):
 
+    def __init__(self, controller, sample):
+        super().__init__()
 
-class LeadLossGraphPanel(QGroupBox):
+        self.sample = sample
 
-    def __init__(self, controller, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        settings = Settings.get(SettingsType.CALCULATION)
 
-        self.processingComplete = False
-        self.mouseOnStatisticsAxes = False
+        self.heatmapAxis = HeatmapAxis(self.fig.add_subplot(111), settings)
 
-        graphWidget = self.createGraph()
-        citationWidget = self._createCitation()
-        graphWidget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.fig.subplots_adjust(hspace=0.7, wspace=0.4)
 
-        layout = QVBoxLayout()
-        layout.addWidget(graphWidget)
-        layout.addWidget(citationWidget)
-        self.setLayout(layout)
+        self.fig.canvas.mpl_connect('motion_notify_event', self.onHover)
+        self.fig.canvas.mpl_connect('axes_enter_event', self.onMouseEnterAxes)
+        self.fig.canvas.mpl_connect('axes_leave_event', self.onMouseExitAxes)
 
-        self.controller = controller
-        signals = controller.signals
-
-        signals.inputDataLoaded.connect(self.onInputDataLoaded)
-        signals.inputDataCleared.connect(self.onInputDataCleared)
-
-        signals.processingCleared.connect(self.onProcessingCleared)
+        sample.signals.concordancyCalculated.connect(self._onSampleConcordancyCalculated)
+        sample.signals.monteCarloRunAdded.connect(self._onMonteCarloRunAdded)
+        """
+        #signals.processingCleared.connect(self.onProcessingCleared)
         signals.processingStarted.connect(self.onProcessingStarted)
 
-        signals.concordancyClassification.connect(self.onConcordancyClassification)
         signals.allStatisticsUpdated.connect(self.onNewStatistics)
         signals.optimalAgeFound.connect(self.onOptimalAgeFound)
 
         signals.ageSelected.connect(self.onAgeSelected)
         signals.ageDeselected.connect(self.onAgeDeselected)
+        """
 
-    def _createCitation(self):
-        label = QLabel(self._getCitationText())
-        label.setWordWrap(True)
-        label.setTextFormat(Qt.RichText)
-        label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        return label
-
-    def _getCitationText(self):
-        return "Hugo K.H. Olierook, Christopher L. Kirkland, ???, " \
-               "Matthew L. Daggitt, ??? " \
-               "<b>PAPER TITLE</b>, 2020"
-
-    def createGraph(self):
-        fig = plt.figure()
-
-        self.concordiaPlot = ConcordiaPlot(plt.subplot(211))
-        self.statisticPlot = StatisticPlot(plt.subplot(223))
-        self.histogramPlot = HistogramPlot(plt.subplot(224))
-
-        plt.subplots_adjust(hspace = 0.7, wspace=0.4)
-
-        self.canvas = FigureCanvas(fig)
-        self.canvas.setFocusPolicy(Qt.ClickFocus)
-        self.canvas.setFocus()
-        toolbar = NavigationToolbar(self.canvas, self)
-
-        layout = QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(self.canvas)
-        layout.addWidget(toolbar)
-
-        fig.canvas.mpl_connect('motion_notify_event', self.onHover)
-        fig.canvas.mpl_connect('axes_enter_event', self.onMouseEnterAxes)
-        fig.canvas.mpl_connect('axes_leave_event', self.onMouseExitAxes)
-
-        widget = QWidget()
-        widget.setLayout(layout)
-        return widget
+        self.processingComplete = False
+        self.mouseOnStatisticsAxes = False
 
     def clearAgeSelected(self):
         self.statisticPlot.clearSelectedAge()
@@ -104,28 +56,16 @@ class LeadLossGraphPanel(QGroupBox):
         self.clearProcessingResults()
         self.concordiaPlot.clearInputData()
 
-    #######################
-    ## Input data events ##
-    #######################
-
-    def onInputDataLoaded(self, inputFile, headers, rows):
-        self.concordiaPlot.plotInputData(rows)
-        self.canvas.draw()
-
-    def onInputDataCleared(self):
-        self.clearInputData()
-        self.canvas.draw()
-
     ########################
     ## Processing events ##
     ########################
 
     def onProcessingStarted(self):
         calculationSettings = Settings.get(SettingsType.CALCULATION)
-        xmin = calculationSettings.minimumRimAge/(10**6)
-        xmax = calculationSettings.maximumRimAge/(10**6)
-        buffer = (xmax - xmin)*0.05
-        self.statisticPlot.setXLimits(xmin-buffer, xmax+buffer)
+        xmin = calculationSettings.minimumRimAge / (10 ** 6)
+        xmax = calculationSettings.maximumRimAge / (10 ** 6)
+        buffer = (xmax - xmin) * 0.05
+        self.statisticPlot.setXLimits(xmin - buffer, xmax + buffer)
 
     def onProcessingCleared(self):
         self.clearProcessingResults()
@@ -135,11 +75,14 @@ class LeadLossGraphPanel(QGroupBox):
     ## Processing data events ##
     ############################
 
-    def onConcordancyClassification(self, rows):
-        self.concordiaPlot.plotInputData(rows)
+    def _onSampleConcordancyCalculated(self):
+        pass
+        """
+        self.concordiaPlot.plotSample(sample)
         concordantAges = [row.concordantAge for row in rows if row.concordant]
         self.histogramPlot.plotConcordantDistribution(concordantAges)
         self.canvas.draw()
+        """
 
     def onNewStatistics(self, statisticsByAge):
         self.statisticPlot.plotStatisticData(statisticsByAge)
@@ -197,6 +140,11 @@ class LeadLossGraphPanel(QGroupBox):
             return
 
         x, y = self.statisticPlot.axis.transData.inverted().transform([(event.x, event.y)]).ravel()
-        chosenAge = x * (10**6)
+        chosenAge = x * (10 ** 6)
 
         self.controller.selectAgeToCompare(chosenAge)
+
+    def _onMonteCarloRunAdded(self):
+        if len(self.sample.monteCarloRuns) == Settings.get(SettingsType.CALCULATION).monteCarloRuns:
+            self.heatmapAxis.plotRuns(self.sample.monteCarloRuns)
+            self.canvas.draw()

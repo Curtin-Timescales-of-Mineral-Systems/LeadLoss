@@ -5,12 +5,6 @@ from process import calculations
 
 class EllipseTests(unittest.TestCase):
 
-    """
-    def testEllipseAxes(self):
-        self.assertEqual(geom.ellipseAxes(0,1,0,1,1), (0,0))
-    """
-
-
     def testXDimExamples(self):
         self.assertTrue(calculations.isConcordantErrorEllipse(
             uPbValue=0.8,

@@ -12,6 +12,7 @@ class LeadLossImportSettings:
     @staticmethod
     def getImportedColumnNames():
         return [
+            Column.SAMPLE_NAME,
             Column.U_PB_VALUE,
             Column.U_PB_ERROR,
             Column.PB_PB_VALUE,
@@ -30,7 +31,8 @@ class LeadLossImportSettings:
         self.pbPbErrorType = "Absolute"
         self.pbPbErrorSigmas = 2
 
-        self.discordanceThreshold = 0.1
+        self.multipleSamples = True
+        self.sampleNameColumn = 0
 
     def getUPbErrorStr(self):
         return stringUtils.get_error_str(self.uPbErrorSigmas, self.uPbErrorType)
@@ -47,13 +49,16 @@ class LeadLossImportSettings:
         ]
 
     def getDisplayColumns(self):
-        numbers = list(self._columnRefs.values())
+        numbers = [v for k,v in self._columnRefs.items() if not (k == Column.SAMPLE_NAME and not self.multipleSamples)]
         numbers.sort()
         return numbers
 
+    def getColumn(self, column):
+        return csvUtils.columnLettersToNumber(self._columnRefs[column], zeroIndexed=True)
+
     def getDisplayColumnsWithRefs(self):
         numbers = [(col, csvUtils.columnLettersToNumber(colRef, zeroIndexed=True)) for col, colRef in
-                   self._columnRefs.items()]
+                   self._columnRefs.items() if col != Column.SAMPLE_NAME]
         numbers.sort(key=lambda v: v[0].value)
         return numbers
 
@@ -64,8 +69,17 @@ class LeadLossImportSettings:
         if not all([v is not None for v in self._columnRefs.values()]):
             return "Must enter a value for each column"
 
-        displayColumns = self.getDisplayColumns()
-        if len(set(displayColumns)) != len(displayColumns):
-            return "Columns should not contain duplicates"
+        columnsByRef = set()
+        for col in self.getDisplayColumns():
+            if col not in columnsByRef:
+                columnsByRef.add(col)
+                continue
+
+            if self.columnReferenceType == ColumnReferenceType.LETTERS:
+                col = csvUtils.columnNumberToLetters(col, zeroIndexed=True)
+            else:
+                col = str(col+1)
+
+            return "Column " + col + " is used more than once"
 
         return None

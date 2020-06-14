@@ -1,148 +1,213 @@
+import math
 from enum import Enum
 
 from scipy.stats import stats
+import numpy as np
 
-from model.column import Column
+from model.monteCarloRun import MonteCarloRun
 from src.model.settings.calculation import DiscordanceClassificationMethod
-from utils import errorUtils
 from process import calculations
 import time
 
 TIME_PER_TASK = 0.0
 
+
 class ProgressType(Enum):
     CONCORDANCE = 0,
-    ERRORS = 1,
-    SAMPLING = 2
+    SAMPLING = 1,
+    OPTIMAL = 2,
 
 
-def process(signals, rows, importSettings, calculationSettings):
-    completed = _calculateErrors(signals, rows)
+def processSamples(signals, samples):
+    for sample in samples:
+        completed = _processSample(signals, sample)
+        if not completed:
+            return
+
+    signals.completed()
+
+def _processSample(signals, sample):
+    completed = _calculateConcordantAges(signals, sample)
     if not completed:
-        return
+        return False
 
-    completed = _calculateConcordantAges(signals, rows, importSettings, calculationSettings)
+    completed = _performRimAgeSampling(signals, sample)
     if not completed:
-        return
+        return False
 
-    completed, bestAge = _performRimAgeSampling(signals, rows, calculationSettings)
+    completed = _calculateOptimalAge(signals, sample)
     if not completed:
-        return
-
-    signals.completed(bestAge)
-
-
-def _calculateErrors(signals, rows):
-    timePerRow = TIME_PER_TASK/len(rows)
-    for i, row in enumerate(rows):
-        time.sleep(timePerRow)
-        if signals.halt():
-            signals.cancelled()
-            return False
-
-        uPb = row.importedCellsByCol[Column.U_PB_VALUE].value
-        uPbError = row.importedCellsByCol[Column.U_PB_ERROR].value
-        pbPb = row.importedCellsByCol[Column.PB_PB_VALUE].value
-        pbPbError = row.importedCellsByCol[Column.PB_PB_ERROR].value
-
-        # This is the super expensive operation
-        row.uPb = errorUtils.ufloat(uPb, uPbError)
-        row.pbPb = errorUtils.ufloat(pbPb, pbPbError)
-
-        progress = (i + 1) / len(rows)
-        signals.progress(ProgressType.ERRORS, progress, i)
+        return False
 
     return True
 
+def _calculateConcordantAges(signals, sample):
+    sampleNameText = " for '" + sample.name + "'" if sample.name else ""
+    signals.newTask("Classifying points" + sampleNameText + "...")
 
-def _calculateConcordantAges(signals, rows, importSettings, calculationSettings):
-    timePerRow = TIME_PER_TASK/len(rows)
-    for i, row in enumerate(rows):
+    settings = sample.calculationSettings
+    timePerRow = TIME_PER_TASK / len(sample.validSpots)
+    concordantAges = []
+    discordances = []
+    for i, spot in enumerate(sample.validSpots):
+        signals.progress(ProgressType.CONCORDANCE, i / len(sample.validSpots))
+
         time.sleep(timePerRow)
         if signals.halt():
             signals.cancelled()
             return False
 
-        if calculationSettings.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
-            discordance = calculations.discordance(row.uPbValue(), row.pbPbValue())
-            row.concordant = discordance < calculationSettings.discordancePercentageCutoff
+        if settings.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
+            discordance = calculations.discordance(spot.uPbValue, spot.pbPbValue)
+            concordant = discordance < settings.discordancePercentageCutoff
         else:
             discordance = None
-            row.concordant = calculations.isConcordantErrorEllipse(
-                row.uPbValue(),
-                row.uPbStDev(importSettings),
-                row.pbPbValue(),
-                row.pbPbStDev(importSettings),
-                calculationSettings.discordanceEllipseSigmas
+            concordant = calculations.isConcordantErrorEllipse(
+                spot.uPbValue,
+                spot.uPbStDev,
+                spot.pbPbValue,
+                spot.pbPbStDev,
+                settings.discordanceEllipseSigmas
             )
 
-        row.concordantAge = calculations.concordant_age(row.uPbValue(), row.pbPbValue()) if row.concordant else None
-        signals.progress(ProgressType.CONCORDANCE, (i+1)/len(rows), i, row.concordantAge, discordance)
+        if concordant:
+            concordantAge = calculations.concordant_age(spot.uPbValue, spot.pbPbValue)
+        else:
+            concordantAge = None
+
+        discordances.append(discordance)
+        concordantAges.append(concordantAge)
+
+    sample.updateConcordance(concordantAges, discordances)
+    signals.progress(ProgressType.CONCORDANCE, 1.0, sample.name, concordantAges, discordances)
 
     return True
 
 
-def _performRimAgeSampling(signals, rows, calculationSettings):
+def _performRimAgeSampling(signals, sample):
+    sampleNameText = " for '" + sample.name + "'" if sample.name else ""
+    signals.newTask("Sampling Pb-loss age distributions" + sampleNameText + "...")
     # Actually compute the age distributions and statistics
-    minAge = calculationSettings.minimumRimAge  # 500 * (10 ** 6)
-    maxAge = calculationSettings.maximumRimAge  # 5000 * (10 ** 6)
-    samples = calculationSettings.rimAgesSampled
-    timePerSample = TIME_PER_TASK/samples
+    settings = sample.calculationSettings
+    dissimilarityTest = settings.dissimilarityTest
 
-    concordantAges = [row.concordantAge for row in rows if row.concordant]
+    # Get the concordant samples
+    concordantAges = [spot.concordantAge for spot in sample.validSpots if spot.concordant]
+    discordantSpots = [spot for spot in sample.validSpots if not spot.concordant]
 
-    results = []
-    for i in range(samples):
-        time.sleep(timePerSample)
-        rimAge = minAge + i * ((maxAge - minAge) / (samples - 1))
-        rimUPb = calculations.u238pb206_from_age(rimAge)
-        rimPbPb = calculations.pb207pb206_from_age(rimAge)
+    # Generate the discordant samples
+    stabilitySamples = settings.monteCarloRuns
+    discordantUPbValues = np.transpose(
+        [np.random.normal(row.uPbValue, row.uPbStDev, stabilitySamples) for row in discordantSpots])
+    discordantPbPbValues = np.transpose(
+        [np.random.normal(row.pbPbValue, row.pbPbStDev, stabilitySamples) for row in discordantSpots])
 
-        allReconstructedAges = []
-        reconstructedAges = []
-        for j, row in enumerate(rows):
+    # Generate the lead loss age samples
+    leadLossAgeSamples = settings.rimAgesSampled
+    leadLossAges = settings.rimAges()
+    leadLossUPbValues = [calculations.u238pb206_from_age(age) for age in leadLossAges]
+    leadLossPbPbValues = [calculations.pb207pb206_from_age(age) for age in leadLossAges]
+
+    for j in range(stabilitySamples):
+
+        runDiscordantUPbValues = discordantUPbValues[j]
+        runDiscordantPbPbValues = discordantPbPbValues[j]
+        runStatistics = []
+        runReconstructedAgesByLeadLossAge = {}
+        for i in range(leadLossAgeSamples):
             if signals.halt():
                 signals.cancelled()
-                return False, None
+                return False
 
-            if row.concordant:
-                allReconstructedAges.append(None)
-            else:
-                reconstructedAge = calculations.discordant_age(rimUPb, rimPbPb, row.uPb, row.pbPb, 1)
-                allReconstructedAges.append(reconstructedAge)
+            leadLossAge = leadLossAges[i]
+            leadLossUPb = leadLossUPbValues[i]
+            leadLossPbPb = leadLossPbPbValues[i]
 
-                if reconstructedAge is None:
-                    reconstructedAges.append(0.0)
-                else:
-                    reconstructedAges.append(reconstructedAge.values[0])
+            reconstructedAges = []
+            for k, spot in enumerate(discordantSpots):
+                discordantUPb = runDiscordantUPbValues[k]
+                discordantPbPb = runDiscordantPbPbValues[k]
+                reconstructedAge = calculations.discordant_age(leadLossUPb, leadLossPbPb, discordantUPb, discordantPbPb)
+                reconstructedAges.append(reconstructedAge)
 
-        dValue, pValue = _calculateStatistics(concordantAges, reconstructedAges)
-        results.append((rimAge, dValue, pValue))
+            runReconstructedAgesByLeadLossAge[leadLossAge] = reconstructedAges
+            runStatistics.append(_calculateStatistics(concordantAges, reconstructedAges))
 
-        progress = (i + 1) / samples
-        signals.progress(ProgressType.SAMPLING, progress, i, rimAge, allReconstructedAges, dValue, pValue)
+        optimalLeadLossAgeIndex = _findOptimalAgeIndex(dissimilarityTest, runStatistics)
+        optimalLeadLossAge = leadLossAges[optimalLeadLossAgeIndex]
+        runStatisticsByLeadLossAge = {age: stat for age, stat in zip(leadLossAges, runStatistics)}
 
-    bestAge = _findOptimalAge(results)
-    return True, bestAge
+        run = MonteCarloRun(concordantAges,
+                            runDiscordantUPbValues,
+                            runDiscordantPbPbValues,
+                            leadLossAges,
+                            runReconstructedAgesByLeadLossAge,
+                            runStatisticsByLeadLossAge,
+                            optimalLeadLossAge)
 
+        sample.addMonteCarloRun(run)
+
+        progress = (j + 1) / stabilitySamples
+        signals.progress(ProgressType.SAMPLING, progress, sample.name, run)
+    return True
 
 def _calculateStatistics(concordantAges, reconstructedAges):
     if not reconstructedAges or not concordantAges:
         return 0
-    dValue, pValue = stats.ks_2samp(concordantAges, reconstructedAges)
-    return dValue, pValue
 
-def _findOptimalAge(results):
-    minIndex, minArgs = min(enumerate(results), key=lambda v:v[1][1])
+    distribution1 = [age if age else 0 for age in concordantAges]
+    distribution2 = [age if age else 0 for age in reconstructedAges]
+    return stats.ks_2samp(distribution1, distribution2)
+
+
+def _findOptimalAgeIndex(dissimilarityTest, runStatistics):
+    valuesToCompare = [dissimilarityTest.getComparisonValue(s) for s in runStatistics]
+    minIndex, minValue = min(enumerate(valuesToCompare), key=lambda v: v[1])
+    n = len(valuesToCompare)
 
     startMinIndex = minIndex
-    while startMinIndex > 0 and results[startMinIndex-1][1] == minArgs[1]:
-        startMinIndex -=1
+    while startMinIndex > 0 and valuesToCompare[startMinIndex - 1] == minValue:
+        startMinIndex -= 1
 
     endMinIndex = minIndex
-    while endMinIndex < len(results) - 1 and results[endMinIndex+1][1] == minArgs[1]:
+    while endMinIndex < n - 1 and valuesToCompare[endMinIndex + 1] == minValue:
         endMinIndex += 1
 
-    middleMinIndex = (endMinIndex + startMinIndex) // 2
-    print(startMinIndex, middleMinIndex, endMinIndex)
-    return results[middleMinIndex][0]
+    if  (endMinIndex != n - 1 and startMinIndex != 0) or \
+        (endMinIndex == n - 1 and startMinIndex == 0):
+        return (endMinIndex + startMinIndex) // 2
+
+    if startMinIndex == 0:
+        return 0
+
+    return n - 1
+
+def _calculateOptimalAge(signals, sample):
+    settings = sample.calculationSettings
+
+    # Find optimal age
+    optimalStatistic = float('inf')
+    optimalAge = None
+    for age in settings.rimAges():
+        value = np.mean([run.statistics_by_pb_loss_age[age][0] for run in sample.monteCarloRuns])
+        if value <= optimalStatistic:
+            optimalAge = age
+            optimalStatistic = value
+
+    # Find 95% confidence interval around optimal age
+    optimalAges = [run.optimal_pb_loss_age for run in sample.monteCarloRuns]
+    optimalAges.sort()
+    n = len(optimalAges)
+    cutoff2p5 = int(math.floor(0.025*n))
+    cutoff97p5 = int(math.ceil(0.975*n)) - 1
+    optimalAgeLowerBound = optimalAges[cutoff2p5]
+    optimalAgeUpperBound = optimalAges[cutoff97p5]
+
+    # Find mean D-value and p-value for optimal age
+    optimalMeanDValue = np.mean([run.statistics_by_pb_loss_age[optimalAge][0] for run in sample.monteCarloRuns])
+    optimalMeanPValue = np.mean([run.statistics_by_pb_loss_age[optimalAge][1] for run in sample.monteCarloRuns])
+
+    # Return results
+    args = optimalAge, optimalAgeLowerBound, optimalAgeUpperBound, optimalMeanDValue, optimalMeanPValue
+    signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, args)
+    return True

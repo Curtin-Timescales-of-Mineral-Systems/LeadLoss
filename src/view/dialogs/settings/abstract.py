@@ -6,8 +6,8 @@ from utils.ui import uiUtils
 
 class AbstractSettingsDialog(QDialog):
 
-    def __init__(self, defaultSettings, *args, **kwargs):
-        super(QDialog, self).__init__(*args, **kwargs)
+    def __init__(self, defaultSettings):
+        super().__init__()
         self.__aligned_form_layouts = []
         self.setModal(True)
         self.defaultSettings = defaultSettings
@@ -17,6 +17,7 @@ class AbstractSettingsDialog(QDialog):
 
     def initUI(self):
         self.layout = QVBoxLayout()
+        self.layout.setSizeConstraint(QLayout.SetFixedSize)
         self.layout.addWidget(self.initMainSettings())
         self.layout.addWidget(self.initErrorAndWarningLabels())
         self.layout.addWidget(self.initButtons())
@@ -58,9 +59,9 @@ class AbstractSettingsDialog(QDialog):
         layout.addWidget(self.errorLabel)
         layout.addWidget(self.warningLabel)
 
-        widget = QWidget()
-        widget.setLayout(layout)
-        return widget
+        self.messageWidget = QWidget()
+        self.messageWidget.setLayout(layout)
+        return self.messageWidget
 
     def _registerFormLayoutForAlignment(self, formLayout):
         self.__aligned_form_layouts.append(formLayout)
@@ -91,6 +92,7 @@ class AbstractSettingsDialog(QDialog):
         warning = self.getWarning(settings)
 
         self.okButton.setEnabled(error is None)
+        self.messageWidget.setVisible(error is not None or warning is not None)
         self.errorLabel.setVisible(error is not None)
         self.warningLabel.setVisible(error is None and warning is not None)
         if error is not None:
@@ -98,6 +100,7 @@ class AbstractSettingsDialog(QDialog):
         elif warning is not None:
             self.warningLabel.setText(warning)
         self.settings = settings
+
         self.updateGeometry()
 
     def createLabelWithHelp(self, labelText, helpText):

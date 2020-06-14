@@ -1,9 +1,6 @@
-import os
-from pathlib import Path
-
+from PyQt5.QtCore import *
 from PyQt5.QtGui import QPixmap, QDesktopServices, QCursor
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
 
 from utils import resourceUtils
 from utils.ui import uiUtils

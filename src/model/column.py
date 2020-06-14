@@ -2,7 +2,8 @@ from enum import Enum
 
 
 class Column(Enum):
-    U_PB_VALUE = 0
-    U_PB_ERROR = 1
-    PB_PB_VALUE = 2
-    PB_PB_ERROR = 3
+    SAMPLE_NAME = 0
+    U_PB_VALUE = 1
+    U_PB_ERROR = 2
+    PB_PB_VALUE = 3
+    PB_PB_ERROR = 4

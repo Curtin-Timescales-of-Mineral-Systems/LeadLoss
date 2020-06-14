@@ -7,7 +7,7 @@ from process import calculations
 def generate():
     print("U238/Pb206, error, Pb207/Pb206, error")
     points = 20
-    rimAge = 1000*(10**6)
+    rimAge = 1500*(10**6)
     rimUPb = calculations.u238pb206_from_age(rimAge)
     rimPbPb = calculations.pb207pb206_from_age(rimAge)
 

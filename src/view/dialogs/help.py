@@ -11,6 +11,9 @@ class LeadLossHelpDialog(QDialog):
         super().__init__()
         self.setWindowTitle(self.getTitle() + " help")
 
+        introductionLabel = QLabel(self._getIntroductionHelp())
+        introductionLabel.title = "Introduction"
+
         inputsLabel = QLabel(self.getInputsHelpText())
         inputsLabel.title = "Inputs"
 
@@ -21,7 +24,7 @@ class LeadLossHelpDialog(QDialog):
         outputsLabel.title = "Outputs"
 
         tabWidget = QTabWidget()
-        for label in [inputsLabel, processingLabel, outputsLabel]:
+        for label in [introductionLabel, inputsLabel, processingLabel, outputsLabel]:
             label.setTextFormat(Qt.RichText)
             label.setWordWrap(True)
             layout = QVBoxLayout()
@@ -34,6 +37,11 @@ class LeadLossHelpDialog(QDialog):
         layout.addWidget(tabWidget)
 
         self.setLayout(layout)
+
+    def _getIntroductionHelp(self):
+        return "Hugo K.H. Olierook, Christopher L. Kirkland, ???, " \
+               "Matthew L. Daggitt, ??? " \
+               "<b>PAPER TITLE</b>, 2020"
 
     def _getStandardInputHelp(self):
         return \

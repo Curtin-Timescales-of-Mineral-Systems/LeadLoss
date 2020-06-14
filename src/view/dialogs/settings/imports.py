@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QGridLayout, QWidget, QGroupBox, QLineEdit, QCheckBox, QFormLayout
+from PyQt5.QtWidgets import QGridLayout, QWidget, QGroupBox, QLineEdit, QCheckBox, QFormLayout, QLabel
 
 from model.column import Column
 from utils import stringUtils
@@ -9,13 +9,13 @@ from utils.ui import uiUtils
 from utils.ui.columnReferenceInput import ColumnReferenceInput
 from utils.ui.columnReferenceTypeInput import ColumnReferenceTypeInput
 from utils.ui.errorTypeInput import ErrorTypeInput
-from view.settingsDialogs.abstract import AbstractSettingsDialog
+from view.dialogs.settings.abstract import AbstractSettingsDialog
 
 
 class LeadLossImportSettingsDialog(AbstractSettingsDialog):
 
-    def __init__(self, defaultSettings, *args, **kwargs):
-        super().__init__(defaultSettings, *args, **kwargs)
+    def __init__(self, defaultSettings):
+        super().__init__(defaultSettings)
         self.setWindowTitle("CSV import settings")
 
     def _onColumnRefChange(self, button):
@@ -32,7 +32,7 @@ class LeadLossImportSettingsDialog(AbstractSettingsDialog):
         columnRefs = defaults.getDisplayColumnsByRefs()
 
         self._generalSettingsWidget = GeneralSettingsWidget(self._validate, defaults)
-        self._generalSettingsWidget.columnRefChanged.connect(self._onColumnRefChange)
+        self._sampleSettingsWidget = SampleSettingsWidget(self._validate, defaults)
 
         self._uPbWidget = ImportedValueErrorWidget(
             stringUtils.getUPbStr(True),
@@ -54,14 +54,16 @@ class LeadLossImportSettingsDialog(AbstractSettingsDialog):
             defaults.pbPbErrorSigmas
         )
 
+        self._generalSettingsWidget.columnRefChanged.connect(self._onColumnRefChange)
         self._updateColumnRefs(defaults.columnReferenceType)
 
         layout = QGridLayout()
         layout.setHorizontalSpacing(15)
         layout.setVerticalSpacing(15)
         layout.addWidget(self._generalSettingsWidget, 0, 0)
+        layout.addWidget(self._sampleSettingsWidget, 0, 1)
         layout.addWidget(self._uPbWidget, 1, 0)
-        layout.addWidget(self._pbPbWidget, 2, 0)
+        layout.addWidget(self._pbPbWidget, 1, 1)
 
         widget = QWidget()
         widget.setLayout(layout)
@@ -74,6 +76,7 @@ class LeadLossImportSettingsDialog(AbstractSettingsDialog):
     def _updateColumnRefs(self, newRefType):
         self._uPbWidget.changeColumnReferenceType(newRefType)
         self._pbPbWidget.changeColumnReferenceType(newRefType)
+        self._sampleSettingsWidget.changeColumnReferenceType(newRefType)
 
     def _createSettings(self):
         settings = LeadLossImportSettings()
@@ -81,7 +84,10 @@ class LeadLossImportSettingsDialog(AbstractSettingsDialog):
         settings.hasHeaders = self._generalSettingsWidget.getHasHeaders()
         settings.columnReferenceType = self._generalSettingsWidget.getColumnReferenceType()
 
+        settings.multipleSamples = self._sampleSettingsWidget.getMultipleSamples()
+
         settings._columnRefs = {
+            Column.SAMPLE_NAME: self._sampleSettingsWidget.getSampleColumn(),
             Column.U_PB_VALUE: self._uPbWidget.getValueColumn(),
             Column.U_PB_ERROR: self._uPbWidget.getErrorColumn(),
             Column.PB_PB_VALUE: self._pbPbWidget.getValueColumn(),
@@ -130,6 +136,44 @@ class GeneralSettingsWidget(QGroupBox):
 
     def getColumnReferenceType(self):
         return self._columnRefType.selection()
+
+
+class SampleSettingsWidget(QGroupBox):
+
+    def __init__(self, validation, defaultSettings):
+        super().__init__("Sample settings")
+
+        self._multipleSamplesCB = QCheckBox()
+        self._multipleSamplesCB.setChecked(defaultSettings.multipleSamples)
+        self._multipleSamplesCB.stateChanged.connect(validation)
+        self._multipleSamplesCB.stateChanged.connect(self._onMultipleSamplesChanged)
+
+        self._sampleColumnLabel = QLabel("Sample name column")
+        self._sampleColumnLabel.setVisible(defaultSettings.multipleSamples)
+        uiUtils.retainSizeWhenHidden(self._sampleColumnLabel)
+
+        self._sampleColumn = ColumnReferenceInput(validation, defaultSettings.columnReferenceType,
+                                                  defaultSettings.sampleNameColumn)
+        self._sampleColumn.setVisible(defaultSettings.multipleSamples)
+
+        layout = QFormLayout()
+        layout.setHorizontalSpacing(uiUtils.FORM_HORIZONTAL_SPACING)
+        layout.addRow("Multiple samples", self._multipleSamplesCB)
+        layout.addRow(self._sampleColumnLabel, self._sampleColumn)
+        self.setLayout(layout)
+
+    def getMultipleSamples(self):
+        return self._multipleSamplesCB.isChecked()
+
+    def getSampleColumn(self):
+        return self._sampleColumn.text()
+
+    def changeColumnReferenceType(self, newReferenceType):
+        self._sampleColumn.changeColumnReferenceType(newReferenceType)
+
+    def _onMultipleSamplesChanged(self):
+        self._sampleColumnLabel.setVisible(self._multipleSamplesCB.isChecked())
+        self._sampleColumn.setVisible(self._multipleSamplesCB.isChecked())
 
 # A widget for importing an (value, error) pair
 class ImportedValueErrorWidget(QGroupBox):

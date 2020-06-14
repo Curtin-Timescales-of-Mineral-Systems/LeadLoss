@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QLineEdit, QWidget, QLabel, QHBoxLayout
 
-from utils import stringUtils
+from utils import stringUtils, config
 
 
 class NumericInput(QWidget):
@@ -11,9 +11,7 @@ class NumericInput(QWidget):
         self.parseFn = parseFn if parseFn is not None else (lambda x: x)
         self.stringifyFn = stringifyFn if stringifyFn is not None else str
 
-        self.lineEdit = QLineEdit(self.stringifyFn(defaultValue))
-        if validation:
-            self.lineEdit.textChanged.connect(validation)
+        self.lineEdit = QLineEdit()
 
         layout = QHBoxLayout()
         layout.addWidget(self.lineEdit)
@@ -22,12 +20,23 @@ class NumericInput(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
 
         self.setLayout(layout)
+        self.setValue(defaultValue)
+
+        if validation:
+            self.lineEdit.textChanged.connect(validation)
 
     def value(self):
-        return self.parseFn(self.lineEdit.text())
+        text = self.lineEdit.text()
+        if text == "":
+            return None
+        return self.parseFn(text)
 
     def setValue(self, value):
-        self.lineEdit.setText(self.stringifyFn(value))
+        if value is None:
+            text = ""
+        else:
+            text = self.stringifyFn(value)
+        self.lineEdit.setText(text)
 
     def setReadOnly(self, readOnly):
         self.lineEdit.setReadOnly(readOnly)
@@ -40,14 +49,14 @@ class IntInput(NumericInput):
 class FloatInput(NumericInput):
     def __init__(self, defaultValue=0.0, validation=None, unit=None, parseFn=float, stringifyFn=str, sf=None):
         if sf is not None:
-            newStringifyFn = lambda x : stringUtils.round_to_sf(x)
+            newStringifyFn = lambda x : str(stringUtils.round_to_sf(x))
         else:
             newStringifyFn = stringifyFn
-        super().__init__(defaultValue, validation, unit, parseFn=parseFn, stringifyFn=stringifyFn)
+        super().__init__(defaultValue, validation, unit, parseFn=parseFn, stringifyFn=newStringifyFn)
 
 
 class AgeInput(FloatInput):
-    def __init__(self, defaultValue=0.0, validation=None, sf=None):
+    def __init__(self, defaultValue=0.0, validation=None, sf=config.DISPLAY_SF):
         def parseFn(x):
             if x is "":
                 return None

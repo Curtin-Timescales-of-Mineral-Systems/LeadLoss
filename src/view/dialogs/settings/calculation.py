@@ -6,17 +6,16 @@ from src.model.settings.calculation import DiscordanceClassificationMethod
 from utils import stringUtils
 from model.settings.calculation import LeadLossCalculationSettings
 from utils.ui.numericInput import PercentageInput, AgeInput, IntInput
-from utils.ui.radioButtons import RadioButtons, IntRadioButtonGroup, EnumRadioButtonGroup
-from view.settingsDialogs.abstract import AbstractSettingsDialog
+from utils.ui.radioButtons import IntRadioButtonGroup, EnumRadioButtonGroup
+from view.dialogs.settings.abstract import AbstractSettingsDialog
 
 
 class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
     KEY = SettingsType.CALCULATION
 
-    def __init__(self, defaultSettings, rows, *args, **kwargs):
-        self.pointWithNoErrors = any(row.uPbError() == 0.0 and row.pbPbError() == 0.0 for row in rows)
-
+    def __init__(self, samples, defaultSettings, *args, **kwargs):
+        self.pointWithNoErrors = any(spot.uPbError == 0.0 and spot.pbPbError == 0.0 for sample in samples for spot in sample.validSpots)
         super().__init__(defaultSettings, *args, **kwargs)
         self.setWindowTitle("Calculation settings")
         self._onDiscordanceTypeChanged()
@@ -27,6 +26,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         layout.addWidget(self._initDiscordanceSettings())
         layout.addWidget(self._initSamplingSettings())
         layout.addWidget(self._initDistributionComparisonSettings())
+        layout.addWidget(self._initMonteCarloSettings())
 
         widget = QWidget()
         widget.setLayout(layout)
@@ -88,6 +88,19 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         box.setLayout(layout)
         return box
 
+    def _initMonteCarloSettings(self):
+        defaults = self.defaultSettings
+
+        self.monteCarloRunsInput = IntInput(defaults.monteCarloRuns, self._validate)
+
+        layout = QFormLayout()
+        layout.addRow("Runs", self.monteCarloRunsInput)
+        self._registerFormLayoutForAlignment(layout)
+
+        box = QGroupBox("Monte Carlo sampling")
+        box.setLayout(layout)
+        return box
+
     ############
     ## Events ##
     ############
@@ -124,5 +137,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         settings.rimAgesSampled = self.rimAgesSampledInput.value()
 
         settings.dissimilarityTestRB = self.dissimilarityTestRB.selection()
+
+        settings.monteCarloRuns = self.monteCarloRunsInput.value()
 
         return settings

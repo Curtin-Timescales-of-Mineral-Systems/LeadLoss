@@ -1,8 +1,8 @@
 from enum import Enum
+import numpy as np
 
 from process.dissimilarityTests import DissimilarityTest
 from model.settings.type import SettingsType
-
 
 class DiscordanceClassificationMethod(Enum):
     PERCENTAGE="Percentage"
@@ -24,8 +24,12 @@ class LeadLossCalculationSettings:
         self.maximumRimAge = 4500*(10**6)
         self.rimAgesSampled = 100
 
+        self.monteCarloRuns = 50
+
         self.dissimilarityTest = DissimilarityTest.KOLMOGOROV_SMIRNOV
 
+    def rimAges(self):
+        return np.linspace(start=self.minimumRimAge, stop=self.maximumRimAge, num=self.rimAgesSampled)
 
     def validate(self):
         if self.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
@@ -38,15 +42,10 @@ class LeadLossCalculationSettings:
         if self.rimAgesSampled < 2:
             return "The number of samples must be >= 2"
 
-        return None
+        if self.monteCarloRuns < 1:
+            return "The number of Monte Carlo runs must be >= 1"
 
-    def getHeaders(self):
-        headers = []
-        headers.append("Concordant")
-        if self.discordanceClassificationMethod.value == DiscordanceClassificationMethod.PERCENTAGE.value:
-            headers.append("Discordance (%)")
-        headers.append("Age (Ma)")
-        return headers
+        return None
 
     @staticmethod
     def getDefaultHeaders():

@@ -1,24 +1,20 @@
 from PyQt5.QtCore import pyqtSignal, QObject
 
-from model.row import Row
+from model.sample import Sample
 
 
 class Signals(QObject):
-    inputDataLoaded = pyqtSignal(str, list, list)  # Input file, headers, rows
+    inputDataLoaded = pyqtSignal(str, list)  # Input file, samples
     inputDataCleared = pyqtSignal()
-
-    headersUpdated = pyqtSignal(list)  # Headers
-    rowUpdated = pyqtSignal([int, Row])  # Row index, row
-    allRowsUpdated = pyqtSignal(list)  # Rows
 
     taskStarted = pyqtSignal(str)  # Task description
     taskProgress = pyqtSignal(float)  # Progress (0.0 - 1.0)
     taskComplete = pyqtSignal([bool, str])  # Success, success description
 
-    processingCleared = pyqtSignal()
+    allProcessingCleared = pyqtSignal()
     processingStarted = pyqtSignal()
+    processingFinished = pyqtSignal()
 
-    concordancyClassification = pyqtSignal(list) # rows
     statisticUpdated = pyqtSignal(int, float, float) # rowNumber, pValue, dValue
     allStatisticsUpdated = pyqtSignal(dict)
     optimalAgeFound = pyqtSignal(float, float, float, list, tuple) # age, pValue, dValue, reconstructedAges, maximumRangeOfReconstructedAges
@@ -27,6 +23,7 @@ class Signals(QObject):
 
 
 class ProcessingSignals(QObject):
+    processingNewTask = pyqtSignal(object)
     processingProgress = pyqtSignal(object)
     processingCompleted = pyqtSignal(object)
     processingCancelled = pyqtSignal()

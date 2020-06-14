@@ -6,6 +6,7 @@ from PyQt5.QtCore import pyqtSignal, QThread
 
 
 class SignalType(Enum):
+    NEW_TASK = 1,
     PROGRESS = 2,
     COMPLETED = 3,
     CANCELLED = 4,
@@ -19,6 +20,9 @@ class ProcessSignals():
     def __init__(self):
         self.queue = Queue()
         self._halt = Value('i', 0)
+
+    def newTask(self, *args):
+        self.queue.put((SignalType.NEW_TASK, *args))
 
     def progress(self, *args):
         self.queue.put((SignalType.PROGRESS, *args))
@@ -72,6 +76,9 @@ class AsyncTask(QThread):
             self._processOutput(self.processSignals.queue.get())
 
     def _processOutput(self, output):
+        if output[0] is SignalType.NEW_TASK:
+            self.pyqtSignals.processingNewTask.emit(output[1])
+
         if output[0] is SignalType.PROGRESS:
             self.pyqtSignals.processingProgress.emit(output[1:])
             return
