@@ -10,6 +10,7 @@ class SummaryDataPanel(QWidget):
     def __init__(self, controller, samples):
         super().__init__()
         self.controller = controller
+        self.samples = samples
 
         self._createUI(samples)
 
@@ -17,6 +18,8 @@ class SummaryDataPanel(QWidget):
         for sample in samples:
             sample.signals.concordancyCalculated.connect(app(self._onSampleConcordancyCalculated, sample))
             sample.signals.optimalAgeCalculated.connect(app(self._onOptimalAgeCalculated, sample))
+
+        self.dataTable.selectionModel().selectionChanged.connect(self._onSelectionChanged)
 
     #############
     ## Widgets ##
@@ -92,3 +95,7 @@ class SummaryDataPanel(QWidget):
         headers = [header.replace("\n", " ") for header in headers]
         data = [[self.dataTable.item(row, col).text() for col in range(n)] for row in range(self.dataTable.rowCount())]
         self.controller.exportCSV(headers, data)
+
+    def _onSelectionChanged(self):
+        selectedRows = set(index.row() for index in self.dataTable.selectedIndexes())
+        self.controller.selectSamples(selectedRows)

@@ -45,7 +45,7 @@ class ConcordiaAxis:
             ts2.append(time)
         xs2 = [calculations.u238pb206_from_age(t * (10 ** 6)) for t in ts2]
         ys2 = [calculations.pb207pb206_from_age(t * (10 ** 6)) for t in ts2]
-        self.axis.scatter(xs2, ys2)
+        self.axis.scatter(xs2, ys2, s=8)
         for i, txt in enumerate(ts2):
             self.axis.annotate(
                 str(txt) + " ",

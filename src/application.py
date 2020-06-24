@@ -61,7 +61,7 @@ class LeadLossApplication:
         self.view = LeadLossView(self, self.getTitle(), self.getVersion())
 
         #self.cheatImport()
-        #self.cheatLoad()
+        self.cheatLoad()
 
         self.view.showMaximized()
         sys.exit(app.exec_())
@@ -191,6 +191,15 @@ class LeadLossApplication:
     def showHelp(self):
         dialog = LeadLossHelpDialog()
         dialog.exec_()
+
+    def selectSamples(self, selectedIndices):
+        selectedSamples = [sample for sample in self.model.samples if sample.id in selectedIndices]
+        unselectedSamples = [sample for sample in self.model.samples if sample.id not in selectedIndices]
+        if not selectedSamples:
+            selectedSamples = self.model.samples
+            unselectedSamples = []
+
+        self.signals.samplesSelected.emit(selectedSamples, unselectedSamples)
 
     def selectAgeToCompare(self, requestedRimAge):
         if requestedRimAge is None:

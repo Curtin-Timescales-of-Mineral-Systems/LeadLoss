@@ -15,6 +15,8 @@ class Signals(QObject):
     processingStarted = pyqtSignal()
     processingFinished = pyqtSignal()
 
+    samplesSelected = pyqtSignal(list, list) # selected samples, unselected samples
+
     statisticUpdated = pyqtSignal(int, float, float) # rowNumber, pValue, dValue
     allStatisticsUpdated = pyqtSignal(dict)
     optimalAgeFound = pyqtSignal(float, float, float, list, tuple) # age, pValue, dValue, reconstructedAges, maximumRangeOfReconstructedAges

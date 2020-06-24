@@ -33,7 +33,7 @@ class SampleOutputSpotClassificationPanel(QWidget):
         else:
             baseHeaders = []
 
-        concordantHeaders = importHeaders + baseHeaders + ["Age (Ma)"]
+        concordantHeaders = importHeaders + baseHeaders
         concordantSpots = self.sample.concordantSpots()
 
         discordantHeaders = importHeaders + baseHeaders

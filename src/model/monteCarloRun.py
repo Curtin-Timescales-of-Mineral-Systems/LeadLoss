@@ -5,6 +5,8 @@ class MonteCarloRun:
 
     def __init__(self,
                  concordant_ages,
+                 concordant_uPb,
+                 concordant_pbPb,
                  discordant_uPb,
                  discordant_pbPb,
                  pb_loss_ages,
@@ -13,8 +15,8 @@ class MonteCarloRun:
                  optimal_pb_loss_age):
 
         self.concordant_ages = concordant_ages
-        self.concordant_uPb = [calculations.u238pb206_from_age(age) for age in concordant_ages]
-        self.concordant_pbPb = [calculations.pb207pb206_from_age(age) for age in concordant_ages]
+        self.concordant_uPb = concordant_uPb
+        self.concordant_pbPb = concordant_pbPb
 
         self.discordant_uPb = discordant_uPb
         self.discordant_pbPb = discordant_pbPb

@@ -39,11 +39,13 @@ class Sample:
     def clearCalculation(self):
         self.optimalAge = None
         self.monteCarloRuns = []
+        for spot in self.spots:
+            spot.clear()
         self.signals.processingCleared.emit()
 
-    def updateConcordance(self, concordantAges, discordances):
-        for spot, concordantAge, discordance in zip(self.validSpots, concordantAges, discordances):
-            spot.updateConcordance(concordantAge, discordance)
+    def updateConcordance(self, concordancy, discordances):
+        for spot, concordant, discordance in zip(self.validSpots, concordancy, discordances):
+            spot.updateConcordance(concordant, discordance)
 
         if self.signals:
             self.signals.concordancyCalculated.emit()
@@ -73,6 +75,6 @@ class Sample:
 class SampleSignals(QObject):
     processingCleared = pyqtSignal()
 
-    concordancyCalculated = pyqtSignal() # row
+    concordancyCalculated = pyqtSignal()
     monteCarloRunAdded = pyqtSignal()
     optimalAgeCalculated = pyqtSignal()

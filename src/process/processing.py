@@ -47,7 +47,7 @@ def _calculateConcordantAges(signals, sample):
 
     settings = sample.calculationSettings
     timePerRow = TIME_PER_TASK / len(sample.validSpots)
-    concordantAges = []
+    concordancy = []
     discordances = []
     for i, spot in enumerate(sample.validSpots):
         signals.progress(ProgressType.CONCORDANCE, i / len(sample.validSpots))
@@ -70,16 +70,11 @@ def _calculateConcordantAges(signals, sample):
                 settings.discordanceEllipseSigmas
             )
 
-        if concordant:
-            concordantAge = calculations.concordant_age(spot.uPbValue, spot.pbPbValue)
-        else:
-            concordantAge = None
-
         discordances.append(discordance)
-        concordantAges.append(concordantAge)
+        concordancy.append(concordant)
 
-    sample.updateConcordance(concordantAges, discordances)
-    signals.progress(ProgressType.CONCORDANCE, 1.0, sample.name, concordantAges, discordances)
+    sample.updateConcordance(concordancy, discordances)
+    signals.progress(ProgressType.CONCORDANCE, 1.0, sample.name, concordancy, discordances)
 
     return True
 
@@ -89,67 +84,86 @@ def _performRimAgeSampling(signals, sample):
     signals.newTask("Sampling Pb-loss age distributions" + sampleNameText + "...")
     # Actually compute the age distributions and statistics
     settings = sample.calculationSettings
-    dissimilarityTest = settings.dissimilarityTest
 
     # Get the concordant samples
-    concordantAges = [spot.concordantAge for spot in sample.validSpots if spot.concordant]
+    concordantSpots = [spot for spot in sample.validSpots if spot.concordant]
     discordantSpots = [spot for spot in sample.validSpots if not spot.concordant]
 
     # Generate the discordant samples
     stabilitySamples = settings.monteCarloRuns
-    discordantUPbValues = np.transpose(
-        [np.random.normal(row.uPbValue, row.uPbStDev, stabilitySamples) for row in discordantSpots])
-    discordantPbPbValues = np.transpose(
-        [np.random.normal(row.pbPbValue, row.pbPbStDev, stabilitySamples) for row in discordantSpots])
 
-    # Generate the lead loss age samples
-    leadLossAgeSamples = settings.rimAgesSampled
-    leadLossAges = settings.rimAges()
-    leadLossUPbValues = [calculations.u238pb206_from_age(age) for age in leadLossAges]
-    leadLossPbPbValues = [calculations.pb207pb206_from_age(age) for age in leadLossAges]
+    # Reseed to avoid generating the same random numbers every time
+    random = np.random.RandomState()
+
+    concordantUPbValues = np.transpose(
+        [random.normal(row.uPbValue, row.uPbStDev, stabilitySamples) for row in concordantSpots])
+    concordantPbPbValues = np.transpose(
+        [random.normal(row.pbPbValue, row.pbPbStDev, stabilitySamples) for row in concordantSpots])
+
+    discordantUPbValues = np.transpose(
+        [random.normal(row.uPbValue, row.uPbStDev, stabilitySamples) for row in discordantSpots])
+    discordantPbPbValues = np.transpose(
+        [random.normal(row.pbPbValue, row.pbPbStDev, stabilitySamples) for row in discordantSpots])
 
     for j in range(stabilitySamples):
+        if signals.halt():
+            signals.cancelled()
+            return False
 
+        runConcordantUPbValues = concordantUPbValues[j]
+        runConcordantPbPbValues = concordantPbPbValues[j]
         runDiscordantUPbValues = discordantUPbValues[j]
         runDiscordantPbPbValues = discordantPbPbValues[j]
-        runStatistics = []
-        runReconstructedAgesByLeadLossAge = {}
-        for i in range(leadLossAgeSamples):
-            if signals.halt():
-                signals.cancelled()
-                return False
 
-            leadLossAge = leadLossAges[i]
-            leadLossUPb = leadLossUPbValues[i]
-            leadLossPbPb = leadLossPbPbValues[i]
-
-            reconstructedAges = []
-            for k, spot in enumerate(discordantSpots):
-                discordantUPb = runDiscordantUPbValues[k]
-                discordantPbPb = runDiscordantPbPbValues[k]
-                reconstructedAge = calculations.discordant_age(leadLossUPb, leadLossPbPb, discordantUPb, discordantPbPb)
-                reconstructedAges.append(reconstructedAge)
-
-            runReconstructedAgesByLeadLossAge[leadLossAge] = reconstructedAges
-            runStatistics.append(_calculateStatistics(concordantAges, reconstructedAges))
-
-        optimalLeadLossAgeIndex = _findOptimalAgeIndex(dissimilarityTest, runStatistics)
-        optimalLeadLossAge = leadLossAges[optimalLeadLossAgeIndex]
-        runStatisticsByLeadLossAge = {age: stat for age, stat in zip(leadLossAges, runStatistics)}
-
-        run = MonteCarloRun(concordantAges,
-                            runDiscordantUPbValues,
-                            runDiscordantPbPbValues,
-                            leadLossAges,
-                            runReconstructedAgesByLeadLossAge,
-                            runStatisticsByLeadLossAge,
-                            optimalLeadLossAge)
-
+        run = _performSingleRun(settings, runConcordantUPbValues, runConcordantPbPbValues, runDiscordantUPbValues, runDiscordantPbPbValues)
         sample.addMonteCarloRun(run)
 
         progress = (j + 1) / stabilitySamples
         signals.progress(ProgressType.SAMPLING, progress, sample.name, run)
     return True
+
+def _performSingleRun(settings, concordantUPbs, concordantPbPbs, discordantUPbs, discordantPbPbs):
+    # Calculate concordant ages
+    concordantAges = []
+    for concordantUPb, concordantPbPb in zip(concordantUPbs, concordantPbPbs):
+        concordantAge = calculations.concordant_age(concordantUPb, concordantPbPb)
+        concordantAges.append(concordantAge)
+
+    # Generate the lead loss age samples
+    leadLossAges = settings.rimAges()
+    runStatistics = []
+    runReconstructedAgesByLeadLossAge = {}
+    for leadLossAge in leadLossAges:
+        discordantAges, statistics = _performSingleLeadLossAgeSample(concordantAges, leadLossAge, discordantUPbs, discordantPbPbs)
+        runReconstructedAgesByLeadLossAge[leadLossAge] = discordantAges
+        runStatistics.append(statistics)
+
+    valuesToCompare = [settings.dissimilarityTest.getComparisonValue(s) for s in runStatistics]
+    optimalLeadLossAgeIndex = _findOptimalIndex(valuesToCompare)
+    optimalLeadLossAge = leadLossAges[optimalLeadLossAgeIndex]
+    runStatisticsByLeadLossAge = {age: stat for age, stat in zip(leadLossAges, runStatistics)}
+
+    return MonteCarloRun(
+        concordantAges, concordantUPbs, concordantPbPbs,
+        discordantUPbs, discordantPbPbs,
+        leadLossAges,
+        runReconstructedAgesByLeadLossAge,
+        runStatisticsByLeadLossAge,
+        optimalLeadLossAge
+    )
+
+def _performSingleLeadLossAgeSample(concordantAges, leadLossAge, discordantUPbs, discordantPbPbs):
+    leadLossUPb = calculations.u238pb206_from_age(leadLossAge)
+    leadLossPbPb = calculations.pb207pb206_from_age(leadLossAge)
+
+    discordantAges = []
+    for discordantUPb, discordantPbPb in zip(discordantUPbs, discordantPbPbs):
+        discordantAge = calculations.discordant_age(leadLossUPb, leadLossPbPb, discordantUPb, discordantPbPb)
+        discordantAges.append(discordantAge)
+
+    statistics = _calculateStatistics(concordantAges, discordantAges)
+
+    return discordantAges, statistics
 
 def _calculateStatistics(concordantAges, reconstructedAges):
     if not reconstructedAges or not concordantAges:
@@ -160,8 +174,7 @@ def _calculateStatistics(concordantAges, reconstructedAges):
     return stats.ks_2samp(distribution1, distribution2)
 
 
-def _findOptimalAgeIndex(dissimilarityTest, runStatistics):
-    valuesToCompare = [dissimilarityTest.getComparisonValue(s) for s in runStatistics]
+def _findOptimalIndex(valuesToCompare):
     minIndex, minValue = min(enumerate(valuesToCompare), key=lambda v: v[1])
     n = len(valuesToCompare)
 
@@ -186,13 +199,10 @@ def _calculateOptimalAge(signals, sample):
     settings = sample.calculationSettings
 
     # Find optimal age
-    optimalStatistic = float('inf')
-    optimalAge = None
-    for age in settings.rimAges():
-        value = np.mean([run.statistics_by_pb_loss_age[age][0] for run in sample.monteCarloRuns])
-        if value <= optimalStatistic:
-            optimalAge = age
-            optimalStatistic = value
+    ages = settings.rimAges()
+    values = [np.mean([run.statistics_by_pb_loss_age[age][0] for run in sample.monteCarloRuns]) for age in ages]
+    optimalAgeIndex = _findOptimalIndex(values)
+    optimalAge = ages[optimalAgeIndex]
 
     # Find 95% confidence interval around optimal age
     optimalAges = [run.optimal_pb_loss_age for run in sample.monteCarloRuns]

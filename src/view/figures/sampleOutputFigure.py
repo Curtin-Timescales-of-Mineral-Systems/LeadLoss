@@ -13,21 +13,18 @@ class SampleOutputFigure(AbstractFigure):
 
         self.sample = sample
 
-        settings = Settings.get(SettingsType.CALCULATION)
-
-        self.heatmapAxis = HeatmapAxis(self.fig.add_subplot(111), settings)
+        self.heatmapAxis = HeatmapAxis(self.fig.add_subplot(111))
 
         self.fig.subplots_adjust(hspace=0.7, wspace=0.4)
-
         self.fig.canvas.mpl_connect('motion_notify_event', self.onHover)
         self.fig.canvas.mpl_connect('axes_enter_event', self.onMouseEnterAxes)
         self.fig.canvas.mpl_connect('axes_leave_event', self.onMouseExitAxes)
 
         sample.signals.concordancyCalculated.connect(self._onSampleConcordancyCalculated)
         sample.signals.monteCarloRunAdded.connect(self._onMonteCarloRunAdded)
+        sample.signals.processingCleared.connect(self._onProcessingCleared)
         """
         #signals.processingCleared.connect(self.onProcessingCleared)
-        signals.processingStarted.connect(self.onProcessingStarted)
 
         signals.allStatisticsUpdated.connect(self.onNewStatistics)
         signals.optimalAgeFound.connect(self.onOptimalAgeFound)
@@ -39,18 +36,9 @@ class SampleOutputFigure(AbstractFigure):
         self.processingComplete = False
         self.mouseOnStatisticsAxes = False
 
-    def clearAgeSelected(self):
-        self.statisticPlot.clearSelectedAge()
-        self.histogramPlot.clearReconstructedDistribution()
-        self.concordiaPlot.clearSelectedAge()
-
     def clearProcessingResults(self):
         self.processingComplete = False
-
-        self.clearAgeSelected()
-        self.statisticPlot.clearStatisticData()
-        self.statisticPlot.clearOptimalAge()
-        self.histogramPlot.clearConcordantDistribution()
+        self.heatmapAxis.clearAll()
 
     def clearInputData(self):
         self.clearProcessingResults()
@@ -144,7 +132,12 @@ class SampleOutputFigure(AbstractFigure):
 
         self.controller.selectAgeToCompare(chosenAge)
 
+    def _onProcessingCleared(self):
+        self.clearProcessingResults()
+        self.canvas.draw()
+
     def _onMonteCarloRunAdded(self):
-        if len(self.sample.monteCarloRuns) == Settings.get(SettingsType.CALCULATION).monteCarloRuns:
-            self.heatmapAxis.plotRuns(self.sample.monteCarloRuns)
+        settings = Settings.get(SettingsType.CALCULATION)
+        if len(self.sample.monteCarloRuns) == settings.monteCarloRuns:
+            self.heatmapAxis.plotRuns(self.sample.monteCarloRuns, settings)
             self.canvas.draw()

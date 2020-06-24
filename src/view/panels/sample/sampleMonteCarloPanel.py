@@ -1,4 +1,3 @@
-from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QVBoxLayout, QGroupBox, QWidget, QHBoxLayout, \
     QFormLayout, QLabel, QSpinBox, QSplitter
 
@@ -132,13 +131,13 @@ class SampleOutputMonteCarloPanel(QWidget):
         total = len(self.sample.monteCarloRuns)
         if total == 1:
             self._showDataPanel()
+            self.selectedRunInput.setValue(1)
             self._onSelectedMonteCarloRunChanged()
 
         self.selectedRunInput.setMaximum(total)
         self.maximumRunLabel.setText("/" + str(total))
 
     def _onSelectedMonteCarloRunChanged(self):
-        print(len(self.sample.monteCarloRuns))
         index = self.selectedRunInput.value() - 1
         run = self.sample.monteCarloRuns[index]
         self._selectRun(run)

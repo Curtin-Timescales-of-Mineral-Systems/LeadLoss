@@ -68,10 +68,9 @@ class LeadLossModel:
     def getProcessingData(self):
         return [sample.createProcessingCopy() for sample in self.samples]
 
-    def updateConcordance(self, sampleName, concordantAges, discordances):
+    def updateConcordance(self, sampleName, concordancy, discordances):
         sample = self.samplesByName[sampleName]
-        sampleNumber = self.samples.index(sample)
-        sample.updateConcordance(concordantAges, discordances)
+        sample.updateConcordance(concordancy, discordances)
 
     def addMonteCarloRun(self, sampleName, run):
         sample = self.samplesByName[sampleName]

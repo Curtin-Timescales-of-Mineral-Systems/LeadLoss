@@ -46,13 +46,14 @@ class Spot:
 
         self.processed = False
 
-    def updateConcordance(self, concordantAge, discordance):
-        self.concordant = concordantAge is not None
+    def clear(self):
+        self.processed = False
+        self.concordant = None
+        self.discordance = None
 
+    def updateConcordance(self, concordant, discordance):
+        self.processed = True
+        self.concordant = concordant
         self.discordance = discordance
         if discordance:
             self.displayStrings.append(stringUtils.round_to_sf(discordance*100))
-
-        if self.concordant:
-            self.concordantAge = concordantAge
-            self.displayStrings.append(stringUtils.round_to_sf(concordantAge/(10**6)))
