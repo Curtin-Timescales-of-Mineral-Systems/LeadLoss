@@ -1,3 +1,5 @@
+import time
+
 from model.settings.type import SettingsType
 from utils.settings import Settings
 from view.axes.concordia.sampleMonteCarloConcordiaAxis import SampleMonteCarloConcordiaAxis
@@ -12,8 +14,9 @@ class SampleOutputFigure(AbstractFigure):
         super().__init__()
 
         self.sample = sample
+        self.lastDrawTime = None
 
-        self.heatmapAxis = HeatmapAxis(self.fig.add_subplot(111))
+        self.heatmapAxis = HeatmapAxis(self.fig.add_subplot(111), self.canvas)
 
         self.fig.subplots_adjust(hspace=0.7, wspace=0.4)
         self.fig.canvas.mpl_connect('motion_notify_event', self.onHover)
@@ -38,6 +41,7 @@ class SampleOutputFigure(AbstractFigure):
 
     def clearProcessingResults(self):
         self.processingComplete = False
+        self.lastDrawTime = None
         self.heatmapAxis.clearAll()
 
     def clearInputData(self):
@@ -138,6 +142,12 @@ class SampleOutputFigure(AbstractFigure):
 
     def _onMonteCarloRunAdded(self):
         settings = Settings.get(SettingsType.CALCULATION)
-        if len(self.sample.monteCarloRuns) == settings.monteCarloRuns:
+        currentTime = time.time()
+
+        if len(self.sample.monteCarloRuns) == settings.monteCarloRuns or\
+            self.lastDrawTime is None or\
+            currentTime - self.lastDrawTime >= 2:
+
+            self.lastDrawTime = currentTime
             self.heatmapAxis.plotRuns(self.sample.monteCarloRuns, settings)
             self.canvas.draw()

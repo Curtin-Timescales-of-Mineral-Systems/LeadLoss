@@ -85,11 +85,12 @@ class SamplePlot:
             self.unclassified.clear_data()
 
         if sample.optimalAge:
-            #optimalUPb = calculations.u238pb206_from_age(sample.optimalAge)
-            #optimalPbPb = calculations.pb207pb206_from_age(sample.optimalAge)
             xMin = calculations.u238pb206_from_age(sample.optimalAgeUpperBound)
             xMax = calculations.u238pb206_from_age(sample.optimalAgeLowerBound)
-            xs = np.arange(xMin, xMax, 0.1)
+            if xMin == xMax:
+                xs = [xMin]
+            else:
+                xs = np.arange(xMin, xMax, 0.1)
             ys = [calculations.pb207pb206_from_u238pb206(x) for x in xs]
 
             self.pbLossAge.set_xdata([xs[0], xs[-1]])

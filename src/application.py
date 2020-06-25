@@ -24,7 +24,7 @@ class LeadLossApplication:
 
     @staticmethod
     def getVersion():
-        return "0.3"
+        return "0.5"
 
     @staticmethod
     def getIcon():
@@ -65,10 +65,6 @@ class LeadLossApplication:
 
         self.view.showMaximized()
         sys.exit(app.exec_())
-
-    ############
-    ## Events ##
-    ############
 
 
     #############

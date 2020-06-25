@@ -1,11 +1,22 @@
 import numpy as np
+import scipy as sp
+from PyQt5.QtCore import pyqtSignal, QObject
+
+from controller.signals import ProcessingSignals
+from process import processing
+from utils.async import AsyncTask
 
 
 class HeatmapAxis:
 
-    def __init__(self, axis):
+    RESOLUTION = 100
+
+    def __init__(self, axis, canvas):
+        self.canvas = canvas
         self.axis = axis
         self.clearAll()
+        self.processingSignals = ProcessingSignals()
+        self.processingSignals.processingProgress.connect(self._plotRuns)
 
     ##############
     ## X limits ##
@@ -26,19 +37,20 @@ class HeatmapAxis:
         self.axis.set_ylim(0.0, 1.0)
 
     def plotRuns(self, runs, settings):
-        resolution = settings.rimAgesSampled
-        data = np.zeros((resolution, resolution))
-        for run in runs:
-            for col, age in enumerate(run.pb_loss_ages):
-                value = run.statistics_by_pb_loss_age[age][0]
-                row = int(value * (resolution - 1))
-                data[row][col] += 1 / len(runs)
+        self.worker = AsyncTask(self.processingSignals, processing.calculateHeatmapData, self.RESOLUTION, runs, settings)
+        self.worker.start()
 
-        X = [age / (10 ** 6) for age in run.pb_loss_ages]
-        Y = np.linspace(0.0, 1.0, resolution)
+    def _plotRuns(self, args):
+        data, settings = args
+        minAge = settings.minimumRimAge
+        maxAge = settings.maximumRimAge
+
+        X = np.linspace(minAge/10**6, maxAge/10**6, self.RESOLUTION)
+        Y = np.linspace(0.0, 1.0, self.RESOLUTION)
 
         self.axis.set_xlim(X[0], X[-1])
         self.axis.pcolor(X, Y, data, cmap='viridis')
+        self.canvas.draw()
 
     def clearStatisticData(self):
         self.statisticDataPoints.set_xdata([])
@@ -71,3 +83,6 @@ class HeatmapAxis:
     def clearSelectedAge(self):
         self.selectedAgeLine.set_xdata([])
         self.selectedAgeLine.set_ydata([])
+
+class HeatmapSignals(QObject):
+    dataCalculated = pyqtSignal(object)
