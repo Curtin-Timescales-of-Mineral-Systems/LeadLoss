@@ -43,11 +43,12 @@ class Settings:
 
     @staticmethod
     def load():
+        """
         if path.exists(stringUtils.SAVE_FILE):
             with open(stringUtils.SAVE_FILE, 'rb') as input:
                 try:
                     return pickle.load(input)
                 except Exception as e:
                     print(e)
-
+        """
         return Settings()
