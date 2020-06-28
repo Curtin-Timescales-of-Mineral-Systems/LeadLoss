@@ -38,6 +38,9 @@ class SampleOutputPanel(QWidget):
         splitter.addWidget(self.resultsAndSettingsWidget)
         splitter.addWidget(self.spotClassificationWidget)
         splitter.addWidget(self.graphWidget)
+        splitter.setStretchFactor(0, 1)
+        splitter.setStretchFactor(0, 2)
+        splitter.setStretchFactor(0, 3)
         splitter.setContentsMargins(0, 0, 0, 0)
         return splitter
 

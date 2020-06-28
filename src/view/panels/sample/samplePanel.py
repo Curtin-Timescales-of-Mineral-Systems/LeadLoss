@@ -1,10 +1,7 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QSplitter, QWidget, QVBoxLayout, QTabWidget, QTableWidgetItem, QTableWidget
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTabWidget
 
-from utils import config
-from view.panels.sample.sampleMonteCarloPanel import SampleOutputMonteCarloPanel
 from view.panels.sample.sampleInputPanel import SampleInputDataPanel
+from view.panels.sample.sampleMonteCarloPanel import SampleOutputMonteCarloPanel
 from view.panels.sample.sampleOutputPanel import SampleOutputPanel
 
 

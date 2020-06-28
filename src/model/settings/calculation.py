@@ -33,14 +33,29 @@ class LeadLossCalculationSettings:
 
     def validate(self):
         if self.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
+            if not self.discordancePercentageCutoff:
+                return "Please enter a discordance percentage cutoff"
+
             if self.discordancePercentageCutoff < 0 or self.discordancePercentageCutoff > 1.0:
                 return "Discordance percentage cutoff must be between 0 and 100%"
+
+        if not self.minimumRimAge:
+            return "Please enter a minimum time for radiogenic-Pb loss"
+
+        if not self.maximumRimAge:
+            return "Please enter a maximum time for radiogenic-Pb loss"
 
         if self.minimumRimAge >= self.maximumRimAge:
             return "The minimum rim age must be strictly less than the maximum rim age"
 
+        if not self.rimAgesSampled:
+            return "Please enter a number of samples"
+
         if self.rimAgesSampled < 2:
             return "The number of samples must be >= 2"
+
+        if not self.monteCarloRuns:
+            return "Please enter a number of Monte Carlo runs"
 
         if self.monteCarloRuns < 1:
             return "The number of Monte Carlo runs must be >= 1"

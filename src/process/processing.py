@@ -1,15 +1,15 @@
 import math
+import time
 from enum import Enum
 
-from scipy.optimize import minimize_scalar
-from scipy.stats import stats
 import numpy as np
 import scipy as sp
+from scipy.stats import stats
 
 from model.monteCarloRun import MonteCarloRun
-from src.model.settings.calculation import DiscordanceClassificationMethod
 from process import calculations
-import time
+from src.model.settings.calculation import DiscordanceClassificationMethod
+from utils import config
 
 TIME_PER_TASK = 0.0
 
@@ -28,6 +28,7 @@ def processSamples(signals, samples):
 
     signals.completed()
 
+
 def _processSample(signals, sample):
     completed = _calculateConcordantAges(signals, sample)
     if not completed:
@@ -37,11 +38,8 @@ def _processSample(signals, sample):
     if not completed:
         return False
 
-    completed = _calculateOptimalAge(signals, sample)
-    if not completed:
-        return False
-
     return True
+
 
 def _calculateConcordantAges(signals, sample):
     sampleNameText = " for '" + sample.name + "'" if sample.name else ""
@@ -77,7 +75,6 @@ def _calculateConcordantAges(signals, sample):
 
     sample.updateConcordance(concordancy, discordances)
     signals.progress(ProgressType.CONCORDANCE, 1.0, sample.name, concordancy, discordances)
-
     return True
 
 
@@ -117,66 +114,28 @@ def _performRimAgeSampling(signals, sample):
         runDiscordantUPbValues = discordantUPbValues[j]
         runDiscordantPbPbValues = discordantPbPbValues[j]
 
-        run = _performSingleRun(settings, runConcordantUPbValues, runConcordantPbPbValues, runDiscordantUPbValues, runDiscordantPbPbValues)
+        run = MonteCarloRun(
+            runConcordantUPbValues,
+            runConcordantPbPbValues,
+            runDiscordantUPbValues,
+            runDiscordantPbPbValues,
+        )
+
+        _performSingleRun(settings, run)
         sample.addMonteCarloRun(run)
 
         progress = (j + 1) / stabilitySamples
         signals.progress(ProgressType.SAMPLING, progress, sample.name, run)
+        if j % 5 == 0 or j == stabilitySamples - 1:
+            _calculateOptimalAge(signals, sample, progress)
     return True
 
-def _performSingleRun(settings, concordantUPbs, concordantPbPbs, discordantUPbs, discordantPbPbs):
-    # Calculate concordant ages
-    concordantAges = []
-    for concordantUPb, concordantPbPb in zip(concordantUPbs, concordantPbPbs):
-        concordantAge = calculations.concordant_age(concordantUPb, concordantPbPb)
-        concordantAges.append(concordantAge)
-
+def _performSingleRun(settings, run):
     # Generate the lead loss age samples
-    runStatistics = []
-    leadLossAgesSampled = []
-    runReconstructedAgesByLeadLossAge = {}
-    def sampleAge(leadLossAge):
-        discordantAges, statistics = _performSingleLeadLossAgeSample(concordantAges, leadLossAge, discordantUPbs, discordantPbPbs)
-        runReconstructedAgesByLeadLossAge[leadLossAge] = discordantAges
-        runStatistics.append(statistics)
-        leadLossAgesSampled.append(leadLossAge)
-        return settings.dissimilarityTest.getComparisonValue(statistics)
-
-    valuesToCompare = [sampleAge(age) for age in settings.rimAges()]
-    optimalLeadLossAgeIndex = _findOptimalIndex(valuesToCompare)
-    optimalLeadLossAge = leadLossAgesSampled[optimalLeadLossAgeIndex]
-    runStatisticsByLeadLossAge = {age: stat for age, stat in zip(leadLossAgesSampled, runStatistics)}
-
-    return MonteCarloRun(
-        concordantAges, concordantUPbs, concordantPbPbs,
-        discordantUPbs, discordantPbPbs,
-        leadLossAgesSampled,
-        runReconstructedAgesByLeadLossAge,
-        runStatisticsByLeadLossAge,
-        optimalLeadLossAge
-    )
-
-def _performSingleLeadLossAgeSample(concordantAges, leadLossAge, discordantUPbs, discordantPbPbs):
-    leadLossUPb = calculations.u238pb206_from_age(leadLossAge)
-    leadLossPbPb = calculations.pb207pb206_from_age(leadLossAge)
-
-    discordantAges = []
-    for discordantUPb, discordantPbPb in zip(discordantUPbs, discordantPbPbs):
-        discordantAge = calculations.discordant_age(leadLossUPb, leadLossPbPb, discordantUPb, discordantPbPb)
-        discordantAges.append(discordantAge)
-
-    statistics = _calculateStatistics(concordantAges, discordantAges)
-
-    return discordantAges, statistics
-
-def _calculateStatistics(concordantAges, reconstructedAges):
-    if not reconstructedAges or not concordantAges:
-        return 0
-
-    distribution1 = [age if age else 0 for age in concordantAges]
-    distribution2 = [age if age else 0 for age in reconstructedAges]
-    return stats.ks_2samp(distribution1, distribution2)
-
+    for age in settings.rimAges():
+        run.samplePbLossAge(age)
+    run.calculateOptimalAge(settings.dissimilarityTest)
+    run.createHeatmapData(settings.minimumRimAge, settings.maximumRimAge, config.HEATMAP_RESOLUTION)
 
 def _findOptimalIndex(valuesToCompare):
     minIndex, minValue = min(enumerate(valuesToCompare), key=lambda v: v[1])
@@ -190,8 +149,7 @@ def _findOptimalIndex(valuesToCompare):
     while endMinIndex < n - 1 and valuesToCompare[endMinIndex + 1] == minValue:
         endMinIndex += 1
 
-    if  (endMinIndex != n - 1 and startMinIndex != 0) or \
-        (endMinIndex == n - 1 and startMinIndex == 0):
+    if (endMinIndex != n - 1 and startMinIndex != 0) or (endMinIndex == n - 1 and startMinIndex == 0):
         return (endMinIndex + startMinIndex) // 2
 
     if startMinIndex == 0:
@@ -199,85 +157,69 @@ def _findOptimalIndex(valuesToCompare):
 
     return n - 1
 
-def _calculateOptimalAge(signals, sample):
+
+def _calculateOptimalAge(signals, sample, progress):
     settings = sample.calculationSettings
+    runs = sample.monteCarloRuns
 
     # Find optimal age
     ages = settings.rimAges()
-    values = [np.mean([run.statistics_by_pb_loss_age[age][0] for run in sample.monteCarloRuns]) for age in ages]
+    values = [np.mean([run.statistics_by_pb_loss_age[age][0] for run in runs]) for age in ages]
     optimalAgeIndex = _findOptimalIndex(values)
     optimalAge = ages[optimalAgeIndex]
 
     # Find 95% confidence interval around optimal age
-    optimalAges = [run.optimal_pb_loss_age for run in sample.monteCarloRuns]
+    optimalAges = [run.optimal_pb_loss_age for run in runs]
     optimalAges.sort()
     n = len(optimalAges)
-    cutoff2p5 = int(math.floor(0.025*n))
-    cutoff97p5 = int(math.ceil(0.975*n)) - 1
+    cutoff2p5 = int(math.floor(0.025 * n))
+    cutoff97p5 = int(math.ceil(0.975 * n)) - 1
     optimalAgeLowerBound = optimalAges[cutoff2p5]
     optimalAgeUpperBound = optimalAges[cutoff97p5]
 
     # Find mean D-value and p-value for optimal age
-    optimalMeanDValue = np.mean([run.statistics_by_pb_loss_age[optimalAge][0] for run in sample.monteCarloRuns])
-    optimalMeanPValue = np.mean([run.statistics_by_pb_loss_age[optimalAge][1] for run in sample.monteCarloRuns])
+    optimalMeanDValue = np.mean([run.statistics_by_pb_loss_age[optimalAge][0] for run in runs])
+    optimalMeanPValue = np.mean([run.statistics_by_pb_loss_age[optimalAge][1] for run in runs])
 
     # Return results
     args = optimalAge, optimalAgeLowerBound, optimalAgeUpperBound, optimalMeanDValue, optimalMeanPValue
-    signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, args)
+    signals.progress(ProgressType.OPTIMAL, progress, sample.name, args)
     return True
 
-def calculateHeatmapData(signals, resolution, runs, settings):
-    minAge = settings.minimumRimAge
-    maxAge = settings.maximumRimAge
-    ageInc = (maxAge - minAge)/resolution
+
+def calculateHeatmapData(signals, runs, settings):
+    resolution = config.HEATMAP_RESOLUTION
 
     colData = [[] for _ in range(resolution)]
-
     for run in runs:
-        runAges = sorted(run.pb_loss_ages)
-        colAges = [[] for _ in range(resolution)]
-        for age in runAges:
-            if age == maxAge:
-                col = resolution - 1
-            else:
-                col = int((age - minAge)//ageInc)
-            colAges[col].append(age)
-
         for col in range(resolution):
-            prevNonEmptyCol = col
-            nextNonEmptyCol = col
-            while prevNonEmptyCol > 0 and len(colAges[prevNonEmptyCol]) == 0:
-                prevNonEmptyCol -= 1
-            while nextNonEmptyCol < resolution-1 and len(colAges[nextNonEmptyCol]) == 0:
-                nextNonEmptyCol += 1
+            colData[col].append(run.heatmapColumnData[col])
 
-            if len(colAges[prevNonEmptyCol]) == 0 or len(colAges[nextNonEmptyCol]) == 0:
-                continue
-
-            if prevNonEmptyCol != nextNonEmptyCol:
-                prevAge = max(colAges[prevNonEmptyCol])
-                nextAge = min(colAges[nextNonEmptyCol])
-                prevStat = run.statistics_by_pb_loss_age[prevAge][0]
-                nextStat = run.statistics_by_pb_loss_age[nextAge][0]
-                prevDiff = col - prevNonEmptyCol
-                nextDiff = nextNonEmptyCol - col
-                totalDiff = nextDiff + prevDiff
-                value = (nextDiff*prevStat + prevDiff*nextStat)/totalDiff
-            else:
-                value = np.mean([run.statistics_by_pb_loss_age[age][0] for age in colAges[col]])
-            colData[col].append(value)
-
+    cache = {}
     data = [[0 for _ in range(resolution)] for _ in range(resolution)]
     for col in range(resolution):
-        if len(colData[col]) > 0:
-            mean = np.mean(colData[col])
-            stdDev = np.std(colData[col])
-            if stdDev < 10 ** -7:
-                stdDev = 1/resolution
+        if len(colData[col]) == 0:
+            continue
 
-            rv = sp.stats.norm(mean, stdDev)
-            cdfs = rv.cdf(np.linspace(0, 1, resolution+1))
-            for row in range(resolution):
-                data[row][col] = cdfs[row+1]-cdfs[row]
+        mean = np.mean(colData[col])
+        stdDev = np.std(colData[col])
+        if stdDev < 10 ** -7:
+            stdDev = 0
+
+        if (mean, stdDev) not in cache:
+            if stdDev == 0:
+                if mean == 1.0:
+                    meanRow = resolution - 1
+                else:
+                    meanRow = int(mean * resolution)
+                result = [1 if i >= meanRow else 0 for i in range(resolution + 1)]
+            else:
+                rv = sp.stats.norm(mean, stdDev)
+                result = rv.cdf(np.linspace(0, 1, resolution + 1))
+            cache[(mean, stdDev)] = result
+
+        cdfs = cache[(mean, stdDev)]
+        for row in range(resolution):
+            data[row][col] = cdfs[row + 1] - cdfs[row]
 
     signals.progress(data, settings)

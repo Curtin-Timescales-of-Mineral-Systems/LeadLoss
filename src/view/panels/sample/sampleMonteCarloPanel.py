@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QVBoxLayout, QGroupBox, QWidget, QHBoxLayout, \
+from PyQt5.QtWidgets import QGroupBox, QWidget, QHBoxLayout, \
     QFormLayout, QLabel, QSpinBox, QSplitter
 
 from utils.ui import uiUtils
@@ -7,8 +7,6 @@ from view.figures.sampleMonteCarloFigure import SampleMonteCarloFigure
 
 
 class SampleOutputMonteCarloPanel(QWidget):
-
-    HEADERS = ["Pb-loss age (Ma)", "D value", "p value"]
 
     def __init__(self, controller, sample):
         super().__init__()
@@ -31,21 +29,10 @@ class SampleOutputMonteCarloPanel(QWidget):
     #############
 
     def _createDataWidget(self):
-        #uiUtils.clearChildren(self.splitter)
         self.splitter = QSplitter()
         self.splitter.addWidget(self._createDataLHS())
         self.splitter.addWidget(self._createDataRHS())
         return self.splitter
-
-    def _createDataLHS(self):
-        layout = QVBoxLayout()
-        layout.addWidget(self._createRunSpinner())
-        layout.addWidget(self._createResultsWidget())
-
-        widget = QWidget()
-        widget.setLayout(layout)
-        widget.setContentsMargins(0,0,0,0)
-        return widget
 
     def _createRunSpinner(self):
         self.selectedRunInput = QSpinBox()
@@ -58,19 +45,13 @@ class SampleOutputMonteCarloPanel(QWidget):
         runLayout = QHBoxLayout()
         runLayout.addWidget(self.selectedRunInput)
         runLayout.addWidget(self.maximumRunLabel)
-        runLayout.setContentsMargins(0,0,0,0)
-
-        runWidget = QWidget()
-        runWidget.setLayout(runLayout)
-
-        layout = QFormLayout()
-        layout.addRow("Run: ", runWidget)
 
         widget = QWidget()
-        widget.setLayout(layout)
+        widget.setLayout(runLayout)
+        widget.setContentsMargins(0,0,0,0)
         return widget
 
-    def _createResultsWidget(self):
+    def _createDataLHS(self):
         self.optimalLeadLossAge = AgeInput(defaultValue=None, sf=5)
         self.optimalLeadLossAge.setReadOnly(True)
 
@@ -80,11 +61,13 @@ class SampleOutputMonteCarloPanel(QWidget):
         self.pValue = FloatInput(defaultValue=None, sf=5)
         self.pValue.setReadOnly(True)
 
+        runSpinner = self._createRunSpinner()
+
         layout = QFormLayout()
+        layout.addRow("Monte Carlo run", runSpinner)
         layout.addRow("Optimal Pb-loss age", self.optimalLeadLossAge)
         layout.addRow("D value", self.dValue)
         layout.addRow("p value", self.pValue)
-        layout.setContentsMargins(0, 5, 0, 5)
 
         widget = QGroupBox("Result")
         widget.setLayout(layout)

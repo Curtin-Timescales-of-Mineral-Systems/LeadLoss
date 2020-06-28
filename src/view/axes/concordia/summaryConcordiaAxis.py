@@ -19,6 +19,16 @@ class SummaryConcordiaAxis(ConcordiaAxis):
         for sample in samples:
             self.plotSample(sample)
 
+        examplePlot = self.samples[samples[0]]
+
+        legendEntries = [
+            (examplePlot.unclassified.line, "Unclassified"),
+            (examplePlot.concordant.line, "Concordant"),
+            (examplePlot.discordant.line, "Discordant"),
+            (examplePlot.pbLossAge, "Pb-loss age"),
+        ]
+        self.axis.legend(*zip(*legendEntries), frameon=False)
+
     def plotSample(self, sample):
         self.samples[sample] = SamplePlot(self.axis, sample)
 

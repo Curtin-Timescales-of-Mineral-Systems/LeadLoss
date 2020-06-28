@@ -65,7 +65,7 @@ def concordant_age(u238pb206, pb207pb206):
         y = pb207pb206 - pb207pb206_from_age(t)
         d = math.hypot(x, y)
         return d
-    result = minimize_scalar(distance, bracket=[LOWER_AGE, UPPER_AGE])
+    result = minimize_scalar(distance, method='Bounded', bounds=[LOWER_AGE, UPPER_AGE])
     return result.x
 
 def discordant_age(x1, y1, x2, y2):

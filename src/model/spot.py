@@ -55,5 +55,5 @@ class Spot:
         self.processed = True
         self.concordant = concordant
         self.discordance = discordance
-        if discordance:
+        if discordance is not None:
             self.displayStrings.append(stringUtils.round_to_sf(discordance*100))

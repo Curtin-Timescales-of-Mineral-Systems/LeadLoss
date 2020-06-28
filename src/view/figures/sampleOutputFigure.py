@@ -16,7 +16,7 @@ class SampleOutputFigure(AbstractFigure):
         self.sample = sample
         self.lastDrawTime = None
 
-        self.heatmapAxis = HeatmapAxis(self.fig.add_subplot(111), self.canvas)
+        self.heatmapAxis = HeatmapAxis(self.fig.add_subplot(111), self.canvas, self.fig)
 
         self.fig.subplots_adjust(hspace=0.7, wspace=0.4)
         self.fig.canvas.mpl_connect('motion_notify_event', self.onHover)

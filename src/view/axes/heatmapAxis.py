@@ -1,22 +1,24 @@
 import numpy as np
-import scipy as sp
 from PyQt5.QtCore import pyqtSignal, QObject
 
 from controller.signals import ProcessingSignals
 from process import processing
+from utils import config
 from utils.async import AsyncTask
 
 
 class HeatmapAxis:
 
-    RESOLUTION = 100
-
-    def __init__(self, axis, canvas):
+    def __init__(self, axis, canvas, figure):
         self.canvas = canvas
+        self.figure = figure
         self.axis = axis
-        self.clearAll()
+        self.colorbar = None
+
         self.processingSignals = ProcessingSignals()
         self.processingSignals.processingProgress.connect(self._plotRuns)
+
+        self.clearAll()
 
     ##############
     ## X limits ##
@@ -31,25 +33,32 @@ class HeatmapAxis:
 
     def clearAll(self):
         self.axis.clear()
+        if self.colorbar:
+            self.colorbar.remove()
+            self.colorbar = None
+
         self.axis.set_title("KS statistic")
         self.axis.set_xlabel("Age (Ma)")
         self.axis.set_ylabel("D value")
         self.axis.set_ylim(0.0, 1.0)
 
     def plotRuns(self, runs, settings):
-        self.worker = AsyncTask(self.processingSignals, processing.calculateHeatmapData, self.RESOLUTION, runs, settings)
+        self.worker = AsyncTask(self.processingSignals, processing.calculateHeatmapData, runs, settings)
         self.worker.start()
 
     def _plotRuns(self, args):
         data, settings = args
-        minAge = settings.minimumRimAge
-        maxAge = settings.maximumRimAge
+        minAge = settings.minimumRimAge/10**6
+        maxAge = settings.maximumRimAge/10**6
+        resolution = config.HEATMAP_RESOLUTION
 
-        X = np.linspace(minAge/10**6, maxAge/10**6, self.RESOLUTION)
-        Y = np.linspace(0.0, 1.0, self.RESOLUTION)
+        X = np.linspace(minAge, maxAge, resolution)
+        Y = np.linspace(0.0, 1.0, resolution)
 
+        self.clearAll()
         self.axis.set_xlim(X[0], X[-1])
-        self.axis.pcolor(X, Y, data, cmap='viridis')
+        colourmap = self.axis.pcolorfast(X, Y, data, cmap='viridis')
+        self.colorbar = self.figure.colorbar(colourmap, ax=self.axis, label="Probability of D value")
         self.canvas.draw()
 
     def clearStatisticData(self):

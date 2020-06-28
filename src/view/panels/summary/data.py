@@ -30,8 +30,8 @@ class SummaryDataPanel(QWidget):
             "Sample",
             "Concordant\npoints",
             "Discordant\npoints",
-            "Pb-loss\nage (Ma)",
             "95% lower\nbound",
+            "Pb-loss\nage (Ma)",
             "95% upper\nbound",
             "d-value",
             "p-value"
@@ -81,8 +81,8 @@ class SummaryDataPanel(QWidget):
         def create(value):
             return self._createTableCellWidget(str(stringUtils.round_to_sf(value)))
 
-        self.dataTable.setItem(sample.id, 3, create(sample.optimalAge/(10**6)))
-        self.dataTable.setItem(sample.id, 4, create(sample.optimalAgeLowerBound/(10**6)))
+        self.dataTable.setItem(sample.id, 3, create(sample.optimalAgeLowerBound/(10**6)))
+        self.dataTable.setItem(sample.id, 4, create(sample.optimalAge/(10**6)))
         self.dataTable.setItem(sample.id, 5, create(sample.optimalAgeUpperBound/(10**6)))
         self.dataTable.setItem(sample.id, 6, create(sample.optimalAgeDValue))
         self.dataTable.setItem(sample.id, 7, create(sample.optimalAgePValue))
