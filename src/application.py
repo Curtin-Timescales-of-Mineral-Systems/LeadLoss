@@ -61,9 +61,10 @@ class LeadLossApplication:
         self.view = LeadLossView(self, self.getTitle(), self.getVersion())
 
         #self.cheatImport()
-        self.cheatLoad()
+        #self.cheatLoad()
 
         self.view.showMaximized()
+        self.cancelProcessing()
         sys.exit(app.exec_())
 
 
