@@ -10,4 +10,6 @@ def getResourcePath(relativePath):
     except Exception:
         import __main__
         base_path = str(pathlib.Path(__main__.__file__).parent.absolute()) + "/../resources/"
-    return os.path.join(base_path, relativePath)
+    path = os.path.join(base_path, relativePath)
+    print("Path", path)
+    return path
