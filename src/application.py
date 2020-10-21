@@ -59,6 +59,7 @@ class LeadLossApplication:
         #self.cheatLoad()
 
         self.view.showMaximized()
+        self.cancelProcessing()
         sys.exit(app.exec_())
 
 

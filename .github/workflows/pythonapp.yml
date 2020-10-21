@@ -47,16 +47,19 @@ jobs:
             OS_NAME: macOS
             PYTHON_VERSION: 3.6.10
             EXTENSION:
+            RESOURCES: resources:resources
 
           - os: ubuntu-latest
             OS_NAME: ubuntu
             PYTHON_VERSION: 3.6.10
             EXTENSION:
+            RESOURCES: resources:resources
 
           - os: windows-latest
             OS_NAME: windows
             PYTHON_VERSION: 3.6.8
             EXTENSION: .exe
+            RESOURCES: resources;resources
 
     steps:
       - name: Check out code
@@ -102,7 +105,7 @@ jobs:
       - name: Build with pyinstaller
         shell: bash
         run: |
-          pyinstaller --onefile --hidden-import='pkg_resources.py2_warn' --icon=./resources/icon.ico src/application.py
+          pyinstaller --onefile --hidden-import='pkg_resources.py2_warn' --add-data '${{ matrix.RESOURCES }}' --icon=./resources/icon.ico src/application.py
 
       - name: Upload release asset
         id: upload-release-asset
