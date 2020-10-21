@@ -51,7 +51,7 @@ jobs:
 
           - os: ubuntu-latest
             OS_NAME: ubuntu
-            PYTHON_VERSION: 3.6.10
+            PYTHON_VERSION: 3.6.12
             EXTENSION:
             RESOURCES: resources:resources
 
