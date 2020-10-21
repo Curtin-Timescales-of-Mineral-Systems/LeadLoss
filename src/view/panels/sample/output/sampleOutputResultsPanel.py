@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QFormLayout, QGroupBox, QHBoxLayout, QLabel
 
 from utils import config
-from utils.ui.numericInput import FloatInput, AgeInput
+from utils.ui.numericInput import FloatInput, AgeInput, IntInput
 
 
 class SampleOutputResultsPanel(QGroupBox):
@@ -28,11 +28,19 @@ class SampleOutputResultsPanel(QGroupBox):
         self.pValue = FloatInput(defaultValue=None, sf=config.DISPLAY_SF)
         self.pValue.setReadOnly(True)
 
+        self.invalidAges = FloatInput(defaultValue=None)
+        self.invalidAges.setReadOnly(True)
+
+        self.score = FloatInput(defaultValue=None, sf=config.DISPLAY_SF)
+        self.score.setReadOnly(True)
+
         layout = QFormLayout()
         layout.addRow("Optimal Pb-loss age", self.optimalAge)
         layout.addRow("95% confidence interval", boundsLayout)
-        layout.addRow("Mean D value", self.dValue)
-        layout.addRow("Mean p value", self.pValue)
+        layout.addRow("Mean D value (KS test)", self.dValue)
+        layout.addRow("Mean p value (KS test)", self.pValue)
+        layout.addRow("Mean # of invalid ages", self.invalidAges)
+        layout.addRow("Mean score", self.score)
         self.setLayout(layout)
 
         sample.signals.processingCleared.connect(self._onProcessingCleared)
@@ -48,6 +56,8 @@ class SampleOutputResultsPanel(QGroupBox):
         self.optimalAgeUpper.setValue(self.sample.optimalAgeUpperBound)
         self.dValue.setValue(self.sample.optimalAgeDValue)
         self.pValue.setValue(self.sample.optimalAgePValue)
+        self.invalidAges.setValue(self.sample.optimalAgeNumberOfInvalidPoints)
+        self.score.setValue(self.sample.optimalAgeScore)
 
     def clear(self):
         self.optimalAge.setValue(None)
@@ -55,6 +65,8 @@ class SampleOutputResultsPanel(QGroupBox):
         self.optimalAgeUpper.setValue(None)
         self.dValue.setValue(None)
         self.pValue.setValue(None)
+        self.invalidAges.setValue(None)
+        self.score.setValue(None)
 
     ############
     ## Events ##

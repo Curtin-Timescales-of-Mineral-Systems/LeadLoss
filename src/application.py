@@ -23,10 +23,6 @@ class LeadLossApplication:
         return config.LEAD_LOSS_TITLE
 
     @staticmethod
-    def getVersion():
-        return "0.5"
-
-    @staticmethod
     def getIcon():
         return resourceUtils.getResourcePath("icon.png")
 
@@ -58,10 +54,9 @@ class LeadLossApplication:
         app.setWindowIcon(QIcon(self.getIcon()))
 
         self.model = LeadLossModel(self.signals)
-        self.view = LeadLossView(self, self.getTitle(), self.getVersion())
+        self.view = LeadLossView(self, self.getTitle(), config.VERSION)
 
-        #self.cheatImport()
-        self.cheatLoad()
+        #self.cheatLoad()
 
         self.view.showMaximized()
         sys.exit(app.exec_())
@@ -76,6 +71,7 @@ class LeadLossApplication:
         if not self.inputFile:
             return
 
+        Settings.setCurrentFile(self.inputFile)
         self.view.getImportSettings(callback=self._importCSVWithSettings)
 
     def _importCSVWithSettings(self, importSettings):
@@ -207,13 +203,13 @@ class LeadLossApplication:
 
     def cheatLoad(self):
         try:
-            inputFile = "../tests/leadLossTest_with_errors.csv"
-            self._importCSV(inputFile, Settings.get(SettingsType.IMPORT))
+            #inputFile = "/home/matthew/Downloads/Haughton.csv"
+            inputFile = "/home/matthew/Code/concordia-applications/LeadLoss/tests/leadLossTest_with_errors.csv"
+            Settings.setCurrentFile(inputFile)
+            settings = Settings.get(SettingsType.IMPORT)
+            self._importCSV(inputFile, settings)
         except:
             print(traceback.format_exc(), file=sys.stderr)
-
-    def cheatImport(self):
-        self.view.getSettings(SettingsType.IMPORT, [], None)
 
 
 if __name__ == '__main__':

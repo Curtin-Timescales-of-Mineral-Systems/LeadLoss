@@ -30,11 +30,12 @@ class SummaryDataPanel(QWidget):
             "Sample",
             "Concordant\npoints",
             "Discordant\npoints",
-            "95% lower\nbound",
+            "95%\nlower\nbound",
             "Pb-loss\nage (Ma)",
-            "95% upper\nbound",
+            "95%\nupper\nbound",
             "d-value",
-            "p-value"
+            "p-value",
+            "Score"
         ]
 
         self.dataTable = QTableWidget(len(samples), len(headers))
@@ -49,6 +50,7 @@ class SummaryDataPanel(QWidget):
             self.dataTable.setItem(i, 5, self._createTableCellWidget(""))
             self.dataTable.setItem(i, 6, self._createTableCellWidget(""))
             self.dataTable.setItem(i, 7, self._createTableCellWidget(""))
+            self.dataTable.setItem(i, 8, self._createTableCellWidget(""))
         self.dataTable.resizeColumnsToContents()
         self.dataTable.resizeRowsToContents()
 
@@ -86,6 +88,7 @@ class SummaryDataPanel(QWidget):
         self.dataTable.setItem(sample.id, 5, create(sample.optimalAgeUpperBound/(10**6)))
         self.dataTable.setItem(sample.id, 6, create(sample.optimalAgeDValue))
         self.dataTable.setItem(sample.id, 7, create(sample.optimalAgePValue))
+        self.dataTable.setItem(sample.id, 7, create(sample.optimalAgeScore))
         self.dataTable.update()
         self.dataTable.resizeColumnsToContents()
 

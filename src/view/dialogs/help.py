@@ -56,7 +56,9 @@ class LeadLossHelpDialog(QDialog):
             "  <li> percentage vs absolute" \
             "  <li> 1σ vs 2σ" \
             "</ul>" \
-            "If a row in the imported data is invalid then it will be highlighted in <font color='red'>RED</font>."
+            "If a row in the imported data is invalid then it will be highlighted in <font color='red'>RED</font>." \
+            "<br>" \
+            "Symbols are not supported in column headings (e.g., ±, σ). Use only English alphabetic characters or numerals."
 
     def _getStandardProcessingHelp(self):
         return \
@@ -89,23 +91,26 @@ class LeadLossHelpDialog(QDialog):
     def getProcessingHelpText(self):
         return \
             "Processing the data will attempt to reconstruct the expected distribution of ages " \
-            "for a variety of different times of radiogenic-Pb. These distributions are then compared against the " \
-            "distribution of concordant ages using the chosen statistic. The optimal time for radiogenic-Pb loss " \
-            "is then chosen to maximise this statistic." \
-            "<br><br>" \
-            "Concordant rows will be highlighted in <font color='green'>GREEN</font>." \
-            "<br><br>" \
-            "Discordant rows will be highlighted in <font color='orange'>ORANGE</font>." \
+            "for a variety of different times of radiogenic-Pb loss. These distributions are then compared against the " \
+            "distribution of concordant ages using the chosen statistic. A score for that age between 0.0 and 1.0 is " \
+            "then calculated by combining the statistic with a penalty factor that is linear in the number of the " \
+            "invalid reconstructed ages (i.e. when the line through the proposed Pb-loss age and the discordant measurement " \
+            "does not intercept the concordia curve). " \
+            "The optimal time for radiogenic-Pb loss is then chosen to maximise this score." \
             "<br><br>" + \
             self._getStandardProcessingHelp()
 
     def getOutputsHelpText(self):
         return \
-            "The concordant and discordant points will be highlighted on the main concordia plot." \
-            "The value of the chosen statistic as a function of the rim age will be plotted on the bottom left, " \
+            "The concordant and discordant points will be highlighted on the main concordia plot. " \
+            "The score as a function of the Pb-loss age age will be plotted on the bottom left, " \
             "and the optimal age found will be highlighted in <font color='purple'>PURPLE</font>. " \
-            "The distribution of the concordant and reconstructed distribution will plotted on the bottom right." \
             "<br><br>" \
-            "Moving the mouse over the statistic plot will allow you see the distribution for the selected rim age." \
+            "You can also explore each individual Monte Carlo sample. In this tab, the top plot contains the randomly" \
+            "sampled points using the error associated with each point. The bottom left plot " \
+            "shows the score as a function of Pb-loss age, and the bottom right plot shows the corresponding " \
+            "CDFs (cumulative density function) for the concordant and reconstructed discordant distributions." \
+            "<br><br>" \
+            "Moving the mouse over the statistic plot will allow you see the distribution for the selected Pb-loss age." \
             "<br><br>"  + \
             self._getStandardOutputsHelp()

@@ -2,8 +2,22 @@ from process import calculations, processing
 import numpy as np
 from scipy.stats import stats
 
-class MonteCarloRun:
 
+class MonteCarloRunPbLossAgeStatistics:
+    def __init__(self, concordant_ages, discordant_ages, dissimilarity_test):
+        self.valid_concordant_ages = [age for age in concordant_ages if age]
+        self.valid_discordant_ages = [age for age in discordant_ages if age]
+
+        self.number_of_ages = len(discordant_ages)
+        self.number_of_invalid_ages = len(discordant_ages) - len(self.valid_discordant_ages)
+        self.test_statistics = dissimilarity_test.perform(self.valid_concordant_ages, self.valid_discordant_ages)
+        self.test_score = dissimilarity_test.getComparisonValue(self.test_statistics)
+
+        valid_fraction = 1 - len(self.valid_discordant_ages) / len(discordant_ages)
+        self.score = self.test_score + (1 - self.test_score) * valid_fraction
+
+
+class MonteCarloRun:
     def __init__(self,
                  concordant_uPb,
                  concordant_pbPb,
@@ -19,8 +33,6 @@ class MonteCarloRun:
             concordantAge = calculations.concordant_age(concordantUPb, concordantPbPb)
             self.concordant_ages.append(concordantAge)
 
-        self.pb_loss_ages = []
-        self.reconstructed_ages_by_pb_loss_age = {}
         self.statistics_by_pb_loss_age = {}
 
         self.optimal_pb_loss_age = None
@@ -30,35 +42,26 @@ class MonteCarloRun:
 
         self.heatmapColumnData = None
 
-    def samplePbLossAge(self, leadLossAge):
+    def samplePbLossAge(self, leadLossAge, dissimilarity_test):
         leadLossUPb = calculations.u238pb206_from_age(leadLossAge)
         leadLossPbPb = calculations.pb207pb206_from_age(leadLossAge)
 
-        concordantAges = self.concordant_ages
-        discordantAges = []
+        concordant_ages = self.concordant_ages
+        discordant_ages = []
         for discordantUPb, discordantPbPb in zip(self.discordant_uPb, self.discordant_pbPb):
-            discordantAge = calculations.discordant_age(leadLossUPb, leadLossPbPb, discordantUPb, discordantPbPb)
-            discordantAges.append(discordantAge)
+            discordant_age = calculations.discordant_age(leadLossUPb, leadLossPbPb, discordantUPb, discordantPbPb)
+            discordant_ages.append(discordant_age)
 
-        if not discordantAges or not concordantAges:
-            statistics = (1.0, 0.0)
-        else:
-            distribution1 = [age if age else 0 for age in concordantAges]
-            distribution2 = [age if age else 0 for age in discordantAges]
-            statistics = stats.ks_2samp(distribution1, distribution2)
+        self.statistics_by_pb_loss_age[leadLossAge] = MonteCarloRunPbLossAgeStatistics(
+            concordant_ages, discordant_ages, dissimilarity_test)
 
-        self.pb_loss_ages.append(leadLossAge)
-        self.reconstructed_ages_by_pb_loss_age[leadLossAge] = discordantAges
-        self.statistics_by_pb_loss_age[leadLossAge] = statistics
-
-
-    def calculateOptimalAge(self, dissimilarityTest):
-        results = [(age, dissimilarityTest.getComparisonValue(statistics)) for (age, statistics) in self.statistics_by_pb_loss_age.items()]
+    def calculateOptimalAge(self):
+        results = [(age, statistic.score) for age, statistic in self.statistics_by_pb_loss_age.items()]
         results.sort(key=lambda v: v[0])
-        valuesToCompare = [v for k,v in results]
+        valuesToCompare = [v for k, v in results]
 
         optimalLeadLossAgeIndex = processing._findOptimalIndex(valuesToCompare)
-        optimalLeadLossAge = self.pb_loss_ages[optimalLeadLossAgeIndex]
+        optimalLeadLossAge = results[optimalLeadLossAgeIndex][0]
 
         self.optimal_pb_loss_age = optimalLeadLossAge
         self.optimal_uPb = calculations.u238pb206_from_age(optimalLeadLossAge)
@@ -67,7 +70,7 @@ class MonteCarloRun:
 
     def createHeatmapData(self, minAge, maxAge, resolution):
         ageInc = (maxAge - minAge) / resolution
-        runAges = sorted(self.pb_loss_ages)
+        runAges = sorted(list(self.statistics_by_pb_loss_age.keys()))
         colAges = [[] for _ in range(resolution)]
         for age in runAges:
             if age == maxAge:
@@ -91,14 +94,13 @@ class MonteCarloRun:
             if prevNonEmptyCol != nextNonEmptyCol:
                 prevAge = max(colAges[prevNonEmptyCol])
                 nextAge = min(colAges[nextNonEmptyCol])
-                prevStat = self.statistics_by_pb_loss_age[prevAge][0]
-                nextStat = self.statistics_by_pb_loss_age[nextAge][0]
+                prevStat = self.statistics_by_pb_loss_age[prevAge].test_statistics[0]
+                nextStat = self.statistics_by_pb_loss_age[nextAge].test_statistics[0]
                 prevDiff = col - prevNonEmptyCol
                 nextDiff = nextNonEmptyCol - col
                 totalDiff = nextDiff + prevDiff
                 value = (nextDiff * prevStat + prevDiff * nextStat) / totalDiff
             else:
-                value = np.mean([self.statistics_by_pb_loss_age[age][0] for age in colAges[col]])
+                value = np.mean([self.statistics_by_pb_loss_age[age].score for age in colAges[col]])
             colData.append(value)
         self.heatmapColumnData = colData
-

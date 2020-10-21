@@ -21,6 +21,8 @@ class Sample:
         self.optimalAgeUpperBound = None
         self.optimalAgeDValue = None
         self.optimalAgePValue = None
+        self.optimalAgeNumberOfInvalidPoints = None
+        self.optimalAgeScore = None
         self.monteCarloRuns = []
 
     def concordantSpots(self):
@@ -61,6 +63,8 @@ class Sample:
         self.optimalAgeUpperBound = args[2]
         self.optimalAgeDValue = args[3]
         self.optimalAgePValue = args[4]
+        self.optimalAgeNumberOfInvalidPoints = args[5]
+        self.optimalAgeScore = args[6]
 
         if self.signals:
             self.signals.optimalAgeCalculated.emit()

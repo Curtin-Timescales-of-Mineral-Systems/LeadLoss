@@ -39,7 +39,7 @@ class HeatmapAxis:
 
         self.axis.set_title("KS statistic")
         self.axis.set_xlabel("Age (Ma)")
-        self.axis.set_ylabel("D value")
+        self.axis.set_ylabel("Score")
         self.axis.set_ylim(0.0, 1.0)
 
     def plotRuns(self, runs, settings):
@@ -58,7 +58,7 @@ class HeatmapAxis:
         self.clearAll()
         self.axis.set_xlim(X[0], X[-1])
         colourmap = self.axis.pcolorfast(X, Y, data, cmap='viridis')
-        self.colorbar = self.figure.colorbar(colourmap, ax=self.axis, label="Probability of D value")
+        self.colorbar = self.figure.colorbar(colourmap, ax=self.axis, label="Probability of score")
         self.canvas.draw()
 
     def clearStatisticData(self):

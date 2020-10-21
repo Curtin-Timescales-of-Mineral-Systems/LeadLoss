@@ -133,8 +133,8 @@ def _performRimAgeSampling(signals, sample):
 def _performSingleRun(settings, run):
     # Generate the lead loss age samples
     for age in settings.rimAges():
-        run.samplePbLossAge(age)
-    run.calculateOptimalAge(settings.dissimilarityTest)
+        run.samplePbLossAge(age, settings.dissimilarityTest)
+    run.calculateOptimalAge()
     run.createHeatmapData(settings.minimumRimAge, settings.maximumRimAge, config.HEATMAP_RESOLUTION)
 
 def _findOptimalIndex(valuesToCompare):
@@ -164,7 +164,7 @@ def _calculateOptimalAge(signals, sample, progress):
 
     # Find optimal age
     ages = settings.rimAges()
-    values = [np.mean([run.statistics_by_pb_loss_age[age][0] for run in runs]) for age in ages]
+    values = [np.mean([run.statistics_by_pb_loss_age[age].score for run in runs]) for age in ages]
     optimalAgeIndex = _findOptimalIndex(values)
     optimalAge = ages[optimalAgeIndex]
 
@@ -178,11 +178,13 @@ def _calculateOptimalAge(signals, sample, progress):
     optimalAgeUpperBound = optimalAges[cutoff97p5]
 
     # Find mean D-value and p-value for optimal age
-    optimalMeanDValue = np.mean([run.statistics_by_pb_loss_age[optimalAge][0] for run in runs])
-    optimalMeanPValue = np.mean([run.statistics_by_pb_loss_age[optimalAge][1] for run in runs])
+    optimalMeanDValue = np.mean([run.optimal_statistic.test_statistics[0] for run in runs])
+    optimalMeanPValue = np.mean([run.optimal_statistic.test_statistics[1] for run in runs])
+    optimalMeanNumberOfInvalidPoints = np.mean([run.optimal_statistic.number_of_invalid_ages for run in runs])
+    optimalMeanScore = np.mean([run.optimal_statistic.score for run in runs])
 
     # Return results
-    args = optimalAge, optimalAgeLowerBound, optimalAgeUpperBound, optimalMeanDValue, optimalMeanPValue
+    args = optimalAge, optimalAgeLowerBound, optimalAgeUpperBound, optimalMeanDValue, optimalMeanPValue, optimalMeanNumberOfInvalidPoints, optimalMeanScore
     signals.progress(ProgressType.OPTIMAL, progress, sample.name, args)
     return True
 

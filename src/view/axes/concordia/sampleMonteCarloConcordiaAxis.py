@@ -31,6 +31,12 @@ class SampleMonteCarloConcordiaAxis(ConcordiaAxis):
         self.leadLossAge.set_xdata([monteCarloRun.optimal_uPb])
         self.leadLossAge.set_ydata([monteCarloRun.optimal_pbPb])
 
+        upper_xlim = max(
+            max(monteCarloRun.concordant_uPb),
+            max(monteCarloRun.discordant_uPb),
+            monteCarloRun.optimal_uPb)
+        self.axis.set_xlim(0, 1.2*upper_xlim)
+
     def plotSelectedAge(self, selectedAge, reconstructedAges):
         self.clearSelectedAge()
 

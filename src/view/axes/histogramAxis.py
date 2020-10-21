@@ -30,9 +30,9 @@ class HistogramAxis:
     def setReconstructedAgeRange(self, reconstructedAgeRange):
         self.reconstructedAgeRange = [v / (10 ** 6) for v in reconstructedAgeRange]
 
-    def plotDistributions(self, concordantAges, reconstructedAges):
+    def plotDistributions(self, concordantAges, reconstructedAges, selectedAges=None):
         self._clearDistributions()
-        self._drawDistributions(concordantAges, reconstructedAges)
+        self._drawDistributions(concordantAges, reconstructedAges, selectedAges)
 
     #########
     ## All ##
@@ -42,30 +42,20 @@ class HistogramAxis:
         self.axis.clear()
         self._setupAxis()
 
-    def _drawDistributions(self, concordantAges, reconstructedAges):
-        self.axis.hist(
-            [v/(10**6) for v in concordantAges],
-            bins=self._bars,
-            cumulative=True,
-            density=True,
-            histtype='step',
-            edgecolor=config.CONCORDANT_COLOUR_1,
-            facecolor=(0, 0, 0, 0)
-        )
+    def _drawDistributions(self, concordantAges, reconstructedAges, selectedAges):
+        allAges = [concordantAges, reconstructedAges, selectedAges]
+        allColours = [config.CONCORDANT_COLOUR_1, config.OPTIMAL_COLOUR_1, config.PREDICTION_COLOUR_1]
 
-        if reconstructedAges is not None:
-            edgecolor=config.OPTIMAL_COLOUR_1
-        else:
-            reconstructedAges = self.optimalReconstructedAges
-            edgecolor=config.OPTIMAL_COLOUR_1
+        for ages, colour in zip(allAges, allColours):
+            if ages is None:
+                continue
 
-        self.axis.hist(
-            [v/(10**6) for v in reconstructedAges],
-            bins=self._bars,
-            cumulative=True,
-            density=True,
-            histtype='step',
-            edgecolor=edgecolor,
-            facecolor=(0, 0, 0, 0)
-        )
-        #self.axis.set_xlim(*self.reconstructedAgeRange)
+            self.axis.hist(
+                [v/(10**6) for v in ages],
+                bins=self._bars,
+                cumulative=True,
+                density=True,
+                histtype='step',
+                edgecolor=colour,
+                facecolor=(0, 0, 0, 0)
+            )

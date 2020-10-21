@@ -1,3 +1,4 @@
+import math
 from enum import Enum
 import numpy as np
 
@@ -30,6 +31,9 @@ class LeadLossCalculationSettings:
 
     def rimAges(self):
         return np.linspace(start=self.minimumRimAge, stop=self.maximumRimAge, num=self.rimAgesSampled)
+
+    def getNearestSampledAge(self, targetAge):
+        return min(self.rimAges(), key=lambda v: abs(v - targetAge))
 
     def validate(self):
         if self.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:

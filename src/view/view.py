@@ -108,13 +108,15 @@ class LeadLossView(QMainWindow):
     def getInputFile(self):
         return QFileDialog.getOpenFileName(
             caption='Open CSV file',
-            directory='/home/matthew/Dropbox/Academia/Code/Python/UnmixConcordia/tests'
+            directory='/home/matthew/Dropbox/Academia/Code/Python/UnmixConcordia/tests',
+            options=QFileDialog.DontUseNativeDialog
         )[0]
 
     def getOutputFile(self):
         return QFileDialog.getSaveFileName(
             caption='Save CSV file',
-            directory='/home/matthew/Dropbox/Academia/Code/Python/UnmixConcordia/tests'
+            directory='/home/matthew/Dropbox/Academia/Code/Python/UnmixConcordia/tests',
+            options=QFileDialog.DontUseNativeDialog
         )[0]
 
     def getImportSettings(self, callback):

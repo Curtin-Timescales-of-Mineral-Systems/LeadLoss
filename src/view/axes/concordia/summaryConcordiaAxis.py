@@ -66,9 +66,13 @@ class SamplePlot:
         discordantData = []
         unclassifiedData = []
 
+        upper_xlim = 0
+
         for spot in sample.validSpots:
             semi_minor = spot.uPbStDev * rs
             semi_major = spot.pbPbStDev * rs
+
+            upper_xlim = max(upper_xlim, spot.uPbValue + semi_minor)
 
             if not spot.processed:
                 data = unclassifiedData
@@ -102,6 +106,7 @@ class SamplePlot:
             else:
                 xs = np.arange(xMin, xMax, 0.1)
             ys = [calculations.pb207pb206_from_u238pb206(x) for x in xs]
+            upper_xlim = max(upper_xlim, xMax)
 
             self.pbLossAge.set_xdata([xs[0], xs[-1]])
             self.pbLossAge.set_ydata([ys[0], ys[-1]])
@@ -112,6 +117,8 @@ class SamplePlot:
             self.pbLossAge.set_ydata([])
             self.pbLossRange.set_xdata([])
             self.pbLossRange.set_ydata([])
+
+        self.axis.set_xlim(0, 1.2*upper_xlim)
 
     def clearData(self):
         self.concordant.clear_data()
