@@ -1,4 +1,5 @@
-matplotlib>=3.1.3
+# See https://github.com/pyinstaller/pyinstaller/issues/5004 for why it currently has to be pre v3.3.0
+matplotlib==3.1.3
 scipy==1.4.1
 soerp>=0.9.6
 PyQt5>=5.14.0
