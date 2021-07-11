@@ -133,7 +133,7 @@ def _performRimAgeSampling(signals, sample):
 def _performSingleRun(settings, run):
     # Generate the lead loss age samples
     for age in settings.rimAges():
-        run.samplePbLossAge(age, settings.dissimilarityTest)
+        run.samplePbLossAge(age, settings.dissimilarityTest, settings.penaliseInvalidAges)
     run.calculateOptimalAge()
     run.createHeatmapData(settings.minimumRimAge, settings.maximumRimAge, config.HEATMAP_RESOLUTION)
 

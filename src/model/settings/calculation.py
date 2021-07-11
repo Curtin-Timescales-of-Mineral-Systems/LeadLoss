@@ -6,8 +6,8 @@ from process.dissimilarityTests import DissimilarityTest
 from model.settings.type import SettingsType
 
 class DiscordanceClassificationMethod(Enum):
-    PERCENTAGE="Percentage"
-    ERROR_ELLIPSE="Error ellipse"
+    PERCENTAGE = "Percentage"
+    ERROR_ELLIPSE = "Error ellipse"
 
     def __eq__(self, other):
         return self.value == other.value
@@ -28,6 +28,8 @@ class LeadLossCalculationSettings:
         self.monteCarloRuns = 50
 
         self.dissimilarityTest = DissimilarityTest.KOLMOGOROV_SMIRNOV
+
+        self.penaliseInvalidAges = True
 
     def rimAges(self):
         return np.linspace(start=self.minimumRimAge, stop=self.maximumRimAge, num=self.rimAgesSampled)

@@ -10,7 +10,7 @@ from model.model import LeadLossModel
 from model.settings.type import SettingsType
 from process.processing import ProgressType
 from utils import config, resourceUtils, csvUtils
-from utils.async import AsyncTask
+from utils.asynchronous import AsyncTask
 from utils.settings import Settings
 from view.dialogs.help import LeadLossHelpDialog
 from view.view import LeadLossView
@@ -19,15 +19,15 @@ from view.view import LeadLossView
 class LeadLossApplication:
 
     @staticmethod
-    def getTitle():
+    def get_title():
         return config.LEAD_LOSS_TITLE
 
     @staticmethod
-    def getIcon():
+    def get_icon():
         return resourceUtils.getResourcePath("icon.png")
 
     @staticmethod
-    def exceptionHook(exctype, value, traceback):
+    def exception_hook(exctype, value, traceback):
         sys.__excepthook__(exctype, value, traceback)
         QMessageBox.critical(None, "Error", str(value))
 
@@ -37,24 +37,24 @@ class LeadLossApplication:
         multiprocessing.freeze_support()
 
         # Reroute exceptions to display a message box to the user
-        sys.excepthook = self.exceptionHook
+        sys.excepthook = self.exception_hook
 
         self.worker = None
         self.signals = Signals()
 
-        self.processingSignals = ProcessingSignals()
-        self.processingSignals.processingNewTask.connect(self.onProcessingNewTask)
-        self.processingSignals.processingProgress.connect(self.onProcessingProgress)
-        self.processingSignals.processingCompleted.connect(self.onProcessingCompleted)
-        self.processingSignals.processingCancelled.connect(self.onProcessingCancelled)
-        self.processingSignals.processingErrored.connect(self.onProcessingErrored)
+        self.processing_signals = ProcessingSignals()
+        self.processing_signals.processingNewTask.connect(self.onProcessingNewTask)
+        self.processing_signals.processingProgress.connect(self.onProcessingProgress)
+        self.processing_signals.processingCompleted.connect(self.onProcessingCompleted)
+        self.processing_signals.processingCancelled.connect(self.onProcessingCancelled)
+        self.processing_signals.processingErrored.connect(self.onProcessingErrored)
 
         app = QApplication(sys.argv)
         app.setStyle(QStyleFactory.create('Fusion'))
-        app.setWindowIcon(QIcon(self.getIcon()))
+        app.setWindowIcon(QIcon(self.get_icon()))
 
         self.model = LeadLossModel(self.signals)
-        self.view = LeadLossView(self, self.getTitle(), config.VERSION)
+        self.view = LeadLossView(self, self.get_title(), config.VERSION)
 
         #self.cheatLoad()
 
@@ -123,7 +123,7 @@ class LeadLossApplication:
             sample.startCalculation(settings)
             clonedSamples.append(sample.createProcessingCopy())
 
-        self.worker = AsyncTask(self.processingSignals, self.model.getProcessingFunction(), clonedSamples)
+        self.worker = AsyncTask(self.processing_signals, self.model.getProcessingFunction(), clonedSamples)
         self.worker.start()
         self.signals.processingStarted.emit()
 

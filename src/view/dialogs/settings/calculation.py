@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QVBoxLayout, QGroupBox, QFormLayout, QLabel, QWidget
+from PyQt5.QtWidgets import QVBoxLayout, QGroupBox, QFormLayout, QLabel, QWidget, QCheckBox
 
 from process.dissimilarityTests import DissimilarityTest
 from model.settings.type import SettingsType
@@ -80,8 +80,13 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
         self.dissimilarityTestRB = EnumRadioButtonGroup(DissimilarityTest, self._validate, defaults.dissimilarityTest, rows=None, cols=1)
 
+        self.penaliseInvalidAgesCB = QCheckBox(self)
+        self.penaliseInvalidAgesCB.setChecked(defaults.penaliseInvalidAges)
+        self.penaliseInvalidAgesCB.stateChanged.connect(self._validate)
+
         layout = QFormLayout()
         layout.addRow(QLabel("Dissimilarity test"), self.dissimilarityTestRB)
+        layout.addRow(QLabel("Penalise invalid ages"), self.penaliseInvalidAgesCB)
         self._registerFormLayoutForAlignment(layout)
 
         box = QGroupBox("Distribution comparison")
@@ -137,6 +142,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         settings.rimAgesSampled = self.rimAgesSampledInput.value()
 
         settings.dissimilarityTestRB = self.dissimilarityTestRB.selection()
+        settings.penaliseInvalidAges = self.penaliseInvalidAgesCB.isChecked()
 
         settings.monteCarloRuns = self.monteCarloRunsInput.value()
 

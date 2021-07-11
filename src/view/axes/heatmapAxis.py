@@ -4,7 +4,7 @@ from PyQt5.QtCore import pyqtSignal, QObject
 from controller.signals import ProcessingSignals
 from process import processing
 from utils import config
-from utils.async import AsyncTask
+from utils.asynchronous import AsyncTask
 
 
 class HeatmapAxis:

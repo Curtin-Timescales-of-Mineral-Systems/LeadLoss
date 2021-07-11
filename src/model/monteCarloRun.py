@@ -4,7 +4,7 @@ from scipy.stats import stats
 
 
 class MonteCarloRunPbLossAgeStatistics:
-    def __init__(self, concordant_ages, discordant_ages, dissimilarity_test):
+    def __init__(self, concordant_ages, discordant_ages, dissimilarity_test, penalise_invalid_ages):
         self.valid_concordant_ages = [age for age in concordant_ages if age]
         self.valid_discordant_ages = [age for age in discordant_ages if age]
 
@@ -13,9 +13,12 @@ class MonteCarloRunPbLossAgeStatistics:
         self.test_statistics = dissimilarity_test.perform(self.valid_concordant_ages, self.valid_discordant_ages)
         self.test_score = dissimilarity_test.getComparisonValue(self.test_statistics)
 
-        valid_fraction = 1 - len(self.valid_discordant_ages) / len(discordant_ages)
-        self.score = self.test_score + (1 - self.test_score) * valid_fraction
-
+        if penalise_invalid_ages:
+            # Lower scores are better
+            invalid_fraction = 1 - len(self.valid_discordant_ages) / len(discordant_ages)
+            self.score = self.test_score + (1 - self.test_score) * invalid_fraction
+        else:
+            self.score = self.test_score
 
 class MonteCarloRun:
     def __init__(self,
@@ -42,7 +45,7 @@ class MonteCarloRun:
 
         self.heatmapColumnData = None
 
-    def samplePbLossAge(self, leadLossAge, dissimilarity_test):
+    def samplePbLossAge(self, leadLossAge, dissimilarity_test, penalise_invalid_ages):
         leadLossUPb = calculations.u238pb206_from_age(leadLossAge)
         leadLossPbPb = calculations.pb207pb206_from_age(leadLossAge)
 
@@ -53,7 +56,11 @@ class MonteCarloRun:
             discordant_ages.append(discordant_age)
 
         self.statistics_by_pb_loss_age[leadLossAge] = MonteCarloRunPbLossAgeStatistics(
-            concordant_ages, discordant_ages, dissimilarity_test)
+            concordant_ages,
+            discordant_ages,
+            dissimilarity_test,
+            penalise_invalid_ages
+        )
 
     def calculateOptimalAge(self):
         results = [(age, statistic.score) for age, statistic in self.statistics_by_pb_loss_age.items()]

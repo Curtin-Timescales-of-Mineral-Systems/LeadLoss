@@ -3,7 +3,7 @@
 ######################
 
 LEAD_LOSS_TITLE = "Pb-loss"
-VERSION = "0.6"
+VERSION = "0.7"
 
 # Size of the confidence interval -- 1 or 2
 SIGMAS_MIXED_POINT_ERROR = 1
