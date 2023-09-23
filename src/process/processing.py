@@ -74,7 +74,9 @@ def _calculateConcordantAges(signals, sample):
         concordancy.append(concordant)
 
     sample.updateConcordance(concordancy, discordances)
-    signals.progress(ProgressType.CONCORDANCE, 1.0, sample.name, concordancy, discordances)
+    
+    if discordances == 0:
+    signals.progress(ProgressType.OPTIMAL, progress, sample.name, None)
     return True
 
 
