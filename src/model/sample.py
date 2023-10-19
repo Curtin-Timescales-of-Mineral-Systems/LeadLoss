@@ -68,10 +68,7 @@ class Sample:
         self.optimalAgeScore = args[6]
 
         # Check if all arguments are None, and set the flag accordingly
-        if all(arg is None for arg in args):
-            self.hasOptimalAge = False
-        else:
-            self.hasOptimalAge = True
+        self.hasOptimalAge = not (all(arg is None for arg in args))
 
         # Emit the signal if self.signals is not None
         if self.signals:

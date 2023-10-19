@@ -75,8 +75,10 @@ def _calculateConcordantAges(signals, sample):
 
     sample.updateConcordance(concordancy, discordances)
     
-    if discordances == 0:
-    signals.progress(ProgressType.OPTIMAL, progress, sample.name, None)
+    # Test if there are no discordant data points
+    if not any(discordances):
+    progress = 1.0 # Set progress to 1.0 when there are no discordant points
+        signals.progress(ProgressType.OPTIMAL, progress, sample.name, None)
     return True
 
 

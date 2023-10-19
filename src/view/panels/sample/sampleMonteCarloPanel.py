@@ -49,6 +49,17 @@ class AgeStatisticPanel(QGroupBox):
         self.invalidPoints.setValue(None)
         self.score.setValue(None)
 
+class NoDataErrorMessage(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        message_label = QLabel("There are no discordant points, so no data can be generated.")
+
+        layout = QVBoxLayout()
+        layout.addWidget(message_label)
+
+        self.setLayout(layout)
+        
 class SampleOutputMonteCarloPanel(QWidget):
 
     def __init__(self, controller, sample):
@@ -59,27 +70,33 @@ class SampleOutputMonteCarloPanel(QWidget):
         self.dataTable = None
         self.figure = None
         self.currentRun = None
-
+        self.noDataWidget = NoDataErrorMessage()  # Create the error message widget
+        
         self.layout = QHBoxLayout()
         self.setLayout(self.layout)
-
-        self.noDataWidget = uiUtils.createNoDataWidget(self.sample.name)
         self.dataWidget = self._createDataWidget()
         self._showNoDataPanel()
 
         sample.signals.monteCarloRunAdded.connect(self._onMonteCarloRunAdded)
-
-    def _showNoDataPanel(self):
-        if not self.sample.hasOptimalAge:
-            # Display an error message when there is no optimal age
-            error_label = QLabel("There is no optimal age, so no data can be generated.")
-            self.layout.addWidget(error_label)
-        else:
-            # Show the regular data widget
-            self.layout.addWidget(self.dataWidget)
-
+    
+    # Test for no discordant points flag
     def _onMonteCarloRunAdded(self):
-        self._showNoDataPanel()
+            if self.sample.hasNoDiscordantPoints:  # Check the flag
+                self._showNoDataPanel()  # Show the error message
+                return
+
+            total = len(self.sample.monteCarloRuns)
+            if total == 1:
+                self._showDataPanel()
+                self.selectedRunInput.setValue(1)
+                self._onSelectedMonteCarloRunChanged()
+
+            self.selectedRunInput.setMaximum(total)
+            self.maximumRunLabel.setText("/" + str(total))
+            
+    def _showNoDataPanel(self):
+            uiUtils.clearChildren(self.layout)
+            self.layout.addWidget(self.noDataWidget)  # Show the error message widget
 
     #############
     ## UI spec ##
