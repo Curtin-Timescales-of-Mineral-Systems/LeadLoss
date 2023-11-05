@@ -51,8 +51,10 @@ def createIconWithLabel(icon, text):
     return widget
 
 
-def createNoDataWidget(sampleName):
-    if sampleName:
+def createNoDataWidget(sampleName, error_message=None):
+    if error_message:
+        label = QLabel(error_message)
+    elif sampleName:
         label = QLabel("Sample '" + sampleName + "' has not yet been processed...")
     else:
         label = QLabel("The sample has not yet been processed...")

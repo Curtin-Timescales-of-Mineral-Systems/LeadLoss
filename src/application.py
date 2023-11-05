@@ -55,7 +55,7 @@ class LeadLossApplication:
 
         self.model = LeadLossModel(self.signals)
         self.view = LeadLossView(self, self.get_title(), config.VERSION)
-
+        self.view.signals.exportAllAgesClicked.connect(self.exportAllAges)
         #self.cheatLoad()
 
         self.view.showMaximized()
@@ -177,6 +177,26 @@ class LeadLossApplication:
             csvUtils.write_output(headers, rows, outputFile)
         self.signals.taskComplete.emit(True, "Export complete")
 
+    def exportAllAges(self):
+        # Get the filename to export to
+        filename = self.view.getAllAgesOutputFile()
+        if not filename:
+            return
+
+        # Prepare data for export
+        headers = ['Sample Name', 'Age', 'Score']
+        data = []
+        for sample in self.model.samples:
+            for run in sample.monteCarloRuns:
+                for age, stats in run.statistics_by_pb_loss_age.items():
+                    data.append([sample.name, age, stats.score])
+
+        # Use csvUtils to write data to file
+        csvUtils.write_output(headers, data, filename)
+
+        # Emit signal indicating task completion
+        self.signals.taskComplete.emit(True, "Export complete")
+        
     ###########
     ## Other ##
     ###########

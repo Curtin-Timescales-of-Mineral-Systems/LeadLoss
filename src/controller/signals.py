@@ -23,6 +23,7 @@ class Signals(QObject):
     ageDeselected = pyqtSignal()
     ageSelected = pyqtSignal([float, list]) # age, reconstructedAges
 
+    exportAllAgesClicked = pyqtSignal() # Signal to export all ages
 
 class ProcessingSignals(QObject):
     processingNewTask = pyqtSignal(object)

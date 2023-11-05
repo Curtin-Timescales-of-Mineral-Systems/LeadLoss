@@ -50,6 +50,7 @@ class LeadLossView(QMainWindow):
 
         fileMenu = menubar.addMenu("File")
         fileMenu.addAction(importAction)
+        fileMenu.addAction(exportAllAgesAction)  # Add action to export all ages
         fileMenu.addAction(closeAction)
 
         fileMenu = menubar.addMenu("Help")
@@ -118,7 +119,13 @@ class LeadLossView(QMainWindow):
             directory='/home/matthew/Dropbox/Academia/Code/Python/UnmixConcordia/tests',
             options=QFileDialog.DontUseNativeDialog
         )[0]
-
+    
+    def getAllAgesOutputFile(self):
+        return QFileDialog.getSaveFileName(
+            caption='Save All Ages CSV file',
+            directory='/home/matthew/Dropbox/Academia/Code/Python/UnmixConcordia/tests',
+            options=QFileDialog.DontUseNativeDialog
+    )[0]
     def getImportSettings(self, callback):
         defaultSettings = Settings.get(SettingsType.IMPORT)
         dialog = LeadLossImportSettingsDialog(defaultSettings)
