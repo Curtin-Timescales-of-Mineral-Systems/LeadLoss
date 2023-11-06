@@ -6,6 +6,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMessageBox, QApplication, QStyleFactory
 
 from controller.signals import Signals, ProcessingSignals
+from controller.controller import Controller
 from model.model import LeadLossModel
 from model.settings.type import SettingsType
 from process.processing import ProgressType
@@ -49,18 +50,22 @@ class LeadLossApplication:
         self.processing_signals.processingCancelled.connect(self.onProcessingCancelled)
         self.processing_signals.processingErrored.connect(self.onProcessingErrored)
 
-        app = QApplication(sys.argv)
-        app.setStyle(QStyleFactory.create('Fusion'))
-        app.setWindowIcon(QIcon(self.get_icon()))
+        self.app = QApplication(sys.argv)
+        self.app.setStyle(QStyleFactory.create('Fusion'))
+        self.app.setWindowIcon(QIcon(self.get_icon()))
 
         self.model = LeadLossModel(self.signals)
         self.view = LeadLossView(self, self.get_title(), config.VERSION)
         self.view.signals.exportAllAgesClicked.connect(self.exportAllAges)
+        self.controller = Controller()
+        self.view = LeadLossView(self.controller, self.get_title(), config.VERSION)
         #self.cheatLoad()
 
         self.view.showMaximized()
         self.cancelProcessing()
-        sys.exit(app.exec_())
+
+    def run(self):
+        sys.exit(self.app.exec_())
 
 
     #############
@@ -189,7 +194,7 @@ class LeadLossApplication:
         for sample in self.model.samples:
             for run in sample.monteCarloRuns:
                 for age, stats in run.statistics_by_pb_loss_age.items():
-                    data.append([sample.name, age, stats.score])
+                    data.append([sample.sample_name, age, stats.score])
 
         # Use csvUtils to write data to file
         csvUtils.write_output(headers, data, filename)
@@ -235,3 +240,4 @@ class LeadLossApplication:
 
 if __name__ == '__main__':
     app = LeadLossApplication()
+    app.run()

@@ -6,7 +6,7 @@ from view.figures.sampleOutputFigure import SampleOutputFigure
 from view.panels.sample.output.sampleCalculationSettingsPanel import SampleCalculationSettingsPanel
 from view.panels.sample.output.sampleOutputResultsPanel import SampleOutputResultsPanel
 from view.panels.sample.output.sampleOutputSpotClassificationPanel import SampleOutputSpotClassificationPanel
-from sampleMonteCarloPanel import NoDataErrorMessage
+
 
 class SampleOutputPanel(QWidget):
 

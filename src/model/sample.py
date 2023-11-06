@@ -1,5 +1,6 @@
-from copy import deepcopy
 
+from copy import deepcopy
+from process.processing import ProgressType
 from PyQt5.QtCore import pyqtSignal, QObject
 
 
@@ -87,3 +88,5 @@ class SampleSignals(QObject):
     concordancyCalculated = pyqtSignal()
     monteCarloRunAdded = pyqtSignal()
     optimalAgeCalculated = pyqtSignal()
+    progress = pyqtSignal(ProgressType, float)
+    newTask = pyqtSignal(str)

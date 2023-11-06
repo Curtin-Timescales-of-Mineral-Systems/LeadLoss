@@ -1,6 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QVBoxLayout, QFileDialog, QDialog, QWidget, QTabWidget, QPushButton, QLineEdit, QHBoxLayout, \
     QStyle, QMainWindow, QAction
+from utils.ui.icons import Icons
 
 from utils.settings import Settings
 from utils.ui import icons, uiUtils
@@ -34,7 +35,7 @@ class LeadLossView(QMainWindow):
         self._createMenuBar()
         self._createCentralWidget()
 
-        controller.signals.inputDataLoaded.connect(self._onInputDataLoaded)
+        controller.signals.signals.inputDataLoaded.connect(self._onInputDataLoaded)
 
     def _createMenuBar(self):
         menubar = self.menuBar()
@@ -47,6 +48,9 @@ class LeadLossView(QMainWindow):
 
         helpAction = QAction(Icons.help(), "Help", self)
         helpAction.triggered.connect(self.controller.showHelp)
+
+        exportAllAgesAction = QAction(Icons.exportAllAges(), "Export All Ages", self)
+        exportAllAgesAction.triggered.connect(self.getAllAgesOutputFile)
 
         fileMenu = menubar.addMenu("File")
         fileMenu.addAction(importAction)
@@ -63,7 +67,7 @@ class LeadLossView(QMainWindow):
         self.centralWidget = QWidget()
         self.setCentralWidget(self.centralWidget)
 
-        self.welcomePanel = WelcomePanel(self.controller)
+        self.welcomePanel = WelcomePanel(self.controller.signals)
         self.mainPanel = None
 
         self.layout = QVBoxLayout()
@@ -72,7 +76,7 @@ class LeadLossView(QMainWindow):
 
 
     def _createBottomPanel(self):
-        return StatusBarWidget(self.controller.signals)
+        return StatusBarWidget(self.controller.signals.signals)
 
     #############
     ## Actions ##
@@ -125,7 +129,7 @@ class LeadLossView(QMainWindow):
             caption='Save All Ages CSV file',
             directory='/home/matthew/Dropbox/Academia/Code/Python/UnmixConcordia/tests',
             options=QFileDialog.DontUseNativeDialog
-    )[0]
+        )[0]
     def getImportSettings(self, callback):
         defaultSettings = Settings.get(SettingsType.IMPORT)
         dialog = LeadLossImportSettingsDialog(defaultSettings)

@@ -8,7 +8,7 @@ from scipy.stats import stats
 
 from model.monteCarloRun import MonteCarloRun
 from process import calculations
-from src.model.settings.calculation import DiscordanceClassificationMethod
+from model.settings.calculation import DiscordanceClassificationMethod
 from utils import config
 
 TIME_PER_TASK = 0.0
@@ -41,16 +41,17 @@ def _processSample(signals, sample):
     return True
 
 
+
 def _calculateConcordantAges(signals, sample):
     sampleNameText = " for '" + sample.name + "'" if sample.name else ""
-    signals.newTask("Classifying points" + sampleNameText + "...")
+    signals.newTask.emit("Classifying points" + sampleNameText + "...")
 
     settings = sample.calculationSettings
     timePerRow = TIME_PER_TASK / len(sample.validSpots)
     concordancy = []
     discordances = []
     for i, spot in enumerate(sample.validSpots):
-        signals.progress(ProgressType.CONCORDANCE, i / len(sample.validSpots))
+        signals.progress.emit(ProgressType.CONCORDANCE, i / len(sample.validSpots))
 
         time.sleep(timePerRow)
         if signals.halt():
@@ -75,11 +76,13 @@ def _calculateConcordantAges(signals, sample):
 
     sample.updateConcordance(concordancy, discordances)
     
-    # Test if there are no discordant data points
-    if not any(discordances):
-    progress = 1.0 # Set progress to 1.0 when there are no discordant points
-        signals.progress(ProgressType.OPTIMAL, progress, sample.name, None)
-    return True
+    if all(concordancy):
+        progress = 1.0  # Set progress to 1.0 when all spots are concordant
+        sample.setOptimalAge((None, None, None, None, None, None, None))  # Set the optimal age to None
+    else:
+        progress = i / len(sample.validSpots)
+    signals.progress(ProgressType.OPTIMAL, progress, sample.name, None)
+    return True    
 
 
 def _performRimAgeSampling(signals, sample):

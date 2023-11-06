@@ -48,18 +48,7 @@ class AgeStatisticPanel(QGroupBox):
         self.dValue.setValue(None)
         self.invalidPoints.setValue(None)
         self.score.setValue(None)
-
-class NoDataErrorMessage(QWidget):
-    def __init__(self):
-        super().__init__()
-
-        message_label = QLabel("There are no discordant points, so no data can be generated.")
-
-        layout = QVBoxLayout()
-        layout.addWidget(message_label)
-
-        self.setLayout(layout)
-        
+     
 class SampleOutputMonteCarloPanel(QWidget):
 
     def __init__(self, controller, sample):
@@ -70,34 +59,16 @@ class SampleOutputMonteCarloPanel(QWidget):
         self.dataTable = None
         self.figure = None
         self.currentRun = None
-        self.noDataWidget = NoDataErrorMessage()  # Create the error message widget
-        
+
         self.layout = QHBoxLayout()
         self.setLayout(self.layout)
+
+        self.noDataWidget = uiUtils.createNoDataWidget(self.sample.name)
         self.dataWidget = self._createDataWidget()
         self._showNoDataPanel()
 
         sample.signals.monteCarloRunAdded.connect(self._onMonteCarloRunAdded)
     
-    # Test for no discordant points flag
-    def _onMonteCarloRunAdded(self):
-            if self.sample.hasNoDiscordantPoints:  # Check the flag
-                self._showNoDataPanel()  # Show the error message
-                return
-
-            total = len(self.sample.monteCarloRuns)
-            if total == 1:
-                self._showDataPanel()
-                self.selectedRunInput.setValue(1)
-                self._onSelectedMonteCarloRunChanged()
-
-            self.selectedRunInput.setMaximum(total)
-            self.maximumRunLabel.setText("/" + str(total))
-            
-    def _showNoDataPanel(self):
-            uiUtils.clearChildren(self.layout)
-            self.layout.addWidget(self.noDataWidget)  # Show the error message widget
-
     #############
     ## UI spec ##
     #############
@@ -201,4 +172,12 @@ class SampleOutputMonteCarloPanel(QWidget):
     def _onSelectedMonteCarloRunChanged(self):
         index = self.selectedRunInput.value() - 1
         run = self.sample.monteCarloRuns[index]
-        self._selectRun(run)
+        
+        if not self.sample.hasOptimalAge:
+            # Display an error message
+            error_message = "There are no discordant points, so no optimal age can be computed."
+            self.optimalStatistic.update("N/A", "N/A")
+            uiUtils.showErrorMessage(error_message, self)
+        else:
+            # Continue with normal processing
+            self._selectRun(run)

@@ -37,3 +37,7 @@ class Icons:
     @staticmethod
     def close():
         return Icons.get(QStyle.SP_DialogCloseButton)
+    
+    @staticmethod
+    def exportAllAges():
+        return Icons.get(QStyle.SP_FileIcon)
