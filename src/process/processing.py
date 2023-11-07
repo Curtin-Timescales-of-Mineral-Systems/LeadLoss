@@ -8,7 +8,7 @@ from scipy.stats import stats
 
 from model.monteCarloRun import MonteCarloRun
 from process import calculations
-from src.model.settings.calculation import DiscordanceClassificationMethod
+from model.settings.calculation import DiscordanceClassificationMethod
 from utils import config
 
 TIME_PER_TASK = 0.0
@@ -115,6 +115,8 @@ def _performRimAgeSampling(signals, sample):
         runDiscordantPbPbValues = discordantPbPbValues[j]
 
         run = MonteCarloRun(
+            j,
+            sample.name,
             runConcordantUPbValues,
             runConcordantPbPbValues,
             runDiscordantUPbValues,

@@ -75,6 +75,9 @@ class Sample:
         copy = deepcopy(self)
         self.signals = signals
         return copy
+    
+    def getMonteCarloRuns(self):
+        return self.monteCarloRuns   
 
 class SampleSignals(QObject):
     processingCleared = pyqtSignal()

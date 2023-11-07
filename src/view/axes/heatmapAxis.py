@@ -32,11 +32,16 @@ class HeatmapAxis:
     ####################
 
     def clearAll(self):
+        print(f"Colorbar before clear: {self.colorbar}")
         self.axis.clear()
         if self.colorbar:
-            self.colorbar.remove()
+            try:
+                if self.colorbar.ax is not None:
+                    self.colorbar.remove()
+            except AttributeError:
+                print("Failed to remove colorbar")
             self.colorbar = None
-
+        print(f"Colorbar after clear: {self.colorbar}")
         self.axis.set_title("KS statistic")
         self.axis.set_xlabel("Age (Ma)")
         self.axis.set_ylabel("Score")
@@ -59,6 +64,7 @@ class HeatmapAxis:
         self.axis.set_xlim(X[0], X[-1])
         colourmap = self.axis.pcolorfast(X, Y, data, cmap='viridis')
         self.colorbar = self.figure.colorbar(colourmap, ax=self.axis, label="Probability of score")
+        print(f"Colorbar after creation: {self.colorbar}")
         self.canvas.draw()
 
     def clearStatisticData(self):

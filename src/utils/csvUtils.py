@@ -95,10 +95,22 @@ def read_input(input_file, settings):
 
     return headers, rows
 
+def write_monte_carlo_output(distribution, output_file, write_headers=False):
+    with open(output_file, 'a', newline='') as csvfile:  
+        writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        
+        if write_headers:
+            headers = ['SampleID', 'Run', 'Pb loss age (Ma)']
+            writer.writerow(headers)
+        
+        for row in distribution:
+            row[2] = round(row[2],2)
+            writer.writerow(row)
 
-def write_output(headers, rows, output_file):
+def write_output(headers, rows, output_file, is_monte_carlo=False):
     with open(output_file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter=CSV_DELIMITER, quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        writer.writerow(headers)
+        if not is_monte_carlo:
+            writer.writerow(headers)
         for row in rows:
             writer.writerow(row)

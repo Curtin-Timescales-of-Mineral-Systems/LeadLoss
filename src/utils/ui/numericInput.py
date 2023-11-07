@@ -58,7 +58,7 @@ class FloatInput(NumericInput):
 class AgeInput(FloatInput):
     def __init__(self, defaultValue=0.0, validation=None, sf=config.DISPLAY_SF):
         def parseFn(x):
-            if x is "":
+            if x == "":
                 return None
             return (10 ** 6) * float(x)
 

@@ -5,6 +5,7 @@ import traceback
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMessageBox, QApplication, QStyleFactory
 
+from utils.csvUtils import write_monte_carlo_output
 from controller.signals import Signals, ProcessingSignals
 from model.model import LeadLossModel
 from model.settings.type import SettingsType
@@ -131,6 +132,12 @@ class LeadLossApplication:
         if self.worker is not None:
             self.worker.halt()
 
+    def getCurrentSample(self):
+        # Return the last sample in the list
+        return self.model.samples[-1]
+
+    
+
     ############
     ## Events ##
     ############
@@ -176,6 +183,25 @@ class LeadLossApplication:
         if outputFile:
             csvUtils.write_output(headers, rows, outputFile)
         self.signals.taskComplete.emit(True, "Export complete")
+
+    def exportMonteCarloRuns(self):
+        # Get all samples
+        samples = self.model.samples
+
+        # Get the output file
+        output_file = self.view.getOutputFile()
+
+        for i, sample in enumerate(samples):
+            # Get the Monte Carlo runs from the sample
+            monte_carlo_runs = sample.getMonteCarloRuns()
+
+            # Convert each MonteCarloRun object to a list
+            distribution = [run.toList() for run in monte_carlo_runs]
+
+            # Write the Monte Carlo runs to the output file
+            write_monte_carlo_output(distribution, output_file, write_headers=(i == 0))
+
+        self.signals.taskComplete.emit(True, "Export Monte Carlo runs complete")
 
     ###########
     ## Other ##

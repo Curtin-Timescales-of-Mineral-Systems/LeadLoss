@@ -62,6 +62,11 @@ class MainPanel(QWidget):
         layout.addWidget(self.importFileLabel)
         layout.addWidget(self.importFileText)
 
+        # Add a button to export Monte Carlo runs
+        self.exportButton = QPushButton("Export Monte Carlo Runs")
+        self.exportButton.clicked.connect(self.onExportClicked)
+        layout.addWidget(self.exportButton)
+
         widget = QWidget()
         widget.setLayout(layout)
         return widget
@@ -129,3 +134,10 @@ class MainPanel(QWidget):
             self.processOneButton.setVisible(self.tabs.currentIndex() != 0)
         self.processAllButton.setVisible(True)
         self.cancelButton.setVisible(False)
+
+    def onExportClicked(self):
+        try:
+            self.controller.exportMonteCarloRuns()
+        except Exception as e:
+            # Show an error message to the user
+            print(f"An error occurred while exporting Monte Carlo runs: {e}")

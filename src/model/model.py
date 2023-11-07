@@ -1,4 +1,5 @@
 import time
+import csv
 from collections import defaultdict
 
 from model.sample import Sample
@@ -9,6 +10,7 @@ from process import processing
 from model.settings.calculation import LeadLossCalculationSettings
 from utils.settings import Settings
 
+from utils.csvUtils import write_monte_carlo_output
 
 class LeadLossModel:
 
@@ -76,7 +78,6 @@ class LeadLossModel:
         sample = self.samplesByName[sampleName]
         sample.addMonteCarloRun(run)
 
-
     def setOptimalAge(self, sampleName, args):
         sample = self.samplesByName[sampleName]
         sample.setOptimalAge(args)
@@ -113,3 +114,19 @@ class LeadLossModel:
             actualAge = self.optimalAge
 
         return actualAge, self.dValuesByAge[actualAge], self.pValuesByAge[actualAge], self.reconstructedAges[actualAge]
+    
+    ################
+    ## Export data ##
+    ################
+
+def exportMonteCarloRuns(self, append=False):
+    filename = "monte_carlo_runs.csv"
+    mode = 'a' if append else 'w'
+    with open(filename, mode, newline='') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        for i, sample in enumerate(self.samples):
+            runs = sample.getMonteCarloRuns()  # This method needs to be implemented in the Sample class
+            for j, run in enumerate(runs):
+                run.calculateOptimalAge()
+                run_list = run.toList()
+                writer.writerow(run_list)
