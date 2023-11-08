@@ -88,6 +88,10 @@ def _performRimAgeSampling(signals, sample):
     concordantSpots = [spot for spot in sample.validSpots if spot.concordant]
     discordantSpots = [spot for spot in sample.validSpots if not spot.concordant]
 
+    # Check if there are no discordant or concordant spots
+    if not concordantSpots and not discordantSpots:
+        sample.setOptimalAge(None)
+
     # Generate the discordant samples
     stabilitySamples = settings.monteCarloRuns
 
@@ -103,6 +107,15 @@ def _performRimAgeSampling(signals, sample):
         [random.normal(row.uPbValue, row.uPbStDev, stabilitySamples) for row in discordantSpots])
     discordantPbPbValues = np.transpose(
         [random.normal(row.pbPbValue, row.pbPbStDev, stabilitySamples) for row in discordantSpots])
+
+    # Method to handle the case where there are no discordant spots
+    if len(discordantUPbValues) == 0:
+        print(f"Warning: Sample {sample.name} has no discordant spots so no data can be generated")
+        return False
+    # Method to handle the case where there are no concordant spots
+    if len(concordantUPbValues) == 0:
+        print(f"Warning: Sample {sample.name} has no concordant spots so no data can be generated")
+        return False
 
     for j in range(stabilitySamples):
         if signals.halt():

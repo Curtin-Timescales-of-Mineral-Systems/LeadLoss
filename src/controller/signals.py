@@ -23,6 +23,7 @@ class Signals(QObject):
     ageDeselected = pyqtSignal()
     ageSelected = pyqtSignal([float, list]) # age, reconstructedAges
 
+    concordancyCalculated = pyqtSignal()
 
 class ProcessingSignals(QObject):
     processingNewTask = pyqtSignal(object)

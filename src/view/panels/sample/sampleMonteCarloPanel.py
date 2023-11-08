@@ -119,6 +119,7 @@ class SampleOutputMonteCarloPanel(QWidget):
     #############
 
     def _showNoDataPanel(self):
+        print("Showing no data panel")
         uiUtils.clearChildren(self.layout)
         self.layout.addWidget(self.noDataWidget)
 
@@ -160,14 +161,18 @@ class SampleOutputMonteCarloPanel(QWidget):
         self._showNoDataPanel()
 
     def _onMonteCarloRunAdded(self):
-        total = len(self.sample.monteCarloRuns)
-        if total == 1:
-            self._showDataPanel()
-            self.selectedRunInput.setValue(1)
-            self._onSelectedMonteCarloRunChanged()
+        if self.sample.hasNoOptimalAge:
+            self.noDataWidget.setText(f"Sample {self.sample.name} has no discordant or concordant spots so no data can be generated.")
+            self._showNoDataPanel()
+        else:
+            total = len(self.sample.monteCarloRuns)
+            if total == 1:
+                self._showDataPanel()
+                self.selectedRunInput.setValue(1)
+                self._onSelectedMonteCarloRunChanged()
 
-        self.selectedRunInput.setMaximum(total)
-        self.maximumRunLabel.setText("/" + str(total))
+            self.selectedRunInput.setMaximum(total)
+            self.maximumRunLabel.setText("/" + str(total))
 
     def _onSelectedMonteCarloRunChanged(self):
         index = self.selectedRunInput.value() - 1

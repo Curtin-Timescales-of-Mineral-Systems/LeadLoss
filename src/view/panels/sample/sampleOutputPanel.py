@@ -74,4 +74,10 @@ class SampleOutputPanel(QWidget):
     ############
 
     def _onConcordanceCalculated(self):
-        self._showDataPanel()
+        
+        if self.sample.hasNoOptimalAge:
+            print("Entered _onConcordanceCalculated method") 
+            self.noDataWidget.setText(f"Sample {self.sample.name} has no discordant or concordant spots so no data can be generated.")
+            self._showNoDataPanel()
+        else:
+            self._showDataPanel()
