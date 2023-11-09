@@ -119,14 +119,20 @@ class LeadLossModel:
     ## Export data ##
     ################
 
-def exportMonteCarloRuns(self, append=False):
-    filename = "monte_carlo_runs.csv"
-    mode = 'a' if append else 'w'
-    with open(filename, mode, newline='') as csvfile:
-        writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        for i, sample in enumerate(self.samples):
-            runs = sample.getMonteCarloRuns()  # This method needs to be implemented in the Sample class
-            for j, run in enumerate(runs):
-                run.calculateOptimalAge()
-                run_list = run.toList()
-                writer.writerow(run_list)
+    def exportMonteCarloRuns(self, append=False):
+        filename = QFileDialog.getSaveFileName(
+            caption='Save CSV file',
+            directory='.',
+            options=QFileDialog.DontUseNativeDialog
+        )[0]
+        if not filename:
+            return
+        mode = 'a' if append else 'w'
+        with open(filename, mode, newline='') as csvfile:
+            writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            for i, sample in enumerate(self.samples):
+                runs = sample.getMonteCarloRuns()
+                for j, run in enumerate(runs):
+                    run.calculateOptimalAge()
+                    run_list = run.toList()
+                    writer.writerow(run_list)

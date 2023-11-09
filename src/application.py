@@ -131,12 +131,7 @@ class LeadLossApplication:
     def cancelProcessing(self):
         if self.worker is not None:
             self.worker.halt()
-
-    def getCurrentSample(self):
-        # Return the last sample in the list
-        return self.model.samples[-1]
-
-    
+   
 
     ############
     ## Events ##
@@ -191,15 +186,18 @@ class LeadLossApplication:
         # Get the output file
         output_file = self.view.getOutputFile()
 
-        for i, sample in enumerate(samples):
+        # Initialize an empty list for the distribution
+        distribution = []
+
+        for sample in samples:
             # Get the Monte Carlo runs from the sample
             monte_carlo_runs = sample.getMonteCarloRuns()
 
             # Convert each MonteCarloRun object to a list
-            distribution = [run.toList() for run in monte_carlo_runs]
+            distribution.extend([run.toList() for run in monte_carlo_runs])
 
-            # Write the Monte Carlo runs to the output file
-            write_monte_carlo_output(distribution, output_file, write_headers=(i == 0))
+        # Write the Monte Carlo runs to the output file
+        write_monte_carlo_output(distribution, output_file, write_headers=True)
 
         self.signals.taskComplete.emit(True, "Export Monte Carlo runs complete")
 

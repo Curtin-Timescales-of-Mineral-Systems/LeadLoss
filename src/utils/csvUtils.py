@@ -107,7 +107,7 @@ def write_monte_carlo_output(distribution, output_file, write_headers=False):
             row[2] = round(row[2],2)
             writer.writerow(row)
 
-def write_output(headers, rows, output_file, is_monte_carlo=False):
+def write_output(headers, rows, output_file):
     with open(output_file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter=CSV_DELIMITER, quotechar='|', quoting=csv.QUOTE_MINIMAL)
         if not is_monte_carlo:
