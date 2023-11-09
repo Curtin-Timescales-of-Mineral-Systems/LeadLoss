@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QTabWidget, QVBoxLayout, QPushButton, QLabel, QLineEdit, QHBoxLayout, QStyle, \
-    QSpacerItem
+    QSpacerItem, QMessageBox
 
 from utils.ui.icons import Icons
 from view.panels.sample.samplePanel import SamplePanel
@@ -134,10 +134,11 @@ class MainPanel(QWidget):
             self.processOneButton.setVisible(self.tabs.currentIndex() != 0)
         self.processAllButton.setVisible(True)
         self.cancelButton.setVisible(False)
-
+    
     def onExportClicked(self):
         try:
-            self.controller.exportMonteCarloRuns()
-        except Exception as e:
+            self.controller.exportMonteCarloRuns() 
+        except IOError as e:
+            self.controller.exception_hook(type(e), e, e.__traceback__)
             # Show an error message to the user
-            print(f"An error occurred while exporting Monte Carlo runs: {e}")
+            QMessageBox.critical(self, "Export Error", f"An error occurred while exporting Monte Carlo runs: {e}")

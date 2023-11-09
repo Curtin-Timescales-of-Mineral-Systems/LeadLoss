@@ -180,6 +180,7 @@ class LeadLossApplication:
         self.signals.taskComplete.emit(True, "Export complete")
 
     def exportMonteCarloRuns(self):
+
         # Get all samples
         samples = self.model.samples
 
