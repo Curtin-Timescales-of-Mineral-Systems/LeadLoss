@@ -76,8 +76,8 @@ def _calculateConcordantAges(signals, sample):
     sample.updateConcordance(concordancy, discordances)
     
     if discordances == 0:
-    signals.progress(ProgressType.OPTIMAL, progress, sample.name, None)
-    return True
+        signals.progress(ProgressType.OPTIMAL, progress, sample.name, None)
+        return True
 
 
 def _performRimAgeSampling(signals, sample):
