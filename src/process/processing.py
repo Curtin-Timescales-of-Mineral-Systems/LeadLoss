@@ -19,13 +19,9 @@ class ProgressType(Enum):
     SAMPLING = 1,
     OPTIMAL = 2,
 
-
 def processSamples(signals, samples):
     for sample in samples:
-        completed = _processSample(signals, sample)
-        if not completed:
-            return
-
+        _processSample(signals, sample)
     signals.completed()
 
 
@@ -34,9 +30,7 @@ def _processSample(signals, sample):
     if not completed:
         return False
 
-    completed = _performRimAgeSampling(signals, sample)
-    if not completed:
-        return False
+    _performRimAgeSampling(signals, sample)
 
     return True
 
@@ -88,6 +82,10 @@ def _performRimAgeSampling(signals, sample):
     concordantSpots = [spot for spot in sample.validSpots if spot.concordant]
     discordantSpots = [spot for spot in sample.validSpots if not spot.concordant]
 
+    # If either list is empty, return immediately
+    if not concordantSpots or not discordantSpots:
+        return False
+
     # Generate the discordant samples
     stabilitySamples = settings.monteCarloRuns
 
@@ -104,6 +102,14 @@ def _performRimAgeSampling(signals, sample):
     discordantPbPbValues = np.transpose(
         [random.normal(row.pbPbValue, row.pbPbStDev, stabilitySamples) for row in discordantSpots])
 
+    # Check if the lists are empty before processing
+    # Skip samples that have 2 or less discordant spots
+    if len(discordantSpots) <= 2:
+        return False
+    
+    if len(concordantUPbValues) == 0 or len(discordantUPbValues) == 0:
+        return False
+    
     for j in range(stabilitySamples):
         if signals.halt():
             signals.cancelled()
