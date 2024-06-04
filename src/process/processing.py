@@ -233,3 +233,5 @@ def calculateHeatmapData(signals, runs, settings):
             data[row][col] = cdfs[row + 1] - cdfs[row]
 
     signals.progress(data, settings)
+
+
