@@ -173,7 +173,7 @@ class LeadLossApplication:
     ## Export ##
     ############
 
-    def exportCSV(self, headers, rows):
+    def exportCSV(self, headers, rows, is_monte_carlo=False):
         outputFile = self.view.getOutputFile()
         if outputFile:
             csvUtils.write_output(headers, rows, outputFile)
