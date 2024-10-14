@@ -24,7 +24,7 @@ class Sample:
         self.optimalAgeNumberOfInvalidPoints = None
         self.optimalAgeScore = None
         self.monteCarloRuns = []
-        self.hasOptimalAge = False  # Initialize the flag to False
+        # self.hasOptimalAge = False  # Initialize the flag to False
 
     def concordantSpots(self):
         return [spot for spot in self.validSpots if spot.concordant]
@@ -67,11 +67,11 @@ class Sample:
         self.optimalAgeNumberOfInvalidPoints = args[5]
         self.optimalAgeScore = args[6]
 
-        # Check if all arguments are None, and set the flag accordingly
-        if all(arg is None for arg in args):
-            self.hasOptimalAge = False
-        else:
-            self.hasOptimalAge = True
+        # # Check if all arguments are None, and set the flag accordingly
+        # if all(arg is None for arg in args):
+        #     self.hasOptimalAge = False
+        # else:
+        #     self.hasOptimalAge = True
 
         # Emit the signal if self.signals is not None
         if self.signals:

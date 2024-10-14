@@ -25,17 +25,17 @@ class SampleOutputPanel(QWidget):
 
         self.sample.signals.concordancyCalculated.connect(self._onConcordanceCalculated)
 
-    def _showNoDataPanel(self):
-        if not self.sample.hasOptimalAge:  
-            # Display an error message when there is no optimal age
-            error_label = QLabel("There is no optimal age, so no data can be generated.")
-            self.layout.addWidget(error_label)
-        else:
-            # Show the regular data widget
-            self.layout.addWidget(self.dataWidget)
+    # def _showNoDataPanel(self):
+    #     if not self.sample.hasOptimalAge:  
+    #         # Display an error message when there is no optimal age
+    #         error_label = QLabel("There is no optimal age, so no data can be generated.")
+    #         self.layout.addWidget(error_label)
+    #     else:
+    #         # Show the regular data widget
+    #         self.layout.addWidget(self.dataWidget)
 
-    def _onConcordanceCalculated(self):
-        self._showNoDataPanel()
+    # def _onConcordanceCalculated(self):
+    #     self._showNoDataPanel()
 
 
     ########

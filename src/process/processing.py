@@ -8,7 +8,7 @@ from scipy.stats import stats
 
 from model.monteCarloRun import MonteCarloRun
 from process import calculations
-from src.model.settings.calculation import DiscordanceClassificationMethod
+from model.settings.calculation import DiscordanceClassificationMethod
 from utils import config
 
 TIME_PER_TASK = 0.0
@@ -75,9 +75,9 @@ def _calculateConcordantAges(signals, sample):
 
     sample.updateConcordance(concordancy, discordances)
     
-    if discordances == 0:
-        signals.progress(ProgressType.OPTIMAL, progress, sample.name, None)
-        return True
+    # if discordances == 0:
+    #     signals.progress(ProgressType.OPTIMAL, progress, sample.name, None)
+    #     return True
 
 
 def _performRimAgeSampling(signals, sample):

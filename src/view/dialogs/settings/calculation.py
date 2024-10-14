@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QVBoxLayout, QGroupBox, QFormLayout, QLabel, QWidget
 
 from process.dissimilarityTests import DissimilarityTest
 from model.settings.type import SettingsType
-from src.model.settings.calculation import DiscordanceClassificationMethod
+from model.settings.calculation import DiscordanceClassificationMethod
 from utils import stringUtils
 from model.settings.calculation import LeadLossCalculationSettings
 from utils.ui.numericInput import PercentageInput, AgeInput, IntInput
