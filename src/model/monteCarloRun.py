@@ -21,16 +21,22 @@ class MonteCarloRunPbLossAgeStatistics:
             self.score = self.test_score
 
 class MonteCarloRun:
-    def __init__(self,
+    def __init__(self, 
+                 run_number,
+                 sample_name,
                  concordant_uPb,
                  concordant_pbPb,
                  discordant_uPb,
                  discordant_pbPb):
 
+        self.run_number = run_number
+        self.sample_name = sample_name
         self.concordant_uPb = concordant_uPb
         self.concordant_pbPb = concordant_pbPb
         self.discordant_uPb = discordant_uPb
         self.discordant_pbPb = discordant_pbPb
+        
+
         self.concordant_ages = []
         for concordantUPb, concordantPbPb in zip(concordant_uPb, concordant_pbPb):
             concordantAge = calculations.concordant_age(concordantUPb, concordantPbPb)
@@ -44,6 +50,8 @@ class MonteCarloRun:
         self.optimal_statistic = None
 
         self.heatmapColumnData = None
+
+        self.lead_loss_ages = []
 
     def samplePbLossAge(self, leadLossAge, dissimilarity_test, penalise_invalid_ages):
         leadLossUPb = calculations.u238pb206_from_age(leadLossAge)
@@ -61,6 +69,8 @@ class MonteCarloRun:
             dissimilarity_test,
             penalise_invalid_ages
         )
+
+        self.lead_loss_ages.append(leadLossAge)
 
     def calculateOptimalAge(self):
         results = [(age, statistic.score) for age, statistic in self.statistics_by_pb_loss_age.items()]
@@ -111,3 +121,6 @@ class MonteCarloRun:
                 value = np.mean([self.statistics_by_pb_loss_age[age].score for age in colAges[col]])
             colData.append(value)
         self.heatmapColumnData = colData
+
+    def toList(self):
+        return [self.sample_name, self.run_number, self.optimal_pb_loss_age / 1_000_000] #Convert to Ma

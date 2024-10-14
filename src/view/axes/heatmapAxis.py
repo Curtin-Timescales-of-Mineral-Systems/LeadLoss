@@ -34,9 +34,11 @@ class HeatmapAxis:
     def clearAll(self):
         self.axis.clear()
         if self.colorbar:
-            self.colorbar.remove()
-            self.colorbar = None
-
+            try:
+                if self.colorbar.ax is not None:
+                    self.colorbar.remove()
+            except AttributeError:
+                self.colorbar = None
         self.axis.set_title("KS statistic")
         self.axis.set_xlabel("Age (Ma)")
         self.axis.set_ylabel("Score")
