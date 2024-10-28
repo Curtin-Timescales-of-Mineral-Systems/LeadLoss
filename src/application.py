@@ -187,6 +187,11 @@ class LeadLossApplication:
         # Get the output file
         output_file = self.view.getOutputFile()
 
+        # Check if the user canceled the dialog
+        if not output_file:
+            self.signals.taskComplete.emit(False, "Export canceled by user")
+            return  # Exit the function early
+
         # Initialize an empty list for the distribution
         distribution = []
 
