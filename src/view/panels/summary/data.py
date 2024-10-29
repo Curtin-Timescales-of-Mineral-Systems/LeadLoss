@@ -88,12 +88,12 @@ class SummaryDataPanel(QWidget):
         self.dataTable.setItem(sample.id, 5, create(sample.optimalAgeUpperBound/(10**6)))
         self.dataTable.setItem(sample.id, 6, create(sample.optimalAgeDValue))
         self.dataTable.setItem(sample.id, 7, create(sample.optimalAgePValue))
-        self.dataTable.setItem(sample.id, 7, create(sample.optimalAgeScore))
+        self.dataTable.setItem(sample.id, 8, create(sample.optimalAgeScore))
         self.dataTable.update()
         self.dataTable.resizeColumnsToContents()
 
     def _onExportClicked(self):
-        n = 8
+        n = self.dataTable.columnCount()
         headers = [self.dataTable.horizontalHeaderItem(i).text() for i in range(n)]
         headers = [header.replace("\n", " ") for header in headers]
         data = [[self.dataTable.item(row, col).text() for col in range(n)] for row in range(self.dataTable.rowCount())]
