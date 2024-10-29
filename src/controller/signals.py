@@ -30,3 +30,4 @@ class ProcessingSignals(QObject):
     processingCompleted = pyqtSignal(object)
     processingCancelled = pyqtSignal()
     processingErrored = pyqtSignal(object)
+    processingSkipped = pyqtSignal(str, str)

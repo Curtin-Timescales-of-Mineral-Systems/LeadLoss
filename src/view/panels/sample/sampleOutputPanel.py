@@ -24,7 +24,8 @@ class SampleOutputPanel(QWidget):
         self._showNoDataPanel()
 
         self.sample.signals.concordancyCalculated.connect(self._onConcordanceCalculated)
-
+        self.sample.signals.skipped.connect(self._onSampleSkipped)
+    
     ########
     ## UI ##
     ########
@@ -61,8 +62,16 @@ class SampleOutputPanel(QWidget):
     ## Actions ##
     #############
 
+    def _onSampleSkipped(self):
+        self._showNoDataPanel()
+    
     def _showNoDataPanel(self):
         uiUtils.clearChildren(self.layout)
+        if self.sample.skip_reason:
+            message = f"Skipped during processing. Sample '{self.sample.name}' has {self.sample.skip_reason}."
+        else:
+            message = None
+        self.noDataWidget = uiUtils.createNoDataWidget(self.sample.name, message)
         self.layout.addWidget(self.noDataWidget)
 
     def _showDataPanel(self):
