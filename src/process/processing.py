@@ -74,9 +74,9 @@ def _calculateConcordantAges(signals, sample):
         concordancy.append(concordant)
 
     sample.updateConcordance(concordancy, discordances)
+
     signals.progress(ProgressType.CONCORDANCE, 1.0, sample.name, concordancy, discordances)
     return True, None  # Indicate success
-
 
 def _performRimAgeSampling(signals, sample):
     sampleNameText = " for '" + sample.name + "'" if sample.name else ""

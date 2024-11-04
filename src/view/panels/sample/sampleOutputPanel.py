@@ -24,6 +24,7 @@ class SampleOutputPanel(QWidget):
         self._showNoDataPanel()
 
         self.sample.signals.concordancyCalculated.connect(self._onConcordanceCalculated)
+
         self.sample.signals.skipped.connect(self._onSampleSkipped)
     
     ########
