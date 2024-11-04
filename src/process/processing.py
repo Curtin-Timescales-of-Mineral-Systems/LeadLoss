@@ -21,18 +21,24 @@ class ProgressType(Enum):
 
 def processSamples(signals, samples):
     for sample in samples:
-        _processSample(signals, sample)
+        completed, skip_reason = _processSample(signals, sample)
+        if not completed:
+            if skip_reason:
+                signals.skipped(sample.name, skip_reason)  # Send skip reason back to main thread
+            continue
     signals.completed()
 
-
 def _processSample(signals, sample):
-    completed = _calculateConcordantAges(signals, sample)
+    completed, skip_reason = _calculateConcordantAges(signals, sample)
     if not completed:
-        return False
+        return False, skip_reason
 
-    _performRimAgeSampling(signals, sample)
+    completed, skip_reason = _performRimAgeSampling(signals, sample)
+    if not completed:
+        return False, skip_reason
 
-    return True
+    return True, None
+
 
 
 def _calculateConcordantAges(signals, sample):
@@ -49,7 +55,7 @@ def _calculateConcordantAges(signals, sample):
         time.sleep(timePerRow)
         if signals.halt():
             signals.cancelled()
-            return False
+            return False, "processing halted by user"
 
         if settings.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
             discordance = calculations.discordance(spot.uPbValue, spot.pbPbValue)
@@ -68,11 +74,9 @@ def _calculateConcordantAges(signals, sample):
         concordancy.append(concordant)
 
     sample.updateConcordance(concordancy, discordances)
-    
-    # if discordances == 0:
-    #     signals.progress(ProgressType.OPTIMAL, progress, sample.name, None)
-    #     return True
 
+    signals.progress(ProgressType.CONCORDANCE, 1.0, sample.name, concordancy, discordances)
+    return True, None  # Indicate success
 
 def _performRimAgeSampling(signals, sample):
     sampleNameText = " for '" + sample.name + "'" if sample.name else ""
@@ -84,11 +88,17 @@ def _performRimAgeSampling(signals, sample):
     concordantSpots = [spot for spot in sample.validSpots if spot.concordant]
     discordantSpots = [spot for spot in sample.validSpots if not spot.concordant]
 
-    # If either list is empty, return immediately
-    if not concordantSpots or not discordantSpots:
-        return False
+    # If there are no concordant spots
+    if not concordantSpots:
+        return False, "no concordant spots"
+    # If there are no discordant spots
+    if not discordantSpots:
+        return False, "no discordant spots"
+    # If there are fewer than 3 discordant spots
+    if len(discordantSpots) <= 2:
+        return False, "fewer than 3 discordant spots"
 
-    # Generate the discordant samples
+    # Proceed with processing
     stabilitySamples = settings.monteCarloRuns
 
     # Reseed to avoid generating the same random numbers every time
@@ -104,18 +114,11 @@ def _performRimAgeSampling(signals, sample):
     discordantPbPbValues = np.transpose(
         [random.normal(row.pbPbValue, row.pbPbStDev, stabilitySamples) for row in discordantSpots])
 
-    # Check if the lists are empty before processing
-    # Skip samples that have 2 or less discordant spots
-    if len(discordantSpots) <= 2:
-        return False
-    
-    if len(concordantUPbValues) == 0 or len(discordantUPbValues) == 0:
-        return False
-    
+    # Continue processing
     for j in range(stabilitySamples):
         if signals.halt():
             signals.cancelled()
-            return False
+            return False, "processing halted by user"
 
         runConcordantUPbValues = concordantUPbValues[j]
         runConcordantPbPbValues = concordantPbPbValues[j]
@@ -138,7 +141,8 @@ def _performRimAgeSampling(signals, sample):
         signals.progress(ProgressType.SAMPLING, progress, sample.name, run)
         if j % 5 == 0 or j == stabilitySamples - 1:
             _calculateOptimalAge(signals, sample, progress)
-    return True
+    return True, None  # Indicate success
+
 
 def _performSingleRun(settings, run):
     # Generate the lead loss age samples

@@ -67,6 +67,7 @@ class SampleOutputMonteCarloPanel(QWidget):
         self.dataWidget = self._createDataWidget()
         self._showNoDataPanel()
 
+        sample.signals.skipped.connect(self._onSampleSkipped)
         sample.signals.monteCarloRunAdded.connect(self._onMonteCarloRunAdded)
 
     # def _showNoDataPanel(self):
@@ -130,8 +131,16 @@ class SampleOutputMonteCarloPanel(QWidget):
     ## Actions ##
     #############
 
+    def _onSampleSkipped(self):
+        self._showNoDataPanel()
+
     def _showNoDataPanel(self):
         uiUtils.clearChildren(self.layout)
+        if self.sample.skip_reason:
+            message = f"Skipped during processing. Sample '{self.sample.name}' has {self.sample.skip_reason}."
+        else:
+            message = None
+        self.noDataWidget = uiUtils.createNoDataWidget(self.sample.name, message)
         self.layout.addWidget(self.noDataWidget)
 
     def _showDataPanel(self):
@@ -147,6 +156,7 @@ class SampleOutputMonteCarloPanel(QWidget):
         self.dataTable.resizeColumnsToContents()
         self.dataTable.resizeRowsToContents()
         self.dataTable.viewport().update()
+
 
     ###################
     ## Age selection ##

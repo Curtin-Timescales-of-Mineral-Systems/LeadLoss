@@ -26,12 +26,19 @@ class Sample:
         self.monteCarloRuns = []
         # self.hasOptimalAge = False  # Initialize the flag to False
 
+        self.skip_reason = None  # Add this line
+
     def concordantSpots(self):
         return [spot for spot in self.validSpots if spot.concordant]
 
     def discordantSpots(self):
         return [spot for spot in self.validSpots if not spot.concordant]
 
+    def setSkipReason(self, reason):
+        self.skip_reason = reason
+        if self.signals:
+            self.signals.skipped.emit()
+            
     ##################
     ## Calculations ##
     ##################
@@ -93,3 +100,4 @@ class SampleSignals(QObject):
     concordancyCalculated = pyqtSignal()
     monteCarloRunAdded = pyqtSignal()
     optimalAgeCalculated = pyqtSignal()
+    skipped = pyqtSignal()

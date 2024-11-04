@@ -11,6 +11,7 @@ class SignalType(Enum):
     COMPLETED = 3,
     CANCELLED = 4,
     ERRORED = 5,
+    SKIPPED = 6,
 
 
 """
@@ -41,6 +42,10 @@ class ProcessSignals():
 
     def setHalt(self):
         self._halt.value = 1
+
+    def skipped(self, sample_name, skip_reason):
+        self.queue.put((SignalType.SKIPPED, sample_name, skip_reason))
+
 
 # Can't be part of AsyncTask as this function must be picklable under windows:
 # (see https://docs.python.org/2/library/multiprocessing.html#windows)
@@ -96,6 +101,12 @@ class AsyncTask(QThread):
         if output[0] is SignalType.ERRORED:
             self.pyqtSignals.processingErrored.emit(output[1:])
             self.running = False
+            return
+
+        if output[0] is SignalType.SKIPPED:
+            sample_name = output[1]
+            skip_reason = output[2]
+            self.pyqtSignals.processingSkipped.emit(sample_name, skip_reason)
             return
 
     def halt(self):

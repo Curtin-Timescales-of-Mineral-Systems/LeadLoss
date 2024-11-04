@@ -49,6 +49,8 @@ class LeadLossApplication:
         self.processing_signals.processingCompleted.connect(self.onProcessingCompleted)
         self.processing_signals.processingCancelled.connect(self.onProcessingCancelled)
         self.processing_signals.processingErrored.connect(self.onProcessingErrored)
+        self.processing_signals.processingSkipped.connect(self.onProcessingSkipped)
+
 
         app = QApplication(sys.argv)
         app.setStyle(QStyleFactory.create('Fusion'))
@@ -131,7 +133,7 @@ class LeadLossApplication:
     def cancelProcessing(self):
         if self.worker is not None:
             self.worker.halt()
-   
+
 
     ############
     ## Events ##
@@ -169,6 +171,13 @@ class LeadLossApplication:
         self.signals.taskComplete.emit(True, "Processing complete")
         self.signals.processingFinished.emit()
 
+    def onProcessingSkipped(self, sample_name, skip_reason):
+        # Find the sample by name
+        sample = next((s for s in self.model.samples if s.name == sample_name), None)
+        if sample:
+            sample.setSkipReason(skip_reason)
+
+
     ############
     ## Export ##
     ############
@@ -186,6 +195,11 @@ class LeadLossApplication:
 
         # Get the output file
         output_file = self.view.getOutputFile()
+
+        # Check if the user canceled the dialog
+        if not output_file:
+            self.signals.taskComplete.emit(False, "Export canceled by user")
+            return  # Exit the function early
 
         # Initialize an empty list for the distribution
         distribution = []
