@@ -13,7 +13,7 @@ PB_PB_STR = "²⁰⁷Pb/²⁰⁶Pb"
 ERROR_SIGMA_OPTIONS = [2, 1]
 ERROR_TYPE_OPTIONS = ["Absolute", "Percentage"]
 
-SAVE_FILE = "../leadloss_save_data.pkl"
+SAVE_FILE = "./leadloss_save_data.pkl"
 
 
 ###############
