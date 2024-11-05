@@ -4,10 +4,10 @@
 
 ![Building](https://github.com/MatthewDaggitt/LeadLoss/workflows/Python%20executable/badge.svg)
 
-A program for reconstructing the ages of samples that have undergone lead loss.
+A program for estimating the most likely time of lead loss from discordant zircon samples.
 
 #### Standalone executables
 
-Standalone executables for Ubuntu, Windows and MacOS are available 
+Standalone executables for Windows and MacOS are available 
 [here](https://github.com/MatthewDaggitt/LeadLoss/releases). These should be downloadable
 and runnable without any further action.
