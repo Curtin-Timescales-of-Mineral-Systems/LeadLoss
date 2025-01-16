@@ -132,7 +132,9 @@ class LeadLossView(QMainWindow):
         def outerCallback(result):
             if result == QDialog.Rejected:
                 return None
+
             callback(dialog.settings)
 
         dialog.finished.connect(outerCallback)
         dialog.show()
+

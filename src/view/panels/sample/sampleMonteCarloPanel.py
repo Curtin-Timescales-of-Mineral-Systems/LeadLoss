@@ -67,7 +67,6 @@ class SampleOutputMonteCarloPanel(QWidget):
         self.dataWidget = self._createDataWidget()
         self._showNoDataPanel()
 
-        sample.signals.skipped.connect(self._onSampleSkipped)
         sample.signals.monteCarloRunAdded.connect(self._onMonteCarloRunAdded)
 
     # def _showNoDataPanel(self):
@@ -79,8 +78,8 @@ class SampleOutputMonteCarloPanel(QWidget):
     #         # Show the regular data widget
     #         self.layout.addWidget(self.dataWidget)
 
-    # def _onMonteCarloRunAdded(self):
-    #     self._showNoDataPanel()
+    def _onMonteCarloRunAdded(self):
+        self._showNoDataPanel()
 
     #############
     ## UI spec ##
@@ -156,7 +155,6 @@ class SampleOutputMonteCarloPanel(QWidget):
         self.dataTable.resizeColumnsToContents()
         self.dataTable.resizeRowsToContents()
         self.dataTable.viewport().update()
-
 
     ###################
     ## Age selection ##

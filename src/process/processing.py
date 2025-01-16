@@ -7,7 +7,9 @@ import scipy as sp
 from scipy.stats import stats
 
 from model.monteCarloRun import MonteCarloRun
+from model.monteCarloRunWetherill import MonteCarloRunWetherill
 from process import calculations
+from process import calculationsWetherill as calcW
 from model.settings.calculation import DiscordanceClassificationMethod
 from utils import config
 
@@ -29,17 +31,36 @@ def processSamples(signals, samples):
     signals.completed()
 
 def _processSample(signals, sample):
-    completed, skip_reason = _calculateConcordantAges(signals, sample)
+    """
+    Master function that chooses either the Tera–W pipeline or the Wetherill pipeline
+    based on sample.calculationSettings.concordiaMode.
+    """
+    settings = sample.calculationSettings
+    mode = getattr(settings, "concordiaMode", "TW")
+
+    if mode == 'Wetherill':
+        return _processSampleWetherill(signals, sample)
+
+    else:
+        completed, skip_reason = _calculateConcordantAges(signals, sample)
+        if not completed:
+            return False, skip_reason
+
+        completed, skip_reason = _performRimAgeSampling(signals, sample)
+        if not completed:
+            return False, skip_reason
+
+        return True, None
+
+def _processSampleWetherill(signals, sample):
+    completed, skip_reason = _calculateConcordantAgesWetherill(signals, sample)
     if not completed:
         return False, skip_reason
-
-    completed, skip_reason = _performRimAgeSampling(signals, sample)
+    completed, skip_reason = _performRimAgeSamplingWetherill(signals, sample)
     if not completed:
         return False, skip_reason
 
     return True, None
-
-
 
 def _calculateConcordantAges(signals, sample):
     sampleNameText = " for '" + sample.name + "'" if sample.name else ""
@@ -77,6 +98,54 @@ def _calculateConcordantAges(signals, sample):
 
     signals.progress(ProgressType.CONCORDANCE, 1.0, sample.name, concordancy, discordances)
     return True, None  # Indicate success
+
+def _calculateConcordantAgesWetherill(signals, sample):
+    sampleNameText = f" for '{sample.name}'" if sample.name else ""
+    signals.newTask("Classifying points (Wetherill)" + sampleNameText + "...")
+
+    settings = sample.calculationSettings
+    timePerRow = TIME_PER_TASK / len(sample.validSpots)
+
+    concordancy = []
+    discordances = []
+
+    for i, spot in enumerate(sample.validSpots):
+        signals.progress(ProgressType.CONCORDANCE, i / len(sample.validSpots))
+        time.sleep(timePerRow)
+        if signals.halt():
+            signals.cancelled()
+            return False, "processing halted by user"
+
+        ratio206_238 = spot.pb206U238Value
+        error206_238 = spot.pb206U238Error
+        ratio207_235 = spot.pb207U235Value
+        error207_235 = spot.pb207U235Error
+
+        if settings.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
+            # Wetherill version of "percentage discordance"
+            disc = calcW.discordance_wetherill(ratio206_238, ratio207_235)
+            is_concordant = (disc < settings.discordancePercentageCutoff)
+            discordances.append(disc)
+            # print("DEBUG => ratio206_238=", ratio206_238,
+            # "ratio207_235=", ratio207_235,
+            # "=> disc=", disc)
+
+        else:
+            # Use the Wetherill version of the ellipse test
+            disc = None  # or you can store an approximate "discordance" later if you wish
+            is_concordant = calcW.isConcordantErrorEllipseWetherill(
+                ratio206_238, error206_238,
+                ratio207_235, error207_235,
+                settings.discordanceEllipseSigmas
+            )
+        # print(f"DEBUG => spot #{i}, disc={disc}, is_concordant={is_concordant}")
+        concordancy.append(is_concordant)
+
+    # 4) Store results in the sample
+    sample.updateConcordance(concordancy, discordances)
+    signals.progress(ProgressType.CONCORDANCE, 1.0, sample.name, concordancy, discordances)
+
+    return True, None
 
 def _performRimAgeSampling(signals, sample):
     sampleNameText = " for '" + sample.name + "'" if sample.name else ""
@@ -143,6 +212,86 @@ def _performRimAgeSampling(signals, sample):
             _calculateOptimalAge(signals, sample, progress)
     return True, None  # Indicate success
 
+def _performRimAgeSamplingWetherill(signals, sample):
+    sampleNameText = f" for '{sample.name}'" if sample.name else ""
+    signals.newTask("Sampling Pb-loss age distributions (Wetherill)" + sampleNameText + "...")
+    
+    settings = sample.calculationSettings
+
+    # 1) Gather the “concordant” and “discordant” spots
+    #    (user just classified them in Wetherill via 
+    #     _calculateConcordantAgesWetherill)
+    concordantSpots = [s for s in sample.validSpots if s.concordant]
+    discordantSpots = [s for s in sample.validSpots if not s.concordant]
+
+    if not concordantSpots:
+        return False, "no concordant spots"
+    if not discordantSpots:
+        return False, "no discordant spots"
+    if len(discordantSpots) <= 2:
+        return False, "fewer than 3 discordant spots"
+
+    # 2) Monte Carlo runs
+    stabilitySamples = settings.monteCarloRuns
+    random = np.random.RandomState()
+
+    # (a) Concordant Wetherill ratio draws
+    conc_206_238_draws = np.transpose([
+        random.normal(spot.pb206U238Value, spot.pb206U238Error, stabilitySamples)
+        for spot in concordantSpots
+    ])
+    conc_207_235_draws = np.transpose([
+        random.normal(spot.pb207U235Value, spot.pb207U235Error, stabilitySamples)
+        for spot in concordantSpots
+    ])
+
+    # (b) Discordant ratio draws
+    disc_206_238_draws = np.transpose([
+        random.normal(spot.pb206U238Value, spot.pb206U238Error, stabilitySamples)
+        for spot in discordantSpots
+    ])
+    disc_207_235_draws = np.transpose([
+        random.normal(spot.pb207U235Value, spot.pb207U235Error, stabilitySamples)
+        for spot in discordantSpots
+    ])
+
+    # 3) For each Monte Carlo iteration, store the “run” object
+    for j in range(stabilitySamples):
+        if signals.halt():
+            signals.cancelled()
+            return False, "processing halted by user"
+
+        runConcordant206_238 = conc_206_238_draws[j]
+        runConcordant207_235 = conc_207_235_draws[j]
+        runDiscordant206_238 = disc_206_238_draws[j]
+        runDiscordant207_235 = disc_207_235_draws[j]
+
+        # print(f"Monte Carlo iteration #{j}: random draws for discordant spots:")
+        # for i, (x_val, y_val) in enumerate(zip(runDiscordant206_238, runDiscordant207_235)):
+        #     print(f"  Discordant spot #{i}: 206/238 = {x_val:.6f}, 207/235 = {y_val:.6f}")
+
+        run = MonteCarloRunWetherill(
+            run_number = j,
+            sample_name = sample.name,
+            # pass the draws for the 'concordant' spots
+            concordant_206_238 = conc_206_238_draws[j],
+            concordant_207_235 = conc_207_235_draws[j],
+            # pass the draws for the 'discordant' spots
+            discordant_206_238 = disc_206_238_draws[j],
+            discordant_207_235 = disc_207_235_draws[j],
+        )
+
+        _performSingleRunWetherill(settings, run)
+        sample.addMonteCarloRun(run)
+
+        progress = (j + 1) / stabilitySamples
+        signals.progress(ProgressType.SAMPLING, progress, sample.name, run)
+
+        if j % 5 == 0 or j == stabilitySamples - 1:
+            _calculateOptimalAge(signals, sample, progress)
+        # for j in range(5): DEBUG
+        print(runDiscordant206_238[0], runDiscordant207_235[0])
+    return True, None
 
 def _performSingleRun(settings, run):
     # Generate the lead loss age samples
@@ -150,6 +299,15 @@ def _performSingleRun(settings, run):
         run.samplePbLossAge(age, settings.dissimilarityTest, settings.penaliseInvalidAges)
     run.calculateOptimalAge()
     run.createHeatmapData(settings.minimumRimAge, settings.maximumRimAge, config.HEATMAP_RESOLUTION)
+
+def _performSingleRunWetherill(settings, run):
+    # print("DEBUG => in _performSingleRunWetherill, rim ages =", settings.rimAges())
+    for age in settings.rimAges():
+        # print(f"DEBUG => calling samplePbLossAgeWetherill at age={age}")
+        run.samplePbLossAgeWetherill(age, settings.dissimilarityTest, settings.penaliseInvalidAges)
+    run.calculateOptimalAge()
+    run.createHeatmapData(settings.minimumRimAge, settings.maximumRimAge, config.HEATMAP_RESOLUTION)
+
 
 def _findOptimalIndex(valuesToCompare):
     minIndex, minValue = min(enumerate(valuesToCompare), key=lambda v: v[1])
@@ -239,5 +397,3 @@ def calculateHeatmapData(signals, runs, settings):
             data[row][col] = cdfs[row + 1] - cdfs[row]
 
     signals.progress(data, settings)
-
-

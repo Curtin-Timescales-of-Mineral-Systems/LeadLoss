@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QVBoxLayout, QGroupBox, QFormLayout, QLabel, QWidget, QCheckBox
+from PyQt5.QtWidgets import QVBoxLayout, QGroupBox, QFormLayout, QLabel, QWidget, QCheckBox, QButtonGroup, QRadioButton
 
 from process.dissimilarityTests import DissimilarityTest
 from model.settings.type import SettingsType
@@ -20,6 +20,10 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         self.setWindowTitle("Calculation settings")
         self._onDiscordanceTypeChanged()
         self._alignLabels()
+        self._postInit()
+
+    def _postInit(self):
+        self.twRadio.toggled.connect(self._onRadioToggled)
 
     def initMainSettings(self):
         layout = QVBoxLayout()
@@ -27,11 +31,39 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         layout.addWidget(self._initSamplingSettings())
         layout.addWidget(self._initDistributionComparisonSettings())
         layout.addWidget(self._initMonteCarloSettings())
-
+        layout.addWidget(self._initConcordiaModeSettings())
         widget = QWidget()
         widget.setLayout(layout)
         return widget
 
+    def _initConcordiaModeSettings(self):
+        """
+        Creates a small group box with two radio buttons: "Tera-Wasserburg" or "Wetherill."
+        """
+        self.concordiaBox = QGroupBox("Concordia mode")
+
+        # Store them in a QButtonGroup so only one can be selected
+        self.concordiaGroup = QButtonGroup()
+
+        self.twRadio = QRadioButton("Tera-Wasserburg")
+        self.wethRadio = QRadioButton("Wetherill")
+
+        self.concordiaGroup.addButton(self.twRadio)
+        self.concordiaGroup.addButton(self.wethRadio)
+
+        if getattr(self.defaultSettings, "concordiaMode", None) == "Wetherill":
+            self.wethRadio.setChecked(True)
+        else:
+            self.twRadio.setChecked(True)
+
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.twRadio)
+        vbox.addWidget(self.wethRadio)
+        self.concordiaBox.setLayout(vbox)
+        return self.concordiaBox
+
+    def _onRadioToggled(self, checked):
+        self._validate()
 
     def _initDiscordanceSettings(self):
         defaults = self.defaultSettings
@@ -146,4 +178,9 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
         settings.monteCarloRuns = self.monteCarloRunsInput.value()
 
+        if self.twRadio.isChecked():
+            settings.concordiaMode = "TW"
+        else:
+            settings.concordiaMode = "Wetherill"
+        
         return settings

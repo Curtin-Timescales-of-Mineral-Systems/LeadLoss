@@ -36,9 +36,9 @@ class SampleMonteCarloConcordiaAxis(ConcordiaAxis):
             max(monteCarloRun.discordant_uPb),
             monteCarloRun.optimal_uPb)
         self.axis.set_xlim(0, 1.2*upper_xlim)
-
+        
     def plotSelectedAge(self, selectedAge, reconstructedAges):
-        self.clearSelectedAge()
+        # self.clearSelectedAge()
 
         uPb = calculations.u238pb206_from_age(selectedAge)
         pbPb = calculations.pb207pb206_from_age(selectedAge)

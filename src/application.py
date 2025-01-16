@@ -104,31 +104,43 @@ class LeadLossApplication:
         if defaultSettings is None:
             defaultSettings = Settings.get(SettingsType.CALCULATION)
         samples = [sample]
-        callback = lambda settings : self._processSamples(samples, settings)
+        
+        def callback(finalSettings):
+            Settings.update(finalSettings)
+            self._processSamples(samples, finalSettings)
+            
         self.view.getCalculationSettings(samples, defaultSettings, callback)
+
 
     def processAllSamples(self):
         defaultSettings = Settings.get(SettingsType.CALCULATION)
         samples = self.model.samples
-        callback = lambda settings : self._processSamples(samples, settings)
+        
+        def callback(finalSettings):
+            self._processSamples(samples, finalSettings)
+
         self.view.getCalculationSettings(samples, defaultSettings, callback)
+
 
     def _processSamples(self, samples, settings):
         if not settings:
             return
-
+        
+        # This line updates the global or cached settings. Usually safe to keep:
         Settings.update(settings)
+        
         for sample in samples:
             sample.clearCalculation()
 
         clonedSamples = []
         for sample in samples:
-            sample.startCalculation(settings)
+            sample.startCalculation(settings)  # or sample.calculationSettings = settings
             clonedSamples.append(sample.createProcessingCopy())
 
         self.worker = AsyncTask(self.processing_signals, self.model.getProcessingFunction(), clonedSamples)
         self.worker.start()
         self.signals.processingStarted.emit()
+
 
     def cancelProcessing(self):
         if self.worker is not None:

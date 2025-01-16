@@ -6,9 +6,10 @@ from process import calculations
 from utils import config
 from utils.errorbarPlot import Errorbars
 from view.axes.concordia.abstractConcordiaAxis import ConcordiaAxis
+from view.axes.concordia.teraWasserburgConcordiaAxis import TeraWasserburgConcordiaAxis
+from view.axes.concordia.summaryWetherillConcordiaAxis import SummaryWetherillConcordiaAxis
 
-
-class SummaryConcordiaAxis(ConcordiaAxis):
+class SummaryConcordiaAxis(TeraWasserburgConcordiaAxis):
 
     def __init__(self, axis, samples):
         super().__init__(axis)

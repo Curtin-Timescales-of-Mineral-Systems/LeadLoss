@@ -24,6 +24,17 @@ class SampleMonteCarloFigure(AbstractFigure):
         self.currentRun = None
         self.optimalReconstructedAges = None
         self.processingComplete = True
+        """
+        signals = controller.signals
+        signals.inputDataLoaded.connect(self.onInputDataLoaded)
+        signals.inputDataCleared.connect(self.onInputDataCleared)
+        signals.processingCleared.connect(self.onProcessingCleared)
+        signals.processingStarted.connect(self.onProcessingStarted)
+        signals.allStatisticsUpdated.connect(self.onNewStatistics)
+        signals.optimalAgeFound.connect(self.onOptimalAgeFound)
+        signals.ageSelected.connect(self.onAgeSelected)
+        signals.ageDeselected.connect(self.onAgeDeselected)
+        """
         self.mouseOnStatisticsAxes = False
 
     #############
@@ -32,6 +43,31 @@ class SampleMonteCarloFigure(AbstractFigure):
 
     def selectRun(self, run):
         self.currentRun = run
+
+        # # Build a list of (age, dValue, pValue, score)
+        # statistics = []
+        # for age, stat_obj in run.statistics_by_pb_loss_age.items():
+        #     # stat_obj is a MonteCarloRunPbLossAgeStatistics instance
+        #     dValue, pValue = stat_obj.test_statistics  # test_statistics is a (D, P) tuple
+        #     sc = stat_obj.score
+        #     statistics.append((age, dValue, pValue, sc))
+
+        # if statistics:
+        #     ages, dvals, pvals, scores = zip(*statistics)
+        #     # e.g. plot the user’s “score” vs. age:
+        #     self.statisticPlot.plotStatisticData(ages, scores)
+        #     # highlight the run’s best/optimal age
+        #     self.statisticPlot.plotOptimalAge(run.optimal_pb_loss_age)
+
+        # # Continue as usual:
+        # self.concordiaPlot.plotMonteCarloRun(run)
+        # self.histogramPlot.plotDistributions(
+        #     run.concordant_ages,
+        #     run.optimal_statistic.valid_discordant_ages,
+        #     None
+        # )
+        # self.canvas.draw()
+
 
         statistics = [(age, statistics.score) for age, statistics in run.statistics_by_pb_loss_age.items()]
         self.statisticPlot.plotOptimalAge(run.optimal_pb_loss_age)
@@ -42,8 +78,43 @@ class SampleMonteCarloFigure(AbstractFigure):
 
         self.histogramPlot.plotDistributions(run.concordant_ages, self.optimalReconstructedAges, None)
         #self.histogramPlot.setReconstructedAgeRange(reconstructedAgeRange)
+        self.canvas.draw()       
+
+    def _clearAgeSelected(self):
+        self.statisticPlot.clearSelectedAge()
+        self.histogramPlot.clearReconstructedDistribution()
+        self.concordiaPlot.clearSelectedAge()
+
+    ############
+    ## Events ##
+    ############
+
+    def onProcessingStarted(self):
+        calculationSettings = self.sample.calculationSettings
+        xmin = calculationSettings.minimumRimAge / (10 ** 6)
+        xmax = calculationSettings.maximumRimAge / (10 ** 6)
+        buffer = (xmax - xmin) * 0.05
+        self.statisticPlot.setXLimits(xmin - buffer, xmax + buffer)
+
+    def onProcessingCleared(self):
+        self.clearProcessingResults()
         self.canvas.draw()
 
+    def onNewStatistics(self, statisticsByAge):
+        self.statisticPlot.plotStatisticData(statisticsByAge)
+        self.canvas.draw()
+
+    ###################
+    ## Age selection ##
+    ###################
+
+    def onAgeSelected(self, selectedAge, reconstructedAgeObjects):
+        reconstructedAges = [age.values[0] for age in reconstructedAgeObjects if age is not None]
+
+        self.histogramPlot.plotReconstructedDistribution(reconstructedAges)
+        # self.concordiaPlot.plotSelectedAge(selectedAge, reconstructedAges)
+        # self.statisticPlot.plotSelectedAge(selectedAge)
+        # self.canvas.draw()
 
     def selectAge(self, age):
         if self.currentRun is None:
@@ -58,10 +129,11 @@ class SampleMonteCarloFigure(AbstractFigure):
         self.statisticPlot.plotSelectedAge(selectedAge)
         self.canvas.draw()
 
+    def onAgeDeselected(self):
+        self.clearAgeSelected()
+
     def deselectAge(self):
         self.statisticPlot.clearSelectedAge()
-        #self.histogramPlot.clearReconstructedDistribution()
-        #self.concordiaPlot.clearSelectedAge()
         self.canvas.draw()
 
     #######################
@@ -78,9 +150,7 @@ class SampleMonteCarloFigure(AbstractFigure):
         if not self.processingComplete:
             return
 
-        if self.mouseOnStatisticsAxes:
-            self.mouseOnStatisticsAxes = False
-            self.parent.deselectAge()
+        self.mouseOnStatisticsAxes = event.inaxes == self.statisticPlot.axis
 
     def onHover(self, event):
         if not self.processingComplete:
@@ -91,4 +161,6 @@ class SampleMonteCarloFigure(AbstractFigure):
 
         x, y = self.statisticPlot.axis.transData.inverted().transform([(event.x, event.y)]).ravel()
         chosenAge = x * (10 ** 6)
+
+        #self.controller.selectAgeToCompare(chosenAge)
         self.parent.selectAge(chosenAge)
