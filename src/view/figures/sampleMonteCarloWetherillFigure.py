@@ -24,17 +24,6 @@ class SampleMonteCarloWetherillFigure(AbstractFigure):
         self.fig.canvas.mpl_connect('axes_leave_event', self.onMouseExitAxes)
 
         self.processingComplete = True
-        """
-        signals = controller.signals
-        signals.inputDataLoaded.connect(self.onInputDataLoaded)
-        signals.inputDataCleared.connect(self.onInputDataCleared)
-        signals.processingCleared.connect(self.onProcessingCleared)
-        signals.processingStarted.connect(self.onProcessingStarted)
-        signals.allStatisticsUpdated.connect(self.onNewStatistics)
-        signals.optimalAgeFound.connect(self.onOptimalAgeFound)
-        signals.ageSelected.connect(self.onAgeSelected)
-        signals.ageDeselected.connect(self.onAgeDeselected)
-        """
         self.mouseOnStatisticsAxes = False
 
     #############
@@ -42,18 +31,15 @@ class SampleMonteCarloWetherillFigure(AbstractFigure):
     #############
 
     def selectRun(self, run):
-
+        self.currentRun = run
         statistics = [(age, stat.score) for age, stat in run.statistics_by_pb_loss_age.items()]
         self.statisticPlot.plotOptimalAge(run.optimal_pb_loss_age)
         self.statisticPlot.plotStatisticData(*zip(*statistics))
         self.concordiaPlot.plotMonteCarloRun(run)
 
-        reconstructedAges = run.reconstructed_ages_by_pb_loss_age[run.optimal_pb_loss_age]
-        reconstructedAges = [age if age else 0 for age in reconstructedAges]
+        self.optimalReconstructedAges = run.optimal_statistic.valid_discordant_ages
 
-        self.histogramPlot.plotDistributions(run.concordant_ages, reconstructedAges)
-        # self.optimalReconstructedAges = run.optimal_statistic.valid_discordant_ages
-        # self.histogramPlot.plotDistributions(run.concordant_ages, self.optimalReconstructedAges, None)
+        self.histogramPlot.plotDistributions(run.concordant_ages, self.optimalReconstructedAges, None)
 
         self.canvas.draw()
 

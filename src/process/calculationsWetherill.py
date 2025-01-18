@@ -1,7 +1,7 @@
 import math
 from scipy.optimize import root_scalar, minimize_scalar
 import utils.errorUtils as errors
-from scipy.optimize import brentq
+
 ###############
 ## Constants ##
 ###############
@@ -12,7 +12,7 @@ U238_DECAY_CONSTANT = 1.55125e-10
 U235_DECAY_CONSTANT = 9.8485e-10
 U238U235_RATIO = 137.818
 
-UPPER_AGE = 1e10
+UPPER_AGE = 6e9
 LOWER_AGE = 1
 
 ################
@@ -36,16 +36,15 @@ def pb207u235_from_age(age):
 ## Wetherill Distances ##
 ########################
 
-def discordance_wetherill(r206_238, r207_235):
+def discordance_wetherill(r207_235, r206_238):
 
-    t1 = age_from_206Pb238U(r206_238)
-    t2 = age_from_207Pb235(r207_235)
-    disc = (t2 - t1) / t2
+    t207 = age_from_207Pb235(r207_235)
+    t206 = age_from_206Pb238U(r206_238)
+    result = (t207 - t206) / t207
     # Get rid of floating point inaccuracies
-    # if disc > 10 ** -10:
-    #     return disc
-    # return 0.0
-    return max(disc, 0.0)
+    if result > 10 ** -10:
+        return result
+    return 0.0
 
 def concordant_age_wetherill(r206_238, r207_235):
     """
@@ -65,13 +64,13 @@ def concordant_age_wetherill(r206_238, r207_235):
     return result.x
 
 def discordant_age_wetherill(x1, y1, x2, y2):
-    # if x1 >= x2:
-    #     return None
+    if x1 >= x2:
+        return None
 
     m = (y2 - y1)/(x2 - x1)
     c = y1 - m*x1
 
-    lower_limit = 0
+    lower_limit = age_from_207Pb235(min(errors.value(x1), errors.value(x2)))
     upper_limit = UPPER_AGE
 
     def func(t):
@@ -84,14 +83,13 @@ def discordant_age_wetherill(x1, y1, x2, y2):
     v2 = func(upper_limit)
     # print(f"  anchor=({x1:.3f},{y1:.3f}), spot=({x2:.3f},{y2:.3f}), v1={v1:.4g}, v2={v2:.4g}")
     if (v1 > 0 and v2 > 0) or (v1 < 0 and v2 < 0):
-        print("DEBUG => no sign change, skipping solver. v1=", v1, "v2=", v2)
+        # print("DEBUG => no sign change, skipping solver. v1=", v1, "v2=", v2)
         return None
 
-    # result = root_scalar(func, bracket=(lower_limit, upper_limit))
-    result = brentq(func, lower_limit, upper_limit)
-        # if not result.converged:
-        # return None
-    return result
+    result = root_scalar(func, bracket=(lower_limit, upper_limit))
+    # if not result.converged:
+    #     return None
+    return result.root
 
 ######################
 ## Covariance, etc. ##
@@ -107,19 +105,19 @@ def mahalanobisRadius(sigmas):
     return -2.* math.log(1-p)
 
 def isConcordantErrorEllipseWetherill(
-    ratio206_238, error206_238,
     ratio207_235, error207_235,
+    ratio206_238, error206_238,
     ellipseSigmas
 ):
     """
     Wetherill coords X=207/235, Y=206/238
     """
     s = mahalanobisRadius(ellipseSigmas)
-    root_s= math.sqrt(s)
 
     # check degenerate
-    if error206_238==0.:
+    if error206_238== 0:
         try:
+            root_s= math.sqrt(s)
             t_guess= age_from_206Pb238U(ratio206_238)
             x_theory= pb207u235_from_age(t_guess)
             dx= abs(ratio207_235- x_theory)
@@ -128,6 +126,7 @@ def isConcordantErrorEllipseWetherill(
             return False
     if error207_235==0.:
         try:
+            root_s= math.sqrt(s)
             t_guess= age_from_207Pb235(ratio207_235)
             y_theory= pb206u238_from_age(t_guess)
             dy= abs(ratio206_238- y_theory)
@@ -143,7 +142,7 @@ def isConcordantErrorEllipseWetherill(
         dy= (ratio206_238- y_th)/ error206_238
         return dx*dx+dy*dy
 
-    result= minimize_scalar(distanceToEllipse, bracket=(1., 5.e9))
+    result = minimize_scalar(distanceToEllipse, bracket=(1,5.*(10**9)))
     if not result.success:
         raise Exception("Error minimising wetherill ellipse:\n"+ result.message)
     return (result.fun<= s)

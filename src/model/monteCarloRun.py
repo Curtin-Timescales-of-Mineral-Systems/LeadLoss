@@ -63,6 +63,9 @@ class MonteCarloRun:
             discordant_age = calculations.discordant_age(leadLossUPb, leadLossPbPb, discordantUPb, discordantPbPb)
             discordant_ages.append(discordant_age)
 
+
+        # print(f"DEBUG => For Pb-loss age={leadLossAge:.3f} Ma, the reconstructed ages are: {discordant_ages}")
+       
         self.statistics_by_pb_loss_age[leadLossAge] = MonteCarloRunPbLossAgeStatistics(
             concordant_ages,
             discordant_ages,

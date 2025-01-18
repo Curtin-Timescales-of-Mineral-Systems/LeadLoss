@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QGroupBox, QWidget, QHBoxLayout, \
 from utils.ui import uiUtils
 from utils.ui.numericInput import AgeInput, FloatInput, IntInput
 from view.figures.sampleMonteCarloFigure import SampleMonteCarloFigure
+from view.figures.sampleMonteCarloWetherillFigure import SampleMonteCarloWetherillFigure
 
 
 class AgeStatisticPanel(QGroupBox):
@@ -69,14 +70,7 @@ class SampleOutputMonteCarloPanel(QWidget):
 
         sample.signals.monteCarloRunAdded.connect(self._onMonteCarloRunAdded)
 
-    # def _showNoDataPanel(self):
-    #     if not self.sample.hasOptimalAge:
-    #         # Display an error message when there is no optimal age
-    #         error_label = QLabel("There is no optimal age, so no data can be generated.")
-    #         self.layout.addWidget(error_label)
-    #     else:
-    #         # Show the regular data widget
-    #         self.layout.addWidget(self.dataWidget)
+
 
     def _onMonteCarloRunAdded(self):
         self._showNoDataPanel()
@@ -144,7 +138,14 @@ class SampleOutputMonteCarloPanel(QWidget):
 
     def _showDataPanel(self):
         uiUtils.clearChildren(self.layout)
-        self.layout.addWidget(self.dataWidget)
+        mode = self.sample.calculationSettings.concordiaMode
+        if mode == "Wetherill":
+            self.figure = SampleMonteCarloWetherillFigure(self.sample, self)
+        else:
+            self.figure = SampleMonteCarloFigure(self.sample, self)
+
+        # then add the figure to the layout, etc.
+        self.layout.addWidget(self.figure)
 
     def _selectRun(self, run):
         self.currentRun = run

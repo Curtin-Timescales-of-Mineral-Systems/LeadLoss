@@ -4,7 +4,8 @@ from process import calculations
 from utils import config
 from utils.errorbarPlot import Errorbars
 from view.axes.concordia.abstractConcordiaAxis import ConcordiaAxis
-
+from model import monteCarloRunWetherill
+from process import calculationsWetherill
 
 class SampleMonteCarloWetherillConcordiaAxis(ConcordiaAxis):
     """
@@ -39,27 +40,28 @@ class SampleMonteCarloWetherillConcordiaAxis(ConcordiaAxis):
     ## Internal actions ##
     ######################
 
-    def plotMonteCarloRun(self, monteCarloRun):
+    def plotMonteCarloRun(self, MonteCarloRunWetherill):
 
-        self.concordantData.set_xdata(monteCarloRun.concordant_207_235)
-        self.concordantData.set_ydata(monteCarloRun.concordant_206_238)
-        self.discordantData.set_xdata(monteCarloRun.discordant_207_235)
-        self.discordantData.set_ydata(monteCarloRun.discordant_206_238)
-        self.leadLossAge.set_xdata([monteCarloRun.optimal_207_235])
-        self.leadLossAge.set_ydata([monteCarloRun.optimal_206_238])
+        self.concordantData.set_xdata(MonteCarloRunWetherill.concordant_207_235)
+        self.concordantData.set_ydata(MonteCarloRunWetherill.concordant_206_238)
+        self.discordantData.set_xdata(MonteCarloRunWetherill.discordant_207_235)
+        self.discordantData.set_ydata(MonteCarloRunWetherill.discordant_206_238)
+        self.leadLossAge.set_xdata([MonteCarloRunWetherill.optimal_207_235])
+        self.leadLossAge.set_ydata([MonteCarloRunWetherill.optimal_206_238])
 
-        # upper_xlim = max(
-        # max(monteCarloRun.concordant_uPb),
-        # max(monteCarloRun.discordant_uPb),
-        # monteCarloRun.optimal_uPb)
-        # self.axis.set_xlim(0, 1.2*upper_xlim)
+        max_x = max(
+            max(MonteCarloRunWetherill.concordant_207_235) if len(MonteCarloRunWetherill.concordant_207_235)>0 else 0,
+            max(MonteCarloRunWetherill.discordant_207_235) if len(MonteCarloRunWetherill.discordant_207_235)>0 else 0,
+            MonteCarloRunWetherill.optimal_207_235
+        )
+        self.axis.set_xlim(0, 1.2 * max_x)
 
     def plotSelectedAge(self, selectedAge, reconstructedAges):
         self.clearSelectedAge()
 
         # In Wetherill space:
-        xVal = calculations.pb207u235_from_age(selectedAge)
-        yVal = calculations.pb206u238_from_age(selectedAge)
+        xVal = calculationsWetherill.pb207u235_from_age(selectedAge)
+        yVal = calculationsWetherill.pb206u238_from_age(selectedAge)
         self.selectedAge.set_xdata([xVal])
         self.selectedAge.set_ydata([yVal])
 
@@ -68,8 +70,8 @@ class SampleMonteCarloWetherillConcordiaAxis(ConcordiaAxis):
             if reconstructedAge is None:
                 line = []
             else:
-                xRec = calculations.pb207u235_from_age(reconstructedAge)
-                yRec = calculations.pb206u238_from_age(reconstructedAge)
+                xRec = calculationsWetherill.pb207u235_from_age(reconstructedAge)
+                yRec = calculationsWetherill.pb206u238_from_age(reconstructedAge)
                 line = [(xVal, yVal), (xRec, yRec)]
             lines.append(line)
 

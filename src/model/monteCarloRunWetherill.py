@@ -46,7 +46,7 @@ class MonteCarloRunWetherill:
         self.discordant_206_238 = discordant_206_238
         self.discordant_207_235 = discordant_207_235
 
-        # ALIASES for old Tera–W naming => UI code referencing .concordant_uPb doesn’t break
+        # ALIASES for Tera–W naming => UI code referencing .concordant_uPb doesn’t break
         self.concordant_uPb = self.concordant_206_238
         self.concordant_pbPb = self.concordant_207_235
         self.discordant_uPb = self.discordant_206_238
@@ -69,8 +69,9 @@ class MonteCarloRunWetherill:
         self.optimal_uPb = None
         self.optimal_pbPb = None
 
-        self.lead_loss_ages = []
         self.heatmapColumnData = None
+        self.lead_loss_ages = []
+        
 
     def samplePbLossAgeWetherill(
         self, leadLossAge, dissimilarity_test, penalise_invalid_ages
@@ -83,23 +84,24 @@ class MonteCarloRunWetherill:
         x_anchor = calculationsWetherill.pb207u235_from_age(leadLossAge)
         y_anchor = calculationsWetherill.pb206u238_from_age(leadLossAge)
 
-        disc_ages = []
+        concordant_ages = self.concordant_ages
+        discordant_ages = []
         for (spot207_235, spot206_238) in zip(self.discordant_207_235, self.discordant_206_238):
-            disc_age = calculationsWetherill.discordant_age_wetherill(
+            discordant_age = calculationsWetherill.discordant_age_wetherill(
                 
                  x_anchor, y_anchor, spot207_235, spot206_238
             )
-            disc_ages.append(disc_age)
+            discordant_ages.append(discordant_age)
 
-        print(f"DEBUG => For Pb-loss age={leadLossAge:.3f} Ma, the reconstructed ages are: {disc_ages}")
+        # print(f"DEBUG => For Pb-loss age={leadLossAge:.3f} Ma, the reconstructed ages are: {discordant_ages}")
         
-        statsObj = MonteCarloRunPbLossAgeStatistics(
-            self.concordant_ages,
-            disc_ages,
+        self.statistics_by_pb_loss_age[leadLossAge] = MonteCarloRunPbLossAgeStatistics(
+            concordant_ages,
+            discordant_ages,
             dissimilarity_test,
             penalise_invalid_ages
         )
-        self.statistics_by_pb_loss_age[leadLossAge] = statsObj
+        
         self.lead_loss_ages.append(leadLossAge)
 
     def calculateOptimalAge(self):
@@ -127,7 +129,7 @@ class MonteCarloRunWetherill:
         # For old UI code referencing .optimal_uPb/.optimal_pbPb
         self.optimal_uPb = self.optimal_207_235
         self.optimal_pbPb = self.optimal_206_238
-        print(f"DEBUG => Chosen optimal Pb-loss age for run #{self.run_number} is {optimalLeadLossAge:.2f} Ma\n")
+        # print(f"DEBUG => Chosen optimal Pb-loss age for run #{self.run_number} is {optimalLeadLossAge:.2f} Ma\n")
     
     def createHeatmapData(self, minAge, maxAge, resolution):
         ageInc = (maxAge - minAge) / resolution

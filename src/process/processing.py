@@ -122,35 +122,29 @@ def _calculateConcordantAgesWetherill(signals, sample):
         error207_235 = spot.pb207U235Error
 
         if settings.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
-            # Wetherill version of "percentage discordance"
-            disc = calcW.discordance_wetherill(ratio206_238, ratio207_235)
-            is_concordant = (disc < settings.discordancePercentageCutoff)
-            discordances.append(disc)
-            # print("DEBUG => ratio206_238=", ratio206_238,
-            # "ratio207_235=", ratio207_235,
-            # "=> disc=", disc)
+            discordance = calcW.discordance_wetherill(ratio207_235, ratio206_238)
+            concordant = (discordance < settings.discordancePercentageCutoff)
+            discordances.append(discordance)
 
         else:
-            # Use the Wetherill version of the ellipse test
-            disc = None  # or you can store an approximate "discordance" later if you wish
-            is_concordant = calcW.isConcordantErrorEllipseWetherill(
-                ratio206_238, error206_238,
+            discordance = None
+            concordant = calcW.isConcordantErrorEllipseWetherill(
                 ratio207_235, error207_235,
+                ratio206_238, error206_238,
                 settings.discordanceEllipseSigmas
             )
-        # print(f"DEBUG => spot #{i}, disc={disc}, is_concordant={is_concordant}")
-        concordancy.append(is_concordant)
+        concordancy.append(concordant)
+        discordances.append(discordance)
 
-    # 4) Store results in the sample
     sample.updateConcordance(concordancy, discordances)
-    signals.progress(ProgressType.CONCORDANCE, 1.0, sample.name, concordancy, discordances)
 
-    return True, None
+    signals.progress(ProgressType.CONCORDANCE, 1.0, sample.name, concordancy, discordances)
+    return True, None  # Indicate success
 
 def _performRimAgeSampling(signals, sample):
     sampleNameText = " for '" + sample.name + "'" if sample.name else ""
     signals.newTask("Sampling Pb-loss age distributions" + sampleNameText + "...")
-    # Actually compute the age distributions and statistics
+
     settings = sample.calculationSettings
 
     # Get the concordant samples
@@ -218,9 +212,6 @@ def _performRimAgeSamplingWetherill(signals, sample):
     
     settings = sample.calculationSettings
 
-    # 1) Gather the “concordant” and “discordant” spots
-    #    (user just classified them in Wetherill via 
-    #     _calculateConcordantAgesWetherill)
     concordantSpots = [s for s in sample.validSpots if s.concordant]
     discordantSpots = [s for s in sample.validSpots if not s.concordant]
 
@@ -266,10 +257,6 @@ def _performRimAgeSamplingWetherill(signals, sample):
         runDiscordant206_238 = disc_206_238_draws[j]
         runDiscordant207_235 = disc_207_235_draws[j]
 
-        # print(f"Monte Carlo iteration #{j}: random draws for discordant spots:")
-        # for i, (x_val, y_val) in enumerate(zip(runDiscordant206_238, runDiscordant207_235)):
-        #     print(f"  Discordant spot #{i}: 206/238 = {x_val:.6f}, 207/235 = {y_val:.6f}")
-
         run = MonteCarloRunWetherill(
             run_number = j,
             sample_name = sample.name,
@@ -289,8 +276,6 @@ def _performRimAgeSamplingWetherill(signals, sample):
 
         if j % 5 == 0 or j == stabilitySamples - 1:
             _calculateOptimalAge(signals, sample, progress)
-        # for j in range(5): DEBUG
-        print(runDiscordant206_238[0], runDiscordant207_235[0])
     return True, None
 
 def _performSingleRun(settings, run):
