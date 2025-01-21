@@ -1,4 +1,4 @@
-from process import processing, calculationsWetherill
+from process import processing, calculationsWetherill, calculations
 import numpy as np
 from scipy.stats import stats
 
@@ -81,12 +81,13 @@ class MonteCarloRunWetherill:
           anchor in (X, Y) = (207Pb/235U, 206Pb/238U) at leadLossAge
           then compute 'discordant ages' via discordant_age_wetherill
         """
+
         x_anchor = calculationsWetherill.pb207u235_from_age(leadLossAge)
         y_anchor = calculationsWetherill.pb206u238_from_age(leadLossAge)
 
         concordant_ages = self.concordant_ages
         discordant_ages = []
-        for (spot207_235, spot206_238) in zip(self.discordant_207_235, self.discordant_206_238):
+        for i, (spot207_235, spot206_238) in enumerate(zip(self.discordant_207_235, self.discordant_206_238)):
             discordant_age = calculationsWetherill.discordant_age_wetherill(
                 
                  x_anchor, y_anchor, spot207_235, spot206_238

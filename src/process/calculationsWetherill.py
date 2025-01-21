@@ -8,11 +8,11 @@ import utils.errorUtils as errors
 
 from process.reconstructedAge import ReconstructedAge
 
-U238_DECAY_CONSTANT = 1.55125e-10
-U235_DECAY_CONSTANT = 9.8485e-10
+U238_DECAY_CONSTANT = 1.55125*(10**-10)
+U235_DECAY_CONSTANT = 9.8485*(10**-10)
 U238U235_RATIO = 137.818
 
-UPPER_AGE = 6e9
+UPPER_AGE = 6000 * (10 ** 6)
 LOWER_AGE = 1
 
 ################
@@ -67,11 +67,18 @@ def discordant_age_wetherill(x1, y1, x2, y2):
     if x1 >= x2:
         return None
 
+    anchor_age = age_from_207Pb235(x1)
+    # Shift bracket so we skip the anchor root
+    small_margin = 1e3 # 1000 years
+    bracket_start = anchor_age + small_margin
+    if bracket_start >= UPPER_AGE:
+        return None
+
     m = (y2 - y1)/(x2 - x1)
     c = y1 - m*x1
 
-    lower_limit = age_from_207Pb235(min(errors.value(x1), errors.value(x2)))
-    upper_limit = UPPER_AGE
+    # lower_limit = age_from_207Pb235(min(errors.value(x1), errors.value(x2)))
+    # upper_limit = UPPER_AGE
 
     def func(t):
         x_t = pb207u235_from_age(t)
@@ -79,16 +86,20 @@ def discordant_age_wetherill(x1, y1, x2, y2):
         line_y = m*x_t + c
         return y_t - line_y 
 
-    v1 = func(lower_limit)
-    v2 = func(upper_limit)
-    # print(f"  anchor=({x1:.3f},{y1:.3f}), spot=({x2:.3f},{y2:.3f}), v1={v1:.4g}, v2={v2:.4g}")
+    v1 = func(bracket_start)
+    v2 = func(UPPER_AGE)
+
+
+    # v1 = func(lower_limit)
+    # v2 = func(upper_limit)
+    # print("DEBUG: bracket in Wetherill chord solver is", lower_limit, UPPER_AGE)
     if (v1 > 0 and v2 > 0) or (v1 < 0 and v2 < 0):
         # print("DEBUG => no sign change, skipping solver. v1=", v1, "v2=", v2)
         return None
 
-    result = root_scalar(func, bracket=(lower_limit, upper_limit))
-    # if not result.converged:
-    #     return None
+    result = root_scalar(func, bracket=(bracket_start, UPPER_AGE))
+    if not result.converged:
+        return None
     return result.root
 
 ######################

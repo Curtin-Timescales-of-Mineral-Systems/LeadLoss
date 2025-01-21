@@ -86,6 +86,7 @@ def discordant_age(x1, y1, x2, y2):
 
     v1 = func(lower_limit)
     v2 = func(upper_limit)
+
     if (v1 > 0 and v2 > 0) or (v1 < 0 and v2 < 0):
         return None
 
