@@ -18,6 +18,7 @@ class SampleOutputFigure(AbstractFigure):
 
         self.heatmapAxis = HeatmapAxis(self.fig.add_subplot(111), self.canvas, self.fig)
 
+        self.fig.subplots_adjust(hspace=0.7, wspace=0.4)
         self.fig.set_constrained_layout(True)
         self.fig.canvas.mpl_connect('motion_notify_event', self.onHover)
         self.fig.canvas.mpl_connect('axes_enter_event', self.onMouseEnterAxes)

@@ -20,7 +20,6 @@ class LeadLossCalculationSettings:
         self.discordanceClassificationMethod = DiscordanceClassificationMethod.PERCENTAGE
         self.discordancePercentageCutoff = 0.1
         self.discordanceEllipseSigmas = 2
-
         self.minimumRimAge = 500*(10**6)
         self.maximumRimAge = 4500*(10**6)
         self.rimAgesSampled = 100
