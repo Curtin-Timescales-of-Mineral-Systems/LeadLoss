@@ -27,6 +27,33 @@ class SummaryWetherillConcordiaAxis(ConcordiaAxis):
         # Plot the “Wetherill” curve first
         self._plotConcordiaCurve()
 
+        maxAge = calculations.UPPER_AGE // (10 ** 6)
+        minAge = calculations.LOWER_AGE // (10 ** 6)
+        # Plot concordia times
+        time = maxAge
+        i = 0
+        increments = [500, 100, 50]
+        ts2 = []
+        while i < len(increments) and time >= minAge:
+            increment = increments[i]
+            while time > increment and time >= minAge:
+                ts2.append(time)
+                time -= increment
+            i += 1
+        if time == minAge:
+            ts2.append(time)
+        xs2 = [calculations.pb207u235_from_age(t * (10 ** 6)) for t in ts2]
+        ys2 = [calculations.pb206u238_from_age(t * (10 ** 6)) for t in ts2]
+        self.axis.scatter(xs2, ys2, s=8)
+        for i, txt in enumerate(ts2):
+            self.axis.annotate(
+                str(txt) + " ",
+                (xs2[i], ys2[i]),
+                horizontalalignment="right",
+                verticalalignment="top",
+                fontsize="small"
+            )
+
         # Create and plot each sample
         for sample in samples:
             self.plotSample(sample)
@@ -73,9 +100,6 @@ class SummaryWetherillConcordiaAxis(ConcordiaAxis):
         yvals = [calculations.pb206u238_from_age(t) for t in ages]
 
         self.axis.plot(xvals, yvals, color='blue')
-
-        # Still need to add numeric labels to the curve
-        
 
 class SamplePlotWetherill:
     """

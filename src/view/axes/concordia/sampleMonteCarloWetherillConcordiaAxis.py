@@ -6,14 +6,9 @@ from utils.errorbarPlot import Errorbars
 from view.axes.concordia.abstractConcordiaAxis import ConcordiaAxis
 from model import monteCarloRunWetherill
 from process import calculationsWetherill
+import numpy as np
 
 class SampleMonteCarloWetherillConcordiaAxis(ConcordiaAxis):
-    """
-    Identical structure and naming to SampleMonteCarloConcordiaAxis,
-    but adapted for Wetherill ratios:
-      X = 207Pb/235U
-      Y = 206Pb/238U
-    """
 
     def __init__(self, axis):
         super().__init__(axis)
@@ -36,30 +31,44 @@ class SampleMonteCarloWetherillConcordiaAxis(ConcordiaAxis):
         )[0]
         self.reconstructedLines = None
 
+        self.axis.set_title("Monte Carlo Wetherill Concordia")
+        self.axis.set_xlabel("207Pb/235U")
+        self.axis.set_ylabel("206Pb/238U")
+
     ######################
     ## Internal actions ##
     ######################
 
-    def plotMonteCarloRun(self, MonteCarloRunWetherill):
+    def _plotConcordiaCurve(self):
 
-        self.concordantData.set_xdata(MonteCarloRunWetherill.concordant_207_235)
-        self.concordantData.set_ydata(MonteCarloRunWetherill.concordant_206_238)
-        self.discordantData.set_xdata(MonteCarloRunWetherill.discordant_207_235)
-        self.discordantData.set_ydata(MonteCarloRunWetherill.discordant_206_238)
-        self.leadLossAge.set_xdata([MonteCarloRunWetherill.optimal_207_235])
-        self.leadLossAge.set_ydata([MonteCarloRunWetherill.optimal_206_238])
+        minAge = calculationsWetherill.LOWER_AGE
+        maxAge = calculationsWetherill.UPPER_AGE
+        ages = np.linspace(minAge, maxAge, 200)
+
+        xvals = [calculationsWetherill.pb207u235_from_age(t) for t in ages]
+        yvals = [calculationsWetherill.pb206u238_from_age(t) for t in ages]
+
+        self.axis.plot(xvals, yvals, color='blue')
+
+    def plotMonteCarloRun(self, monteCarloRun):
+
+        self._plotConcordiaCurve()
+        self.concordantData.set_xdata(monteCarloRun.concordant_207_235)
+        self.concordantData.set_ydata(monteCarloRun.concordant_206_238)
+        self.discordantData.set_xdata(monteCarloRun.discordant_207_235)
+        self.discordantData.set_ydata(monteCarloRun.discordant_206_238)
+        self.leadLossAge.set_xdata([monteCarloRun.optimal_207_235])
+        self.leadLossAge.set_ydata([monteCarloRun.optimal_206_238])
 
         max_x = max(
-            max(MonteCarloRunWetherill.concordant_207_235) if len(MonteCarloRunWetherill.concordant_207_235)>0 else 0,
-            max(MonteCarloRunWetherill.discordant_207_235) if len(MonteCarloRunWetherill.discordant_207_235)>0 else 0,
-            MonteCarloRunWetherill.optimal_207_235
+            max(monteCarloRun.concordant_207_235) if len(monteCarloRun.concordant_207_235)>0 else 0,
+            max(monteCarloRun.discordant_207_235) if len(monteCarloRun.discordant_207_235)>0 else 0,
+            monteCarloRun.optimal_207_235
         )
         self.axis.set_xlim(0, 1.2 * max_x)
 
     def plotSelectedAge(self, selectedAge, reconstructedAges):
-        self.clearSelectedAge()
 
-        # In Wetherill space:
         xVal = calculationsWetherill.pb207u235_from_age(selectedAge)
         yVal = calculationsWetherill.pb206u238_from_age(selectedAge)
         self.selectedAge.set_xdata([xVal])
@@ -78,15 +87,15 @@ class SampleMonteCarloWetherillConcordiaAxis(ConcordiaAxis):
         self.reconstructedLines = LineCollection(
             lines, linewidths=1, colors=config.PREDICTION_COLOUR_1
         )
-        self.axis.add_collection(self.reconstructedLines)
 
     def clearSelectedAge(self):
-        self.concordantData.set_xdata([])
-        self.concordantData.set_ydata([])
-        self.discordantData.set_xdata([])
-        self.discordantData.set_ydata([])
-        self.leadLossAge.set_xdata([])
-        self.leadLossAge.set_ydata([])
+        if self.reconstructedLines:
+            self.reconstructedLines.remove()
+            self.reconstructedLines = None
+
+        self.selectedAge.set_xdata([])
+        self.selectedAge.set_ydata([])
+
 
     #############
     ## Actions ##

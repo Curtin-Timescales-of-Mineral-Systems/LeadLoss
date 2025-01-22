@@ -59,8 +59,6 @@ class LeadLossApplication:
         self.model = LeadLossModel(self.signals)
         self.view = LeadLossView(self, self.get_title(), config.VERSION)
 
-        #self.cheatLoad()
-
         self.view.showMaximized()
         self.cancelProcessing()
         sys.exit(app.exec_())
@@ -125,8 +123,6 @@ class LeadLossApplication:
     def _processSamples(self, samples, settings):
         if not settings:
             return
-        
-        # This line updates the global or cached settings. Usually safe to keep:
         Settings.update(settings)
         
         for sample in samples:
@@ -134,7 +130,7 @@ class LeadLossApplication:
 
         clonedSamples = []
         for sample in samples:
-            sample.startCalculation(settings)  # or sample.calculationSettings = settings
+            sample.startCalculation(settings)
             clonedSamples.append(sample.createProcessingCopy())
 
         self.worker = AsyncTask(self.processing_signals, self.model.getProcessingFunction(), clonedSamples)
@@ -255,7 +251,6 @@ class LeadLossApplication:
 
     def cheatLoad(self):
         try:
-            #inputFile = "/home/matthew/Downloads/Haughton.csv"
             inputFile = "/home/matthew/Code/concordia-applications/LeadLoss/tests/leadLossTest_with_errors.csv"
             Settings.setCurrentFile(inputFile)
             settings = Settings.get(SettingsType.IMPORT)

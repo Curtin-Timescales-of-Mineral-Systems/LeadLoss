@@ -38,38 +38,20 @@ class SampleMonteCarloConcordiaAxis(TeraWasserburgConcordiaAxis):
         self.axis.set_xlim(0, 1.2*upper_xlim)
         
     def plotSelectedAge(self, selectedAge, reconstructedAges):
-        # self.clearSelectedAge()
+        self.clearSelectedAge()
 
         uPb = calculations.u238pb206_from_age(selectedAge)
         pbPb = calculations.pb207pb206_from_age(selectedAge)
         self.selectedAge.set_xdata([uPb])
         self.selectedAge.set_ydata([pbPb])
 
-        lines = []
-        for reconstructedAge in reconstructedAges:
-            if reconstructedAge is None:
-                line = []
-            else:
-                line = [
-                    (calculations.u238pb206_from_age(selectedAge), calculations.pb207pb206_from_age(selectedAge)),
-                    (calculations.u238pb206_from_age(reconstructedAge), calculations.pb207pb206_from_age(reconstructedAge))
-                ]
-            lines.append(line)
-
-        self.reconstructedLines = LineCollection(
-            lines,
-            linewidths=1,
-            colors=config.PREDICTION_COLOUR_1
-        )
-        self.axis.add_collection(self.reconstructedLines)
-
     def clearSelectedAge(self):
-        self.concordantData.set_xdata([])
-        self.concordantData.set_ydata([])
-        self.discordantData.set_xdata([])
-        self.discordantData.set_ydata([])
-        self.leadLossAge.set_xdata([])
-        self.leadLossAge.set_ydata([])
+        if self.reconstructedLines:
+            self.reconstructedLines.remove()
+            self.reconstructedLines = None
+
+        self.selectedAge.set_xdata([])
+        self.selectedAge.set_ydata([])
 
 
     #############

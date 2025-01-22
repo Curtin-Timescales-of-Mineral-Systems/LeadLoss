@@ -65,15 +65,11 @@ class SampleOutputMonteCarloPanel(QWidget):
         self.setLayout(self.layout)
 
         self.noDataWidget = uiUtils.createNoDataWidget(self.sample.name)
-        self.dataWidget = self._createDataWidget()
+        # self.dataWidget = self._createDataWidget()
         self._showNoDataPanel()
 
+        sample.signals.skipped.connect(self._onSampleSkipped)
         sample.signals.monteCarloRunAdded.connect(self._onMonteCarloRunAdded)
-
-
-
-    def _onMonteCarloRunAdded(self):
-        self._showNoDataPanel()
 
     #############
     ## UI spec ##
@@ -117,7 +113,16 @@ class SampleOutputMonteCarloPanel(QWidget):
         return widget
 
     def _createDataRHS(self):
-        self.figure = SampleMonteCarloFigure(self.sample, self)
+        """Creates either the Tera–W or Wetherill figure, depending on user settings."""
+        if not self.sample.calculationSettings:
+            return QWidget() # do nothing
+
+        mode = self.sample.calculationSettings.concordiaMode
+        if mode == "Wetherill":
+            self.figure = SampleMonteCarloWetherillFigure(self.sample, self)
+        else:
+            self.figure = SampleMonteCarloFigure(self.sample, self)
+
         return self.figure
 
     #############
@@ -138,14 +143,13 @@ class SampleOutputMonteCarloPanel(QWidget):
 
     def _showDataPanel(self):
         uiUtils.clearChildren(self.layout)
-        mode = self.sample.calculationSettings.concordiaMode
-        if mode == "Wetherill":
-            self.figure = SampleMonteCarloWetherillFigure(self.sample, self)
-        else:
-            self.figure = SampleMonteCarloFigure(self.sample, self)
 
-        # then add the figure to the layout, etc.
-        self.layout.addWidget(self.figure)
+        if not self.sample.calculationSettings:
+            self._showNoDataPanel()
+            return
+
+        self.dataWidget = self._createDataWidget()
+        self.layout.addWidget(self.dataWidget)
 
     def _selectRun(self, run):
         self.currentRun = run
@@ -156,6 +160,7 @@ class SampleOutputMonteCarloPanel(QWidget):
         self.dataTable.resizeColumnsToContents()
         self.dataTable.resizeRowsToContents()
         self.dataTable.viewport().update()
+
 
     ###################
     ## Age selection ##

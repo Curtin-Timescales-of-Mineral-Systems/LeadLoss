@@ -39,7 +39,6 @@ class SampleMonteCarloFigure(AbstractFigure):
         self.optimalReconstructedAges = run.optimal_statistic.valid_discordant_ages
 
         self.histogramPlot.plotDistributions(run.concordant_ages, self.optimalReconstructedAges, None)
-        #self.histogramPlot.setReconstructedAgeRange(reconstructedAgeRange)
         self.canvas.draw()
 
     def selectAge(self, age):
@@ -48,15 +47,14 @@ class SampleMonteCarloFigure(AbstractFigure):
 
         selectedAge = self.sample.calculationSettings.getNearestSampledAge(age)
         selectedDistribution = self.currentRun.statistics_by_pb_loss_age[selectedAge].valid_discordant_ages
-        self.concordiaPlot.plotSelectedAge(age, reconstructedAges)
+        self.concordiaPlot.plotSelectedAge(age, self.optimalReconstructedAges)
         self.histogramPlot.plotDistributions(self.currentRun.concordant_ages, self.optimalReconstructedAges, selectedDistribution)
         self.statisticPlot.plotSelectedAge(selectedAge)
         self.canvas.draw()
 
     def deselectAge(self):
         self.statisticPlot.clearSelectedAge()
-        #self.histogramPlot.clearReconstructedDistribution()
-        #self.concordiaPlot.clearSelectedAge()
+        self.concordiaPlot.clearSelectedAge()
         self.canvas.draw()
 
     #######################
