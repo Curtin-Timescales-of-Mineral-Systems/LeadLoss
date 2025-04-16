@@ -54,4 +54,4 @@ If the standalone GUI does not work, ensure you have downloaded the correct vers
 ### Citation
 
 If you use LeadLoss in your research, please cite:
-Mathieson, L. (2024). LeadLoss: A Python Tool for Modelling the Timing of Lead Loss in Zircon (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.14039113
+Mathieson, L. M., Kirkland, C. L., & Daggitt, M. L. (2025). Turning trash into treasure: Extracting meaning from discordant data via a dedicated application. Geochemistry, Geophysics, Geosystems, 26, e2024GC012066. https://doi.org/10.1029/2024GC012066
