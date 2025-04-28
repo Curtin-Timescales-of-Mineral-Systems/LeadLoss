@@ -59,8 +59,6 @@ class LeadLossApplication:
         self.model = LeadLossModel(self.signals)
         self.view = LeadLossView(self, self.get_title(), config.VERSION)
 
-        #self.cheatLoad()
-
         self.view.showMaximized()
         self.cancelProcessing()
         sys.exit(app.exec_())
@@ -104,20 +102,29 @@ class LeadLossApplication:
         if defaultSettings is None:
             defaultSettings = Settings.get(SettingsType.CALCULATION)
         samples = [sample]
-        callback = lambda settings : self._processSamples(samples, settings)
+        
+        def callback(finalSettings):
+            Settings.update(finalSettings)
+            self._processSamples(samples, finalSettings)
+            
         self.view.getCalculationSettings(samples, defaultSettings, callback)
+
 
     def processAllSamples(self):
         defaultSettings = Settings.get(SettingsType.CALCULATION)
         samples = self.model.samples
-        callback = lambda settings : self._processSamples(samples, settings)
+        
+        def callback(finalSettings):
+            self._processSamples(samples, finalSettings)
+
         self.view.getCalculationSettings(samples, defaultSettings, callback)
+
 
     def _processSamples(self, samples, settings):
         if not settings:
             return
-
         Settings.update(settings)
+        
         for sample in samples:
             sample.clearCalculation()
 
@@ -129,6 +136,7 @@ class LeadLossApplication:
         self.worker = AsyncTask(self.processing_signals, self.model.getProcessingFunction(), clonedSamples)
         self.worker.start()
         self.signals.processingStarted.emit()
+
 
     def cancelProcessing(self):
         if self.worker is not None:
@@ -243,7 +251,6 @@ class LeadLossApplication:
 
     def cheatLoad(self):
         try:
-            #inputFile = "/home/matthew/Downloads/Haughton.csv"
             inputFile = "/home/matthew/Code/concordia-applications/LeadLoss/tests/leadLossTest_with_errors.csv"
             Settings.setCurrentFile(inputFile)
             settings = Settings.get(SettingsType.IMPORT)

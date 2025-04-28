@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QGroupBox, QWidget, QHBoxLayout, \
 from utils.ui import uiUtils
 from utils.ui.numericInput import AgeInput, FloatInput, IntInput
 from view.figures.sampleMonteCarloFigure import SampleMonteCarloFigure
+from view.figures.sampleMonteCarloWetherillFigure import SampleMonteCarloWetherillFigure
 
 
 class AgeStatisticPanel(QGroupBox):
@@ -64,23 +65,11 @@ class SampleOutputMonteCarloPanel(QWidget):
         self.setLayout(self.layout)
 
         self.noDataWidget = uiUtils.createNoDataWidget(self.sample.name)
-        self.dataWidget = self._createDataWidget()
+        # self.dataWidget = self._createDataWidget()
         self._showNoDataPanel()
 
         sample.signals.skipped.connect(self._onSampleSkipped)
         sample.signals.monteCarloRunAdded.connect(self._onMonteCarloRunAdded)
-
-    # def _showNoDataPanel(self):
-    #     if not self.sample.hasOptimalAge:
-    #         # Display an error message when there is no optimal age
-    #         error_label = QLabel("There is no optimal age, so no data can be generated.")
-    #         self.layout.addWidget(error_label)
-    #     else:
-    #         # Show the regular data widget
-    #         self.layout.addWidget(self.dataWidget)
-
-    # def _onMonteCarloRunAdded(self):
-    #     self._showNoDataPanel()
 
     #############
     ## UI spec ##
@@ -124,7 +113,16 @@ class SampleOutputMonteCarloPanel(QWidget):
         return widget
 
     def _createDataRHS(self):
-        self.figure = SampleMonteCarloFigure(self.sample, self)
+        """Creates either the Tera–W or Wetherill figure, depending on user settings."""
+        if not self.sample.calculationSettings:
+            return QWidget() # do nothing
+
+        mode = self.sample.calculationSettings.concordiaMode
+        if mode == "Wetherill":
+            self.figure = SampleMonteCarloWetherillFigure(self.sample, self)
+        else:
+            self.figure = SampleMonteCarloFigure(self.sample, self)
+
         return self.figure
 
     #############
@@ -145,6 +143,12 @@ class SampleOutputMonteCarloPanel(QWidget):
 
     def _showDataPanel(self):
         uiUtils.clearChildren(self.layout)
+
+        if not self.sample.calculationSettings:
+            self._showNoDataPanel()
+            return
+
+        self.dataWidget = self._createDataWidget()
         self.layout.addWidget(self.dataWidget)
 
     def _selectRun(self, run):
