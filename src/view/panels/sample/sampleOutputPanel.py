@@ -36,13 +36,20 @@ class SampleOutputPanel(QWidget):
         self.resultsAndSettingsWidget = self._createResultsAndSettingsWidget()
         self.graphWidget = SampleOutputFigure(self.controller, self.sample)
 
+        try:
+            self.resultsPanel.peakRowSelected.connect(
+                lambda idx: self.graphWidget.highlight_catalogue_row(idx if (idx is not None and idx >= 0) else None)
+            )
+        except Exception:
+            pass
+
         splitter = QSplitter(Qt.Horizontal)
         splitter.addWidget(self.resultsAndSettingsWidget)
         splitter.addWidget(self.spotClassificationWidget)
         splitter.addWidget(self.graphWidget)
-        splitter.setStretchFactor(0, 1)
-        splitter.setStretchFactor(0, 2)
-        splitter.setStretchFactor(0, 3)
+        splitter.setStretchFactor(0, 1)  # results/settings
+        splitter.setStretchFactor(1, 2)  # spot classification
+        splitter.setStretchFactor(2, 3)  # graphs
         splitter.setContentsMargins(0, 0, 0, 0)
         return splitter
 
@@ -51,8 +58,8 @@ class SampleOutputPanel(QWidget):
         self.settingsPanel = SampleCalculationSettingsPanel(self.sample)
 
         layout = QVBoxLayout()
-        layout.addWidget(self.resultsPanel)
-        layout.addWidget(self.settingsPanel)
+        layout.addWidget(self.resultsPanel, 3)   # more space to show the catalogue
+        layout.addWidget(self.settingsPanel, 1)
 
         widget = QWidget()
         widget.setLayout(layout)

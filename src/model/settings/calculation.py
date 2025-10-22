@@ -5,31 +5,57 @@ import numpy as np
 from process.dissimilarityTests import DissimilarityTest
 from model.settings.type import SettingsType
 
+
 class DiscordanceClassificationMethod(Enum):
     PERCENTAGE = "Percentage"
     ERROR_ELLIPSE = "Error ellipse"
 
     def __eq__(self, other):
-        return self.value == other.value
+        return self.value == getattr(other, "value", other)
+
 
 class LeadLossCalculationSettings:
-
     KEY = SettingsType.CALCULATION
 
     def __init__(self):
+        # Discordance
         self.discordanceClassificationMethod = DiscordanceClassificationMethod.PERCENTAGE
-        self.discordancePercentageCutoff = 0.1
+        self.discordancePercentageCutoff = 0.10     # 0..1 (10% default)
         self.discordanceEllipseSigmas = 2
 
-        self.minimumRimAge = 500*(10**6)
-        self.maximumRimAge = 4500*(10**6)
+        # Pb-loss time grid (YEARS internally)
+        self.minimumRimAge = 500 * 10**6
+        self.maximumRimAge = 4500 * 10**6
         self.rimAgesSampled = 100
 
+        # MC
         self.monteCarloRuns = 50
 
+        # Comparison
         self.dissimilarityTest = DissimilarityTest.KOLMOGOROV_SMIRNOV
-
         self.penaliseInvalidAges = True
+
+        # Legacy multi-peak (UI toggles preserved)
+        self.useSummedKS = False
+        self.summedKSSmoothSigma = 1.0
+
+        # Clustering toggles (old semantics)
+        self.use_discordant_clustering = False
+        self.relabel_clusters_per_run  = False
+
+        # Experimental extras (kept from new)
+        self.enable_ensemble_peak_picking = False
+        self.use_score_weighted_voting    = False
+        self.use_hdi_top_peak_ci          = False
+
+        # Discordant clustering knobs (used only when enabled)
+        self.dc_min_points     = 10
+        self.dc_min_sep_sigma  = 1.3
+        self.dc_max_components = 3
+
+        # Phase 4 scaffold (inactive unless you wire it later)
+        self.use_peak_match = False
+        self.peak_match_weight = 0.35
 
     def rimAges(self):
         return np.linspace(start=self.minimumRimAge, stop=self.maximumRimAge, num=self.rimAgesSampled)
@@ -39,39 +65,30 @@ class LeadLossCalculationSettings:
 
     def validate(self):
         if self.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
-            if not self.discordancePercentageCutoff:
+            if self.discordancePercentageCutoff is None:
                 return "Please enter a discordance percentage cutoff"
+            if not (0.0 <= float(self.discordancePercentageCutoff) <= 1.0):
+                return "Discordance percentage cutoff must be between 0.0 and 1.0"
 
-            if self.discordancePercentageCutoff < 0 or self.discordancePercentageCutoff > 1.0:
-                return "Discordance percentage cutoff must be between 0 and 100%"
-
-        if not self.minimumRimAge:
+        if self.minimumRimAge is None:
             return "Please enter a minimum time for radiogenic-Pb loss"
-
-        if not self.maximumRimAge:
+        if self.maximumRimAge is None:
             return "Please enter a maximum time for radiogenic-Pb loss"
-
-        if self.minimumRimAge >= self.maximumRimAge:
+        if float(self.minimumRimAge) >= float(self.maximumRimAge):
             return "The minimum rim age must be strictly less than the maximum rim age"
 
-        if not self.rimAgesSampled:
+        if self.rimAgesSampled is None:
             return "Please enter a number of samples"
+        if int(self.rimAgesSampled) < 2:
+            return "The number of samples must be ≥ 2"
 
-        if self.rimAgesSampled < 2:
-            return "The number of samples must be >= 2"
-
-        if not self.monteCarloRuns:
+        if self.monteCarloRuns is None:
             return "Please enter a number of Monte Carlo runs"
-
-        if self.monteCarloRuns < 1:
-            return "The number of Monte Carlo runs must be >= 1"
+        if int(self.monteCarloRuns) < 1:
+            return "The number of Monte Carlo runs must be ≥ 1"
 
         return None
 
     @staticmethod
     def getDefaultHeaders():
-        return [
-            "Concordant",
-            "Discordance (%)",
-            "Age (Ma)",
-        ]
+        return ["Concordant", "Discordance (%)", "Age (Ma)"]

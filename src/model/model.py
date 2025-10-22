@@ -11,6 +11,7 @@ from model.settings.calculation import LeadLossCalculationSettings
 from utils.settings import Settings
 
 from utils.csvUtils import write_monte_carlo_output
+from PyQt5.QtWidgets import QFileDialog
 
 class LeadLossModel:
 
@@ -21,6 +22,16 @@ class LeadLossModel:
         self.headers = []
         self.samples = []
         self.samplesByName = {}
+
+        # legacy state used by getters/exports in tools
+        self.rows = []
+        self.concordantRows = []
+        self.discordantRows = []
+
+        self.dValuesByAge = {}
+        self.pValuesByAge = {}
+        self.reconstructedAges = {}
+        self.optimalAge = None
 
         self.lastUpdateTime = 0
 
@@ -53,6 +64,28 @@ class LeadLossModel:
         self.discordantRows = []
 
         self.signals.inputDataCleared.emit()
+        
+    def emitSummedKS(self, sampleName, payload):
+        sample = self.samplesByName.get(sampleName)
+        if not sample:
+            return
+
+        # Optional: keep legacy attrs in sync for code that still reads them
+        try:
+            ages_ma, y_curve, peaks, *rest = payload
+            if isinstance(peaks, (list, tuple)):
+                import numpy as np
+                sample.summedKS_peaks_Ma = np.asarray(peaks, float)
+                if rest and isinstance(rest[0], (list, tuple)):
+                    ci_pairs = rest[0]
+                    sample.summedKS_ci_low_Ma  = np.asarray([lo for lo, _ in ci_pairs], float)
+                    sample.summedKS_ci_high_Ma = np.asarray([hi for _, hi in ci_pairs], float)
+        except Exception:
+            pass
+
+        # Emit to the original UI sample; SampleOutputFigure is already connected to this
+        if hasattr(sample.signals, "summedKS"):
+            sample.signals.summedKS.emit(payload)
 
     #################
     ## Calculation ##
@@ -98,11 +131,11 @@ class LeadLossModel:
             self.lastUpdateTime = now
 
     def getAgeRange(self):
-        concordantAges = [row.concordantAge for row in self.rows if row.concordant]
+        concordantAges = [row.concordantAge for row in self.rows if getattr(row, "concordant", False)]
         recAges = [recAge for ages in self.reconstructedAges.values() for recAge in ages]
         discordantAges = [recAge.values[0] for recAge in recAges if recAge]
         allAges = concordantAges + discordantAges
-        return min(allAges), max(allAges)
+        return (min(allAges), max(allAges)) if allAges else (None, None)
 
     def getNearestSampledAge(self, requestedAge):
         if not self.dValuesByAge:
@@ -128,11 +161,9 @@ class LeadLossModel:
         if not filename:
             return
         mode = 'a' if append else 'w'
-        with open(filename, mode, newline='') as csvfile:
+        with open(filename, mode, newline="") as csvfile:
             writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-            for i, sample in enumerate(self.samples):
-                runs = sample.getMonteCarloRuns()
-                for j, run in enumerate(runs):
+            for sample in self.samples:
+                for run in sample.getMonteCarloRuns():
                     run.calculateOptimalAge()
-                    run_list = run.toList()
-                    writer.writerow(run_list)
+                    writer.writerow(run.toList())

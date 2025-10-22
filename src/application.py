@@ -141,19 +141,28 @@ class LeadLossApplication:
 
     def onProcessingNewTask(self, taskDescription):
         self.signals.taskStarted.emit(taskDescription)
-
+        
     def onProcessingProgress(self, progressArgs):
-        type = progressArgs[0]
+        kind = progressArgs[0]           # renamed to avoid shadowing built-in 'type'
         progress = progressArgs[1]
 
         self.signals.taskProgress.emit(progress)
-        if type == ProgressType.CONCORDANCE and progress == 1.0:
+
+        # NEW: forward rich curve + peaks to the correct UI sample
+        if kind == "summedKS":
+            sampleName, payload = progressArgs[2:]
+            self.model.emitSummedKS(sampleName, payload)
+            return
+
+        if kind == ProgressType.CONCORDANCE and progress == 1.0:
             sampleName, concordantAges, discordances = progressArgs[2:]
             self.model.updateConcordance(sampleName, concordantAges, discordances)
-        if type == ProgressType.SAMPLING:
+
+        if kind == ProgressType.SAMPLING:
             sampleName, run = progressArgs[2:]
             self.model.addMonteCarloRun(sampleName, run)
-        if type == ProgressType.OPTIMAL:
+
+        if kind == ProgressType.OPTIMAL:
             sampleName, args = progressArgs[2:]
             self.model.setOptimalAge(sampleName, args)
 
