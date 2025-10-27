@@ -1,20 +1,378 @@
-# process/ensemble.py
+# # process/ensemble.py
+# from __future__ import annotations
+
+# import numpy as np
+# from typing import List, Dict, Optional, Tuple, Any
+# from scipy.ndimage import gaussian_filter1d
+# from scipy.signal import (
+#     find_peaks as _find_peaks,
+#     peak_prominences as _peak_prominences,
+#     peak_widths as _peak_widths,
+# )
+
+# # expose SciPy names we use everywhere under stable local aliases
+# find_peaks = _find_peaks
+# peak_prominences = _peak_prominences
+# peak_widths = _peak_widths
+
+# _EPS = 1e-12
+# DEBUG_CAND = False
+
+# # Set to 0.0 to keep all nearby apices. Set >0 (Ma) to auto-collapse close peaks later.
+# _MERGE_WITHIN_MA = 50.0
+
+
+# # -------------------------- utilities ----------------------------------------
+# def _parabolic_refine(x: np.ndarray, y: np.ndarray, k: int) -> float:
+#     """Quadratic vertex refinement using 3 points around index k; clamps to bracket."""
+#     x = np.asarray(x, float); y = np.asarray(y, float)
+#     n = y.size
+#     if k <= 0 or k >= n - 1:
+#         return float(x[k])
+#     x0, x1, x2 = float(x[k-1]), float(x[k]), float(x[k+1])
+#     y0, y1, y2 = float(y[k-1]), float(y[k]), float(y[k+1])
+#     denom = (x0 - x1) * (x0 - x2) * (x1 - x2)
+#     if abs(denom) <= _EPS:
+#         return x1
+#     a = (x2*(y1 - y0) + x1*(y0 - y2) + x0*(y2 - y1)) / denom
+#     b = (x2**2*(y0 - y1) + x1**2*(y2 - y0) + x0**2*(y1 - y2)) / denom
+#     if a == 0.0:
+#         return x1
+#     xv = -b / (2.0*a)
+#     lo, hi = (x0, x2) if x0 <= x2 else (x2, x0)
+#     return float(min(max(xv, lo), hi))
+
+
+# # -------------------------- per-run peaks (old API) --------------------------
+# def per_run_peaks(x: np.ndarray, y: np.ndarray, *,
+#                   prom_frac: float = 0.07,
+#                   min_dist: int = 3,
+#                   pad_left: bool = False,
+#                   min_width_nodes: int = 3,
+#                   require_full_prom: bool = True,
+#                   max_keep: Optional[int] = None,
+#                   fallback_global_max: bool = False,
+#                   return_details: bool = False):
+#     """
+#     Old per-run peak finder used by the previous ensemble picker.
+#     Returns refined ages (and optional details) for peaks in a single run trace.
+#     """
+#     x = np.asarray(x, float); y = np.asarray(y, float)
+#     if x.size != y.size or x.size < 3:
+#         return (np.array([], float), []) if return_details else np.array([], float)
+
+#     rng = np.nanpercentile(y, 95) - np.nanpercentile(y, 5)
+#     prom_thr = prom_frac * max(rng, _EPS)
+
+#     if pad_left:
+#         yw = np.concatenate(([-np.inf], y))
+#         pk, _ = find_peaks(yw, distance=min_dist); pk = pk - 1; pk = pk[pk >= 0]
+#     else:
+#         pk, _ = find_peaks(y, distance=min_dist)
+
+#     if pk.size == 0 and fallback_global_max:
+#         i = int(np.argmax(y))
+#         pk = np.array([i]) if 0 < i < (y.size - 1) else np.array([], int)
+#     if pk.size == 0:
+#         return (np.array([], float), []) if return_details else np.array([], float)
+
+#     prom, lb, rb = peak_prominences(y, pk)
+#     width, _, _, _ = peak_widths(y, pk, rel_height=0.5)
+
+#     keep = (prom >= prom_thr) & (width >= float(min_width_nodes))
+#     if require_full_prom:
+#         keep &= (pk > 0) & (pk < (y.size - 1))
+
+#     pk, prom, width = pk[keep], prom[keep], width[keep]
+#     if pk.size == 0:
+#         return (np.array([], float), []) if return_details else np.array([], float)
+
+#     refined = np.array([_parabolic_refine(x, y, int(k)) for k in pk], float)
+#     order = np.argsort(refined)
+#     pk, refined = pk[order], refined[order]
+#     prom, width = prom[order], width[order]
+
+#     if max_keep is not None and max_keep > 0 and refined.size > max_keep:
+#         refined = refined[:max_keep]
+#         pk, prom, width = pk[:max_keep], prom[:max_keep], width[:max_keep]
+
+#     if not return_details:
+#         return refined
+#     det = [dict(idx=int(i), age_node=float(x[i]), age_refined=float(r),
+#                 prom=float(p), width_nodes=float(w), height=float(y[i]))
+#            for i, r, p, w in zip(pk, refined, prom, width)]
+#     return refined, det
+
+
+# def robust_ensemble_curve(S_runs: np.ndarray, smooth_frac: float = 0.01,
+#                           *_, **__) -> Tuple[np.ndarray, float, float]:
+#     """
+#     Smoothed pointwise median across runs (larger = better).
+#     Returns (S_med_s, Delta, sigma_nodes), with sigma_nodes = 0.01 * N by default.
+#     """
+#     S_runs = np.asarray(S_runs, float)
+#     if S_runs.ndim != 2 or S_runs.shape[1] < 3:
+#         return np.array([]), 0.0, 0.0
+#     G = S_runs.shape[1]
+#     S_med = np.nanmedian(S_runs, axis=0)
+#     sigma_nodes = max(0.5, float(smooth_frac) * float(G))
+#     S_med_s = gaussian_filter1d(S_med, sigma=sigma_nodes, mode="reflect")
+#     q5, q95 = np.nanpercentile(S_med_s, [5, 95])
+#     Delta = max(q95 - q5, _EPS)
+#     return S_med_s, float(Delta), float(sigma_nodes)
+
+# # -------------------------- old candidate merging helpers --------------------
+# def _merge_candidates(idx: np.ndarray, prom: np.ndarray,
+#                       S_curve: np.ndarray, dist_nodes: int, f_v: float
+#                       ) -> Tuple[np.ndarray, np.ndarray]:
+#     """
+#     Merge shoulder/nearby candidates in index-space using:
+#       - node distance (dist_nodes)
+#       - shallow valley check relative to local prominences (fraction f_v)
+#     Keep the stronger (by prominence; tie-break by higher crest).
+#     """
+#     idx = np.asarray(idx, int); prom = np.asarray(prom, float)
+#     if idx.size == 0:
+#         return idx, prom
+#     order = np.argsort(idx); idx, prom = idx[order], prom[order]
+#     keep_idx, keep_prom = [], []
+#     i, n = 0, idx.size
+#     while i < n:
+#         winner = i; j = i + 1
+#         while j < n:
+#             sep = idx[j] - idx[winner]
+#             lo = min(idx[winner], idx[j]); hi = max(idx[winner], idx[j])
+#             valley = float(np.min(S_curve[lo:hi+1]))
+#             hi_w = float(S_curve[idx[winner]]); hi_j = float(S_curve[idx[j]])
+#             shallow = (min(hi_w, hi_j) - valley) < f_v * min(prom[winner], prom[j])
+#             if not (sep < dist_nodes or shallow):
+#                 break
+#             eps = 0.05
+#             if prom[j] > prom[winner] * (1.0 + eps):
+#                 winner = j
+#             elif abs(prom[j] - prom[winner]) <= eps * max(prom[j], prom[winner]) and \
+#                  S_curve[idx[j]] > S_curve[idx[winner]]:
+#                 winner = j
+#             j += 1
+#         keep_idx.append(int(idx[winner])); keep_prom.append(float(prom[winner]))
+#         i = j
+#     return np.asarray(keep_idx, int), np.asarray(keep_prom, float)
+
+
+# def _suppress_close_by_height_ma(c_idx: np.ndarray, c_prom: np.ndarray,
+#                                  S_curve: np.ndarray,
+#                                  age_grid: np.ndarray,
+#                                  min_sep_ma: float) -> Tuple[np.ndarray, np.ndarray]:
+#     """
+#     After merging in index-space, optionally collapse peaks closer than `min_sep_ma`
+#     (measured in Ma) keeping higher crest. Set min_sep_ma <= 0 to disable.
+#     """
+#     c_idx = np.asarray(c_idx, int); c_prom = np.asarray(c_prom, float)
+#     if c_idx.size <= 1 or min_sep_ma <= 0.0:
+#         return c_idx, c_prom
+#     order = np.argsort(S_curve[c_idx])[::-1]
+#     keep_mask = np.ones(c_idx.size, dtype=bool)
+#     for ii in order:
+#         if not keep_mask[ii]:
+#             continue
+#         ai = float(age_grid[c_idx[ii]])
+#         for jj in order:
+#             if jj == ii or not keep_mask[jj]:
+#                 continue
+#             aj = float(age_grid[c_idx[jj]])
+#             if abs(aj - ai) <= min_sep_ma:
+#                 keep_mask[jj] = False
+#     kept = np.where(keep_mask)[0]
+#     return c_idx[kept], c_prom[kept]
+
+# def build_ensemble_catalogue(
+#     sample_name: str,
+#     tier: str,
+#     age_grid: np.ndarray,
+#     goodness_runs: np.ndarray,
+#     *,
+#     orientation: str = "max",
+#     smooth_frac: float = 0.01,
+#     # range-agnostic knobs (fractions of N or of Δ)
+#     f_d: float = 0.05,            # min separation (nodes fraction)
+#     f_p: float = 0.03,            # min prominence (of Δ)
+#     f_v: float = 0.10,            # shallow valley merge (of smaller prominence)
+#     f_w: float = 0.08,            # vote window half-width (nodes fraction)
+#     w_min_nodes: int = 3,         # min FWHM in nodes
+#     # reproducibility
+#     support_min: float = 0.10,    # minimal support fraction
+#     r_min: int = 3,               # minimal number of runs
+#     f_r: float = 0.25,            # run vote gate (fraction of that run’s 5–95% range)
+#     # ignored legacy/compat kwargs:
+#     pen_ok_mask=None,             # kept for signature compatibility
+#     **_ignored: Any,
+# ) -> List[Dict]:
+#     """
+#     Manuscript picker:
+#       • candidates from smoothed ensemble median only,
+#       • explicit shoulder merge & endpoint handling,
+#       • keep only peaks reproducible across runs by local votes.
+#     """
+#     x = np.asarray(age_grid, float)
+#     S = np.asarray(goodness_runs, float)  # R × G
+#     R, G = S.shape
+#     if R == 0 or G < 3:
+#         return []
+
+#     # Oriented candidate curve (penalised or raw depending on caller)
+#     sign = 1.0 if str(orientation).lower().startswith("max") else -1.0
+#     S_med_s, Delta, _ = robust_ensemble_curve(S, smooth_frac=smooth_frac)
+#     if S_med_s.size == 0:
+#         return []
+#     y = sign * S_med_s
+
+#     # ----- candidate apices (interior only) -----
+#     dist_nodes  = max(1, int(np.ceil(f_d * G)))
+#     prom_abs    = max(float(f_p) * float(Delta), _EPS)
+
+#     pk, props = find_peaks(y, distance=dist_nodes, width=w_min_nodes, prominence=prom_abs)
+#     # Exclude exact endpoints (0 and G-1)
+#     interior = (pk >= 1) & (pk <= G - 2)
+#     pk = pk[interior]
+
+#     if pk.size == 0:
+#         return []
+
+#     prom = peak_prominences(y, pk)[0]
+
+#     # ----- shoulder merge in index space + valley check -----
+#     order = np.argsort(pk)
+#     pk, prom = pk[order], prom[order]
+
+#     kept_idx = []
+#     i = 0
+#     while i < pk.size:
+#         winner = i
+#         j = i + 1
+#         while j < pk.size:
+#             sep = pk[j] - pk[winner]
+#             if sep >= dist_nodes:
+#                 # far enough, stop inner loop
+#                 break
+#             # valley depth between pk[winner] and pk[j]
+#             lo, hi = int(min(pk[winner], pk[j])), int(max(pk[winner], pk[j]))
+#             valley = float(np.min(y[lo:hi+1]))
+#             lower_crest = min(y[pk[winner]], y[pk[j]])
+#             shallow = (lower_crest - valley) < f_v * min(prom[winner], prom[j])
+#             if shallow or sep < dist_nodes:
+#                 # keep the stronger (by prominence; tie by higher crest)
+#                 if prom[j] > prom[winner] * (1.0 + 0.05):
+#                     winner = j
+#                 elif abs(prom[j] - prom[winner]) <= 0.05 * max(prom[j], prom[winner]) and y[pk[j]] > y[pk[winner]]:
+#                     winner = j
+#                 j += 1
+#             else:
+#                 break
+#         kept_idx.append(int(pk[winner]))
+#         i = j
+
+#     pk = np.asarray(sorted(set(kept_idx)), int)
+#     if pk.size == 0:
+#         return []
+
+#     # ----- reproducibility by local voting -----
+#     vote_nodes = max(1, int(np.ceil(f_w * G)))
+#     out: List[Dict] = []
+
+#     # precompute per-run dynamic ranges for the f_r gate
+#     run_gate = []
+#     for r in range(R):
+#         y_r = sign * S[r]
+#         p5, p95 = np.nanpercentile(y_r, [5, 95])
+#         run_gate.append((float(p5), float(p95)))
+#     run_gate = np.asarray(run_gate, float)  # R × 2
+
+#     for j_c in pk:
+#         # refine apex on *unoriented* ensemble curve for reporting
+#         age_ref = float(_parabolic_refine(x, S_med_s, int(j_c)))
+
+#         # voting window on oriented per-run traces
+#         a = max(1, int(j_c) - vote_nodes)
+#         b = min(G - 2, int(j_c) + vote_nodes)
+
+#         votes = []
+#         for r in range(R):
+#             y_r = sign * S[r]
+#             win = y_r[a:b+1]
+#             if not np.isfinite(win).any():
+#                 continue
+#             # pick the tallest node in the window
+#             j_local = int(np.nanargmax(win))
+#             j_abs   = a + j_local
+
+#             # relative-height gate using that run’s 5–95% range
+#             p5, p95 = run_gate[r, 0], run_gate[r, 1]
+#             thr = p5 + float(f_r) * max(p95 - p5, 0.0)
+#             if y_r[j_abs] < thr:
+#                 continue
+
+#             votes.append(float(_parabolic_refine(x, S[r], j_abs)))
+
+#         support = len(votes) / float(R)
+#         if support < max(float(support_min), float(r_min) / float(max(R, 1))):
+#             continue
+
+#         if len(votes) >= 3:
+#             lo_ci, hi_ci = np.nanpercentile(votes, [2.5, 97.5])
+#         else:
+#             lo_ci = age_ref - float(x[1] - x[0])
+#             hi_ci = age_ref + float(x[1] - x[0])
+
+#         # recenter CI on refined apex and enforce ≥ one grid step width
+#         med_votes = float(np.median(votes)) if votes else age_ref
+#         delta = age_ref - med_votes
+#         lo_ci = min(lo_ci + delta, age_ref - float(x[1] - x[0]))
+#         hi_ci = max(hi_ci + delta, age_ref + float(x[1] - x[0]))
+
+#         out.append(dict(
+#             sample=sample_name,
+#             peak_no=0,  # set later
+#             age_ma=age_ref,
+#             ci_low=float(lo_ci),
+#             ci_high=float(hi_ci),
+#             support=float(support)
+#         ))
+
+#     out.sort(key=lambda d: d["age_ma"])
+#     for i, d in enumerate(out, 1):
+#         d["peak_no"] = i
+#     return out
+
+
 from __future__ import annotations
 
 import numpy as np
 from typing import List, Dict, Optional, Tuple, Any
-from scipy.signal import find_peaks, peak_prominences, peak_widths
 from scipy.ndimage import gaussian_filter1d
+from scipy.signal import (
+    find_peaks as _find_peaks,
+    peak_prominences as _peak_prominences,
+    peak_widths as _peak_widths,
+)
+
+# expose SciPy names we use everywhere under stable local aliases
+find_peaks = _find_peaks
+peak_prominences = _peak_prominences
+peak_widths = _peak_widths
 
 _EPS = 1e-12
 DEBUG_CAND = False
 
-# Set to 0.0 to keep all nearby apices. Set >0 (Ma) to auto-collapse close peaks later.
+# keep; optional post-merge MA collapse (unused by default here)
 _MERGE_WITHIN_MA = 50.0
+
 
 # -------------------------- utilities ----------------------------------------
 def _parabolic_refine(x: np.ndarray, y: np.ndarray, k: int) -> float:
-    """Quadratic vertex refinement using 3 points around index k; clamps to bracketing x."""
+    """
+    Quadratic vertex refinement using 3 points around index k; clamps to bracket.
+    If the local curvature is tiny (flat crest), fall back to the node.
+    """
     x = np.asarray(x, float); y = np.asarray(y, float)
     n = y.size
     if k <= 0 or k >= n - 1:
@@ -26,22 +384,46 @@ def _parabolic_refine(x: np.ndarray, y: np.ndarray, k: int) -> float:
         return x1
     a = (x2*(y1 - y0) + x1*(y0 - y2) + x0*(y2 - y1)) / denom
     b = (x2**2*(y0 - y1) + x1**2*(y2 - y0) + x0**2*(y1 - y2)) / denom
-    if a == 0.0:
+    # if crest is very flat, avoid nudging; keep the node
+    if abs(a) < 1e-12:
         return x1
     xv = -b / (2.0*a)
     lo, hi = (x0, x2) if x0 <= x2 else (x2, x0)
     return float(min(max(xv, lo), hi))
 
-# -------------------------- per-run peaks (old API) --------------------------
-def per_run_peaks(x: np.ndarray, y: np.ndarray, *,
-                  prom_frac: float = 0.07,
-                  min_dist: int = 3,
-                  pad_left: bool = False,
-                  min_width_nodes: int = 3,
-                  require_full_prom: bool = True,
-                  max_keep: Optional[int] = None,
-                  fallback_global_max: bool = False,
-                  return_details: bool = False):
+
+def _crest_index(y: np.ndarray, k: int, half_win: int = 2) -> int:
+    """
+    Choose the index of the *local crest* near k:
+      - search within [k-half_win, k+half_win],
+      - take the midpoint of all nodes that attain the local maximum
+        (stable on flat/plateau crests).
+    """
+    y = np.asarray(y, float); n = y.size
+    a = max(1, int(k) - int(half_win))
+    b = min(n - 2, int(k) + int(half_win))
+    seg = y[a:b+1]
+    if seg.size == 0 or not np.isfinite(seg).any():
+        return int(k)
+    m = np.nanmax(seg)
+    cand = np.where(np.isclose(seg, m, rtol=1e-12, atol=1e-15))[0]
+    # midpoint of the flat top if there are ties
+    j_local = int(cand[len(cand)//2])
+    return int(a + j_local)
+
+
+# -------------------------- per-run peaks (legacy helper) --------------------
+def per_run_peaks(
+    x: np.ndarray, y: np.ndarray, *,
+    prom_frac: float = 0.07,
+    min_dist: int = 3,
+    pad_left: bool = False,
+    min_width_nodes: int = 3,
+    require_full_prom: bool = True,
+    max_keep: Optional[int] = None,
+    fallback_global_max: bool = False,
+    return_details: bool = False
+):
     """
     Old per-run peak finder used by the previous ensemble picker.
     Returns refined ages (and optional details) for peaks in a single run trace.
@@ -65,7 +447,7 @@ def per_run_peaks(x: np.ndarray, y: np.ndarray, *,
     if pk.size == 0:
         return (np.array([], float), []) if return_details else np.array([], float)
 
-    prom, lb, rb = peak_prominences(y, pk)
+    prom, _, _ = peak_prominences(y, pk)
     width, _, _, _ = peak_widths(y, pk, rel_height=0.5)
 
     keep = (prom >= prom_thr) & (width >= float(min_width_nodes))
@@ -76,7 +458,10 @@ def per_run_peaks(x: np.ndarray, y: np.ndarray, *,
     if pk.size == 0:
         return (np.array([], float), []) if return_details else np.array([], float)
 
-    refined = np.array([_parabolic_refine(x, y, int(k)) for k in pk], float)
+    # refine on the true local crest (stable on flat tops)
+    pk_ref = np.array([_crest_index(y, int(i), half_win=2) for i in pk], int)
+    refined = np.array([_parabolic_refine(x, y, int(j)) for j in pk_ref], float)
+
     order = np.argsort(refined)
     pk, refined = pk[order], refined[order]
     prom, width = prom[order], width[order]
@@ -92,402 +477,182 @@ def per_run_peaks(x: np.ndarray, y: np.ndarray, *,
            for i, r, p, w in zip(pk, refined, prom, width)]
     return refined, det
 
-# -------------------------- robust ensemble curve (old semantics) ------------
+
 def robust_ensemble_curve(S_runs: np.ndarray, smooth_frac: float = 0.01,
                           *_, **__) -> Tuple[np.ndarray, float, float]:
     """
-    OLD API & semantics:
-      returns (S_med_s, Delta, sigma_nodes)
-        - S_med_s: smoothed median across runs (larger = better)
-        - Delta:   robust global scale = p95 - p5 of S_med_s
-        - sigma_nodes: Gaussian sigma in *nodes* used for smoothing
-
-    Any extra args/kwargs are accepted & ignored for compatibility with
-    newer call-sites that might pass aggregator/trim options.
+    Smoothed pointwise median across runs (larger = better).
+    **Light** smoothing: grid-fraction with a small sigma cap to keep crests crisp.
+    Returns (S_med_s, Delta, sigma_nodes).
     """
     S_runs = np.asarray(S_runs, float)
     if S_runs.ndim != 2 or S_runs.shape[1] < 3:
         return np.array([]), 0.0, 0.0
+
     G = S_runs.shape[1]
     S_med = np.nanmedian(S_runs, axis=0)
-    sigma_nodes = max(0.5, float(smooth_frac) * float(G))
+
+    # This is the behaviour you had: very light smoothing, capped.
+    sigma_nodes = min(1.5, max(0.5, float(smooth_frac) * float(G)))
     S_med_s = gaussian_filter1d(S_med, sigma=sigma_nodes, mode="reflect")
+
     q5, q95 = np.nanpercentile(S_med_s, [5, 95])
     Delta = max(q95 - q5, _EPS)
     return S_med_s, float(Delta), float(sigma_nodes)
 
-# -------------------------- old candidate merging helpers --------------------
-def _merge_candidates(idx: np.ndarray, prom: np.ndarray,
-                      S_curve: np.ndarray, dist_nodes: int, f_v: float
-                      ) -> Tuple[np.ndarray, np.ndarray]:
-    """
-    Merge shoulder/nearby candidates in index-space using:
-      - node distance (dist_nodes)
-      - shallow valley check relative to local prominences (fraction f_v)
-    Keep the stronger (by prominence; tie-break by higher crest).
-    """
-    idx = np.asarray(idx, int); prom = np.asarray(prom, float)
-    if idx.size == 0:
-        return idx, prom
-    order = np.argsort(idx); idx, prom = idx[order], prom[order]
-    keep_idx, keep_prom = [], []
-    i, n = 0, idx.size
-    while i < n:
-        winner = i; j = i + 1
-        while j < n:
-            sep = idx[j] - idx[winner]
-            lo = min(idx[winner], idx[j]); hi = max(idx[winner], idx[j])
-            valley = float(np.min(S_curve[lo:hi+1]))
-            hi_w = float(S_curve[idx[winner]]); hi_j = float(S_curve[idx[j]])
-            shallow = (min(hi_w, hi_j) - valley) < f_v * min(prom[winner], prom[j])
-            if not (sep < dist_nodes or shallow):
-                break
-            eps = 0.05
-            if prom[j] > prom[winner] * (1.0 + eps):
-                winner = j
-            elif abs(prom[j] - prom[winner]) <= eps * max(prom[j], prom[winner]) and \
-                 S_curve[idx[j]] > S_curve[idx[winner]]:
-                winner = j
-            j += 1
-        keep_idx.append(int(idx[winner])); keep_prom.append(float(prom[winner]))
-        i = j
-    return np.asarray(keep_idx, int), np.asarray(keep_prom, float)
 
-def _suppress_close_by_height_ma(c_idx: np.ndarray, c_prom: np.ndarray,
-                                 S_curve: np.ndarray,
-                                 age_grid: np.ndarray,
-                                 min_sep_ma: float) -> Tuple[np.ndarray, np.ndarray]:
-    """
-    After merging in index-space, optionally collapse peaks closer than `min_sep_ma`
-    (measured in Ma) keeping higher crest. Set min_sep_ma <= 0 to disable.
-    """
-    c_idx = np.asarray(c_idx, int); c_prom = np.asarray(c_prom, float)
-    if c_idx.size <= 1 or min_sep_ma <= 0.0:
-        return c_idx, c_prom
-    order = np.argsort(S_curve[c_idx])[::-1]
-    keep_mask = np.ones(c_idx.size, dtype=bool)
-    for ii in order:
-        if not keep_mask[ii]:
-            continue
-        ai = float(age_grid[c_idx[ii]])
-        for jj in order:
-            if jj == ii or not keep_mask[jj]:
-                continue
-            aj = float(age_grid[c_idx[jj]])
-            if abs(aj - ai) <= min_sep_ma:
-                keep_mask[jj] = False
-    kept = np.where(keep_mask)[0]
-    return c_idx[kept], c_prom[kept]
-
-# -------------------------- build ensemble catalogue (old logic) -------------
+# -------------------------- ensemble catalogue -------------------------------
 def build_ensemble_catalogue(
     sample_name: str,
     tier: str,
-    # Support BOTH old & new parameter names:
-    age_grid: Optional[np.ndarray] = None,
-    goodness_runs: Optional[np.ndarray] = None,
+    age_grid: np.ndarray,
+    goodness_runs: np.ndarray,
     *,
-    age_grid_ma: Optional[np.ndarray] = None,     # newer name
-    S_runs: Optional[np.ndarray] = None,          # newer name
-    grid_step: Optional[float] = None,
-    pen_ok_mask=None,
-    orientation: str = 'max',
+    orientation: str = "max",
     smooth_frac: float = 0.01,
-    f_d: float = 0.05, f_p: float = 0.03, f_v: float = 0.05, f_w: float = 0.08,
-    w_min_nodes: int = 1,
-    support_min: float = 0.10, r_min: int = 3, f_r: float = 0.35,
-    per_run_prom_frac: float = 0.07,
-    per_run_min_dist: int = 3,
-    per_run_min_width: int = 3,
-    per_run_require_full_prom: bool = False,
-    vote_group_gap: Optional[float] = None,
-    cand_curve: Optional[np.ndarray] = None,
-    extra_seed_ages: Optional[np.ndarray] = None,
-    _MERGE_WITHIN_MA_override: Optional[float] = None,
+    # range-agnostic knobs (fractions of N or of Δ)
+    f_d: float = 0.05,            # min separation (nodes fraction)
+    f_p: float = 0.03,            # min prominence (of Δ)
+    f_v: float = 0.10,            # shallow valley merge (of smaller prominence)
+    f_w: float = 0.08,            # vote window half-width (nodes fraction)
+    w_min_nodes: int = 3,         # min FWHM in nodes
+    # reproducibility
+    support_min: float = 0.10,    # minimal support fraction
+    r_min: int = 3,               # minimal number of runs
+    f_r: float = 0.25,            # run vote gate (fraction of that run’s 5–95% range)
+    # legacy signature compat:
+    pen_ok_mask=None,
     **_ignored: Any,
 ) -> List[Dict]:
     """
-    OLD picker restored verbatim (with a few harmless compat knobs):
-
-      • Candidate curve = smoothed median of runs (unless `cand_curve` is provided
-        in which case it is used as-is).
-      • Candidates found with a global prominence floor = f_p * Delta, where
-        Delta = p95 - p5 of the candidate curve.
-      • Merge shoulder/nearby candidates in index space, then optionally suppress
-        apices closer than `_MERGE_WITHIN_MA` (in Ma) by crest height.
-      • Voting around each candidate window with a LOCAL relative-height gate f_r.
-      • Per-run quality checks (relative prominence & width) as in the original.
-      • Confidence interval from vote ages; re-centered to the refined apex.
-
-    Returns: list of dicts {sample, peak_no, age_ma, ci_low, ci_high, support}
+    Manuscript picker:
+      • candidates from smoothed ensemble median only,
+      • explicit shoulder merge & endpoint handling,
+      • keep only peaks reproducible across runs by local votes.
     """
-    # ---- resolve dual naming for compatibility
-    if age_grid is None and age_grid_ma is not None:
-        age_grid = np.asarray(age_grid_ma, float)
-    if goodness_runs is None and S_runs is not None:
-        goodness_runs = np.asarray(S_runs, float)
-
-    age_grid = np.asarray(age_grid, float)
-    S = np.asarray(goodness_runs, float)
-    if S.ndim != 2:
-        raise AssertionError("goodness_runs/S_runs must be R x G")
+    x = np.asarray(age_grid, float)
+    S = np.asarray(goodness_runs, float)  # R × G
     R, G = S.shape
     if R == 0 or G < 3:
         return []
 
-    # old default grid_step (no _safe_step)
-    if grid_step is None:
-        dif = np.diff(age_grid)
-        grid_step = float(np.median(dif)) if dif.size else 10.0
-
-    dist_nodes  = max(1, int(np.ceil(float(f_d) * G)))
-    vote_nodes  = max(1, int(np.ceil(float(f_w) * G)))
-    width_floor = max(1, int(w_min_nodes))
-    sign = 1.0 if str(orientation).lower().startswith('max') else -1.0
-
-    # Candidate curve (old robust_ensemble_curve semantics)
-    if cand_curve is None:
-        S_med_s, Delta, _ = robust_ensemble_curve(S, smooth_frac=smooth_frac)
-        if S_med_s.size == 0:
-            return []
-        S_cand = S_med_s
-        S_work = sign * S_cand
-        q5, q95 = np.nanpercentile(S_work, [5, 95])
-        Delta = max(q95 - q5, _EPS)  # re-derive on oriented curve (as in old)
-    else:
-        S_cand = np.asarray(cand_curve, float).reshape(-1)
-        if S_cand.size != G:
-            raise AssertionError("cand_curve must match grid length")
-        S_work = sign * S_cand
-        q5, q95 = np.nanpercentile(S_work, [5, 95])
-        Delta = max(q95 - q5, _EPS)
-
-    prom_thr = max(float(f_p) * Delta, _EPS)
-
-    # Initial candidate apices (on oriented curve)
-    cand_idx, props = find_peaks(S_work, distance=dist_nodes,
-                                 prominence=prom_thr, width=width_floor)
-    # interior only if require full prominence later
-    interior = (cand_idx >= 1) & (cand_idx <= G - 2)
-    cand_idx  = cand_idx[interior]
-    cand_prom = (props.get("prominences", np.zeros_like(cand_idx, float))[interior]
-                 if cand_idx.size else np.array([], float))
-
-    # Merge shoulders then collapse near-duplicates (in Ma) by crest height
-    cand_idx, cand_prom = _merge_candidates(cand_idx, cand_prom, S_work, dist_nodes, float(f_v))
-    mw = _MERGE_WITHIN_MA if _MERGE_WITHIN_MA_override is None else float(_MERGE_WITHIN_MA_override)
-    cand_idx, cand_prom = _suppress_close_by_height_ma(cand_idx, cand_prom, S_work, age_grid, mw)
-
-    if cand_idx.size == 0:
+    # Oriented candidate curve (penalised or raw depending on caller)
+    sign = 1.0 if str(orientation).lower().startswith("max") else -1.0
+    S_med_s, Delta, _ = robust_ensemble_curve(S, smooth_frac=smooth_frac)
+    if S_med_s.size == 0:
         return []
-    order = np.argsort(cand_idx)
-    cand_idx, cand_prom = cand_idx[order], cand_prom[order]
-    uniq_idx, uniq_pos = np.unique(cand_idx, return_index=True)
-    cand_idx, cand_prom = uniq_idx, cand_prom[uniq_pos]
+    y = sign * S_med_s
 
-    # Seed extra candidates from per-run peaks (exactly as the old code)
-    votes, run_ids = [], []
+    # ----- candidate apices (interior only) -----
+    dist_nodes  = max(1, int(np.ceil(f_d * G)))
+    prom_abs    = max(float(f_p) * float(Delta), _EPS)
+
+    pk, _ = find_peaks(y, distance=dist_nodes, width=w_min_nodes, prominence=prom_abs)
+    # exclude exact endpoints
+    pk = pk[(pk >= 1) & (pk <= G - 2)]
+    if pk.size == 0:
+        return []
+
+    prom = peak_prominences(y, pk)[0]
+
+    # ----- shoulder merge in index space + valley check -----
+    order = np.argsort(pk)
+    pk, prom = pk[order], prom[order]
+
+    kept_idx = []
+    i = 0
+    while i < pk.size:
+        winner = i
+        j = i + 1
+        while j < pk.size:
+            sep = pk[j] - pk[winner]
+            if sep >= dist_nodes:
+                break
+            lo, hi = int(min(pk[winner], pk[j])), int(max(pk[winner], pk[j]))
+            valley = float(np.min(y[lo:hi+1]))
+            lower_crest = min(y[pk[winner]], y[pk[j]])
+            shallow = (lower_crest - valley) < f_v * min(prom[winner], prom[j])
+            if shallow or sep < dist_nodes:
+                # keep stronger by prominence; tie by higher crest
+                if prom[j] > prom[winner] * (1.0 + 0.05):
+                    winner = j
+                elif abs(prom[j] - prom[winner]) <= 0.05 * max(prom[j], prom[winner]) and y[pk[j]] > y[pk[winner]]:
+                    winner = j
+                j += 1
+            else:
+                break
+        kept_idx.append(int(pk[winner]))
+        i = j
+
+    pk = np.asarray(sorted(set(kept_idx)), int)
+    if pk.size == 0:
+        return []
+
+    # ----- reproducibility by local voting -----
+    vote_nodes = max(1, int(np.ceil(f_w * G)))
+    out: List[Dict] = []
+
+    # precompute per-run dynamic ranges for the f_r gate
+    run_gate = []
     for r in range(R):
-        y = S[r]
-        if not np.isfinite(y).any():
-            continue
-        y_work = sign * y
-        pk, _ = find_peaks(y_work, distance=int(per_run_min_dist))
-        if pk.size:
-            rng_r = np.nanpercentile(y_work, 95) - np.nanpercentile(y_work, 5)
-            prom_thr_r = float(per_run_prom_frac) * max(rng_r, _EPS)
-            prom_r, lb_r, rb_r = peak_prominences(y_work, pk)
-            width_r, _, _, _ = peak_widths(y_work, pk, rel_height=0.5)
-            keep_r = (prom_r >= prom_thr_r) & (width_r >= float(per_run_min_width))
-            if per_run_require_full_prom:
-                keep_r &= (lb_r > 0) & (rb_r < (G - 1))
-            pk = pk[keep_r]
-        if pk.size:
-            votes.extend(age_grid[pk].tolist())
-            run_ids.extend([r] * pk.size)
+        y_r = sign * S[r]
+        p5, p95 = np.nanpercentile(y_r, [5, 95])
+        run_gate.append((float(p5), float(p95)))
+    run_gate = np.asarray(run_gate, float)  # R × 2
 
-    if votes:
-        vv = np.asarray(votes, float); rr = np.asarray(run_ids, int)
-        order = np.argsort(vv); vv, rr = vv[order], rr[order]
-        if vote_group_gap is None:
-            vote_group_gap = max(3.0 * float(grid_step), 0.5 * vote_nodes * float(grid_step))
+    for j_c in pk:
+        # refine on the *local crest* of the unoriented ensemble curve
+        j_ref = _crest_index(S_med_s, int(j_c), half_win=2)
+        age_ref = float(_parabolic_refine(x, S_med_s, int(j_ref)))
 
-        a = 0
-        while a < vv.size:
-            b = a + 1
-            while b < vv.size and vv[b] - vv[b - 1] <= vote_group_gap:
-                b += 1
-            runs_here = np.unique(rr[a:b]).size
-            support_g = runs_here / float(R)
-            if support_g >= max(float(support_min), float(r_min) / float(R)):
-                age_med0 = float(np.median(vv[a:b]))
-                j0 = int(np.argmin(np.abs(age_grid - age_med0)))
-                lo = max(1, j0 - vote_nodes); hi = min(G - 2, j0 + vote_nodes)
-                loc, _ = find_peaks(S_work[lo:hi + 1], distance=1)
-                if loc.size:
-                    win = S_work[lo:hi + 1]
-                    abs_loc = lo + loc
-                    prom_full, _, _ = peak_prominences(S_work, abs_loc)
-                    k_prom = int(np.argmax(prom_full))
-                    j_star = int(abs_loc[k_prom])
-                    eps = 0.10
-                    k_h = int(np.argmax(win[loc]))
-                    if prom_full[k_prom] < (1.0 + eps) * prom_full[k_h]:
-                        j_star = int(abs_loc[k_h])
-                else:
-                    j_star = int(np.clip(j0, 1, G - 2))
+        # voting window on oriented per-run traces
+        a = max(1, int(j_c) - vote_nodes)
+        b = min(G - 2, int(j_c) + vote_nodes)
 
-                if cand_idx.size == 0 or np.min(np.abs(cand_idx - j_star)) > dist_nodes:
-                    cand_idx  = np.append(cand_idx, j_star)
-                    prom_star = peak_prominences(S_work, np.asarray([j_star]))[0][0]
-                    cand_prom = np.append(cand_prom, float(prom_star))
-            a = b
-
-        # Re-merge & dedup after seeding; keep prom aligned, then collapse near-duplicates
-        cand_idx, cand_prom = _merge_candidates(cand_idx, cand_prom, S_work, dist_nodes, float(f_v))
-        uniq_idx, uniq_pos = np.unique(np.sort(cand_idx), return_index=True)
-        cand_idx, cand_prom = uniq_idx, cand_prom[uniq_pos]
-        cand_idx, cand_prom = _suppress_close_by_height_ma(cand_idx, cand_prom, S_work, age_grid, mw)
-
-    # Voting & CI around each candidate (old logic)
-    out, gno = [], 0
-    for j_c in cand_idx:
-        lo = max(1, j_c - dist_nodes); hi = min(G - 2, j_c + dist_nodes)
-        loc, _ = find_peaks(S_work[lo:hi + 1], distance=1)
-        if loc.size == 0:
-            continue
-        win = S_work[lo:hi + 1]
-        abs_loc = lo + loc
-        prom_full, _, _ = peak_prominences(S_work, abs_loc)
-        k_prom = int(np.argmax(prom_full))
-        j_peak = int(abs_loc[k_prom])
-        eps = 0.10
-        k_h = int(np.argmax(win[loc]))
-        if prom_full[k_prom] < (1.0 + eps) * prom_full[k_h]:
-            j_peak = int(abs_loc[k_h])
-
-        age_ref = float(_parabolic_refine(age_grid, S_cand, int(j_peak)))
-        w = max(1, int(vote_nodes)); a = max(1, j_peak - w); b = min(G - 2, j_peak + w)
-
-        vote_ages: List[float] = []
+        votes = []
         for r in range(R):
-            y = S[r]
-            if not np.isfinite(y).any():
+            y_r = sign * S[r]
+            win = y_r[a:b+1]
+            if not np.isfinite(win).any():
+                continue
+            # choose midpoint of any flat local max, then refine there
+            j_loc = _crest_index(win, int(np.argmax(win)), half_win=2)
+            j_abs = int(a + (j_loc - 0))  # convert back to absolute index
+
+            # relative-height gate using that run’s 5–95% range
+            p5, p95 = run_gate[r, 0], run_gate[r, 1]
+            thr = p5 + float(f_r) * max(p95 - p5, 0.0)
+            if y_r[j_abs] < thr:
                 continue
 
-            y_work = sign * y
-            wloc = max(1, int(0.5 * vote_nodes))
-            aa = max(1, j_peak - wloc)
-            bb = min(G - 2, j_peak + wloc)
-            win_r = y_work[aa:bb + 1]
+            votes.append(float(_parabolic_refine(x, S[r], j_abs)))
 
-            loc_r, _ = find_peaks(win_r, distance=1)
-            if loc_r.size == 0:
-                continue
-            abs_locs = aa + loc_r
-            k_closest = int(np.argmin(np.abs(abs_locs - j_peak)))
-            jloc = int(abs_locs[k_closest])
-
-            if pen_ok_mask is not None and not pen_ok_mask[r, jloc]:
-                continue
-
-            # LOCAL gate only (protects narrow real crests)
-            y5, y95 = np.nanpercentile(y_work, [5, 95])
-            w5, w95 = np.nanpercentile(win_r,  [5, 95])
-            thr_loc = w5 + float(f_r) * max(w95 - w5, 0.0)
-            if y_work[jloc] < thr_loc:
-                continue
-
-            prom_all, _, _ = peak_prominences(win_r, loc_r)
-            prom_sel = float(prom_all[k_closest])
-            if prom_sel < 0.03 * max(w95 - w5, 0.0):
-                continue
-            if prom_sel < 0.02 * max(y95 - y5, 0.0):
-                continue
-
-            vote_ages.append(float(_parabolic_refine(age_grid, y, jloc)))
-
-        support = len(vote_ages) / float(R)
+        support = len(votes) / float(R)
         if support < max(float(support_min), float(r_min) / float(max(R, 1))):
             continue
 
-        if len(vote_ages) >= 3:
-            lo_ci, hi_ci = np.nanpercentile(vote_ages, [2.5, 97.5])
+        if len(votes) >= 3:
+            lo_ci, hi_ci = np.nanpercentile(votes, [2.5, 97.5])
         else:
-            lo_ci, hi_ci = age_ref - float(grid_step), age_ref + float(grid_step)
+            lo_ci = age_ref - float(x[1] - x[0])
+            hi_ci = age_ref + float(x[1] - x[0])
 
-        # Re-center CI to the refined apex (old behavior)
-        med_votes = float(np.median(vote_ages)) if vote_ages else age_ref
+        # recenter CI on refined apex and enforce ≥ one grid step width
+        med_votes = float(np.median(votes)) if votes else age_ref
         delta = age_ref - med_votes
-        lo_ci = min(lo_ci + delta, age_ref - float(grid_step))
-        hi_ci = max(hi_ci + delta, age_ref + float(grid_step))
+        lo_ci = min(lo_ci + delta, age_ref - float(x[1] - x[0]))
+        hi_ci = max(hi_ci + delta, age_ref + float(x[1] - x[0]))
 
-        gno += 1
-        out.append(dict(sample=sample_name, peak_no=gno,
-                        age_ma=age_ref, ci_low=float(lo_ci),
-                        ci_high=float(hi_ci), support=float(support)))
+        out.append(dict(
+            sample=sample_name,
+            peak_no=0,  # set below
+            age_ma=age_ref,
+            ci_low=float(lo_ci),
+            ci_high=float(hi_ci),
+            support=float(support)
+        ))
 
     out.sort(key=lambda d: d["age_ma"])
     for i, d in enumerate(out, 1):
         d["peak_no"] = i
     return out
-
-# -------------------------- (optional) compat wrapper ------------------------
-def build_ensemble_catalogue_from_runs(
-    runs, ages_y, *,
-    use_penalised: bool = True,
-    dist_frac: float = 0.05,
-    vote_win_frac: float = 0.08,
-    prom_frac: float = 0.03,
-    per_run_min_width: int = 3,
-    support_min: float = 0.10,
-    r_min: int = 3,
-    per_run_require_full_prom: bool = False,
-    plateau_center: str | bool = "auto",
-    cand_curve: Optional[np.ndarray] = None,
-    smooth_frac: Optional[float] = None,
-    valley_frac: Optional[float] = None,   # ignored (old picker has no valley merge)
-    f_r: float = 0.35,
-    per_run_prom_frac: float = 0.07,
-    per_run_min_dist: int = 3,
-    **_ignored: Any,
-):
-    """
-    Thin convenience wrapper for newer code paths. It builds the goodness matrix
-    from `runs` and delegates to the *old* `build_ensemble_catalogue` logic above.
-    This does NOT change any peak picking behavior.
-    """
-    ages_y  = np.asarray(ages_y, float)
-    ages_ma = ages_y / 1e6
-
-    # Build S_runs = 1 - loss/score as in newer code examples
-    rows: List[List[float]] = []
-    for r in (runs or []):
-        row = []
-        for a in ages_y:
-            st = r.statistics_by_pb_loss_age[a]
-            val = (st.score if use_penalised else st.test_statistics[0])
-            row.append(1.0 - float(val))
-        rows.append(row)
-    S_runs = np.asarray(rows, float)
-
-    if smooth_frac is None:
-        smooth_frac = 0.01
-
-    return build_ensemble_catalogue(
-        sample_name="",
-        tier="",
-        age_grid=ages_ma,
-        goodness_runs=S_runs,
-        orientation="max",
-        smooth_frac=float(smooth_frac),
-        f_d=float(dist_frac), f_p=float(prom_frac), f_v=0.05, f_w=float(vote_win_frac),
-        w_min_nodes=int(per_run_min_width),
-        support_min=float(support_min), r_min=int(r_min), f_r=float(f_r),
-        per_run_prom_frac=float(per_run_prom_frac),
-        per_run_min_dist=int(per_run_min_dist),
-        per_run_min_width=int(per_run_min_width),
-        per_run_require_full_prom=bool(per_run_require_full_prom),
-        cand_curve=cand_curve,
-        # keep old behavior; no valley merge; no “safe step”
-    )

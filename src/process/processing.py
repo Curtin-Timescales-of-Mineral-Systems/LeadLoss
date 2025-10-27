@@ -12,7 +12,6 @@ from process.discordantClustering import find_discordant_clusters, _labels_from_
 from utils.peakHelpers import fmt_peak_stats
 from process.ensemble import robust_ensemble_curve, build_ensemble_catalogue
 from pathlib import Path
-from copy import deepcopy
 import csv, sys, platform, resource, os, re, zlib
 
 # ======================  EXPOSED KNOBS (keep your GUI)  ======================
@@ -20,13 +19,13 @@ SMOOTH_MA   = float(os.environ.get("CDC_SMOOTH_MA", "0.0"))
 SMOOTH_FRAC = float(os.environ.get("CDC_SMOOTH_FRAC", "0.01"))  # used if SMOOTH_MA <= 0
 
 # Per-run detector gates – restore old
-PER_RUN_PROM_FRAC = 0.07
+PER_RUN_PROM_FRAC = 0.06
 PER_RUN_MIN_DIST  = 3
 PER_RUN_MIN_WIDTH = 3
 
 # Ensemble gates – restore old “conservative” thresholds
 FD_DIST_FRAC   = 0.05
-FP_PROM_FRAC   = 0.07
+FP_PROM_FRAC   = 0.06
 FW_WIN_FRAC    = 0.08
 FR_RUN_REL     = 0.35
 FS_SUPPORT     = 0.10
@@ -42,8 +41,8 @@ CATALOGUE_CSV_PEN = _BASE_CATALOGUE.with_suffix(".csv")                     # pe
 CATALOGUE_CSV_RAW = _BASE_CATALOGUE.with_name(_BASE_CATALOGUE.name + "_np").with_suffix(".csv")  # raw / non-penalised
 
 # Which catalogue to show in UI by default (no effect on detection)
-UI_SURFACE        = os.environ.get("CDC_UI_SURFACE", "RAW").strip().upper()
-CATALOGUE_SURFACE = os.environ.get("CDC_CATALOGUE_SURFACE", "RAW").strip().upper()
+UI_SURFACE        = os.environ.get("CDC_UI_SURFACE", "PEN").strip().upper()
+CATALOGUE_SURFACE = os.environ.get("CDC_CATALOGUE_SURFACE", "PEN").strip().upper()
 
 if UI_SURFACE not in {"RAW", "PEN"}:
     UI_SURFACE = "PEN"
@@ -85,6 +84,21 @@ RUN_FIELDS = [
     "method","phase","sample","tier","R","n_grid","elapsed_s",
     "per_run_median_s","per_run_p95_s","rss_peak_mb","python","numpy"
 ]
+
+# --- add this helper (exactly as you had before) ---
+def _normalize_runs(S_runs):
+    V = np.array(S_runs, float, copy=True)
+    for r in range(V.shape[0]):
+        row = V[r]; m = np.isfinite(row)
+        if not m.any():
+            continue
+        p5, p95 = np.nanpercentile(row[m], [5, 95])
+        if np.isfinite(p5) and np.isfinite(p95) and p95 > p5:
+            row[m] = np.clip((row[m] - p5) / (p95 - p5), 0.0, 1.0)
+        else:
+            row[m] = 0.0
+        V[r] = row
+    return V
 
 def _safe_prefix(name: str) -> str:
     s = str(name or "").strip()
