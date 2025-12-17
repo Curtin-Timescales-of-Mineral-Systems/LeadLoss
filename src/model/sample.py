@@ -10,9 +10,8 @@ class Sample:
 
         self.peak_catalogue = []
 
-        # Discordant clustering (experimental)
-        self.disc_cluster_labels = None        # list[int] aligned to discordantSpots()
-        self.disc_cluster_summary = []         # list[dict]: {cluster_id, n, median_ma}
+        self.disc_cluster_labels = None        
+        self.disc_cluster_summary = []      
 
         self.validSpots = [spot for spot in self.spots if spot.valid]
         self.invalidSpots = [spot for spot in self.spots if not spot.valid]
@@ -28,6 +27,10 @@ class Sample:
         self.optimalAgeNumberOfInvalidPoints = None
         self.optimalAgeScore = None
         self.monteCarloRuns = []
+
+        # Goodness curve cache (for exporting curve values)
+        self.summedKS_ages_Ma = None       # np.ndarray shape (n,)
+        self.summedKS_goodness = None      # np.ndarray shape (n,)
 
         self.skip_reason = None
 
@@ -48,7 +51,12 @@ class Sample:
         return [spot for spot in self.validSpots if spot.concordant]
 
     def discordantSpots(self):
-        return [spot for spot in self.validSpots if not spot.concordant]
+        return [spot for spot in self.validSpots
+                if (spot.concordant is False) and not getattr(spot, "reverseDiscordant", False)]
+
+    def reverseDiscordantSpots(self):
+        return [spot for spot in self.validSpots if getattr(spot, "reverseDiscordant", False)]
+
 
     def setSkipReason(self, reason):
         self.skip_reason = reason
@@ -71,10 +79,14 @@ class Sample:
         for spot in self.spots:
             spot.clear()
         self.signals.processingCleared.emit()
+        self.summedKS_ages_Ma = None
+        self.summedKS_goodness = None
 
-    def updateConcordance(self, concordancy, discordances):
-        for spot, concordant, discordance in zip(self.validSpots, concordancy, discordances):
-            spot.updateConcordance(concordant, discordance)
+    def updateConcordance(self, concordancy, discordances, reverse_flags=None):
+        for i, (spot, conc, disc) in enumerate(zip(self.validSpots, concordancy, discordances)):
+            spot.updateConcordance(conc, disc)
+            if reverse_flags is not None and i < len(reverse_flags):
+                spot.reverseDiscordant = bool(reverse_flags[i])
         if self.signals:
             self.signals.concordancyCalculated.emit()
 
@@ -92,20 +104,17 @@ class Sample:
         self.optimalAgeNumberOfInvalidPoints = args[5]
         self.optimalAgeScore = args[6]
 
-        # ---- robust catalogue extraction (handles both old and new orders) ----
         idx_catalogue = None
         if len(args) >= 9 and isinstance(args[8], (list, tuple)):
-            idx_catalogue = 8                         # new: (..., peak_str, catalogue)
+            idx_catalogue = 8                      
         elif len(args) >= 8 and isinstance(args[7], (list, tuple)):
-            idx_catalogue = 7                         # old: (..., catalogue)
+            idx_catalogue = 7                       
 
         if idx_catalogue is not None:
             self.peak_catalogue = list(args[idx_catalogue] or [])
         else:
-            # keep whatever was set by processing (or clear if you prefer)
             pass
 
-        # ---- optional discordant clustering payload (shifted accordingly) ----
         disc_idx = (idx_catalogue + 1) if idx_catalogue is not None else 9
         if len(args) > disc_idx:
             payload = args[disc_idx]
@@ -119,7 +128,6 @@ class Sample:
         if self.signals:
             self.signals.optimalAgeCalculated.emit()
 
-
     def createProcessingCopy(self):
         signals = self.signals
         self.signals = None
@@ -131,7 +139,7 @@ class Sample:
         return self.monteCarloRuns
 
 class SampleSignals(QObject):
-    summedKS = pyqtSignal(object)  # (ages_ma, S_view, peaks[, ci_pairs, support])
+    summedKS = pyqtSignal(object)
     processingCleared = pyqtSignal()
     concordancyCalculated = pyqtSignal()
     monteCarloRunAdded = pyqtSignal()

@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import (
     QGroupBox, QVBoxLayout, QTableWidget, QTableWidgetItem,
     QWidget, QLabel, QFormLayout, QHBoxLayout, QAbstractItemView,
-    QPushButton, QFileDialog, QApplication, QSizePolicy
+    QPushButton, QFileDialog, QApplication, QSizePolicy, QMessageBox
 )
 from PyQt5.QtCore import Qt, pyqtSignal
 import csv
@@ -79,11 +79,53 @@ class SampleOutputResultsPanel(QGroupBox):
         btnRow.addWidget(self.exportBtn)
         catLayout.addLayout(btnRow)
 
+        self.exportCurveButton = QPushButton("Export curve (CSV)")
+        self.exportCurveButton.clicked.connect(self.exportGoodnessCurveCSV)
+
         # Signals from the Sample
         sample.signals.processingCleared.connect(self._onProcessingCleared)
         sample.signals.optimalAgeCalculated.connect(self._onOptimalAgeCalculated)
 
     # ----- Helpers -----
+
+    def exportGoodnessCurveCSV(self):
+        if self.sample is None:
+            QMessageBox.warning(self, "No sample", "No sample is selected.")
+            return
+
+        ages = getattr(self.sample, "summedKS_ages_Ma", None)
+        y    = getattr(self.sample, "summedKS_goodness", None)
+
+        if ages is None or y is None or len(ages) == 0:
+            QMessageBox.information(
+                self,
+                "No curve available",
+                "No goodness curve values are available yet.\n\nRun processing first, then try again."
+            )
+            return
+
+        default_name = "goodness_curve.csv"
+        if getattr(self.sample, "name", ""):
+            default_name = f"{self.sample.name}_goodness_curve.csv"
+
+        path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Export goodness curve (CSV)",
+            default_name,
+            "CSV Files (*.csv)"
+        )
+        if not path:
+            return
+        if not path.lower().endswith(".csv"):
+            path += ".csv"
+
+        import csv
+        with open(path, "w", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(["age_Ma", "goodness"])
+            for a, g in zip(ages, y):
+                w.writerow([float(a), float(g)])
+
     def _onCatalogueSelectionChanged(self):
         sel = self.catTable.selectionModel().selectedRows()
         self.peakRowSelected.emit(sel[0].row() if sel else -1)

@@ -1,16 +1,14 @@
 import time
 import csv
+import numpy as np
+
 from collections import defaultdict
 
 from model.sample import Sample
 from model.spot import Spot
-from model.settings.type import SettingsType
 from process import processing
 
-from model.settings.calculation import LeadLossCalculationSettings
-from utils.settings import Settings
 
-from utils.csvUtils import write_monte_carlo_output
 from PyQt5.QtWidgets import QFileDialog
 
 class LeadLossModel:
@@ -66,26 +64,22 @@ class LeadLossModel:
         self.signals.inputDataCleared.emit()
         
     def emitSummedKS(self, sampleName, payload):
-        sample = self.samplesByName.get(sampleName)
-        if not sample:
-            return
+        if sampleName in self.samplesByName:   # or self.samplesByName.keys() in your code
+            sample = self.samplesByName[sampleName]
 
-        # Optional: keep legacy attrs in sync for code that still reads them
-        try:
-            ages_ma, y_curve, peaks, *rest = payload
-            if isinstance(peaks, (list, tuple)):
-                import numpy as np
-                sample.summedKS_peaks_Ma = np.asarray(peaks, float)
-                if rest and isinstance(rest[0], (list, tuple)):
-                    ci_pairs = rest[0]
-                    sample.summedKS_ci_low_Ma  = np.asarray([lo for lo, _ in ci_pairs], float)
-                    sample.summedKS_ci_high_Ma = np.asarray([hi for _, hi in ci_pairs], float)
-        except Exception:
-            pass
+            # payload is: (ages_ma_list, y_curve_list, peaks_age, peaks_ci, support)
+            try:
+                ages_ma = payload[0]
+                y_curve = payload[1]
+                sample.summedKS_ages_Ma = np.asarray(ages_ma, dtype=float)
+                sample.summedKS_goodness = np.asarray(y_curve, dtype=float)
+            except Exception:
+                sample.summedKS_ages_Ma = None
+                sample.summedKS_goodness = None
 
-        # Emit to the original UI sample; SampleOutputFigure is already connected to this
-        if hasattr(sample.signals, "summedKS"):
-            sample.signals.summedKS.emit(payload)
+            if sample.signals:
+                sample.signals.summedKS.emit(payload)
+
 
     #################
     ## Calculation ##
@@ -103,9 +97,12 @@ class LeadLossModel:
     def getProcessingData(self):
         return [sample.createProcessingCopy() for sample in self.samples]
 
-    def updateConcordance(self, sampleName, concordancy, discordances):
-        sample = self.samplesByName[sampleName]
-        sample.updateConcordance(concordancy, discordances)
+    def updateConcordance(self, sampleName, concordantAges, discordances, reverse_flags=None):
+        sample = next((s for s in self.samples if s.name == sampleName), None)
+        if not sample:
+            return
+        sample.updateConcordance(concordantAges, discordances, reverse_flags)
+
 
     def addMonteCarloRun(self, sampleName, run):
         sample = self.samplesByName[sampleName]
