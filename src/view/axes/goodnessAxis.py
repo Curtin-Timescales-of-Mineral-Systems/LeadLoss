@@ -42,13 +42,12 @@ class GoodnessAxis:
             self._line.set_data([], [])
 
         if self._catalogue_rows and m.any():
-            xs = np.array([float(r.get("age_ma", np.nan)) for r in self._catalogue_rows], float)
+            xs = np.array([float(r.get("age_ma", np.nan)) for r in self._catalogue_rows],
+                          float)
             xs = np.clip(xs, ages_ma[m][0], ages_ma[m][-1])
-            j  = np.clip(np.searchsorted(ages_ma[m], xs), 1, ages_ma[m].size - 1)
-            jl = j - 1
-            pick = np.where(np.abs(ages_ma[m][j] - xs) < np.abs(ages_ma[m][jl] - xs), j, jl)
-            ys  = y[m][pick]
+            ys = np.interp(xs, ages_ma[m], y[m])
             self._peaks.set_data(xs, ys)
+
 
         self.ax.relim(); self.ax.autoscale_view()
         self.ax.set_xlim(left=0)
@@ -70,22 +69,17 @@ class GoodnessAxis:
             self._line.set_data([], [])
             ax_x = None
 
-        # optional peak markers (use nearest node on the finite subset)
+        # optional peak markers: interpolate y at peak ages
         if peaks is not None and len(peaks) and m.any():
             xs = np.asarray(peaks, float)
             xs = np.clip(xs, ax_x[0], ax_x[-1])
-            j  = np.clip(np.searchsorted(ax_x, xs), 1, ax_x.size - 1)
-            jl = j - 1
-            pick = np.where(np.abs(ax_x[j] - xs) < np.abs(ax_x[jl] - xs), j, jl)
-            ys = ax_y[pick]
+            ys = np.interp(xs, ax_x, ax_y)
             self._peaks.set_data(xs, ys)
         elif self._catalogue_rows and m.any():
-            xs = np.array([float(r.get("age_ma", np.nan)) for r in self._catalogue_rows], float)
+            xs = np.array([float(r.get("age_ma", np.nan)) for r in self._catalogue_rows],
+                          float)
             xs = np.clip(xs, ax_x[0], ax_x[-1])
-            j  = np.clip(np.searchsorted(ax_x, xs), 1, ax_x.size - 1)
-            jl = j - 1
-            pick = np.where(np.abs(ax_x[j] - xs) < np.abs(ax_x[jl] - xs), j, jl)
-            ys = ax_y[pick]
+            ys = np.interp(xs, ax_x, ax_y)
             self._peaks.set_data(xs, ys)
 
         # CI windows
@@ -122,13 +116,15 @@ class GoodnessAxis:
         # place markers at catalogue medians on top of the curve
         if self._ages_ma_last is not None and self._y_last is not None and parsed:
             xs = np.array([r["age_ma"] for r in parsed], float)
-            # clamp into grid and use nearest node (handles the rightmost peak)
-            xs = np.clip(xs, self._ages_ma_last[0], self._ages_ma_last[-1])
-            j  = np.clip(np.searchsorted(self._ages_ma_last, xs), 1, self._ages_ma_last.size - 1)
-            jl = j - 1
-            pick = np.where(np.abs(self._ages_ma_last[j] - xs) < np.abs(self._ages_ma_last[jl] - xs), j, jl)
-            ys = self._y_last[pick]
+            ax_x = self._ages_ma_last
+            ax_y = self._y_last
+
+            # Clamp x into grid, then interpolate y along the drawn curve
+            xs = np.clip(xs, ax_x[0], ax_x[-1])
+            ys = np.interp(xs, ax_x, ax_y)
+
             self._peaks.set_data(xs, ys)
+
 
 
         self.ax.figure.canvas.draw_idle()

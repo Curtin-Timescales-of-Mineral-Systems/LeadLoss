@@ -1,4 +1,4 @@
-from process import calculations, processing
+from process import calculations
 from process.ensemble import per_run_peaks
 import numpy as np
 import math
@@ -8,6 +8,25 @@ from scipy.stats import ks_2samp as _ks2  # exact-parity fallback for KS
 # ---------------------------
 # Per-node statistics record
 # ---------------------------
+
+def _find_optimal_index(values_to_compare) -> int:
+    # values_to_compare is a 1D array-like of floats (lower is better)
+    minIndex, minValue = min(enumerate(values_to_compare), key=lambda v: v[1])
+    n = len(values_to_compare)
+
+    startMinIndex = minIndex
+    while startMinIndex > 0 and values_to_compare[startMinIndex - 1] == minValue:
+        startMinIndex -= 1
+
+    endMinIndex = minIndex
+    while endMinIndex < n - 1 and values_to_compare[endMinIndex + 1] == minValue:
+        endMinIndex += 1
+
+    if (endMinIndex != n - 1 and startMinIndex != 0) or (endMinIndex == n - 1 and startMinIndex == 0):
+        return (endMinIndex + startMinIndex) // 2
+    if startMinIndex == 0:
+        return 0
+    return n - 1
 
 class _KSSurface:
     def __init__(self, ages_ma, dvals):
@@ -217,7 +236,7 @@ class MonteCarloRun:
         D_raw     = np.asarray([st.test_statistics[0] for _, st in items], float)
 
         # Run-level optimum from penalised curve
-        j = processing._findOptimalIndex(D_pen)
+        j = _find_optimal_index(D_pen)
         best_age_y = float(ages_year[j])
 
         self.optimal_pb_loss_age = best_age_y

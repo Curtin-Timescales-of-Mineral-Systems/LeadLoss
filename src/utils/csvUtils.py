@@ -52,9 +52,9 @@ def columnLettersToNumber(letters, zeroIndexed):
     return number
 
 def convertColumnRef(ref, columnRefType, zeroIndexed):
-    if columnRefType is ColumnReferenceType.NUMBERS:
-        return columnLettersToNumber(ref, zeroIndexed)
     if columnRefType is ColumnReferenceType.LETTERS:
+        return columnLettersToNumber(ref, zeroIndexed)
+    if columnRefType is ColumnReferenceType.NUMBERS:
         return columnNumberToLetters(ref, zeroIndexed)
     raise Exception("Unexpected ColumnReferenceType: " + str(columnRefType))
 

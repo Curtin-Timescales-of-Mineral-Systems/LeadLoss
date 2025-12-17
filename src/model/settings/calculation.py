@@ -1,4 +1,3 @@
-import math
 from enum import Enum
 import numpy as np
 
@@ -48,14 +47,8 @@ class LeadLossCalculationSettings:
         self.use_score_weighted_voting    = False
         self.use_hdi_top_peak_ci          = False
 
-        # Discordant clustering knobs (used only when enabled)
-        self.dc_min_points     = 10
-        self.dc_min_sep_sigma  = 1.3
-        self.dc_max_components = 3
-
-        # Phase 4 scaffold (inactive unless you wire it later)
-        self.use_peak_match = False
-        self.peak_match_weight = 0.35
+        # Population-aware CDC (new)
+        self.split_by_concordant_population = False
 
     def rimAges(self):
         return np.linspace(start=self.minimumRimAge, stop=self.maximumRimAge, num=self.rimAgesSampled)

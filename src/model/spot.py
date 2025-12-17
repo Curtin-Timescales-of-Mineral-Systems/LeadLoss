@@ -45,15 +45,19 @@ class Spot:
             self.pbPbStDev = calculations.to1StdDev(self.pbPbValue, self.pbPbError, settings.pbPbErrorType, settings.pbPbErrorSigmas)
 
         self.processed = False
+        self.reverseDiscordant = False
+
 
     def clear(self):
         self.processed = False
         self.concordant = None
         self.discordance = None
+        self.reverseDiscordant = False
 
-    def updateConcordance(self, concordant, discordance):
+    def updateConcordance(self, concordant, discordance, reverse=False):
         self.processed = True
         self.concordant = concordant
         self.discordance = discordance
+        self.reverseDiscordant = bool(reverse)
         if discordance is not None:
-            self.displayStrings.append(stringUtils.round_to_sf(discordance*100))
+            self.displayStrings.append(stringUtils.round_to_sf(discordance * 100))

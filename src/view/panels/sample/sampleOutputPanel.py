@@ -47,9 +47,18 @@ class SampleOutputPanel(QWidget):
         splitter.addWidget(self.resultsAndSettingsWidget)
         splitter.addWidget(self.spotClassificationWidget)
         splitter.addWidget(self.graphWidget)
-        splitter.setStretchFactor(0, 1)  # results/settings
+
+        # Make the left panel relatively wide, the middle smaller, graphs moderate
+        splitter.setStretchFactor(0, 3)  # results/settings
         splitter.setStretchFactor(1, 2)  # spot classification
         splitter.setStretchFactor(2, 3)  # graphs
+
+        # Optional: set a minimum width for the results/settings column
+        self.resultsAndSettingsWidget.setMinimumWidth(400)
+
+        # Optional: give an initial size distribution (pixels, Qt normalises)
+        splitter.setSizes([500, 300, 600])
+
         splitter.setContentsMargins(0, 0, 0, 0)
         return splitter
 
@@ -80,11 +89,13 @@ class SampleOutputPanel(QWidget):
         else:
             message = None
         self.noDataWidget = uiUtils.createNoDataWidget(self.sample.name, message)
-        self.layout.addWidget(self.noDataWidget)
+        if self.noDataWidget is not None:
+            self.layout.addWidget(self.noDataWidget)
 
     def _showDataPanel(self):
         uiUtils.clearChildren(self.layout)
-        self.layout.addWidget(self.dataWidget)
+        if self.dataWidget is not None:
+            self.layout.addWidget(self.dataWidget)
 
     ############
     ## Events ##

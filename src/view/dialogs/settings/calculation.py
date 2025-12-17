@@ -28,7 +28,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         layout.addWidget(self._initSamplingSettings())
         layout.addWidget(self._initDistributionComparisonSettings())
         layout.addWidget(self._initMonteCarloSettings())
-        layout.addWidget(self._initPeakAndClusteringSettings())   # ← only this group (no Summed‑KS group)
+        layout.addWidget(self._initPeakAndClusteringSettings())
         widget = QWidget(); widget.setLayout(layout)
         return widget
 
@@ -106,32 +106,28 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         box = QGroupBox("Peak extraction & clustering")
         v = QVBoxLayout()
 
+        # Cluster discordant grains
         self.useClusteringCB = QCheckBox("Cluster discordant grains", self)
         self.useClusteringCB.setChecked(bool(getattr(d, "use_discordant_clustering", False)))
         self.useClusteringCB.stateChanged.connect(self._validate)
 
-        self.relabelPerRunCB = QCheckBox("Re-fit clusters per run (robust)", self)
-        self.relabelPerRunCB.setChecked(bool(getattr(d, "relabel_clusters_per_run", False)))
-        self.relabelPerRunCB.stateChanged.connect(self._validate)
-
-        # Keep the original multi-peak finder toggle (rename; not “experimental”)
-        self.enableEnsembleCB = QCheckBox("Enable multi-peak finder", self)
+        # Ensemble multi-peak finder
+        self.enableEnsembleCB = QCheckBox("Ensemble catalogue", self)
         self.enableEnsembleCB.setChecked(bool(getattr(d, "enable_ensemble_peak_picking", True)))
         self.enableEnsembleCB.stateChanged.connect(self._validate)
 
+        # Optional population split
+        #self.splitPopulationsCB = QCheckBox("Split by concordant populations", self)
+        # self.splitPopulationsCB.setChecked(bool(getattr(d, "split_by_concordant_population", False)))
+        #self.splitPopulationsCB.stateChanged.connect(self._validate)
+
         v.addWidget(self.useClusteringCB)
-        v.addWidget(self.relabelPerRunCB)
         v.addWidget(self.enableEnsembleCB)
+        #v.addWidget(self.splitPopulationsCB)
         v.addStretch(1)
+
         box.setLayout(v)
         return box
-
-
-
-    def _toggleEnsembleExtras(self):
-        on = self.enableEnsembleCB.isChecked()
-        self.scoreWeightedVotingCB.setEnabled(on)
-        self.hdiTopCICB.setEnabled(on)
 
     # events / settings
 
@@ -165,7 +161,11 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         s.penaliseInvalidAges = self.penaliseInvalidAgesCB.isChecked()
         s.monteCarloRuns      = self.monteCarloRunsInput.value()
 
+        # Clustering & ensemble toggles
         s.use_discordant_clustering    = self.useClusteringCB.isChecked()
-        s.relabel_clusters_per_run     = self.relabelPerRunCB.isChecked()
+        # s.relabel_clusters_per_run remains at its default False in the settings class
         s.enable_ensemble_peak_picking = self.enableEnsembleCB.isChecked()
+        # s.split_by_concordant_population = self.splitPopulationsCB.isChecked()
+
         return s
+
