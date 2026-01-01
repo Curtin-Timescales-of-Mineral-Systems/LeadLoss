@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: >-
+  If you use this repository (code, data, or the manuscript reproduction workflow),
+  please cite it using the preferred citation below.
+
+title: "LeadLoss: Pb-loss peak picking tools and manuscript reproduction workflow"
+type: software
+license: MIT
+
+authors:
+  - family-names: Mathieson
+    given-names: Lucy
+
+# Update these fields once the repository is public
+# repository-code: "https://github.com/<org-or-user>/<repo>"
+# url: "https://github.com/<org-or-user>/<repo>"
+# version: "0.1.0"
+# doi: "10.5281/zenodo.xxxxxxx"
+# date-released: "2025-12-31"
+
+keywords:
+  - U-Pb geochronology
+  - Pb-loss
+  - discordance
+  - peak picking
+  - uncertainty
+  - bootstrap
+
+preferred-citation:
+  type: article
+  title: "Peak picking for Pb-loss models (manuscript)"
+  authors:
+    - family-names: Mathieson
+      given-names: Lucy
+  year: 2025
+  # If/when available, add one of:
+  # - doi
+  # - journal
+  # - publisher
+  # - url (e.g., preprint)
