@@ -61,6 +61,8 @@ jobs:
             --add-data "resources;resources" `
             src/application.py
 
+          Compress-Archive -Path dist/LeadLoss.exe -DestinationPath LeadLoss-windows.zip
+
       - name: Build (macOS)
         if: runner.os == 'macOS'
         shell: bash
@@ -75,6 +77,9 @@ jobs:
             --hidden-import pkg_resources.py2_warn \
             --add-data "resources:resources" \
             src/application.py
+
+          ditto -c -k --sequesterRsrc --keepParent "dist/LeadLoss.app" "LeadLoss-macos.zip"
+
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
