@@ -50,21 +50,31 @@ jobs:
         shell: pwsh
         run: |
           pyinstaller --noconfirm --clean --onefile --windowed --name LeadLoss `
+            --paths "src" `
+            --collect-submodules utils `
+            --collect-submodules controller `
+            --collect-submodules model `
+            --collect-submodules process `
+            --collect-submodules view `
             --icon "resources/icon.ico" `
             --hidden-import pkg_resources.py2_warn `
             --add-data "resources;resources" `
             src/application.py
-          Compress-Archive -Path dist/LeadLoss.exe -DestinationPath LeadLoss-windows.zip
 
       - name: Build (macOS)
         if: runner.os == 'macOS'
         shell: bash
         run: |
           pyinstaller --noconfirm --clean --windowed --name LeadLoss \
+            --paths "src" \
+            --collect-submodules utils \
+            --collect-submodules controller \
+            --collect-submodules model \
+            --collect-submodules process \
+            --collect-submodules view \
             --hidden-import pkg_resources.py2_warn \
             --add-data "resources:resources" \
             src/application.py
-          ditto -c -k --sequesterRsrc --keepParent "dist/LeadLoss.app" "LeadLoss-macos.zip"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
