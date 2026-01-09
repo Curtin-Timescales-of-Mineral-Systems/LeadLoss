@@ -56,7 +56,7 @@ class Spot:
 
     def updateConcordance(self, concordant, discordance, reverse=False):
         self.processed = True
-        self.concordant = concordant
+        self.concordant = None if concordant is None else bool(concordant)
         self.discordance = discordance
         self.reverseDiscordant = bool(reverse)
         if discordance is not None:

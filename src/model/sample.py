@@ -48,15 +48,28 @@ class Sample:
         self._peak_catalogue = val
 
     def concordantSpots(self):
-        return [spot for spot in self.validSpots if spot.concordant]
+        # Use explicit bool() checks so numpy.bool_ values are handled and skip unprocessed spots.
+        return [
+            spot for spot in self.validSpots
+            if spot.processed and bool(spot.concordant)
+        ]
 
     def discordantSpots(self):
-        return [spot for spot in self.validSpots
-                if (spot.concordant is False) and not getattr(spot, "reverseDiscordant", False)]
+        out = []
+        for spot in self.validSpots:
+            c = getattr(spot, "concordant", None)
+            if c is None:
+                continue  # not classified yet
+            if (not bool(c)) and (not getattr(spot, "reverseDiscordant", False)):
+                out.append(spot)
+        return out
+
 
     def reverseDiscordantSpots(self):
-        return [spot for spot in self.validSpots if getattr(spot, "reverseDiscordant", False)]
-
+        return [
+            spot for spot in self.validSpots
+            if spot.processed and getattr(spot, "reverseDiscordant", False)
+        ]
 
     def setSkipReason(self, reason):
         self.skip_reason = reason
@@ -145,4 +158,3 @@ class SampleSignals(QObject):
     monteCarloRunAdded = pyqtSignal()
     optimalAgeCalculated = pyqtSignal()
     skipped = pyqtSignal()
-

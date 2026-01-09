@@ -80,7 +80,6 @@ jobs:
 
           ditto -c -k --sequesterRsrc --keepParent "dist/LeadLoss.app" "LeadLoss-macos.zip"
 
-
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
