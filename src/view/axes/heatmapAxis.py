@@ -72,13 +72,13 @@ class HeatmapAxis:
         maxAge = settings.maximumRimAge/1e6
         resolution = config.HEATMAP_RESOLUTION
 
-        X = np.linspace(minAge, maxAge, resolution)
-        Y = np.linspace(0.0, 1.0, resolution)
-
         self.clearAll()
-        self.axis.set_xlim(X[0], X[-1])
-        colourmap = self.axis.pcolorfast(X, Y, data, cmap='viridis')
-        self.colorbar = self.figure.colorbar(colourmap, ax=self.axis, label="Probability of score")
+        self.axis.set_xlim(minAge, maxAge)
+        self.axis.set_ylim(0.0, 1.0)
+
+        # Use extents (xmin,xmax), (ymin,ymax) to avoid edge-length mismatch across platforms
+        colourmap = self.axis.pcolorfast((minAge, maxAge), (0.0, 1.0), data, cmap='viridis')
+
 
         # if we already know peaks, paint them near the baseline
         if isinstance(self._peaks_ma, (list, tuple, np.ndarray)) and len(self._peaks_ma):
