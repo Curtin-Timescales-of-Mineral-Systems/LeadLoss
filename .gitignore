@@ -155,3 +155,4 @@ papers/**/data/derived/ks_diagnostics/
 .Rhistory
 .Rapp.history
 Rplots.pdf
+src/releases/
