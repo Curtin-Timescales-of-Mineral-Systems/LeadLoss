@@ -43,8 +43,7 @@ To keep the Git repository lightweight, the per-run CDC goodness surfaces are pr
 Extract it once (from the repository root):
 
 ```bash
-tar -xzf papers/2025-peak-picking/data/derived/ks_diagnostics_npz.tar.gz \
-  -C papers/2025-peak-picking/data/derived
+tar -xzf papers/2025-peak-picking/data/derived/ks_diagnostics_npz.tar.gz   -C papers/2025-peak-picking/data/derived
 ```
 
 This will create:
@@ -52,6 +51,25 @@ This will create:
 - `papers/2025-peak-picking/data/derived/ks_diagnostics/`
 
 That extracted folder is intentionally ignored by git.
+
+## One-command reproduction
+
+From the repository root (or any working directory):
+
+```bash
+python papers/2025-peak-picking/scripts/run_all.py --clean
+```
+
+This regenerates all manuscript artefacts into:
+
+- `papers/2025-peak-picking/outputs/tables/`
+- `papers/2025-peak-picking/outputs/figures/`
+
+Notes:
+
+- `run_all.py` will extract `ks_diagnostics_npz.tar.gz` automatically if required.
+- `outputs/` contains generated artefacts and can be deleted/regenerated.
+- `figures/` contains manuscript-ready exports (included for convenience).
 
 ## Reproducing tables
 
@@ -87,10 +105,7 @@ python papers/2025-peak-picking/scripts/figures/fig01_synthetic_cases1to4.py
 This script is CLI-driven. To keep output locations consistent with the other figure scripts, pass `--fig-dir`:
 
 ```bash
-python papers/2025-peak-picking/scripts/figures/fig02_synthetic_cases5to7.py \
-  --save-fig \
-  --fig-dir papers/2025-peak-picking/outputs/figures \
-  --formats svg,png,pdf
+python papers/2025-peak-picking/scripts/figures/fig02_synthetic_cases5to7.py   --save-fig   --fig-dir papers/2025-peak-picking/outputs/figures   --formats svg,png,pdf
 ```
 
 ### Figures 3 and 5 — CDC goodness grids
@@ -98,17 +113,13 @@ python papers/2025-peak-picking/scripts/figures/fig02_synthetic_cases5to7.py \
 These figures use NPZ goodness surfaces under `data/derived/ks_diagnostics/` (created by extracting the NPZ bundle above).
 
 ```bash
-python papers/2025-peak-picking/scripts/figures/fig03_fig05_cdc_goodness_grids.py \
-  --ks-dir papers/2025-peak-picking/data/derived/ks_diagnostics \
-  --no-show
+python papers/2025-peak-picking/scripts/figures/fig03_fig05_cdc_goodness_grids.py   --ks-dir papers/2025-peak-picking/data/derived/ks_diagnostics   --no-show
 ```
 
 ### Figures 4 and 6 — DD likelihood grids
 
 ```bash
-python papers/2025-peak-picking/scripts/figures/fig04_fig06_dd_likelihood_grids.py \
-  --dd-dir papers/2025-peak-picking/data/derived/reimink_discordance_dating \
-  --no-show
+python papers/2025-peak-picking/scripts/figures/fig04_fig06_dd_likelihood_grids.py   --dd-dir papers/2025-peak-picking/data/derived/reimink_discordance_dating   --no-show
 ```
 
 ### Figure 7 — K–S goodness example (case 2A)
@@ -122,9 +133,7 @@ python papers/2025-peak-picking/scripts/figures/fig07_ks_goodness_case2a.py --no
 This figure also requires the extracted `data/derived/ks_diagnostics/` folder.
 
 ```bash
-python papers/2025-peak-picking/scripts/figures/fig08_cdc_upgrade.py \
-  --sample-id 2A \
-  --no-show
+python papers/2025-peak-picking/scripts/figures/fig08_cdc_upgrade.py   --sample-id 2A   --no-show
 ```
 
 ## Notes
