@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: >-
   If you use this repository (code, data, or the manuscript reproduction workflow),
-  please cite it using the preferred citation below.
+  please cite the archived software release below.
 
 title: "LeadLoss: Pb-loss peak picking tools and manuscript reproduction workflow"
 type: software
@@ -11,12 +11,12 @@ authors:
   - family-names: Mathieson
     given-names: Lucy
 
-# Update these fields once the repository is public
-# repository-code: "https://github.com/<org-or-user>/<repo>"
-# url: "https://github.com/<org-or-user>/<repo>"
-# version: "0.1.0"
-# doi: "10.5281/zenodo.xxxxxxx"
-# date-released: "2025-12-31"
+repository-code: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
+url: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
+
+version: "paper-2025-peak-picking-v1.2.1"
+doi: "10.5281/zenodo.18217446"
+date-released: "2026-01-12"
 
 keywords:
   - U-Pb geochronology
@@ -26,15 +26,18 @@ keywords:
   - uncertainty
   - bootstrap
 
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.14039112"
+    description: "Concept DOI (all versions)"
+
 preferred-citation:
-  type: article
-  title: "Peak picking for Pb-loss models (manuscript)"
+  type: software
+  title: "LeadLoss: Pb-loss peak picking tools and manuscript reproduction workflow"
   authors:
     - family-names: Mathieson
       given-names: Lucy
-  year: 2025
-  # If/when available, add one of:
-  # - doi
-  # - journal
-  # - publisher
-  # - url (e.g., preprint)
+  version: "paper-2025-peak-picking-v1.2.1"
+  doi: "10.5281/zenodo.18217446"
+  date-released: "2026-01-12"
+  url: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
