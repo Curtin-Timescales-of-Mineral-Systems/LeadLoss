@@ -1,7 +1,8 @@
 cff-version: 1.2.0
 message: >-
   If you use this repository (code, data, or the manuscript reproduction workflow),
-  please cite the archived software release below.
+  please cite the archived software release below. If you use the LeadLoss method in
+  research, please also cite the accompanying methods paper listed under references.
 
 title: "LeadLoss: Pb-loss peak picking tools and manuscript reproduction workflow"
 type: software
@@ -41,3 +42,17 @@ preferred-citation:
   doi: "10.5281/zenodo.18217446"
   date-released: "2026-01-12"
   url: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
+
+references:
+  - type: article
+    title: "Turning trash into treasure: Extracting meaning from discordant data via a dedicated application"
+    authors:
+      - family-names: Mathieson
+        given-names: Lucy M.
+      - family-names: Kirkland
+        given-names: Christopher L.
+      - family-names: Daggitt
+        given-names: Matthew L.
+    journal: "Geochemistry, Geophysics, Geosystems"
+    year: 2025
+    doi: "10.1029/2024GC012066"
