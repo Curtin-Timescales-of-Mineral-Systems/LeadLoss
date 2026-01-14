@@ -1006,13 +1006,12 @@ def _calculateOptimalAge(signals, sample, progress):
     # ---- Drop peaks with absurdly wide CIs (essentially the entire grid) ----
     if rows_for_ui:
         total_span = float(ages_ma[-1] - ages_ma[0])
-        MAX_CI_FRAC = 0.5  # e.g. drop peaks whose CI spans >50% of the window
+        MAX_CI_FRAC = 0.5  # drop peaks whose CI spans >50% of the modelling window
 
         filtered = []
         for r in rows_for_ui:
             width = float(r["ci_high"] - r["ci_low"])
             if width > MAX_CI_FRAC * total_span:
-                # This “peak” is so broad that it’s effectively unconstrained → discard
                 continue
             filtered.append(r)
         rows_for_ui = filtered
@@ -1027,6 +1026,15 @@ def _calculateOptimalAge(signals, sample, progress):
         rows_raw = _keep_same(rows_raw, rows_for_ui)
         rows_pen = _keep_same(rows_pen, rows_for_ui)
 
+    # Renumber peak_no after filtering so CSV doesn't have gaps
+    for i, r in enumerate(rows_for_ui, 1):
+        r["peak_no"] = i
+    for i, r in enumerate(rows_raw, 1):
+        r["peak_no"] = i
+    for i, r in enumerate(rows_pen, 1):
+        r["peak_no"] = i
+
+    # Export rows_for_ui/rows_raw/rows_pen are final
     if CDC_WRITE_OUTPUTS:
         _append_catalogue_rows(sample.name, rows_pen, dest_path=CATALOGUE_CSV_PEN)
         _append_catalogue_rows(sample.name, rows_raw, dest_path=CATALOGUE_CSV_RAW)
@@ -1045,6 +1053,7 @@ def _calculateOptimalAge(signals, sample, progress):
 
     # Publish to UI
     catalogue = [(r["age_ma"], r["ci_low"], r["ci_high"], r["support"]) for r in rows_for_ui]
+
     red_peaks = np.asarray([m for m, *_ in catalogue], float)
     peak_str  = fmt_peak_stats(catalogue) if catalogue else "—"
 
