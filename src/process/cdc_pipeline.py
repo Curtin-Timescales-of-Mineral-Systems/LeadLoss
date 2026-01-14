@@ -1003,26 +1003,10 @@ def _calculateOptimalAge(signals, sample, progress):
             r["ci_low"]  = min(float(r["ci_low"]),  a)
             r["ci_high"] = max(float(r["ci_high"]), a)
 
-    if CDC_WRITE_OUTPUTS:
-        _append_catalogue_rows(sample.name, rows_pen, dest_path=CATALOGUE_CSV_PEN)
-        _append_catalogue_rows(sample.name, rows_raw, dest_path=CATALOGUE_CSV_RAW)
-        _write_npz_diagnostics(
-            sample_name=sample.name,
-            ages_ma=ages_ma,
-            ages_y=ages_y,
-            runs=runs,
-            S_runs_raw=S_runs_raw,
-            S_runs_pen=S_runs_pen,
-            Smed_raw=Smed_raw,
-            Smed_pen=Smed_pen,
-            S_view=S_view,
-            rows_for_ui=rows_for_ui,
-        )
-
     # ---- Drop peaks with absurdly wide CIs (essentially the entire grid) ----
     if rows_for_ui:
         total_span = float(ages_ma[-1] - ages_ma[0])
-        MAX_CI_FRAC = 0.5  # e.g. drop peaks whose CI spans >70% of the window
+        MAX_CI_FRAC = 0.5  # e.g. drop peaks whose CI spans >50% of the window
 
         filtered = []
         for r in rows_for_ui:
@@ -1042,6 +1026,22 @@ def _calculateOptimalAge(signals, sample, progress):
 
         rows_raw = _keep_same(rows_raw, rows_for_ui)
         rows_pen = _keep_same(rows_pen, rows_for_ui)
+
+    if CDC_WRITE_OUTPUTS:
+        _append_catalogue_rows(sample.name, rows_pen, dest_path=CATALOGUE_CSV_PEN)
+        _append_catalogue_rows(sample.name, rows_raw, dest_path=CATALOGUE_CSV_RAW)
+        _write_npz_diagnostics(
+            sample_name=sample.name,
+            ages_ma=ages_ma,
+            ages_y=ages_y,
+            runs=runs,
+            S_runs_raw=S_runs_raw,
+            S_runs_pen=S_runs_pen,
+            Smed_raw=Smed_raw,
+            Smed_pen=Smed_pen,
+            S_view=S_view,
+            rows_for_ui=rows_for_ui,
+        )
 
     # Publish to UI
     catalogue = [(r["age_ma"], r["ci_low"], r["ci_high"], r["support"]) for r in rows_for_ui]
