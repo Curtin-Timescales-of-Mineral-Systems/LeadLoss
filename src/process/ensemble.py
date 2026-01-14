@@ -59,7 +59,7 @@ def _crest_index(y: np.ndarray, k: int, half_win: int = 2) -> int:
     j_local = int(cand[len(cand)//2])
     return int(a + j_local)
 
-# -------------------------- per-run peaks (legacy helper) --------------------
+# -------------------------- per-run peaks --------------------
 def per_run_peaks(
     x: np.ndarray, y: np.ndarray, *,
     prom_frac: float = 0.07,
@@ -176,7 +176,7 @@ def build_ensemble_catalogue(
     # only keep peaks whose crest is at least this fraction
     # of the highest crest on the ensemble curve.
     height_frac: float = 0.0,   # 0.0 = disabled
-    # NEW: optional global optimum ages per run (Ma)
+    # optional global optimum ages per run (Ma)
     optima_ma: Optional[np.ndarray] = None,
     # optional injection of per-run peak lists
     per_run_peaks_list: Optional[List[np.ndarray]] = None,
@@ -206,7 +206,7 @@ def build_ensemble_catalogue(
 
     y = sign * S_med_s
 
-    # ---------------- Coarse curve: define the REAL major humps -------------
+    # ---------------- Coarse curve: define the major humps -------------
     # Strong smoothing to wash out shoulders
     sigma_coarse = max(5.0, 0.03 * float(G))  # ≈6 nodes for G=200
     S_med_coarse = gaussian_filter1d(S_med_s, sigma=sigma_coarse, mode="reflect")
