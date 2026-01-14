@@ -4,7 +4,7 @@ import math
 ## Constants ##
 ###############
 from PyQt5.QtCore import QRegExp
-
+from utils.app_paths import save_data_path
 from utils.config import DISPLAY_SF
 
 U_PB_STR = "²³⁸U/²⁰⁶Pb"
@@ -13,7 +13,7 @@ PB_PB_STR = "²⁰⁷Pb/²⁰⁶Pb"
 ERROR_SIGMA_OPTIONS = [2, 1]
 ERROR_TYPE_OPTIONS = ["Absolute", "Percentage"]
 
-SAVE_FILE = "./leadloss_save_data.pkl"
+SAVE_FILE = save_data_path()
 
 
 ###############

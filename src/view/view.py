@@ -11,9 +11,6 @@ from view.dialogs.settings.imports import LeadLossImportSettingsDialog
 from model.settings.type import SettingsType
 from utils.ui.statusBar import StatusBarWidget, QLabel
 from view.panels.main import MainPanel
-from view.panels.sample.samplePanel import SamplePanel
-from view.panels.summary.data import SummaryDataPanel
-from view.panels.summary.summary import SummaryPanel
 from view.panels.welcome import WelcomePanel
 
 

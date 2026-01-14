@@ -1,57 +1,110 @@
-![Curtin University: Timescales of Minerals Systems](resources/logo-linear.png)
+![Curtin University: Timescales of Mineral Systems](resources/logo-linear.png)
 
-## Lead-loss
+# LeadLoss
 
-Lead-Loss is a Python-based tool designed to estimate the most likely time of lead loss in discordant zircon samples. The tool provides a user-friendly GUI interface.
+LeadLoss is a Python-based tool for estimating the most likely timing of Pb-loss in discordant zircon samples. This repository includes:
 
-## Download and Installation
+- a cross-platform **GUI application** for interactive analysis, and
+- a **manuscript reproduction bundle** for the 2025 “peak-picking” Pb-loss paper (figures and tables).
 
-**Option 1: Standalone Executable**
-We provide standalone executables for Windows and MacOS here:
-https://github.com/MatthewDaggitt/LeadLoss/releases
-Simply download and run the appropriate file for your system-no installation required.
+## Download and installation
 
-**Option 2: Python Environment**
-For Python users, you may clone the repository and install dependencies manually using:
+### Option 1: Standalone executables (recommended)
+
+Standalone executables for Windows and macOS are provided as **GitHub Release assets**:
+
+- https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss/releases
+
+Download the appropriate file for your operating system and run it (no Python installation required).
+
+### Option 2: Run the GUI from source (Python environment)
+
+Clone the repository:
+
+```bash
 git clone https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss.git
 cd LeadLoss
-pip install -3 requirements.txt
+```
 
-## Usage
+Create and activate a virtual environment, then install **GUI** dependencies:
 
-**Option 1: Standalone Executable**
-1. Download the executable from [the releases page](https://github.com/MatthewDaggitt/LeadLoss/releases)
-2. Follow the Input Requirements below to prepare your CSV file.
-3. Launch the executable and follow the GUI prompts.
+```bash
+python -m venv .venv-app
+source .venv-app/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements-app.txt
+```
 
-**Option 2: Python Environment**
-1. Clone the repository and set up the environment as described above.
-2. Run the GUI using the following command:
-python application.py
+Run the GUI:
 
-## Input Requirements
+```bash
+python src/application.py
+```
 
-The program requires a Comma Separated Value (.csv) file with each row representing a single spot analysis. The CSV file must include the following columns:
+#### Common install issue: `soerp` / `ad`
 
-238U/206Pb ratio
-238U/206Pb uncertainty
-207Pb/206Pb ratio
-207Pb/206Pb uncertainty
+Some platforms fail to install `soerp` because its dependency `ad` requires **setuptools < 58**.
 
-During data import, the user will be prompted to specify the column names or indices corresponding to the required values (e.g., A, B, C, D or 1, 2, 3, 4). Optional columns, such as sample names for batch processing, may also be included. Uncertainties may be specified as absolute values or percentages at the 1σ or 2σ confidence levels.
+If you see an error mentioning `ad`, `use_2to3`, or build isolation, use this more robust install sequence:
 
-## Outputs
+```bash
+python -m venv .venv-app
+source .venv-app/bin/activate
+python -m pip install --upgrade pip
 
-The program generates the following outputs:
-Optimal Pb-loss age estimates with 95% confidence intervals
-p-values and D-values from the KS test
-Individual Monte Carlo sampling results
+# Required for `ad` (use_2to3): setuptools must be < 58
+python -m pip install "setuptools==57.5.0" wheel
+
+# Install `ad` first and disable build isolation, then install the app requirements
+python -m pip install --no-build-isolation "ad==1.3.2"
+python -m pip install --no-build-isolation -r requirements-app.txt
+```
+
+## Manuscript reproduction (2025 peak-picking)
+
+Reproduction materials and instructions (environment + commands) are in:
+
+- `papers/2025-peak-picking/README.md`
+
+One-command reproduction (figures + tables):
+
+```bash
+python papers/2025-peak-picking/scripts/run_all.py --clean
+```
+
+This generates manuscript artefacts into:
+
+- `papers/2025-peak-picking/outputs/tables/`
+- `papers/2025-peak-picking/outputs/figures/`
+
+## Input requirements (GUI)
+
+The GUI expects a CSV file where each row represents a single spot analysis. Required columns are:
+
+- 238U/206Pb ratio
+- 238U/206Pb uncertainty
+- 207Pb/206Pb ratio
+- 207Pb/206Pb uncertainty
+
+During import, you can specify column names or indices (e.g., A, B, C, D or 1, 2, 3, 4). Optional columns (e.g., sample identifiers for batch processing) may also be included. Uncertainties may be specified as absolute values or percentages at the 1σ or 2σ confidence level.
+
+## Outputs (GUI)
+
+The GUI can export:
+
+- optimal Pb-loss age estimates with 95% confidence intervals
+- K–S test statistics (p-values and D-values)
+- individual Monte Carlo sampling results
+- ensemble catalogue of Pb-loss age estimates with 95% confidence intervals and support values
 
 ## Troubleshooting
 
-If the standalone GUI does not work, ensure you have downloaded the correct version for your operating system. For Python users, make sure all dependencies are correctly installed using the requirements.txt file. If you continue to experience issues, please open an issue on GitHub.
+If a standalone executable does not run, confirm you downloaded the correct operating-system build from the Releases page.
 
-### Citation
+If you run from source, confirm your environment is active and dependencies are installed from `requirements-app.txt`. If issues persist, please open a GitHub issue and include your operating system and the full error message/traceback.
+
+## Citation
 
 If you use LeadLoss in your research, please cite:
-Mathieson, L. M., Kirkland, C. L., & Daggitt, M. L. (2025). Turning trash into treasure: Extracting meaning from discordant data via a dedicated application. Geochemistry, Geophysics, Geosystems, 26, e2024GC012066. https://doi.org/10.1029/2024GC012066
+
+Mathieson, L. M., Kirkland, C. L., & Daggitt, M. L. (2025). Turning trash into treasure: Extracting meaning from discordant data via a dedicated application. *Geochemistry, Geophysics, Geosystems*, 26, e2024GC012066. https://doi.org/10.1029/2024GC012066

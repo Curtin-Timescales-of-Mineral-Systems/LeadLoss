@@ -36,13 +36,29 @@ class SampleOutputPanel(QWidget):
         self.resultsAndSettingsWidget = self._createResultsAndSettingsWidget()
         self.graphWidget = SampleOutputFigure(self.controller, self.sample)
 
+        try:
+            self.resultsPanel.peakRowSelected.connect(
+                lambda idx: self.graphWidget.highlight_catalogue_row(idx if (idx is not None and idx >= 0) else None)
+            )
+        except Exception:
+            pass
+
         splitter = QSplitter(Qt.Horizontal)
         splitter.addWidget(self.resultsAndSettingsWidget)
         splitter.addWidget(self.spotClassificationWidget)
         splitter.addWidget(self.graphWidget)
-        splitter.setStretchFactor(0, 1)
-        splitter.setStretchFactor(0, 2)
-        splitter.setStretchFactor(0, 3)
+
+        # Make the left panel relatively wide, the middle smaller, graphs moderate
+        splitter.setStretchFactor(0, 3)  # results/settings
+        splitter.setStretchFactor(1, 2)  # spot classification
+        splitter.setStretchFactor(2, 3)  # graphs
+
+        # Optional: set a minimum width for the results/settings column
+        self.resultsAndSettingsWidget.setMinimumWidth(400)
+
+        # Optional: give an initial size distribution (pixels, Qt normalises)
+        splitter.setSizes([500, 300, 600])
+
         splitter.setContentsMargins(0, 0, 0, 0)
         return splitter
 
@@ -51,8 +67,8 @@ class SampleOutputPanel(QWidget):
         self.settingsPanel = SampleCalculationSettingsPanel(self.sample)
 
         layout = QVBoxLayout()
-        layout.addWidget(self.resultsPanel)
-        layout.addWidget(self.settingsPanel)
+        layout.addWidget(self.resultsPanel, 3)   # more space to show the catalogue
+        layout.addWidget(self.settingsPanel, 1)
 
         widget = QWidget()
         widget.setLayout(layout)
@@ -73,11 +89,13 @@ class SampleOutputPanel(QWidget):
         else:
             message = None
         self.noDataWidget = uiUtils.createNoDataWidget(self.sample.name, message)
-        self.layout.addWidget(self.noDataWidget)
+        if self.noDataWidget is not None:
+            self.layout.addWidget(self.noDataWidget)
 
     def _showDataPanel(self):
         uiUtils.clearChildren(self.layout)
-        self.layout.addWidget(self.dataWidget)
+        if self.dataWidget is not None:
+            self.layout.addWidget(self.dataWidget)
 
     ############
     ## Events ##

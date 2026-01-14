@@ -1,0 +1,7 @@
+numpy
+scipy
+scikit-learn
+matplotlib
+PyQt5
+soerp==0.9.6
+

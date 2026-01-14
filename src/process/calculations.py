@@ -124,7 +124,6 @@ def isConcordantErrorEllipse(uPbValue, uPbError, pbPbValue, pbPbError, ellipseSi
         root_s = math.sqrt(s)
         return abs(localUPb-uPbValue) <= uPbError*root_s
 
-
     # Otherwise minimise for distance in elliptical space
     def distanceToEllipse(t):
         x = u238pb206_from_age(t)

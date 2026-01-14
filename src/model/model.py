@@ -1,16 +1,15 @@
 import time
 import csv
+import numpy as np
+
 from collections import defaultdict
 
 from model.sample import Sample
 from model.spot import Spot
-from model.settings.type import SettingsType
 from process import processing
 
-from model.settings.calculation import LeadLossCalculationSettings
-from utils.settings import Settings
 
-from utils.csvUtils import write_monte_carlo_output
+from PyQt5.QtWidgets import QFileDialog
 
 class LeadLossModel:
 
@@ -21,6 +20,16 @@ class LeadLossModel:
         self.headers = []
         self.samples = []
         self.samplesByName = {}
+
+        # legacy state used by getters/exports in tools
+        self.rows = []
+        self.concordantRows = []
+        self.discordantRows = []
+
+        self.dValuesByAge = {}
+        self.pValuesByAge = {}
+        self.reconstructedAges = {}
+        self.optimalAge = None
 
         self.lastUpdateTime = 0
 
@@ -53,6 +62,24 @@ class LeadLossModel:
         self.discordantRows = []
 
         self.signals.inputDataCleared.emit()
+        
+    def emitSummedKS(self, sampleName, payload):
+        if sampleName in self.samplesByName:   # or self.samplesByName.keys() in your code
+            sample = self.samplesByName[sampleName]
+
+            # payload is: (ages_ma_list, y_curve_list, peaks_age, peaks_ci, support)
+            try:
+                ages_ma = payload[0]
+                y_curve = payload[1]
+                sample.summedKS_ages_Ma = np.asarray(ages_ma, dtype=float)
+                sample.summedKS_goodness = np.asarray(y_curve, dtype=float)
+            except Exception:
+                sample.summedKS_ages_Ma = None
+                sample.summedKS_goodness = None
+
+            if sample.signals:
+                sample.signals.summedKS.emit(payload)
+
 
     #################
     ## Calculation ##
@@ -70,9 +97,12 @@ class LeadLossModel:
     def getProcessingData(self):
         return [sample.createProcessingCopy() for sample in self.samples]
 
-    def updateConcordance(self, sampleName, concordancy, discordances):
-        sample = self.samplesByName[sampleName]
-        sample.updateConcordance(concordancy, discordances)
+    def updateConcordance(self, sampleName, concordantAges, discordances, reverse_flags=None):
+        sample = next((s for s in self.samples if s.name == sampleName), None)
+        if not sample:
+            return
+        sample.updateConcordance(concordantAges, discordances, reverse_flags)
+
 
     def addMonteCarloRun(self, sampleName, run):
         sample = self.samplesByName[sampleName]
@@ -98,11 +128,11 @@ class LeadLossModel:
             self.lastUpdateTime = now
 
     def getAgeRange(self):
-        concordantAges = [row.concordantAge for row in self.rows if row.concordant]
+        concordantAges = [row.concordantAge for row in self.rows if getattr(row, "concordant", False)]
         recAges = [recAge for ages in self.reconstructedAges.values() for recAge in ages]
         discordantAges = [recAge.values[0] for recAge in recAges if recAge]
         allAges = concordantAges + discordantAges
-        return min(allAges), max(allAges)
+        return (min(allAges), max(allAges)) if allAges else (None, None)
 
     def getNearestSampledAge(self, requestedAge):
         if not self.dValuesByAge:
@@ -128,11 +158,9 @@ class LeadLossModel:
         if not filename:
             return
         mode = 'a' if append else 'w'
-        with open(filename, mode, newline='') as csvfile:
+        with open(filename, mode, newline="") as csvfile:
             writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-            for i, sample in enumerate(self.samples):
-                runs = sample.getMonteCarloRuns()
-                for j, run in enumerate(runs):
+            for sample in self.samples:
+                for run in sample.getMonteCarloRuns():
                     run.calculateOptimalAge()
-                    run_list = run.toList()
-                    writer.writerow(run_list)
+                    writer.writerow(run.toList())

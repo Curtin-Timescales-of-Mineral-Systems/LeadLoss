@@ -1,10 +1,8 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QTabWidget, QVBoxLayout, QPushButton, QLabel, QLineEdit, QHBoxLayout, QStyle, \
-    QSpacerItem, QMessageBox
-
+from PyQt5.QtWidgets import QWidget, QTabWidget, QVBoxLayout, QPushButton, QLabel, QLineEdit, QHBoxLayout, QSpacerItem, QMessageBox
 from utils.ui.icons import Icons
 from view.panels.sample.samplePanel import SamplePanel
 from view.panels.summary.summary import SummaryPanel
+from PyQt5.QtCore import QSignalBlocker
 
 
 class MainPanel(QWidget):
@@ -110,8 +108,23 @@ class MainPanel(QWidget):
             self.processOneButton.setText("  Process " + self.samplePanels[i-1].sample.name)
 
     def onSampleTabChanged(self, i):
-        for samplePanel in self.samplePanels:
-            samplePanel.tabs.setCurrentIndex(i)
+        # Prevent re-entry if something else triggers while we're syncing
+        if getattr(self, "_syncing_tabs", False):
+            return
+        self._syncing_tabs = True
+        try:
+            sender_tabs = self.sender()  # QTabWidget that fired the signal
+            for samplePanel in self.samplePanels:
+                tabs = samplePanel.tabs
+                # Skip the sender, and skip if already on i
+                if tabs is sender_tabs or tabs.currentIndex() == i:
+                    continue
+                # Block signals so setCurrentIndex doesn't re-emit currentChanged
+                with QSignalBlocker(tabs):
+                    tabs.setCurrentIndex(i)
+        finally:
+            self._syncing_tabs = False
+
 
     def onProcessAllClicked(self):
         self.controller.processAllSamples()

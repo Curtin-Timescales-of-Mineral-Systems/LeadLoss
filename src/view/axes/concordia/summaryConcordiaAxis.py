@@ -23,11 +23,13 @@ class SummaryConcordiaAxis(ConcordiaAxis):
 
         legendEntries = [
             (examplePlot.unclassified.line, "Unclassified"),
-            (examplePlot.concordant.line, "Concordant"),
-            (examplePlot.discordant.line, "Discordant"),
-            (examplePlot.pbLossAge, "Pb-loss age"),
+            (examplePlot.concordant.line,   "Concordant"),
+            (examplePlot.discordant.line,   "Discordant"),
+            (examplePlot.reverse.line,      "Reverse discordant"),
+            (examplePlot.pbLossAge,         "Pb-loss age"),
         ]
         self.axis.legend(*zip(*legendEntries), frameon=False)
+
 
     def plotSample(self, sample):
         self.samples[sample] = SamplePlot(self.axis, sample)
@@ -46,15 +48,18 @@ class SummaryConcordiaAxis(ConcordiaAxis):
             self.samples[sample].clearData()
 
 class SamplePlot:
-
     def __init__(self, axis, sample):
         self.axis = axis
         self.sample = sample
 
-        self.unclassified = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.UNCLASSIFIED_COLOUR_1))
-        self.concordant = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.CONCORDANT_COLOUR_1))
-        self.discordant = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.DISCORDANT_COLOUR_1))
-        self.pbLossAge = self.axis.plot([], [], marker='o', color=config.OPTIMAL_COLOUR_1)[0]
+        self.unclassified = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.UNCLASSIFIED_COLOUR_1, zorder=2))
+        self.concordant   = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.CONCORDANT_COLOUR_1,   zorder=3))
+        self.discordant   = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.DISCORDANT_COLOUR_1,   zorder=3))
+        self.reverse      = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.REVERSE_DISCORDANT_COLOUR_1, zorder=4))
+
+
+
+        self.pbLossAge   = self.axis.plot([], [], marker='o', color=config.OPTIMAL_COLOUR_1)[0]
         self.pbLossRange = self.axis.plot([], [], color=config.OPTIMAL_COLOUR_1)[0]
 
         self.plotInputData(sample)
@@ -62,69 +67,62 @@ class SamplePlot:
     def plotInputData(self, sample):
         rs = math.sqrt(calculations.mahalanobisRadius(2))
 
-        concordantData = []
-        discordantData = []
+        concordantData   = []
+        discordantData   = []
+        reverseData      = []
         unclassifiedData = []
 
-        upper_xlim = 0
+        upper_xlim = 0.0
 
         for spot in sample.validSpots:
-            semi_minor = spot.uPbStDev * rs
-            semi_major = spot.pbPbStDev * rs
+            semi_minor = (spot.uPbStDev or 0.0) * rs
+            semi_major = (spot.pbPbStDev or 0.0) * rs
+            if spot.uPbValue is not None:
+                upper_xlim = max(upper_xlim, spot.uPbValue + semi_minor)
 
-            upper_xlim = max(upper_xlim, spot.uPbValue + semi_minor)
-
+            # bucket selection order matters
             if not spot.processed:
-                data = unclassifiedData
+                bucket = unclassifiedData
             elif spot.concordant:
-                data = concordantData
+                bucket = concordantData           # honour user’s threshold FIRST
+            elif getattr(spot, "reverseDiscordant", False):
+                bucket = reverseData              # reverse among discordant only
             else:
-                data = discordantData
+                bucket = discordantData
 
-            data.append((spot.uPbValue, spot.pbPbValue, semi_minor, semi_major))
 
-        if concordantData:
-            self.concordant.set_data(*zip(*concordantData))
-        else:
-            self.concordant.clear_data()
+            bucket.append((spot.uPbValue, spot.pbPbValue, semi_minor, semi_major))
 
-        if discordantData:
-            self.discordant.set_data(*zip(*discordantData))
-        else:
-            self.discordant.clear_data()
-
-        if unclassifiedData:
-            self.unclassified.set_data(*zip(*unclassifiedData))
-        else:
-            self.unclassified.clear_data()
+        if concordantData:   self.concordant.set_data(*zip(*concordantData))
+        else:                self.concordant.clear_data()
+        if discordantData:   self.discordant.set_data(*zip(*discordantData))
+        else:                self.discordant.clear_data()
+        if reverseData:      self.reverse.set_data(*zip(*reverseData))
+        else:                self.reverse.clear_data()
+        if unclassifiedData: self.unclassified.set_data(*zip(*unclassifiedData))
+        else:                self.unclassified.clear_data()
 
         if sample.optimalAge:
             xMin = calculations.u238pb206_from_age(sample.optimalAgeUpperBound)
             xMax = calculations.u238pb206_from_age(sample.optimalAgeLowerBound)
-            if xMin == xMax:
-                xs = [xMin]
-            else:
-                xs = np.arange(xMin, xMax, 0.1)
+            xs = [xMin] if xMin == xMax else np.arange(xMin, xMax, 0.1)
             ys = [calculations.pb207pb206_from_u238pb206(x) for x in xs]
-            upper_xlim = max(upper_xlim, xMax)
-
+            if xMax is not None:
+                upper_xlim = max(upper_xlim, xMax)
             self.pbLossAge.set_xdata([xs[0], xs[-1]])
             self.pbLossAge.set_ydata([ys[0], ys[-1]])
             self.pbLossRange.set_xdata(xs)
             self.pbLossRange.set_ydata(ys)
         else:
-            self.pbLossAge.set_xdata([])
-            self.pbLossAge.set_ydata([])
-            self.pbLossRange.set_xdata([])
-            self.pbLossRange.set_ydata([])
+            self.pbLossAge.set_xdata([]);   self.pbLossAge.set_ydata([])
+            self.pbLossRange.set_xdata([]); self.pbLossRange.set_ydata([])
 
-        self.axis.set_xlim(0, 1.2*upper_xlim)
+        self.axis.set_xlim(0, 1.2 * (upper_xlim or 1.0))
 
     def clearData(self):
         self.concordant.clear_data()
         self.discordant.clear_data()
+        self.reverse.clear_data()
         self.unclassified.clear_data()
-        self.pbLossAge.set_xdata([])
-        self.pbLossAge.set_ydata([])
-        self.pbLossRange.set_xdata([])
-        self.pbLossRange.set_ydata([])
+        self.pbLossAge.set_xdata([]);   self.pbLossAge.set_ydata([])
+        self.pbLossRange.set_xdata([]); self.pbLossRange.set_ydata([])

@@ -16,9 +16,14 @@ from utils.settings import Settings
 from view.dialogs.help import LeadLossHelpDialog
 from view.view import LeadLossView
 
-
 class LeadLossApplication:
+    """
+    Main Qt application entry point for the Pb-loss modelling tool.
 
+    - Handles CSV import/export
+    - Launches CDC + ensemble processing in a worker process
+    - Bridges worker progress to the Qt GUI via Signals/ProcessingSignals
+    """
     @staticmethod
     def get_title():
         return config.LEAD_LOSS_TITLE
@@ -58,8 +63,6 @@ class LeadLossApplication:
 
         self.model = LeadLossModel(self.signals)
         self.view = LeadLossView(self, self.get_title(), config.VERSION)
-
-        #self.cheatLoad()
 
         self.view.showMaximized()
         self.cancelProcessing()
@@ -142,20 +145,46 @@ class LeadLossApplication:
     def onProcessingNewTask(self, taskDescription):
         self.signals.taskStarted.emit(taskDescription)
 
+
     def onProcessingProgress(self, progressArgs):
-        type = progressArgs[0]
+        # Basic shape guard
+        if not isinstance(progressArgs, tuple) or len(progressArgs) < 2:
+            return
+
+        kind = progressArgs[0]
         progress = progressArgs[1]
 
-        self.signals.taskProgress.emit(progress)
-        if type == ProgressType.CONCORDANCE and progress == 1.0:
-            sampleName, concordantAges, discordances = progressArgs[2:]
-            self.model.updateConcordance(sampleName, concordantAges, discordances)
-        if type == ProgressType.SAMPLING:
+        if not isinstance(kind, (ProgressType, str)):
+            return
+
+        if not isinstance(progress, (int, float)):
+            return
+
+        self.signals.taskProgress.emit(float(progress))
+
+        if kind == "summedKS":
+            sampleName, payload = progressArgs[2:]
+            self.model.emitSummedKS(sampleName, payload)
+            return
+
+        if kind == ProgressType.CONCORDANCE and float(progress) == 1.0:
+            payload = list(progressArgs[2:])
+            sampleName       = payload[0]
+            concordantAges   = payload[1]
+            discordances     = payload[2]
+            reverse_flags    = payload[3] if len(payload) > 3 else None
+            self.model.updateConcordance(sampleName, concordantAges, discordances, reverse_flags)
+            return
+
+        if kind == ProgressType.SAMPLING:
             sampleName, run = progressArgs[2:]
             self.model.addMonteCarloRun(sampleName, run)
-        if type == ProgressType.OPTIMAL:
+            return
+
+        if kind == ProgressType.OPTIMAL:
             sampleName, args = progressArgs[2:]
             self.model.setOptimalAge(sampleName, args)
+            return
 
     def onProcessingCancelled(self):
         self.signals.taskComplete.emit(False, "Cancelled processing of data")
@@ -176,7 +205,6 @@ class LeadLossApplication:
         sample = next((s for s in self.model.samples if s.name == sample_name), None)
         if sample:
             sample.setSkipReason(skip_reason)
-
 
     ############
     ## Export ##
@@ -243,7 +271,6 @@ class LeadLossApplication:
 
     def cheatLoad(self):
         try:
-            #inputFile = "/home/matthew/Downloads/Haughton.csv"
             inputFile = "/home/matthew/Code/concordia-applications/LeadLoss/tests/leadLossTest_with_errors.csv"
             Settings.setCurrentFile(inputFile)
             settings = Settings.get(SettingsType.IMPORT)
