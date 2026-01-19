@@ -7,6 +7,7 @@ from model.settings.calculation import LeadLossCalculationSettings
 from utils.ui.numericInput import PercentageInput, AgeInput, IntInput
 from utils.ui.radioButtons import IntRadioButtonGroup, EnumRadioButtonGroup
 from view.dialogs.settings.abstract import AbstractSettingsDialog
+from model.settings.calculation import DiscordanceClassificationMethod, ConcordiaMode
 
 class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
@@ -24,6 +25,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
     def initMainSettings(self):
         layout = QVBoxLayout()
+        layout.addWidget(self._initConcordiaSettings())
         layout.addWidget(self._initDiscordanceSettings())
         layout.addWidget(self._initSamplingSettings())
         layout.addWidget(self._initDistributionComparisonSettings())
@@ -31,6 +33,21 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         layout.addWidget(self._initPeakAndClusteringSettings())
         widget = QWidget(); widget.setLayout(layout)
         return widget
+
+    def _initConcordiaSettings(self):
+        defaults = self.defaultSettings
+
+        self.concordiaModeRB = EnumRadioButtonGroup(
+            ConcordiaMode, self._validate, getattr(defaults, "concordiaMode", ConcordiaMode.TW)
+        )
+
+        form = QFormLayout()
+        form.addRow(QLabel("Model in"), self.concordiaModeRB)
+        self._registerFormLayoutForAlignment(form)
+
+        box = QGroupBox("Concordia space")
+        box.setLayout(form)
+        return box
 
     def _initDiscordanceSettings(self):
         defaults = self.defaultSettings
@@ -147,6 +164,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
     def _createSettings(self):
         s = LeadLossCalculationSettings()
+        s.concordiaMode = self.concordiaModeRB.selection()
         s.discordanceClassificationMethod = self.discordanceTypeRB.selection()
         if s.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
             s.discordancePercentageCutoff = self.discordancePercentageCutoffLE.value()

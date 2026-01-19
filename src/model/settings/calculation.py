@@ -4,8 +4,14 @@ import numpy as np
 from process.dissimilarityTests import DissimilarityTest
 from model.settings.type import SettingsType
 
-
 class DiscordanceClassificationMethod(Enum):
+    """Which concordia coordinate system to use for modelling."""
+    TW = "TW"
+    WETHERILL = "Wetherill"
+
+    def __eq__(self, other):
+        return self.value == getattr(other, "value", other)
+    
     PERCENTAGE = "Percentage"
     ERROR_ELLIPSE = "Error ellipse"
 
@@ -17,6 +23,11 @@ class LeadLossCalculationSettings:
     KEY = SettingsType.CALCULATION
 
     def __init__(self):
+
+        # Concordia space
+        # (TW = Tera–Wasserburg; Wetherill = conventional 207/235 vs 206/238)
+        self.concordiaMode = ConcordiaMode.TW
+
         # Discordance
         self.discordanceClassificationMethod = DiscordanceClassificationMethod.PERCENTAGE
         self.discordancePercentageCutoff = 0.10     # 0..1 (10% default)
@@ -42,12 +53,12 @@ class LeadLossCalculationSettings:
         self.use_discordant_clustering = False
         self.relabel_clusters_per_run  = False
 
-        # Experimental extras (kept from new)
+        # Experimental extras
         self.enable_ensemble_peak_picking = False
         self.use_score_weighted_voting    = False
         self.use_hdi_top_peak_ci          = False
 
-        # Population-aware CDC (new)
+        # Population-aware CDC
         self.split_by_concordant_population = False
 
     def rimAges(self):
