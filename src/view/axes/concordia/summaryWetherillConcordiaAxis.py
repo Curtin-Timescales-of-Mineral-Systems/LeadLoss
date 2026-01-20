@@ -1,5 +1,4 @@
 import math
-
 import numpy as np
 
 from process import calculations
@@ -9,115 +8,159 @@ from view.axes.concordia.abstractWetherillConcordiaAxis import WetherillConcordi
 
 
 class SummaryWetherillConcordiaAxis(WetherillConcordiaAxis):
+    """
+    Summary concordia in Wetherill space:
+      x = 207Pb/235U
+      y = 206Pb/238U
+
+    Mirrors SummaryConcordiaAxis (TW) structure:
+      - per-sample SamplePlot storing Errorbars buckets
+      - legend entries from example plot
+      - selectSamples() clears unselected samples
+    """
 
     def __init__(self, axis, samples):
         super().__init__(axis)
-        self.samples = {}
-        self.refreshSamples(samples)
 
-    def refreshSamples(self, samples):
+        self.selectedSamples = samples
+        self.unselectedSamples = []
+        self.samples = {}
+
         for sample in samples:
-            self.refreshSample(sample)
+            self.plotSample(sample)
+
+        examplePlot = self.samples[samples[0]]
+        reverse_col = getattr(config, "REVERSE_DISCORDANT_COLOUR_1", getattr(config, "DISCORDANT_COLOUR_1", "orange"))
+
+        legendEntries = [
+            (examplePlot.unclassified.line, "Unclassified"),
+            (examplePlot.concordant.line,   "Concordant"),
+            (examplePlot.discordant.line,   "Discordant"),
+            (examplePlot.reverse.line,      "Reverse discordant"),
+            (examplePlot.pbLossAge,         "Pb-loss age"),
+        ]
+        self.axis.legend(*zip(*legendEntries), frameon=False)
+
+    def plotSample(self, sample):
+        self.samples[sample] = SamplePlot(self.axis, sample)
 
     def refreshSample(self, sample):
-        name = sample.name
-
-        # Remove existing plots for this sample
-        if name in self.samples:
-            for artist in self.samples[name].artists:
-                try:
-                    artist.remove()
-                except Exception:
-                    pass
-
-        self.samples[name] = SamplePlot(self.axis, sample)
+        if sample in self.selectedSamples:
+            self.samples[sample].plotInputData(sample)
 
     def selectSamples(self, selectedSamples, unselectedSamples):
+        self.selectedSamples = selectedSamples
+        self.unselectedSamples = unselectedSamples
+
         for sample in selectedSamples:
-            if sample.name in self.samples:
-                self.samples[sample.name].setSelected(True)
+            self.samples[sample].plotInputData(sample)
         for sample in unselectedSamples:
-            if sample.name in self.samples:
-                self.samples[sample.name].setSelected(False)
+            self.samples[sample].clearData()
 
 
 class SamplePlot:
     def __init__(self, axis, sample):
         self.axis = axis
         self.sample = sample
-        self.artists = []
-        self.isSelected = True
-        self._plot()
 
-    def _plot(self):
-        sample = self.sample
+        reverse_col = getattr(config, "REVERSE_DISCORDANT_COLOUR_1", getattr(config, "DISCORDANT_COLOUR_1", "orange"))
 
-        xValues = [s.pb207U235Value for s in sample.validSpots if s.pb207U235Value is not None]
-        yValues = [s.pb206U238Value for s in sample.validSpots if s.pb206U238Value is not None]
+        # Match TW: Errorbars wrapper around axis.errorbar containers
+        self.unclassified = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='',
+                                                    color=config.UNCLASSIFIED_COLOUR_1, zorder=2))
+        self.concordant   = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='',
+                                                    color=config.CONCORDANT_COLOUR_1, zorder=3))
+        self.discordant   = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='',
+                                                    color=config.DISCORDANT_COLOUR_1, zorder=3))
+        self.reverse      = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='',
+                                                    color=reverse_col, zorder=4))
 
-        # Nothing to plot
-        if not xValues or not yValues:
-            return
+        self.pbLossAge   = self.axis.plot([], [], marker='o', color=config.OPTIMAL_COLOUR_1)[0]
+        self.pbLossRange = self.axis.plot([], [], color=config.OPTIMAL_COLOUR_1)[0]
 
-        # Main points
-        (line,) = self.axis.plot(
-            xValues,
-            yValues,
-            marker="o",
-            linestyle="",
-            picker=4,
-            color=config.UNCLASSIFIED_COLOUR_1,
-            alpha=config.PLOT_ALPHA,
-        )
-        self.artists.append(line)
+        self.plotInputData(sample)
 
-        # Error bars (match TW: stdev * rs where rs = sqrt(radius))
+    def plotInputData(self, sample):
         rs = math.sqrt(calculations.mahalanobisRadius(2))
-        xerr = [
-            (s.pb207U235StDev * rs) if (s.pb207U235StDev is not None) else 0.0
-            for s in sample.validSpots
-            if s.pb207U235Value is not None
-        ]
-        yerr = [
-            (s.pb206U238StDev * rs) if (s.pb206U238StDev is not None) else 0.0
-            for s in sample.validSpots
-            if s.pb206U238Value is not None
-        ]
 
-        errorContainer = self.axis.errorbar(
-            xValues,
-            yValues,
-            xerr=xerr,
-            yerr=yerr,
-            fmt="none",
-            alpha=config.PLOT_ALPHA,
-            ecolor=config.UNCLASSIFIED_COLOUR_1,
-        )
-        errors = Errorbars(errorContainer)
-        self.artists.extend(errors.plots)
+        concordantData   = []
+        discordantData   = []
+        reverseData      = []
+        unclassifiedData = []
 
-        # Pb-loss age range curve (parametrised by age)
-        if getattr(sample, "optimalAgeUpperBound", None) is not None and getattr(sample, "optimalAgeLowerBound", None) is not None:
-            t0 = min(sample.optimalAgeUpperBound, sample.optimalAgeLowerBound)
-            t1 = max(sample.optimalAgeUpperBound, sample.optimalAgeLowerBound)
+        upper_x = 0.0
+        upper_y = 0.0
 
-            ts = np.linspace(t0, t1, 200)
-            xs = [calculations.pb207u235_from_age(t) for t in ts]
-            ys = [calculations.pb206u238_from_age(t) for t in ts]
+        for spot in sample.validSpots:
+            x = getattr(spot, "pb207U235Value", None)
+            y = getattr(spot, "pb206U238Value", None)
+            sx = getattr(spot, "pb207U235StDev", None)
+            sy = getattr(spot, "pb206U238StDev", None)
 
-            (pbLossRange,) = self.axis.plot(xs, ys, linewidth=2, label="Pb loss age range")
-            self.artists.append(pbLossRange)
+            if x is None or y is None:
+                continue
 
-        # Expand x-axis to include errors (similar spirit to TW)
-        upper_xlim = max([x + xe for x, xe in zip(xValues, xerr)]) if xValues else None
-        if upper_xlim is not None:
-            self.axis.set_xlim(0, 1.2 * upper_xlim)
+            semi_x = (sx or 0.0) * rs
+            semi_y = (sy or 0.0) * rs
 
-    def setSelected(self, selected):
-        self.isSelected = bool(selected)
-        alpha = config.PLOT_ALPHA if self.isSelected else config.PLOT_ALPHA_UNSELECTED
-        for artist in self.artists:
-            try:
-                artist.set_alpha(alpha)
-            except Exception:
-                pass
+            upper_x = max(upper_x, x + semi_x)
+            upper_y = max(upper_y, y + semi_y)
+
+            # Same bucket logic as TW
+            if not spot.processed:
+                bucket = unclassifiedData
+            elif spot.concordant:
+                bucket = concordantData
+            elif getattr(spot, "reverseDiscordant", False):
+                bucket = reverseData
+            else:
+                bucket = discordantData
+
+            bucket.append((x, y, semi_x, semi_y))
+
+        if concordantData:   self.concordant.set_data(*zip(*concordantData))
+        else:                self.concordant.clear_data()
+        if discordantData:   self.discordant.set_data(*zip(*discordantData))
+        else:                self.discordant.clear_data()
+        if reverseData:      self.reverse.set_data(*zip(*reverseData))
+        else:                self.reverse.clear_data()
+        if unclassifiedData: self.unclassified.set_data(*zip(*unclassifiedData))
+        else:                self.unclassified.clear_data()
+
+        # Pb-loss age range curve (parameterised by age)
+        if getattr(sample, "optimalAge", None):
+            t0 = sample.optimalAgeUpperBound
+            t1 = sample.optimalAgeLowerBound
+            if t0 is None or t1 is None:
+                self.pbLossAge.set_xdata([]);   self.pbLossAge.set_ydata([])
+                self.pbLossRange.set_xdata([]); self.pbLossRange.set_ydata([])
+            else:
+                t_min = min(t0, t1)
+                t_max = max(t0, t1)
+                ts = np.linspace(t_min, t_max, 200)
+
+                xs = [calculations.pb207u235_from_age(t) for t in ts]
+                ys = [calculations.pb206u238_from_age(t) for t in ts]
+
+                self.pbLossAge.set_xdata([xs[0], xs[-1]])
+                self.pbLossAge.set_ydata([ys[0], ys[-1]])
+                self.pbLossRange.set_xdata(xs)
+                self.pbLossRange.set_ydata(ys)
+
+                upper_x = max(upper_x, max(xs) if xs else upper_x)
+                upper_y = max(upper_y, max(ys) if ys else upper_y)
+        else:
+            self.pbLossAge.set_xdata([]);   self.pbLossAge.set_ydata([])
+            self.pbLossRange.set_xdata([]); self.pbLossRange.set_ydata([])
+
+        # Limits (basic but stable)
+        self.axis.set_xlim(0, 1.2 * (upper_x or 1.0))
+        self.axis.set_ylim(0, 1.2 * (upper_y or 1.0))
+
+    def clearData(self):
+        self.concordant.clear_data()
+        self.discordant.clear_data()
+        self.reverse.clear_data()
+        self.unclassified.clear_data()
+        self.pbLossAge.set_xdata([]);   self.pbLossAge.set_ydata([])
+        self.pbLossRange.set_xdata([]); self.pbLossRange.set_ydata([])
