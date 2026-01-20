@@ -4,20 +4,27 @@ import numpy as np
 from process.dissimilarityTests import DissimilarityTest
 from model.settings.type import SettingsType
 
-class DiscordanceClassificationMethod(Enum):
-    """Which concordia coordinate system to use for modelling."""
+class ConcordiaMode(Enum):
     TW = "TW"
     WETHERILL = "Wetherill"
 
-    def __eq__(self, other):
-        return self.value == getattr(other, "value", other)
-    
+    @staticmethod
+    def coerce(value):
+        if isinstance(value, ConcordiaMode):
+            return value
+        if isinstance(value, str):
+            v = value.strip().lower()
+            if "weth" in v:
+                return ConcordiaMode.WETHERILL
+            return ConcordiaMode.TW
+        return ConcordiaMode.TW
+
+class DiscordanceClassificationMethod(Enum):
     PERCENTAGE = "Percentage"
     ERROR_ELLIPSE = "Error ellipse"
 
     def __eq__(self, other):
         return self.value == getattr(other, "value", other)
-
 
 class LeadLossCalculationSettings:
     KEY = SettingsType.CALCULATION
