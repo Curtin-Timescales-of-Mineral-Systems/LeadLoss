@@ -7,9 +7,18 @@ from PyQt5.QtCore import QRegExp
 from utils.app_paths import save_data_path
 from utils.config import DISPLAY_SF
 
+# Tera-Wasserburg
 U_PB_STR = "²³⁸U/²⁰⁶Pb"
 PB_PB_STR = "²⁰⁷Pb/²⁰⁶Pb"
 
+# Wetherill
+U_PB_STR = "²³⁸U/²⁰⁶Pb"
+PB_PB_STR = "²⁰⁷Pb/²⁰⁶Pb"
+
+PB207_U235_STR = "²⁰⁷Pb/²³⁵U"
+PB206_U238_STR = "²⁰⁶Pb/²³⁸U"
+
+# Errors
 ERROR_SIGMA_OPTIONS = [2, 1]
 ERROR_TYPE_OPTIONS = ["Absolute", "Percentage"]
 
@@ -34,6 +43,17 @@ def getPbPbStr(useSuperscripts):
     if useSuperscripts:
         return PB_PB_STR
     return "207Pb/206Pb"
+
+def getPb207U235Str(useSuperscripts):
+    if useSuperscripts:
+        return PB207_U235_STR
+    return "207Pb/235U"
+
+
+def getPb206U238Str(useSuperscripts):
+    if useSuperscripts:
+        return PB206_U238_STR
+    return "206Pb/238U"
 
 
 def print_warning(message):

@@ -107,11 +107,12 @@ class LeadLossImportSettings:
         # These are headers for the "value/error" columns (sample name is handled separately).
         if self._mode() == LeadLossImportSettings.RatioInputMode.WETHERILL:
             return [
-                "207Pb/235U",
+                stringUtils.getPb207U235Str(True),
                 "±" + self.getPb207U235ErrorStr(),
-                "206Pb/238U",
+                stringUtils.getPb206U238Str(True),
                 "±" + self.getPb206U238ErrorStr(),
             ]
+
 
         return [
             stringUtils.U_PB_STR,

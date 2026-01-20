@@ -57,7 +57,7 @@ class LeadLossImportSettingsDialog(AbstractSettingsDialog):
 
         # Wetherill widgets
         self._pb207U235Widget = ImportedValueErrorWidget(
-            "207Pb/235U",
+            stringUtils.getPb207U235Str(True),
             self._validate,
             defaults.columnReferenceType,
             columnRefs.get(Column.PB207_U235_VALUE, 5),
@@ -67,7 +67,7 @@ class LeadLossImportSettingsDialog(AbstractSettingsDialog):
         )
 
         self._pb206U238Widget = ImportedValueErrorWidget(
-            "206Pb/238U",
+            stringUtils.getPb206U238Str(True),
             self._validate,
             defaults.columnReferenceType,
             columnRefs.get(Column.PB206_U238_VALUE, 7),
@@ -108,8 +108,6 @@ class LeadLossImportSettingsDialog(AbstractSettingsDialog):
         self._pb207U235Widget.setVisible(is_wetherill)
         self._pb206U238Widget.setVisible(is_wetherill)
 
-        # IMPORTANT: during initMainSettings(), okButton doesn't exist yet.
-        # AbstractSettingsDialog calls _validate() after buttons are created.
         if hasattr(self, "okButton"):
             self._validate()
 
