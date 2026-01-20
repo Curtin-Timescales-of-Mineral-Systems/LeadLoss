@@ -108,7 +108,11 @@ class LeadLossImportSettingsDialog(AbstractSettingsDialog):
         self._pb207U235Widget.setVisible(is_wetherill)
         self._pb206U238Widget.setVisible(is_wetherill)
 
-        self._validate()
+        # IMPORTANT: during initMainSettings(), okButton doesn't exist yet.
+        # AbstractSettingsDialog calls _validate() after buttons are created.
+        if hasattr(self, "okButton"):
+            self._validate()
+
 
     ################
     ## Validation ##
