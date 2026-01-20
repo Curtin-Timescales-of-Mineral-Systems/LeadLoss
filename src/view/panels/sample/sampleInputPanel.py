@@ -47,11 +47,21 @@ class SampleInputDataPanel(QWidget):
         return widget
 
     def _createRHS(self):
-        calc = Settings.get(SettingsType.CALCULATION)
-        mode = ConcordiaMode.coerce(getattr(calc, "concordiaMode", ConcordiaMode.TW))
-        if mode == ConcordiaMode.WETHERILL:
-            return SampleInputWetherillFigure(self.sample)
-        return SampleInputFigure(self.sample)
+        tabs = QTabWidget()
+
+        tw = SampleInputFigure(self.sample)
+        weth = SampleInputWetherillFigure(self.sample)
+
+        tabs.addTab(tw, "TW concordia")
+        tabs.addTab(weth, "Wetherill concordia")
+
+        # Default tab follows processing mode (but both remain accessible)
+        calc_settings = Settings.get(SettingsType.CALCULATION)
+        mode = ConcordiaMode.coerce(getattr(calc_settings, "concordiaMode", ConcordiaMode.TW))
+        tabs.setCurrentIndex(1 if mode == ConcordiaMode.WETHERILL else 0)
+
+        return tabs
+
 
     def _createInvalidWarningWidget(self):
         n = len(self.sample.invalidSpots)
