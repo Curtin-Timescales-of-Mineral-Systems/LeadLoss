@@ -1,11 +1,11 @@
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QGroupBox, QWidget, QHBoxLayout, \
-    QFormLayout, QLabel, QSpinBox, QSplitter
+    QFormLayout, QLabel, QSpinBox, QSplitter, QTabWidget
 
 from utils.ui import uiUtils
 from utils.ui.numericInput import AgeInput, FloatInput, IntInput
 from view.figures.sampleMonteCarloFigure import SampleMonteCarloFigure
-
+from view.figures.sampleMonteCarloWetherillFigure import SampleMonteCarloWetherillFigure
 
 class AgeStatisticPanel(QGroupBox):
 
@@ -113,8 +113,15 @@ class SampleOutputMonteCarloPanel(QWidget):
         return widget
 
     def _createDataRHS(self):
-        self.figure = SampleMonteCarloFigure(self.sample, self)
-        return self.figure
+        self.twFigure = SampleMonteCarloFigure(self.sample, self)
+        self.wetherillFigure = SampleMonteCarloWetherillFigure(self.sample, self)
+
+        self.figureTabs = QTabWidget()
+        self.figureTabs.addTab(self.twFigure, "TW")
+        self.figureTabs.addTab(self.wetherillFigure, "Wetherill")
+
+        return self.figureTabs
+
 
     #############
     ## Actions ##
@@ -138,8 +145,10 @@ class SampleOutputMonteCarloPanel(QWidget):
 
     def _selectRun(self, run):
         self.currentRun = run
-        self.figure.selectRun(run)
+        self.twFigure.selectRun(run)
+        self.wetherillFigure.selectRun(run)
         self.optimalStatistic.update(run.optimal_pb_loss_age, run.optimal_statistic)
+
 
     def _resizeTable(self):
         self.dataTable.resizeColumnsToContents()
@@ -157,10 +166,13 @@ class SampleOutputMonteCarloPanel(QWidget):
 
         selectedAge = self.sample.calculationSettings.getNearestSampledAge(age)
         self.selectedStatistic.update(selectedAge, self.currentRun.statistics_by_pb_loss_age[selectedAge])
-        self.figure.selectAge(age)
+
+        self.twFigure.selectAge(age)
+        self.wetherillFigure.selectAge(age)
 
     def deselectAge(self):
-        self.figure.deselectAge()
+        self.twFigure.deselectAge()
+        self.wetherillFigure.deselectAge()
         self.selectedStatistic.clear()
 
     ############
