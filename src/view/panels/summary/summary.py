@@ -6,6 +6,7 @@ from view.figures.summaryWetherillFigure import SummaryWetherillFigure
 from view.panels.summary.data import SummaryDataPanel
 
 
+
 class SummaryPanel(QSplitter):
 
     def __init__(self, controller, samples):
@@ -13,7 +14,6 @@ class SummaryPanel(QSplitter):
 
         self.data = SummaryDataPanel(controller, samples)
 
-        # Two concordia views on the summary page
         self.twFigure = SummaryFigure(controller, samples)
         self.wetherillFigure = SummaryWetherillFigure(controller, samples)
 
@@ -23,6 +23,7 @@ class SummaryPanel(QSplitter):
 
         self.addWidget(self.data)
         self.addWidget(self.figureTabs)
+
         self.setSizes([10000, 10000])
         self.setContentsMargins(1, 1, 1, 1)
 

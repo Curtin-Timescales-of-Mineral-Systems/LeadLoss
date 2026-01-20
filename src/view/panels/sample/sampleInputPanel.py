@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTabWidget
 
 from view.figures.sampleInputFigure import SampleInputFigure
 from view.figures.sampleInputWetherillFigure import SampleInputWetherillFigure
-
+from model.settings.calculation import ConcordiaMode
 from model.settings.type import SettingsType
 from utils.settings import Settings
 from utils.ui import uiUtils, spotTable
@@ -48,11 +48,10 @@ class SampleInputDataPanel(QWidget):
 
     def _createRHS(self):
         calc = Settings.get(SettingsType.CALCULATION)
-        mode = getattr(calc, "concordiaMode", "TW")
-        mode_val = getattr(mode, "value", mode)
-        is_wetherill = ("weth" in str(mode_val).lower())
-
-        return SampleInputWetherillFigure(self.sample) if is_wetherill else SampleInputFigure(self.sample)
+        mode = ConcordiaMode.coerce(getattr(calc, "concordiaMode", ConcordiaMode.TW))
+        if mode == ConcordiaMode.WETHERILL:
+            return SampleInputWetherillFigure(self.sample)
+        return SampleInputFigure(self.sample)
 
     def _createInvalidWarningWidget(self):
         n = len(self.sample.invalidSpots)
