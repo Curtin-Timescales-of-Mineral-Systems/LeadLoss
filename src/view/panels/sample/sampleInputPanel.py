@@ -1,5 +1,9 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QVBoxLayout, QWidget, QSplitter
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTabWidget
+
+from view.figures.sampleInputFigure import SampleInputFigure
+from view.figures.sampleInputWetherillFigure import SampleInputWetherillFigure
 
 from model.settings.type import SettingsType
 from utils.settings import Settings
@@ -43,7 +47,10 @@ class SampleInputDataPanel(QWidget):
         return widget
 
     def _createRHS(self):
-        return SampleInputFigure(self.sample)
+        tabs = QTabWidget()
+        tabs.addTab(SampleInputFigure(self.sample), "TW concordia")
+        tabs.addTab(SampleInputWetherillFigure(self.sample), "Wetherill concordia")
+        return tabs
 
     def _createInvalidWarningWidget(self):
         n = len(self.sample.invalidSpots)
