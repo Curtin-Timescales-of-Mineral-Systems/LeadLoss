@@ -15,6 +15,7 @@ import platform
 import time
 from enum import Enum
 from typing import Dict, List
+from model.settings.calculation import ConcordiaMode
 
 import numpy as np
 
@@ -190,8 +191,7 @@ def _calculateConcordantAges(signals, sample):
 
     - Concordance is determined either by percentage discordance or by error ellipse,
       according to sample.calculationSettings.discordanceClassificationMethod.
-    - A spot is marked as reverseDiscordant if it is geometrically reverse in TW space
-      and fails the concordance test.
+    - Reverse discordance is ONLY evaluated in TW space (geometry is TW-specific).
 
     Emits:
       - ProgressType.CONCORDANCE updates for UI.
@@ -205,9 +205,13 @@ def _calculateConcordantAges(signals, sample):
     n_spots    = max(1, len(sample.validSpots))
     timePerRow = TIME_PER_TASK / n_spots
 
+    # NEW: select concordia mode (robust to strings/old settings)
+    mode = ConcordiaMode.coerce(getattr(settings, "concordiaMode", ConcordiaMode.TW))
+    is_wetherill = (mode == ConcordiaMode.WETHERILL)
+
     concordancy   = []
     discordances  = []
-    reverse_flags = []   # << NEW
+    reverse_flags = []
 
     for i, spot in enumerate(sample.validSpots):
         signals.progress(ProgressType.CONCORDANCE, i / n_spots)
@@ -216,21 +220,45 @@ def _calculateConcordantAges(signals, sample):
             signals.cancelled()
             return False, "processing halted by user"
 
+        # -----------------------------
+        # Concordance test (TW vs Weth)
+        # -----------------------------
         if settings.discordanceClassificationMethod == DiscordanceClassificationMethod.PERCENTAGE:
-            discordance = calculations.discordance(spot.uPbValue, spot.pbPbValue)
-            # Concordant if the *magnitude* is under the threshold
-            concordant  = abs(discordance) < settings.discordancePercentageCutoff
+            if not is_wetherill:
+                discordance = calculations.discordance(spot.uPbValue, spot.pbPbValue)
+            else:
+                discordance = calculations.discordance_wetherill(
+                    spot.pb207U235Value,
+                    spot.pb206U238Value
+                )
+
+            # Concordant if magnitude under threshold (and discordance computed)
+            concordant = (discordance is not None) and (abs(discordance) < settings.discordancePercentageCutoff)
+
         else:
             discordance = None
-            concordant = calculations.isConcordantErrorEllipse(
-                spot.uPbValue,  spot.uPbStDev,
-                spot.pbPbValue, spot.pbPbStDev,
-                settings.discordanceEllipseSigmas
-            )
+            if not is_wetherill:
+                concordant = calculations.isConcordantErrorEllipse(
+                    spot.uPbValue,  spot.uPbStDev,
+                    spot.pbPbValue, spot.pbPbStDev,
+                    settings.discordanceEllipseSigmas
+                )
+            else:
+                concordant = calculations.isConcordantErrorEllipseWetherill(
+                    spot.pb207U235Value, spot.pb207U235StDev,
+                    spot.pb206U238Value, spot.pb206U238StDev,
+                    settings.discordanceEllipseSigmas
+                )
 
-        is_rev_geom = _is_reverse_discordant(spot.uPbValue, spot.pbPbValue)
+        # -----------------------------------------
+        # Reverse discordance (TW-only geometry)
+        # -----------------------------------------
+        if not is_wetherill:
+            is_rev_geom = _is_reverse_discordant(spot.uPbValue, spot.pbPbValue)
+        else:
+            is_rev_geom = False
 
-        # Only mark reverse if it’s *discordant* and geometrically reverse
+        # Only mark reverse if it's discordant AND reverse geometry (same as before)
         spot.reverseDiscordant = bool(is_rev_geom and not concordant)
 
         discordances.append(discordance)
@@ -238,10 +266,6 @@ def _calculateConcordantAges(signals, sample):
 
     reverse_flags = [bool(s.reverseDiscordant) for s in sample.validSpots]
     sample.updateConcordance(concordancy, discordances, reverse_flags)
-
-    n_rev = sum(reverse_flags)
-    n_fwd = sum(1 for c, r in zip(concordancy, reverse_flags) if (not c) and (not r))
-    n_con = sum(1 for c in concordancy if c)
 
     signals.progress(ProgressType.CONCORDANCE, 1.0, sample.name, concordancy, discordances, reverse_flags)
     return True, None

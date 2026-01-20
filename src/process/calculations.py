@@ -27,6 +27,13 @@ def age_from_u238pb206(u238pb206):
 def age_from_pb207pb206(pb207pb206):
     return root_scalar(lambda t : pb207pb206_from_age(t) - pb207pb206, x0=9**10, bracket=[1, 10**10]).root
 
+def age_from_pb206u238(pb206u238):
+    return math.log(pb206u238 + 1.0) / U238_DECAY_CONSTANT
+
+
+def age_from_pb207u235(pb207u235):
+    return math.log(pb207u235 + 1.0) / U235_DECAY_CONSTANT
+
 def pb206u238_from_age(age):
     return errors.exp(U238_DECAY_CONSTANT * age) - 1
 
@@ -58,6 +65,14 @@ def discordance(u238pb206, pb207pb206):
     if result > 10 ** -10:
         return result
     return 0.0
+
+def discordance_wetherill(pb207u235, pb206u238):
+    try:
+        t235 = age_from_pb207u235(pb207u235)
+        t238 = age_from_pb206u238(pb206u238)
+        return (t235 - t238) / t235
+    except Exception:
+        return None
 
 def concordant_age(u238pb206, pb207pb206):
     def distance(t):
@@ -101,6 +116,24 @@ def mahalanobisRadius(sigmas):
     else:
         raise Exception("Unable to handle " + str(sigmas) + " sigmas")
     return -2 * math.log(1 - p)
+
+def isConcordantErrorEllipseWetherill(
+    pb207u235, pb207u235_err,
+    pb206u238, pb206u238_err,
+    ellipseSigmas
+):
+    s = mahalanobisRadius(ellipseSigmas)
+
+    if pb207u235_err == 0 or pb206u238_err == 0:
+        return False
+
+    def distance(t):
+        dx = (pb207u235 - pb207u235_from_age(t)) / pb207u235_err
+        dy = (pb206u238 - pb206u238_from_age(t)) / pb206u238_err
+        return dx*dx + dy*dy
+
+    res = minimize_scalar(distance, bracket=(LOWER_AGE, UPPER_AGE))
+    return res.success and res.fun <= s
 
 def isConcordantErrorEllipse(uPbValue, uPbError, pbPbValue, pbPbError, ellipseSigmas):
     """
