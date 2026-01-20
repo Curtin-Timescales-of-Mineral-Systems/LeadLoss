@@ -1,11 +1,18 @@
+import math
+
+import numpy as np
+
 from process import calculations
-from view.axes.concordia.abstractWetherillConcordiaAxis import WetherillConcordiaAxis
+from utils import config
 from utils.errorbarPlot import Errorbars
+from view.axes.concordia.abstractWetherillConcordiaAxis import WetherillConcordiaAxis
+
 
 class SummaryWetherillConcordiaAxis(WetherillConcordiaAxis):
 
     def __init__(self, axis, samples):
         super().__init__(axis)
+        self.samples = {}
         self.refreshSamples(samples)
 
     def refreshSamples(self, samples):
@@ -13,57 +20,104 @@ class SummaryWetherillConcordiaAxis(WetherillConcordiaAxis):
             self.refreshSample(sample)
 
     def refreshSample(self, sample):
-        # Remove existing plots for this sample if present
-        if sample.name in self.samples:
-            for artist in self.samples[sample.name]:
+        name = sample.name
+
+        # Remove existing plots for this sample
+        if name in self.samples:
+            for artist in self.samples[name].artists:
                 try:
                     artist.remove()
                 except Exception:
                     pass
 
-        xValues = [spot.pb207U235Value for spot in sample.validSpots if spot.pb207U235Value is not None]
-        yValues = [spot.pb206U238Value for spot in sample.validSpots if spot.pb206U238Value is not None]
+        self.samples[name] = SamplePlot(self.axis, sample)
 
-        line, = self.axis.plot(xValues, yValues, marker='o', linestyle='', picker=4)
+    def selectSamples(self, selectedSamples, unselectedSamples):
+        for sample in selectedSamples:
+            if sample.name in self.samples:
+                self.samples[sample.name].setSelected(True)
+        for sample in unselectedSamples:
+            if sample.name in self.samples:
+                self.samples[sample.name].setSelected(False)
 
-        # Error bars (use stdevs in Wetherill space)
-        r = calculations.mahalanobisRadius(2)
+
+class SamplePlot:
+    def __init__(self, axis, sample):
+        self.axis = axis
+        self.sample = sample
+        self.artists = []
+        self.isSelected = True
+        self._plot()
+
+    def _plot(self):
+        sample = self.sample
+
+        xValues = [s.pb207U235Value for s in sample.validSpots if s.pb207U235Value is not None]
+        yValues = [s.pb206U238Value for s in sample.validSpots if s.pb206U238Value is not None]
+
+        # Nothing to plot
+        if not xValues or not yValues:
+            return
+
+        # Main points
+        (line,) = self.axis.plot(
+            xValues,
+            yValues,
+            marker="o",
+            linestyle="",
+            picker=4,
+            color=config.UNCLASSIFIED_COLOUR_1,
+            alpha=config.PLOT_ALPHA,
+        )
+        self.artists.append(line)
+
+        # Error bars (match TW: stdev * rs where rs = sqrt(radius))
+        rs = math.sqrt(calculations.mahalanobisRadius(2))
         xerr = [
-            (spot.pb207U235StDev * r) if spot.pb207U235StDev is not None else 0.0
-            for spot in sample.validSpots
-            if spot.pb207U235Value is not None
+            (s.pb207U235StDev * rs) if (s.pb207U235StDev is not None) else 0.0
+            for s in sample.validSpots
+            if s.pb207U235Value is not None
         ]
         yerr = [
-            (spot.pb206U238StDev * r) if spot.pb206U238StDev is not None else 0.0
-            for spot in sample.validSpots
-            if spot.pb206U238Value is not None
+            (s.pb206U238StDev * rs) if (s.pb206U238StDev is not None) else 0.0
+            for s in sample.validSpots
+            if s.pb206U238Value is not None
         ]
 
-        errors = Errorbars(self.axis, xValues, yValues, xerr=xerr, yerr=yerr, fmt="none")
+        errorContainer = self.axis.errorbar(
+            xValues,
+            yValues,
+            xerr=xerr,
+            yerr=yerr,
+            fmt="none",
+            alpha=config.PLOT_ALPHA,
+            ecolor=config.UNCLASSIFIED_COLOUR_1,
+        )
+        errors = Errorbars(errorContainer)
+        self.artists.extend(errors.plots)
 
-        # Expand x-axis to fit points + errors (matches TW logic)
-        if xValues:
-            upper_xlim = max([x + (xe if xe is not None else 0.0) for x, xe in zip(xValues, xerr)])
+        # Pb-loss age range curve (parametrised by age)
+        if getattr(sample, "optimalAgeUpperBound", None) is not None and getattr(sample, "optimalAgeLowerBound", None) is not None:
+            t0 = min(sample.optimalAgeUpperBound, sample.optimalAgeLowerBound)
+            t1 = max(sample.optimalAgeUpperBound, sample.optimalAgeLowerBound)
+
+            ts = np.linspace(t0, t1, 200)
+            xs = [calculations.pb207u235_from_age(t) for t in ts]
+            ys = [calculations.pb206u238_from_age(t) for t in ts]
+
+            (pbLossRange,) = self.axis.plot(xs, ys, linewidth=2, label="Pb loss age range")
+            self.artists.append(pbLossRange)
+
+        # Expand x-axis to include errors (similar spirit to TW)
+        upper_xlim = max([x + xe for x, xe in zip(xValues, xerr)]) if xValues else None
+        if upper_xlim is not None:
             self.axis.set_xlim(0, 1.2 * upper_xlim)
 
-        # Pb-loss age range (parametrized by age, not x->y conversion)
-        pbLossAgeRange = None
-        if getattr(sample, "optimalAgeUpperBound", None) is not None and getattr(sample, "optimalAgeLowerBound", None) is not None:
-            a0 = min(sample.optimalAgeUpperBound, sample.optimalAgeLowerBound)
-            a1 = max(sample.optimalAgeUpperBound, sample.optimalAgeLowerBound)
-
-            # Step at 1 Ma
-            a0Ma = int(a0 // (10 ** 6))
-            a1Ma = int(a1 // (10 ** 6))
-
-            xs = []
-            ys = []
-            for tMa in range(a0Ma, a1Ma + 1):
-                tYr = tMa * (10 ** 6)
-                xs.append(calculations.pb207u235_from_age(tYr))
-                ys.append(calculations.pb206u238_from_age(tYr))
-
-            pbLossAgeRange, = self.axis.plot(xs, ys, linewidth=2, label="Pb loss age range")
-            self.samples[sample.name] = (line, errors, pbLossAgeRange)
-        else:
-            self.samples[sample.name] = (line, errors)
+    def setSelected(self, selected):
+        self.isSelected = bool(selected)
+        alpha = config.PLOT_ALPHA if self.isSelected else config.PLOT_ALPHA_UNSELECTED
+        for artist in self.artists:
+            try:
+                artist.set_alpha(alpha)
+            except Exception:
+                pass

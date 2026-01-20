@@ -1,9 +1,9 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QSplitter, QTabWidget
 
-from view.panels.summary.data import SummaryDataPanel
 from view.figures.summaryFigure import SummaryFigure
 from view.figures.summaryWetherillFigure import SummaryWetherillFigure
+from view.panels.summary.data import SummaryDataPanel
 
 
 class SummaryPanel(QSplitter):
@@ -13,16 +13,16 @@ class SummaryPanel(QSplitter):
 
         self.data = SummaryDataPanel(controller, samples)
 
+        # Two concordia views on the summary page
         self.twFigure = SummaryFigure(controller, samples)
         self.wetherillFigure = SummaryWetherillFigure(controller, samples)
 
-        self.concordiaTabs = QTabWidget()
-        self.concordiaTabs.addTab(self.twFigure, "TW concordia")
-        self.concordiaTabs.addTab(self.wetherillFigure, "Wetherill concordia")
+        self.figureTabs = QTabWidget()
+        self.figureTabs.addTab(self.twFigure, "TW concordia")
+        self.figureTabs.addTab(self.wetherillFigure, "Wetherill concordia")
 
         self.addWidget(self.data)
-        self.addWidget(self.concordiaTabs)
-
+        self.addWidget(self.figureTabs)
         self.setSizes([10000, 10000])
         self.setContentsMargins(1, 1, 1, 1)
 

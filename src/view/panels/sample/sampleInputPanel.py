@@ -47,10 +47,12 @@ class SampleInputDataPanel(QWidget):
         return widget
 
     def _createRHS(self):
-        tabs = QTabWidget()
-        tabs.addTab(SampleInputFigure(self.sample), "TW concordia")
-        tabs.addTab(SampleInputWetherillFigure(self.sample), "Wetherill concordia")
-        return tabs
+        calc = Settings.get(SettingsType.CALCULATION)
+        mode = getattr(calc, "concordiaMode", "TW")
+        mode_val = getattr(mode, "value", mode)
+        is_wetherill = ("weth" in str(mode_val).lower())
+
+        return SampleInputWetherillFigure(self.sample) if is_wetherill else SampleInputFigure(self.sample)
 
     def _createInvalidWarningWidget(self):
         n = len(self.sample.invalidSpots)
