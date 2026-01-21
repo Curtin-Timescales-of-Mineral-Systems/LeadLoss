@@ -3,7 +3,8 @@ from process.ensemble import per_run_peaks
 import numpy as np
 import math
 import copy
-from scipy.stats import ks_2samp as _ks2  # exact-parity fallback for KS
+from scipy.stats import ks_2samp as _ks2
+from model.settings.calculation import ConcordiaMode
 
 # ---------------------------
 # Per-node statistics record
@@ -109,6 +110,10 @@ class MonteCarloRun:
         self.sample_name  = sample_name
         self.settings     = settings
 
+        self.concordiaMode = ConcordiaMode.coerce(
+            getattr(settings, "concordiaMode", ConcordiaMode.TW)
+        ) if settings is not None else ConcordiaMode.TW
+
         # --- keep GUI-facing names ---
         self.concordant_uPb  = np.asarray(concordant_uPb, float)
         self.concordant_pbPb = np.asarray(concordant_pbPb, float)
@@ -133,13 +138,27 @@ class MonteCarloRun:
 
         # Cache concordant ages (YEARS) for this run
         self.concordant_ages = []
-        for u, p in zip(self.concordant_uPb, self.concordant_pbPb):
-            try:
-                t = calculations.concordant_age(float(u), float(p))
-                if isinstance(t, (int, float)) and math.isfinite(t):
-                    self.concordant_ages.append(float(t))
-            except Exception:
-                pass
+
+        if self.concordiaMode == ConcordiaMode.WETHERILL:
+            for u, v in zip(self.concordant_uPb, self.concordant_pbPb):
+                x, y = self._tw_to_wetherill(u, v)
+                if not (math.isfinite(x) and math.isfinite(y)) or y <= 0.0:
+                    continue
+                try:
+                    t = calculations.concordant_age_wetherill(x, y)  # x=207/235, y=206/238
+                    if isinstance(t, (int, float)) and math.isfinite(t):
+                        self.concordant_ages.append(float(t))
+                except Exception:
+                    pass
+        else:
+            for u, v in zip(self.concordant_uPb, self.concordant_pbPb):
+                try:
+                    t = calculations.concordant_age(float(u), float(v))
+                    if isinstance(t, (int, float)) and math.isfinite(t):
+                        self.concordant_ages.append(float(t))
+                except Exception:
+                    pass
+
 
         self.statistics_by_pb_loss_age = {}  # key: age (YEARS) -> MonteCarloRunPbLossAgeStatistics
         self.optimal_pb_loss_age = None
@@ -163,16 +182,52 @@ class MonteCarloRun:
 
     # ---- main per-node evaluation -------------------------------------------
 
+    def _tw_to_wetherill(self, u238pb206, pb207pb206):
+        """
+        TW:
+        u = 238/206
+        v = 207/206
+        Wetherill:
+        x = 207/235 = v * U / u
+        y = 206/238 = 1/u
+        """
+        try:
+            u = float(u238pb206)
+            v = float(pb207pb206)
+            if not (math.isfinite(u) and math.isfinite(v)) or u <= 0.0:
+                return (math.nan, math.nan)
+            U = float(calculations.U238U235_RATIO)
+            y = 1.0 / u
+            x = v * U / u
+            return (x, y)
+        except Exception:
+            return (math.nan, math.nan)
+
     def samplePbLossAge(self, leadLossAge, dissimilarity_test, penalise_invalid_ages):
         """Evaluate this run at a given lower intercept age (YEARS)."""
-        xL = calculations.u238pb206_from_age(float(leadLossAge))
-        yL = calculations.pb207pb206_from_age(float(leadLossAge))
-
-        # Project all discordant points once (old execution order)
         all_ui = np.empty_like(self.discordant_uPb, dtype=float)
-        for i, (du, dp) in enumerate(zip(self.discordant_uPb, self.discordant_pbPb)):
-            ui = calculations.discordant_age(xL, yL, float(du), float(dp))
-            all_ui[i] = np.nan if ui is None else float(ui)
+
+        if self.concordiaMode == ConcordiaMode.WETHERILL:
+            # anchor on Wetherill concordia at Pb-loss age
+            xL = calculations.pb207u235_from_age(float(leadLossAge))
+            yL = calculations.pb206u238_from_age(float(leadLossAge))
+
+            for i, (du, dv) in enumerate(zip(self.discordant_uPb, self.discordant_pbPb)):
+                x2, y2 = self._tw_to_wetherill(du, dv)
+                if not (math.isfinite(x2) and math.isfinite(y2)) or y2 <= 0.0:
+                    all_ui[i] = np.nan
+                    continue
+                ui = calculations.discordant_age_wetherill(xL, yL, x2, y2)
+                all_ui[i] = np.nan if ui is None else float(ui)
+
+        else:
+            xL = calculations.u238pb206_from_age(float(leadLossAge))
+            yL = calculations.pb207pb206_from_age(float(leadLossAge))
+
+            for i, (du, dv) in enumerate(zip(self.discordant_uPb, self.discordant_pbPb)):
+                ui = calculations.discordant_age(xL, yL, float(du), float(dv))
+                all_ui[i] = np.nan if ui is None else float(ui)
+
 
         # No clustering → evaluate all together
         if self.labels is None:

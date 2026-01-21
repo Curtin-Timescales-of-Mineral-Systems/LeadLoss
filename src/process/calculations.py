@@ -30,7 +30,6 @@ def age_from_pb207pb206(pb207pb206):
 def age_from_pb206u238(pb206u238):
     return math.log(pb206u238 + 1.0) / U238_DECAY_CONSTANT
 
-
 def age_from_pb207u235(pb207u235):
     return math.log(pb207u235 + 1.0) / U235_DECAY_CONSTANT
 
@@ -107,6 +106,70 @@ def discordant_age(x1, y1, x2, y2):
     result = root_scalar(func, bracket=(lower_limit, upper_limit))
     return result.root
 
+def concordant_age_wetherill(pb206u238, pb207u235):
+    """
+    Closest-point on Wetherill concordia (x=207/235, y=206/238) in Euclidean distance.
+    Inputs:
+      pb206u238 : 206Pb/238U
+      pb207u235 : 207Pb/235U
+    Returns:
+      age in YEARS
+    """
+    def distance(t):
+        x_th = pb207u235_from_age(t)
+        y_th = pb206u238_from_age(t)
+        dx = pb207u235 - x_th
+        dy = pb206u238 - y_th
+        return math.hypot(dx, dy)
+
+    res = minimize_scalar(distance, method="bounded", bounds=(LOWER_AGE, UPPER_AGE))
+    return res.x
+
+
+def discordant_age_wetherill(x1, y1, x2, y2):
+    """
+    Wetherill chord/concordia intersection solver.
+    (x,y) are Wetherill:
+      x = 207Pb/235U
+      y = 206Pb/238U
+
+    x1,y1: anchor point on concordia at lead-loss age (lower intercept)
+    x2,y2: discordant observed point (in Wetherill coords)
+
+    Returns:
+      upper intercept age in YEARS, or None.
+    """
+    # Same assumption as your earlier Wetherill code: anchor younger -> x1 < x2
+    if x1 >= x2:
+        return None
+
+    try:
+        anchor_age = age_from_pb207u235(x1)
+    except Exception:
+        return None
+
+    # Skip the anchor root
+    bracket_start = anchor_age + 1e3
+    if bracket_start >= UPPER_AGE:
+        return None
+
+    m = (y2 - y1) / (x2 - x1)
+    c = y1 - m * x1
+
+    def f(t):
+        x_t = pb207u235_from_age(t)
+        y_t = pb206u238_from_age(t)
+        return y_t - (m * x_t + c)
+
+    v1 = f(bracket_start)
+    v2 = f(UPPER_AGE)
+    if (v1 > 0 and v2 > 0) or (v1 < 0 and v2 < 0):
+        return None
+
+    res = root_scalar(f, bracket=(bracket_start, UPPER_AGE))
+    if not res.converged:
+        return None
+    return float(res.root)
 
 def mahalanobisRadius(sigmas):
     if sigmas == 1:
