@@ -81,6 +81,71 @@ class ProgressType(Enum):
     SAMPLING    = 1
     OPTIMAL     = 2
 
+def _normal_draws(rng, mu, sd, n):
+    """Return length-n draws; if mu invalid -> all NaN; if sd invalid -> treat as 0."""
+    try:
+        mu = float(mu)
+    except Exception:
+        return np.full(n, np.nan, float)
+    if not np.isfinite(mu):
+        return np.full(n, np.nan, float)
+
+    try:
+        sd = float(sd)
+    except Exception:
+        sd = 0.0
+    if (not np.isfinite(sd)) or (sd < 0):
+        sd = 0.0
+
+    return rng.normal(mu, sd, n)
+
+
+def _draw_tw_uv(rng, spots, n):
+    """Draw TW u=238/206 and v=207/206 arrays with shape (n, nspots)."""
+    U = []
+    V = []
+    for s in spots:
+        U.append(_normal_draws(rng, getattr(s, "uPbValue", np.nan),  getattr(s, "uPbStDev", 0.0),  n))
+        V.append(_normal_draws(rng, getattr(s, "pbPbValue", np.nan), getattr(s, "pbPbStDev", 0.0), n))
+    if not U:
+        return np.empty((n, 0), float), np.empty((n, 0), float)
+    return np.stack(U, axis=1), np.stack(V, axis=1)
+
+
+def _draw_wetherill_uv_as_tw(rng, spots, n):
+    """
+    Draw in Wetherill space:
+      x = 207Pb/235U
+      y = 206Pb/238U
+    then convert each draw to TW:
+      u = 238/206 = 1/y
+      v = 207/206 = x / (U * y)
+    Output arrays (u,v) shape (n, nspots).
+    """
+    U238U235 = float(calculations.U238U235_RATIO)
+
+    X = []
+    Y = []
+    for s in spots:
+        X.append(_normal_draws(rng, getattr(s, "pb207U235Value", np.nan), getattr(s, "pb207U235StDev", 0.0), n))
+        Y.append(_normal_draws(rng, getattr(s, "pb206U238Value", np.nan), getattr(s, "pb206U238StDev", 0.0), n))
+
+    if not X:
+        return np.empty((n, 0), float), np.empty((n, 0), float)
+
+    X = np.stack(X, axis=1)
+    Y = np.stack(Y, axis=1)
+
+    good = np.isfinite(X) & np.isfinite(Y) & (Y > 0.0) & (U238U235 > 0.0)
+
+    u = np.full_like(Y, np.nan, dtype=float)
+    v = np.full_like(Y, np.nan, dtype=float)
+
+    u[good] = 1.0 / Y[good]
+    v[good] = X[good] / (U238U235 * Y[good])
+
+    return u, v
+
 def processSamples(signals, samples):
     if CDC_WRITE_OUTPUTS:
         _reset_csv(CATALOGUE_CSV_PEN, "sample,peak_no,age_ma,ci_low,ci_high,support")
@@ -322,10 +387,15 @@ def _performRimAgeSampling(signals, sample):
     stabilitySamples = int(settings.monteCarloRuns)
     rng = np.random.default_rng(_seed_from_name(sample.name))
 
-    concordantUPbValues  = np.stack([rng.normal(s.uPbValue,  s.uPbStDev,  stabilitySamples) for s in concordantSpots], axis=1)
-    concordantPbPbValues = np.stack([rng.normal(s.pbPbValue, s.pbPbStDev, stabilitySamples) for s in concordantSpots], axis=1)
-    discordantUPbValues  = np.stack([rng.normal(s.uPbValue,  s.uPbStDev,  stabilitySamples) for s in discordantSpots], axis=1)
-    discordantPbPbValues = np.stack([rng.normal(s.pbPbValue, s.pbPbStDev, stabilitySamples) for s in discordantSpots], axis=1)
+    mode = ConcordiaMode.coerce(getattr(settings, "concordiaMode", ConcordiaMode.TW))
+
+    if mode == ConcordiaMode.WETHERILL:
+        concordantUPbValues, concordantPbPbValues = _draw_wetherill_uv_as_tw(rng, concordantSpots, stabilitySamples)
+        discordantUPbValues,  discordantPbPbValues  = _draw_wetherill_uv_as_tw(rng, discordantSpots,  stabilitySamples)
+    else:
+        concordantUPbValues, concordantPbPbValues = _draw_tw_uv(rng, concordantSpots, stabilitySamples)
+        discordantUPbValues,  discordantPbPbValues  = _draw_tw_uv(rng, discordantSpots,  stabilitySamples)
+
 
     # ---- optional clustering of discordant ages ----
     full_labels = np.zeros(len(discordantSpots), dtype=int)
@@ -539,10 +609,14 @@ def _run_cdc_on_subset(signals, sample_name: str, settings,
     rng = np.random.default_rng(_seed_from_name(sample_name + "_pop"))
 
     # MC draws for this subset (R × N_conc / R × N_disc)
-    concU  = np.stack([rng.normal(s.uPbValue,  s.uPbStDev,  stabilitySamples) for s in concordantSpots], axis=1)
-    concPb = np.stack([rng.normal(s.pbPbValue, s.pbPbStDev, stabilitySamples) for s in concordantSpots], axis=1)
-    discU  = np.stack([rng.normal(s.uPbValue,  s.uPbStDev,  stabilitySamples) for s in discordantSpots], axis=1)
-    discPb = np.stack([rng.normal(s.pbPbValue, s.pbPbStDev, stabilitySamples) for s in discordantSpots], axis=1)
+    mode = ConcordiaMode.coerce(getattr(settings, "concordiaMode", ConcordiaMode.TW))
+
+    if mode == ConcordiaMode.WETHERILL:
+        concU,  concPb  = _draw_wetherill_uv_as_tw(rng, concordantSpots, stabilitySamples)
+        discU,  discPb  = _draw_wetherill_uv_as_tw(rng, discordantSpots,  stabilitySamples)
+    else:
+        concU,  concPb  = _draw_tw_uv(rng, concordantSpots, stabilitySamples)
+        discU,  discPb  = _draw_tw_uv(rng, discordantSpots,  stabilitySamples)
 
     # ---- optional LI clustering for this subset ----
     full_labels = np.zeros(len(discordantSpots), dtype=int)
