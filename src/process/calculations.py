@@ -106,7 +106,7 @@ def discordant_age(x1, y1, x2, y2):
     result = root_scalar(func, bracket=(lower_limit, upper_limit))
     return result.root
 
-def concordant_age_wetherill(pb206u238, pb207u235):
+def concordant_age_wetherill(pb207u235,pb206u238):
     """
     Closest-point on Wetherill concordia (x=207/235, y=206/238) in Euclidean distance.
     Inputs:
@@ -139,37 +139,55 @@ def discordant_age_wetherill(x1, y1, x2, y2):
     Returns:
       upper intercept age in YEARS, or None.
     """
-    # Same assumption as your earlier Wetherill code: anchor younger -> x1 < x2
+    # Anchor should be younger => x1 < x2 (since x increases with age)
     if x1 >= x2:
-        return None
-
-    try:
-        anchor_age = age_from_pb207u235(x1)
-    except Exception:
-        return None
-
-    # Skip the anchor root
-    bracket_start = anchor_age + 1e3
-    if bracket_start >= UPPER_AGE:
         return None
 
     m = (y2 - y1) / (x2 - x1)
     c = y1 - m * x1
+
+    # Start search at the older of the discordant point's single-system ages
+    # (this mirrors TW's "lower_limit" idea: skip the young anchor root)
+    try:
+        t235 = age_from_pb207u235(x2)
+        t238 = age_from_pb206u238(y2)
+        start = max(t235, t238)
+    except Exception:
+        return None
+
+    if not math.isfinite(start):
+        return None
+
+    # Ensure we're strictly above the anchor age so we don't converge to the trivial root
+    try:
+        anchor = age_from_pb207u235(x1)  # == leadLossAge for exact anchor
+        if math.isfinite(anchor):
+            start = max(start, anchor + 1.0)
+    except Exception:
+        pass
+
+    if start >= UPPER_AGE:
+        return None
 
     def f(t):
         x_t = pb207u235_from_age(t)
         y_t = pb206u238_from_age(t)
         return y_t - (m * x_t + c)
 
-    v1 = f(bracket_start)
+    v1 = f(start)
     v2 = f(UPPER_AGE)
+    if not (math.isfinite(v1) and math.isfinite(v2)):
+        return None
+
+    # Need a sign change to bracket a root
     if (v1 > 0 and v2 > 0) or (v1 < 0 and v2 < 0):
         return None
 
-    res = root_scalar(f, bracket=(bracket_start, UPPER_AGE))
+    res = root_scalar(f, bracket=(start, UPPER_AGE))
     if not res.converged:
         return None
     return float(res.root)
+
 
 def mahalanobisRadius(sigmas):
     if sigmas == 1:

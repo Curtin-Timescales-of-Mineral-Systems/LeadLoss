@@ -205,29 +205,38 @@ class MonteCarloRun:
 
     def samplePbLossAge(self, leadLossAge, dissimilarity_test, penalise_invalid_ages):
         """Evaluate this run at a given lower intercept age (YEARS)."""
-        all_ui = np.empty_like(self.discordant_uPb, dtype=float)
+
+        # Always initialise to NaN (never np.empty_like here)
+        all_ui = np.full_like(self.discordant_uPb, np.nan, dtype=float)
 
         if self.concordiaMode == ConcordiaMode.WETHERILL:
-            # anchor on Wetherill concordia at Pb-loss age
-            xL = calculations.pb207u235_from_age(float(leadLossAge))
-            yL = calculations.pb206u238_from_age(float(leadLossAge))
+            # Anchor on Wetherill concordia at Pb-loss age
+            xL = calculations.pb207u235_from_age(float(leadLossAge))  # 207/235
+            yL = calculations.pb206u238_from_age(float(leadLossAge))  # 206/238
 
             for i, (du, dv) in enumerate(zip(self.discordant_uPb, self.discordant_pbPb)):
-                x2, y2 = self._tw_to_wetherill(du, dv)
-                if not (math.isfinite(x2) and math.isfinite(y2)) or y2 <= 0.0:
-                    all_ui[i] = np.nan
+                # du,dv are TW u=238/206 and v=207/206 -> convert the ACTUAL discordant point to Wetherill
+                x2, y2 = self._tw_to_wetherill(du, dv)  # x=207/235, y=206/238
+
+                # Basic validity
+                if not (math.isfinite(x2) and math.isfinite(y2)) or (x2 <= 0.0) or (y2 <= 0.0):
                     continue
+
                 ui = calculations.discordant_age_wetherill(xL, yL, x2, y2)
-                all_ui[i] = np.nan if ui is None else float(ui)
+                if ui is not None and math.isfinite(ui):
+                    all_ui[i] = float(ui)
+
+            # Do NOT raise if all are NaN; stats class already handles "no valid discordants".
 
         else:
+            # TW mode (unchanged)
             xL = calculations.u238pb206_from_age(float(leadLossAge))
             yL = calculations.pb207pb206_from_age(float(leadLossAge))
 
             for i, (du, dv) in enumerate(zip(self.discordant_uPb, self.discordant_pbPb)):
                 ui = calculations.discordant_age(xL, yL, float(du), float(dv))
-                all_ui[i] = np.nan if ui is None else float(ui)
-
+                if ui is not None and math.isfinite(ui):
+                    all_ui[i] = float(ui)
 
         # No clustering → evaluate all together
         if self.labels is None:
@@ -239,8 +248,8 @@ class MonteCarloRun:
             return
 
         # Clustered path: keep RAW-min and PEN-min (possibly different clusters)
-        best_raw_val, best_raw_stat = float('inf'), None
-        best_pen_val, best_pen_stat = float('inf'), None
+        best_raw_val, best_raw_stat = float("inf"), None
+        best_pen_val, best_pen_stat = float("inf"), None
 
         for lab in np.unique(self.labels):
             mask = (self.labels == lab)
@@ -260,7 +269,6 @@ class MonteCarloRun:
             if Sc_pen < best_pen_val:
                 best_pen_val, best_pen_stat = Sc_pen, st_k
 
-        # Compose: raw fields from RAW-minimising; penalised score from PEN-minimising
         out = copy.copy(best_raw_stat)
         out.score = best_pen_val
         if best_pen_stat is not None:
@@ -268,6 +276,8 @@ class MonteCarloRun:
             out.number_of_ages         = best_pen_stat.number_of_ages
 
         self.statistics_by_pb_loss_age[leadLossAge] = out
+
+
 
     def calculateOptimalAge(self):
         """

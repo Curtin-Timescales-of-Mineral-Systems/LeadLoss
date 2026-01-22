@@ -73,6 +73,8 @@ __all__ = [
     "assign_labels_gmm1d",
     "_adaptive_gates",
     "stack_goodness_by_cluster",
+    "lower_intercept_proxy_wetherill",
+    "_labels_from_this_run_wetherill",
 ]
 
 # -----------------------------------------------------------------------------
@@ -548,6 +550,109 @@ def lower_intercept_proxy(u_pb, pb_pb, ages_y):
             best_resid = resid
             best_age = age
     return best_age
+
+def lower_intercept_proxy_wetherill(u_pb, pb_pb, ages_y):
+    """
+    Wetherill analogue of lower_intercept_proxy, but accepts TW inputs and converts internally.
+
+    Inputs (TW):
+      u_pb  = 238U/206Pb
+      pb_pb = 207Pb/206Pb
+
+    Internally converts to Wetherill:
+      x2 = 207Pb/235U = (pb_pb * U) / u_pb
+      y2 = 206Pb/238U = 1 / u_pb
+
+    Then uses calculations.discordant_age_wetherill(...) against the Wetherill concordia.
+    Returns best lower-intercept age in YEARS, or None.
+    """
+    try:
+        u_pb = float(u_pb)
+        pb_pb = float(pb_pb)
+        if not (np.isfinite(u_pb) and np.isfinite(pb_pb)) or u_pb <= 0.0:
+            return None
+        U = float(calculations.U238U235_RATIO)
+        if not np.isfinite(U) or U <= 0.0:
+            return None
+        x2 = pb_pb * U / u_pb
+        y2 = 1.0 / u_pb
+        if not (np.isfinite(x2) and np.isfinite(y2)) or y2 <= 0.0:
+            return None
+    except Exception:
+        return None
+
+    best_age = None
+    best_resid = np.inf
+
+    for age in ages_y:
+        x0 = calculations.pb207u235_from_age(age)
+        y0 = calculations.pb206u238_from_age(age)
+        ui = calculations.discordant_age_wetherill(x0, y0, x2, y2)
+        if ui is None or not np.isfinite(ui):
+            continue
+
+        x1 = calculations.pb207u235_from_age(ui)
+        y1 = calculations.pb206u238_from_age(ui)
+
+        denom_x = x1 - x0
+        denom_y = y1 - y0
+        if abs(denom_x) < 1e-12 or abs(denom_y) < 1e-12:
+            continue
+
+        lam_x = (x2 - x0) / denom_x
+        lam_y = (y2 - y0) / denom_y
+        resid = abs(lam_x - lam_y)
+
+        if resid < best_resid:
+            best_resid = resid
+            best_age = age
+
+    return best_age
+
+
+def _labels_from_this_run_wetherill(discordantUPb_row: np.ndarray,
+                                    discordantPbPb_row: np.ndarray,
+                                    ages_grid_y: np.ndarray) -> np.ndarray:
+    """
+    Per-run relabelling helper for Wetherill-mode:
+    compute LI proxies using lower_intercept_proxy_wetherill (TW inputs, Weth geometry),
+    then cluster proxies exactly like the TW helper does.
+    """
+    proxy_ma, keep_idx = [], []
+    ages_grid_y = np.asarray(ages_grid_y, float)
+
+    for idx, (du, dp) in enumerate(zip(discordantUPb_row, discordantPbPb_row)):
+        proxy_y = lower_intercept_proxy_wetherill(float(du), float(dp), ages_grid_y)
+        if proxy_y is not None and np.isfinite(proxy_y):
+            proxy_ma.append(proxy_y / 1e6)
+            keep_idx.append(idx)
+
+    labels = np.zeros(len(discordantUPb_row), dtype=int)
+    if not keep_idx:
+        return labels
+
+    up_ma = np.asarray(proxy_ma, float)
+    keep_idx = np.asarray(keep_idx, int)
+    n = up_ma.size
+    if n < 3:
+        return labels
+
+    min_pts, min_frac, sep_sig = _adaptive_gates(n)
+    if n < min_pts:
+        return labels
+
+    core_labels, *_ = find_discordant_clusters(up_ma, max_k=min(DC_MAX_COMPONENTS, n))
+
+    soft = _soft_accept_labels(
+        core_labels,
+        up_ma,
+        min_points=min_pts,
+        min_frac=min_frac,
+        sep_sig_thr=sep_sig,
+    )
+    if soft.max() >= 1:
+        labels[keep_idx] = soft
+    return labels
 
 
 def cluster_proxies_years(proxies_y):

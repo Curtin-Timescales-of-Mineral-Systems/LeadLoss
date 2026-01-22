@@ -25,12 +25,15 @@ from process import calculations
 from process.discordantClustering import (
     find_discordant_clusters,
     _labels_from_this_run,
+    _labels_from_this_run_wetherill,
     _stack_min_across_clusters,
     lower_intercept_proxy,
+    lower_intercept_proxy_wetherill,
     _soft_accept_labels,
     _adaptive_gates,
     stack_goodness_by_cluster,
 )
+
 from process.ensemble import robust_ensemble_curve, build_ensemble_catalogue
 from process.cdc_config import (
     CATALOGUE_CSV_PEN,
@@ -56,6 +59,7 @@ from process.cdc_config import (
     TIMING_MODE,
     USE_CLUSTER_CATALOGUE,
 )
+
 from process.cdc_diagnostics import (
     append_catalogue_rows as _append_catalogue_rows,
     ensure_output_dirs as _ensure_output_dirs,
@@ -80,6 +84,33 @@ class ProgressType(Enum):
     CONCORDANCE = 0
     SAMPLING    = 1
     OPTIMAL     = 2
+
+def _safe_float(x):
+    try:
+        return float(x)
+    except Exception:
+        return np.nan
+
+def _spot_uv_tw(spot):
+    """
+    Return TW u=238/206 and v=207/206 for this spot.
+    Prefer TW fields; otherwise derive from Wetherill ratios.
+    """
+    u = _safe_float(getattr(spot, "uPbValue", np.nan))
+    v = _safe_float(getattr(spot, "pbPbValue", np.nan))
+    if np.isfinite(u) and np.isfinite(v):
+        return u, v
+
+    x = _safe_float(getattr(spot, "pb207U235Value", np.nan))  # 207/235
+    y = _safe_float(getattr(spot, "pb206U238Value", np.nan))  # 206/238
+    U = _safe_float(calculations.U238U235_RATIO)
+
+    if np.isfinite(x) and np.isfinite(y) and (y > 0.0) and np.isfinite(U) and (U > 0.0):
+        u = 1.0 / y
+        v = x / (U * y)
+        return u, v
+
+    return np.nan, np.nan
 
 def _normal_draws(rng, mu, sd, n):
     """Return length-n draws; if mu invalid -> all NaN; if sd invalid -> treat as 0."""
@@ -344,19 +375,6 @@ def _performSingleRun(settings, run):
     run.createHeatmapData(settings.minimumRimAge, settings.maximumRimAge, config.HEATMAP_RESOLUTION)
 
 def _performRimAgeSampling(signals, sample):
-    """
-    Run Monte Carlo sampling of Pb-loss ages for a single sample.
-
-    - Filters out reverse-discordant spots.
-    - Requires ≥1 concordant and ≥3 forward-discordant spots.
-    - Draws MC replicates for U/Pb, Pb/Pb for each spot.
-    - Optionally clusters discordant grains using lower-intercept proxies.
-    - For each MC run, constructs a MonteCarloRun over the Pb-loss grid,
-      finds the optimal Pb-loss age, and emits ProgressType.SAMPLING.
-
-    If settings.split_by_concordant_population is True, delegates to
-    _performRimAgeSampling_split_by_population instead.
-    """
     sample.monteCarloRuns = []
     sample.peak_catalogue = []
     sampleNameText = f" for '{sample.name}'" if sample.name else ""
@@ -366,7 +384,6 @@ def _performRimAgeSampling(signals, sample):
     setattr(settings, "timing_mode", TIMING_MODE)
     setattr(settings, "write_outputs", CDC_WRITE_OUTPUTS)
 
-    # NEW: population-aware mode
     if bool(getattr(settings, "split_by_concordant_population", False)):
         return _performRimAgeSampling_split_by_population(signals, sample)
 
@@ -388,37 +405,42 @@ def _performRimAgeSampling(signals, sample):
     rng = np.random.default_rng(_seed_from_name(sample.name))
 
     mode = ConcordiaMode.coerce(getattr(settings, "concordiaMode", ConcordiaMode.TW))
+    is_wetherill = (mode == ConcordiaMode.WETHERILL)
 
-    if mode == ConcordiaMode.WETHERILL:
+    # Draw MC values (still stored as TW u=238/206 and v=207/206)
+    if is_wetherill:
         concordantUPbValues, concordantPbPbValues = _draw_wetherill_uv_as_tw(rng, concordantSpots, stabilitySamples)
-        discordantUPbValues,  discordantPbPbValues  = _draw_wetherill_uv_as_tw(rng, discordantSpots,  stabilitySamples)
+        discordantUPbValues,  discordantPbPbValues = _draw_wetherill_uv_as_tw(rng, discordantSpots,  stabilitySamples)
     else:
         concordantUPbValues, concordantPbPbValues = _draw_tw_uv(rng, concordantSpots, stabilitySamples)
-        discordantUPbValues,  discordantPbPbValues  = _draw_tw_uv(rng, discordantSpots,  stabilitySamples)
+        discordantUPbValues,  discordantPbPbValues = _draw_tw_uv(rng, discordantSpots,  stabilitySamples)
 
+    use_dc = bool(getattr(settings, "use_discordant_clustering", False))
+    relabel_per_run = use_dc and bool(getattr(settings, "relabel_clusters_per_run", False))
 
     # ---- optional clustering of discordant ages ----
     full_labels = np.zeros(len(discordantSpots), dtype=int)
-    if getattr(settings, "use_discordant_clustering", False):
+
+    if use_dc:
         ages_y = np.asarray(settings.rimAges(), float)  # YEARS grid
 
-        # Compute static proxies for **each discordant spot** (Ma)
         proxy_ma, keep_idx = [], []
         for idx, spot in enumerate(discordantSpots):
-            proxy_y = lower_intercept_proxy(
-                float(spot.uPbValue),
-                float(spot.pbPbValue),
-                ages_y,            # YEARS grid
-            )
+            u, v = _spot_uv_tw(spot)  # <-- THIS is the key change
+
+            if is_wetherill:
+                proxy_y = lower_intercept_proxy_wetherill(u, v, ages_y)
+            else:
+                proxy_y = lower_intercept_proxy(u, v, ages_y)
+
             if proxy_y is not None and np.isfinite(proxy_y):
-                proxy_ma.append(proxy_y / 1e6)  # store in Ma
+                proxy_ma.append(proxy_y / 1e6)
                 keep_idx.append(idx)
 
         proxy_ma = np.asarray(proxy_ma, float)
         keep_idx = np.asarray(keep_idx, int)
 
         if proxy_ma.size >= 3:
-            # Base GMM+BIC clustering on the static proxies
             core_labels, *_ = find_discordant_clusters(proxy_ma)
             min_pts, min_frac, sep_sig = _adaptive_gates(proxy_ma.size)
 
@@ -430,12 +452,7 @@ def _performRimAgeSampling(signals, sample):
                     sep_sig_thr=sep_sig,
                 )
                 if soft.max() >= 1:
-                    full_labels = np.zeros(len(discordantSpots), dtype=int)
                     full_labels[keep_idx] = soft
-                else:
-                    full_labels = np.zeros(len(discordantSpots), dtype=int)
-        else:
-            full_labels = np.zeros(len(discordantSpots), dtype=int)
 
     for spot, lab in zip(discordantSpots, full_labels):
         spot.cluster_id = int(lab)
@@ -443,6 +460,9 @@ def _performRimAgeSampling(signals, sample):
     # --------- sampling loop ---------
     per_run_times = []
     t0 = time.perf_counter()
+
+    ages_y = np.asarray(settings.rimAges(), float)  # ensure defined if relabel_per_run
+
     for j in range(stabilitySamples):
         if signals.halt():
             signals.cancelled()
@@ -451,12 +471,15 @@ def _performRimAgeSampling(signals, sample):
         t_run = time.perf_counter()
 
         labels_for_run = full_labels
-        if getattr(settings, "use_discordant_clustering", False) and \
-           getattr(settings, "relabel_clusters_per_run", False):
-            # Per-run relabelling uses the SAME proxy recipe over the grid
-            labels_for_run = _labels_from_this_run(
-                discordantUPbValues[j], discordantPbPbValues[j], ages_y
-            )
+        if relabel_per_run:
+            if is_wetherill:
+                labels_for_run = _labels_from_this_run_wetherill(
+                    discordantUPbValues[j], discordantPbPbValues[j], ages_y
+                )
+            else:
+                labels_for_run = _labels_from_this_run(
+                    discordantUPbValues[j], discordantPbPbValues[j], ages_y
+                )
 
         run = MonteCarloRun(
             j, sample.name,
@@ -473,10 +496,7 @@ def _performRimAgeSampling(signals, sample):
         signals.progress(ProgressType.SAMPLING, progress, sample.name, run)
 
     mc_elapsed = time.perf_counter() - t0
-    try:
-        grid_len = len(settings.rimAges())
-    except Exception:
-        grid_len = 0
+    grid_len = len(settings.rimAges()) if hasattr(settings, "rimAges") else 0
 
     _write_runlog(dict(
         method="CDC", phase="MC",
@@ -569,68 +589,39 @@ def _performRimAgeSampling_split_by_population(signals, sample):
 
     return True, None
 
-def _run_cdc_on_subset(signals, sample_name: str, settings,
-                       concordantSpots, discordantSpots):
-    """
-    Run the full MC + CDC + ensemble logic on a *subset* of spots:
-    one concordant age population and its associated discordant grains.
-
-    Parameters
-    ----------
-    signals : ProcessSignals-like
-        Object providing .halt() and .progress(...) (used for cancellation).
-    sample_name : str
-        Name of the parent sample (used in seeding / diagnostics).
-    settings : LeadLossCalculationSettings
-        Calculation settings used for this subset (grid, MC runs, etc.).
-    concordantSpots : list
-        Subset of concordant spots assigned to this population.
-    discordantSpots : list
-        Subset of discordant spots assigned to this population.
-
-    Returns
-    -------
-    ok : bool
-        True if processing completed for this subset, False if skipped/aborted.
-    reason : str or None
-        Reason for skipping/aborting if ok is False, else None.
-    runs_pop : list[MonteCarloRun]
-        Monte Carlo runs for this subset.
-    peaks_pop : list[dict]
-        Ensemble peaks for this subset, each with keys {age_ma, ci_low, ci_high, support, ...}.
-    """
+def _run_cdc_on_subset(signals, sample_name: str, settings, concordantSpots, discordantSpots):
     if not concordantSpots:
         return False, "no concordant spots in subset", [], []
     if len(discordantSpots) <= 2:
         return False, "fewer than 3 discordant spots in subset", [], []
 
     stabilitySamples = int(settings.monteCarloRuns)
-    # Use a seed that depends on sample + subset to keep subset runs reproducible
     rng = np.random.default_rng(_seed_from_name(sample_name + "_pop"))
 
-    # MC draws for this subset (R × N_conc / R × N_disc)
     mode = ConcordiaMode.coerce(getattr(settings, "concordiaMode", ConcordiaMode.TW))
+    is_wetherill = (mode == ConcordiaMode.WETHERILL)
 
-    if mode == ConcordiaMode.WETHERILL:
-        concU,  concPb  = _draw_wetherill_uv_as_tw(rng, concordantSpots, stabilitySamples)
-        discU,  discPb  = _draw_wetherill_uv_as_tw(rng, discordantSpots,  stabilitySamples)
+    if is_wetherill:
+        concU, concPb = _draw_wetherill_uv_as_tw(rng, concordantSpots, stabilitySamples)
+        discU, discPb = _draw_wetherill_uv_as_tw(rng, discordantSpots,  stabilitySamples)
     else:
-        concU,  concPb  = _draw_tw_uv(rng, concordantSpots, stabilitySamples)
-        discU,  discPb  = _draw_tw_uv(rng, discordantSpots,  stabilitySamples)
+        concU, concPb = _draw_tw_uv(rng, concordantSpots, stabilitySamples)
+        discU, discPb = _draw_tw_uv(rng, discordantSpots,  stabilitySamples)
 
-    # ---- optional LI clustering for this subset ----
-    full_labels = np.zeros(len(discordantSpots), dtype=int)
     use_dc = bool(getattr(settings, "use_discordant_clustering", False))
-    if use_dc:
-        ages_y = np.asarray(settings.rimAges(), float)  # YEARS
+    relabel_per_run = use_dc and bool(getattr(settings, "relabel_clusters_per_run", False))
 
+    ages_y = np.asarray(settings.rimAges(), float)  # YEARS grid
+
+    full_labels = np.zeros(len(discordantSpots), dtype=int)
+
+    if use_dc:
         proxy_ma, keep_idx = [], []
         for idx, spot in enumerate(discordantSpots):
-            proxy_y = lower_intercept_proxy(float(spot.uPbValue),
-                                            float(spot.pbPbValue),
-                                            ages_y)
+            u, v = _spot_uv_tw(spot)
+            proxy_y = lower_intercept_proxy_wetherill(u, v, ages_y) if is_wetherill else lower_intercept_proxy(u, v, ages_y)
             if proxy_y is not None and np.isfinite(proxy_y):
-                proxy_ma.append(proxy_y / 1e6)  # store in Ma
+                proxy_ma.append(proxy_y / 1e6)
                 keep_idx.append(idx)
 
         proxy_ma = np.asarray(proxy_ma, float)
@@ -640,24 +631,31 @@ def _run_cdc_on_subset(signals, sample_name: str, settings,
             core_labels, *_ = find_discordant_clusters(proxy_ma)
             min_pts, min_frac, sep_sig = _adaptive_gates(proxy_ma.size)
             if proxy_ma.size >= min_pts:
-                soft = _soft_accept_labels(core_labels, proxy_ma,
-                                           min_points=min_pts,
-                                           min_frac=min_frac,
-                                           sep_sig_thr=sep_sig)
+                soft = _soft_accept_labels(
+                    core_labels, proxy_ma,
+                    min_points=min_pts,
+                    min_frac=min_frac,
+                    sep_sig_thr=sep_sig,
+                )
                 if soft.max() >= 1:
-                    full_labels = np.zeros(len(discordantSpots), dtype=int)
                     full_labels[keep_idx] = soft
+
+    # IMPORTANT: do this OUTSIDE the if-block
+    for spot, lab in zip(discordantSpots, full_labels):
+        spot.cluster_id = int(lab)
 
     runs_pop: List[MonteCarloRun] = []
 
-    ages_y = np.asarray(settings.rimAges(), float)  # YEARS grid
     for j in range(stabilitySamples):
         if signals.halt():
             return False, "processing halted by user", [], []
 
         labels_for_run = full_labels
-        if use_dc and bool(getattr(settings, "relabel_clusters_per_run", False)):
-            labels_for_run = _labels_from_this_run(discU[j], discPb[j], ages_y)
+        if relabel_per_run:
+            if is_wetherill:
+                labels_for_run = _labels_from_this_run_wetherill(discU[j], discPb[j], ages_y)
+            else:
+                labels_for_run = _labels_from_this_run(discU[j], discPb[j], ages_y)
 
         run = MonteCarloRun(
             j, sample_name,
@@ -669,12 +667,11 @@ def _run_cdc_on_subset(signals, sample_name: str, settings,
         _performSingleRun(settings, run)
         runs_pop.append(run)
 
-    # ---- Build peaks for this population from its runs ----
     if not runs_pop:
         return False, "no runs produced", [], []
 
     ages_ma = ages_y / 1e6
-    S_runs_pen = _stack_min_across_clusters(runs_pop, ages_y, which='pen')
+    S_runs_pen = _stack_min_across_clusters(runs_pop, ages_y, which="pen")
     smf = _smooth_frac_for_grid(ages_ma)
     Smed_pen, _, _ = robust_ensemble_curve(S_runs_pen, smooth_frac=smf)
 
@@ -688,10 +685,9 @@ def _run_cdc_on_subset(signals, sample_name: str, settings,
         per_run_prom_frac=PER_RUN_PROM_FRAC, per_run_min_dist=PER_RUN_MIN_DIST,
         per_run_min_width=PER_RUN_MIN_WIDTH, per_run_require_full_prom=False,
         pen_ok_mask=None, cand_curve=Smed_pen,
-        optima_ma=optima_ma_pop,          # <<< pass the subset optima here
+        optima_ma=optima_ma_pop,
     ) or []
 
-    # Fallback: if no ensemble peak passes gates, promote the per-run optimal
     if not peaks_pop:
         opt_all = np.sort([r.optimal_pb_loss_age for r in runs_pop])
         if opt_all.size:
