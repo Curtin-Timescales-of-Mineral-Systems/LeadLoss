@@ -310,7 +310,6 @@ def _calculateConcordantAges(signals, sample):
 
     - Concordance is determined either by percentage discordance or by error ellipse,
       according to sample.calculationSettings.discordanceClassificationMethod.
-    - Reverse discordance is ONLY evaluated in TW space (geometry is TW-specific).
 
     Emits:
       - ProgressType.CONCORDANCE updates for UI.
@@ -369,9 +368,6 @@ def _calculateConcordantAges(signals, sample):
                     settings.discordanceEllipseSigmas
                 )
 
-        # -----------------------------------------
-        # Reverse discordance (TW-only geometry)
-        # -----------------------------------------
         if not is_wetherill:
             is_rev_geom = _is_reverse_discordant(spot.uPbValue, spot.pbPbValue)
         else:
@@ -380,7 +376,7 @@ def _calculateConcordantAges(signals, sample):
                 spot.pb206U238Value,
             )
 
-        # Only mark reverse if it's discordant AND reverse geometry (same as before)
+        # Only mark reverse if it's discordant AND reverse geometry
         spot.reverseDiscordant = bool(is_rev_geom and not concordant)
 
         discordances.append(discordance)

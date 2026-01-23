@@ -282,7 +282,7 @@ def isConcordantErrorEllipse(uPbValue, uPbError, pbPbValue, pbPbError, ellipseSi
         value = ((uPbValue-x)/uPbError)**2 + ((pbPbValue-y)/pbPbError)**2
         return value
 
-    result = minimize_scalar(distanceToEllipse, bracket=(1,5.*(10**9)))
+    result = minimize_scalar(distanceToEllipse, method="bounded", bounds=(LOWER_AGE, UPPER_AGE))
     if not result.success:
         raise Exception("Exception occurred while minimising distance to error ellipse:\n\n" + result.message)
     return result.fun <= s
