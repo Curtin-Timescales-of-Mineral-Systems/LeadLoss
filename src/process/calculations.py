@@ -125,6 +125,42 @@ def concordant_age_wetherill(pb207u235,pb206u238):
     res = minimize_scalar(distance, method="bounded", bounds=(LOWER_AGE, UPPER_AGE))
     return res.x
 
+def is_reverse_discordant_wetherill(pb207u235, pb206u238, rel_tol: float = 1e-12) -> bool:
+    """
+    Reverse discordance in Wetherill space: point lies above concordia.
+
+    Wetherill coords:
+      x = 207Pb/235U
+      y = 206Pb/238U
+
+    A point is "above concordia" if its y is greater than the concordia y at the same x.
+    That is equivalent to t238 > t235 (negative discordance_wetherill), but this form
+    matches the geometric definition directly.
+    """
+    try:
+        x = float(pb207u235)
+        y = float(pb206u238)
+    except Exception:
+        return False
+
+    if not (math.isfinite(x) and math.isfinite(y)) or x <= 0.0 or y <= 0.0:
+        return False
+
+    # Concordia point at same x (same t235)
+    try:
+        t = age_from_pb207u235(x)
+    except Exception:
+        return False
+
+    if not math.isfinite(t) or t < LOWER_AGE or t > UPPER_AGE:
+        return False
+
+    y_on = pb206u238_from_age(t)
+    if not math.isfinite(y_on) or y_on <= 0.0:
+        return False
+
+    # Reverse if meas y is above concordia y at same x
+    return y > y_on * (1.0 + float(rel_tol))
 
 def discordant_age_wetherill(x1, y1, x2, y2):
     """
@@ -213,8 +249,9 @@ def isConcordantErrorEllipseWetherill(
         dy = (pb206u238 - pb206u238_from_age(t)) / pb206u238_err
         return dx*dx + dy*dy
 
-    res = minimize_scalar(distance, bracket=(LOWER_AGE, UPPER_AGE))
+    res = minimize_scalar(distance, method="bounded", bounds=(LOWER_AGE, UPPER_AGE))
     return res.success and res.fun <= s
+
 
 def isConcordantErrorEllipse(uPbValue, uPbError, pbPbValue, pbPbError, ellipseSigmas):
     """

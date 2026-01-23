@@ -140,17 +140,26 @@ class MonteCarloRun:
         self.concordant_ages = []
 
         if self.concordiaMode == ConcordiaMode.WETHERILL:
-            for u, v in zip(self.concordant_uPb, self.concordant_pbPb):
-                x, y = self._tw_to_wetherill(u, v)
-                if not (math.isfinite(x) and math.isfinite(y)) or y <= 0.0:
+            # Inputs are Wetherill coords in this mode:
+            #   concordant_uPb  -> x = 207/235
+            #   concordant_pbPb -> y = 206/238
+            for x, y in zip(self.concordant_uPb, self.concordant_pbPb):
+                try:
+                    x = float(x); y = float(y)
+                except Exception:
+                    continue
+                if not (math.isfinite(x) and math.isfinite(y)) or x <= 0.0 or y <= 0.0:
                     continue
                 try:
-                    t = calculations.concordant_age_wetherill(x, y)  # x=207/235, y=206/238
+                    t = calculations.concordant_age_wetherill(x, y)
                     if isinstance(t, (int, float)) and math.isfinite(t):
                         self.concordant_ages.append(float(t))
                 except Exception:
                     pass
         else:
+            # TW coords in this mode:
+            #   concordant_uPb  -> u = 238/206
+            #   concordant_pbPb -> v = 207/206
             for u, v in zip(self.concordant_uPb, self.concordant_pbPb):
                 try:
                     t = calculations.concordant_age(float(u), float(v))
@@ -158,7 +167,6 @@ class MonteCarloRun:
                         self.concordant_ages.append(float(t))
                 except Exception:
                     pass
-
 
         self.statistics_by_pb_loss_age = {}  # key: age (YEARS) -> MonteCarloRunPbLossAgeStatistics
         self.optimal_pb_loss_age = None
@@ -182,31 +190,9 @@ class MonteCarloRun:
 
     # ---- main per-node evaluation -------------------------------------------
 
-    def _tw_to_wetherill(self, u238pb206, pb207pb206):
-        """
-        TW:
-        u = 238/206
-        v = 207/206
-        Wetherill:
-        x = 207/235 = v * U / u
-        y = 206/238 = 1/u
-        """
-        try:
-            u = float(u238pb206)
-            v = float(pb207pb206)
-            if not (math.isfinite(u) and math.isfinite(v)) or u <= 0.0:
-                return (math.nan, math.nan)
-            U = float(calculations.U238U235_RATIO)
-            y = 1.0 / u
-            x = v * U / u
-            return (x, y)
-        except Exception:
-            return (math.nan, math.nan)
-
     def samplePbLossAge(self, leadLossAge, dissimilarity_test, penalise_invalid_ages):
         """Evaluate this run at a given lower intercept age (YEARS)."""
 
-        # Always initialise to NaN (never np.empty_like here)
         all_ui = np.full_like(self.discordant_uPb, np.nan, dtype=float)
 
         if self.concordiaMode == ConcordiaMode.WETHERILL:
@@ -214,19 +200,20 @@ class MonteCarloRun:
             xL = calculations.pb207u235_from_age(float(leadLossAge))  # 207/235
             yL = calculations.pb206u238_from_age(float(leadLossAge))  # 206/238
 
-            for i, (du, dv) in enumerate(zip(self.discordant_uPb, self.discordant_pbPb)):
-                # du,dv are TW u=238/206 and v=207/206 -> convert the ACTUAL discordant point to Wetherill
-                x2, y2 = self._tw_to_wetherill(du, dv)  # x=207/235, y=206/238
+            # discordant_uPb  -> x2 (207/235)
+            # discordant_pbPb -> y2 (206/238)
+            for i, (x2, y2) in enumerate(zip(self.discordant_uPb, self.discordant_pbPb)):
+                try:
+                    x2 = float(x2); y2 = float(y2)
+                except Exception:
+                    continue
 
-                # Basic validity
                 if not (math.isfinite(x2) and math.isfinite(y2)) or (x2 <= 0.0) or (y2 <= 0.0):
                     continue
 
                 ui = calculations.discordant_age_wetherill(xL, yL, x2, y2)
                 if ui is not None and math.isfinite(ui):
                     all_ui[i] = float(ui)
-
-            # Do NOT raise if all are NaN; stats class already handles "no valid discordants".
 
         else:
             # TW mode (unchanged)
@@ -237,6 +224,8 @@ class MonteCarloRun:
                 ui = calculations.discordant_age(xL, yL, float(du), float(dv))
                 if ui is not None and math.isfinite(ui):
                     all_ui[i] = float(ui)
+
+            # Do NOT raise if all are NaN; stats class already handles "no valid discordants".
 
         # No clustering → evaluate all together
         if self.labels is None:
@@ -304,9 +293,18 @@ class MonteCarloRun:
         j = _find_optimal_index(D_pen)
         best_age_y = float(ages_year[j])
 
+
         self.optimal_pb_loss_age = best_age_y
-        self.optimal_uPb  = calculations.u238pb206_from_age(best_age_y)
-        self.optimal_pbPb = calculations.pb207pb206_from_age(best_age_y)
+
+        if self.concordiaMode == ConcordiaMode.WETHERILL:
+            # store optimum point in Wetherill coords (x=207/235, y=206/238)
+            self.optimal_uPb  = calculations.pb207u235_from_age(best_age_y)  # x
+            self.optimal_pbPb = calculations.pb206u238_from_age(best_age_y)  # y
+        else:
+            # store optimum point in TW coords (u=238/206, v=207/206)
+            self.optimal_uPb  = calculations.u238pb206_from_age(best_age_y)
+            self.optimal_pbPb = calculations.pb207pb206_from_age(best_age_y)
+
         self.optimal_statistic = self.statistics_by_pb_loss_age[best_age_y]
 
         # Legacy surface (penalised dissimilarity)

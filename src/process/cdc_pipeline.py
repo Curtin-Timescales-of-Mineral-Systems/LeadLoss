@@ -91,6 +91,45 @@ def _safe_float(x):
     except Exception:
         return np.nan
 
+def _spot_xy_mode(spot, is_wetherill):
+    """
+    Return (x,y) in the *MODE* space.
+      TW:        x=u=238/206,  y=v=207/206
+      Wetherill: x=207/235,    y=206/238
+    Includes fallback derivation if one pair is missing.
+    """
+    U = _safe_float(calculations.U238U235_RATIO)
+
+    if is_wetherill:
+        # Prefer Wetherill
+        x = _safe_float(getattr(spot, "pb207U235Value", np.nan))
+        y = _safe_float(getattr(spot, "pb206U238Value", np.nan))
+        if np.isfinite(x) and np.isfinite(y) and (y > 0.0):
+            return x, y
+
+        # Fallback from TW
+        u = _safe_float(getattr(spot, "uPbValue", np.nan))
+        v = _safe_float(getattr(spot, "pbPbValue", np.nan))
+        if np.isfinite(u) and np.isfinite(v) and (u > 0.0) and np.isfinite(U) and (U > 0.0):
+            return (v * U / u), (1.0 / u)
+
+        return np.nan, np.nan
+
+    else:
+        # Prefer TW
+        u = _safe_float(getattr(spot, "uPbValue", np.nan))
+        v = _safe_float(getattr(spot, "pbPbValue", np.nan))
+        if np.isfinite(u) and np.isfinite(v):
+            return u, v
+
+        # Fallback from Wetherill
+        x = _safe_float(getattr(spot, "pb207U235Value", np.nan))
+        y = _safe_float(getattr(spot, "pb206U238Value", np.nan))
+        if np.isfinite(x) and np.isfinite(y) and (y > 0.0) and np.isfinite(U) and (U > 0.0):
+            return (1.0 / y), (x / (U * y))
+
+        return np.nan, np.nan
+
 def _spot_uv_tw(spot):
     """
     Return TW u=238/206 and v=207/206 for this spot.
@@ -111,6 +150,25 @@ def _spot_uv_tw(spot):
         return u, v
 
     return np.nan, np.nan
+
+def _draw_in_mode(rng, spots, n, is_wetherill):
+    """
+    Return arrays shaped (n, nspots) in the MODE space.
+    TW:        X=uPbValue(238/206), Y=pbPbValue(207/206)
+    Wetherill: X=pb207U235Value(207/235), Y=pb206U238Value(206/238)
+    """
+    X, Y = [], []
+    for s in spots:
+        if is_wetherill:
+            X.append(_normal_draws(rng, getattr(s, "pb207U235Value", np.nan), getattr(s, "pb207U235StDev", 0.0), n))
+            Y.append(_normal_draws(rng, getattr(s, "pb206U238Value", np.nan), getattr(s, "pb206U238StDev", 0.0), n))
+        else:
+            X.append(_normal_draws(rng, getattr(s, "uPbValue", np.nan),  getattr(s, "uPbStDev", 0.0),  n))
+            Y.append(_normal_draws(rng, getattr(s, "pbPbValue", np.nan), getattr(s, "pbPbStDev", 0.0), n))
+    if not X:
+        return np.empty((n, 0), float), np.empty((n, 0), float)
+    return np.stack(X, axis=1), np.stack(Y, axis=1)
+
 
 def _normal_draws(rng, mu, sd, n):
     """Return length-n draws; if mu invalid -> all NaN; if sd invalid -> treat as 0."""
@@ -141,41 +199,6 @@ def _draw_tw_uv(rng, spots, n):
     if not U:
         return np.empty((n, 0), float), np.empty((n, 0), float)
     return np.stack(U, axis=1), np.stack(V, axis=1)
-
-
-def _draw_wetherill_uv_as_tw(rng, spots, n):
-    """
-    Draw in Wetherill space:
-      x = 207Pb/235U
-      y = 206Pb/238U
-    then convert each draw to TW:
-      u = 238/206 = 1/y
-      v = 207/206 = x / (U * y)
-    Output arrays (u,v) shape (n, nspots).
-    """
-    U238U235 = float(calculations.U238U235_RATIO)
-
-    X = []
-    Y = []
-    for s in spots:
-        X.append(_normal_draws(rng, getattr(s, "pb207U235Value", np.nan), getattr(s, "pb207U235StDev", 0.0), n))
-        Y.append(_normal_draws(rng, getattr(s, "pb206U238Value", np.nan), getattr(s, "pb206U238StDev", 0.0), n))
-
-    if not X:
-        return np.empty((n, 0), float), np.empty((n, 0), float)
-
-    X = np.stack(X, axis=1)
-    Y = np.stack(Y, axis=1)
-
-    good = np.isfinite(X) & np.isfinite(Y) & (Y > 0.0) & (U238U235 > 0.0)
-
-    u = np.full_like(Y, np.nan, dtype=float)
-    v = np.full_like(Y, np.nan, dtype=float)
-
-    u[good] = 1.0 / Y[good]
-    v[good] = X[good] / (U238U235 * Y[good])
-
-    return u, v
 
 def processSamples(signals, samples):
     if CDC_WRITE_OUTPUTS:
@@ -352,7 +375,10 @@ def _calculateConcordantAges(signals, sample):
         if not is_wetherill:
             is_rev_geom = _is_reverse_discordant(spot.uPbValue, spot.pbPbValue)
         else:
-            is_rev_geom = False
+            is_rev_geom = calculations.is_reverse_discordant_wetherill(
+                spot.pb207U235Value,
+                spot.pb206U238Value,
+            )
 
         # Only mark reverse if it's discordant AND reverse geometry (same as before)
         spot.reverseDiscordant = bool(is_rev_geom and not concordant)
@@ -407,13 +433,8 @@ def _performRimAgeSampling(signals, sample):
     mode = ConcordiaMode.coerce(getattr(settings, "concordiaMode", ConcordiaMode.TW))
     is_wetherill = (mode == ConcordiaMode.WETHERILL)
 
-    # Draw MC values (still stored as TW u=238/206 and v=207/206)
-    if is_wetherill:
-        concordantUPbValues, concordantPbPbValues = _draw_wetherill_uv_as_tw(rng, concordantSpots, stabilitySamples)
-        discordantUPbValues,  discordantPbPbValues = _draw_wetherill_uv_as_tw(rng, discordantSpots,  stabilitySamples)
-    else:
-        concordantUPbValues, concordantPbPbValues = _draw_tw_uv(rng, concordantSpots, stabilitySamples)
-        discordantUPbValues,  discordantPbPbValues = _draw_tw_uv(rng, discordantSpots,  stabilitySamples)
+    concordantUPbValues, concordantPbPbValues = _draw_in_mode(rng, concordantSpots, stabilitySamples, is_wetherill)
+    discordantUPbValues,  discordantPbPbValues  = _draw_in_mode(rng, discordantSpots,  stabilitySamples, is_wetherill)
 
     use_dc = bool(getattr(settings, "use_discordant_clustering", False))
     relabel_per_run = use_dc and bool(getattr(settings, "relabel_clusters_per_run", False))
@@ -426,12 +447,12 @@ def _performRimAgeSampling(signals, sample):
 
         proxy_ma, keep_idx = [], []
         for idx, spot in enumerate(discordantSpots):
-            u, v = _spot_uv_tw(spot)  # <-- THIS is the key change
-
-            if is_wetherill:
-                proxy_y = lower_intercept_proxy_wetherill(u, v, ages_y)
-            else:
-                proxy_y = lower_intercept_proxy(u, v, ages_y)
+            x, y = _spot_xy_mode(spot, is_wetherill)
+            proxy_y = (
+                lower_intercept_proxy_wetherill(x, y, ages_y)
+                if is_wetherill else
+                lower_intercept_proxy(x, y, ages_y)
+            )
 
             if proxy_y is not None and np.isfinite(proxy_y):
                 proxy_ma.append(proxy_y / 1e6)
@@ -601,12 +622,8 @@ def _run_cdc_on_subset(signals, sample_name: str, settings, concordantSpots, dis
     mode = ConcordiaMode.coerce(getattr(settings, "concordiaMode", ConcordiaMode.TW))
     is_wetherill = (mode == ConcordiaMode.WETHERILL)
 
-    if is_wetherill:
-        concU, concPb = _draw_wetherill_uv_as_tw(rng, concordantSpots, stabilitySamples)
-        discU, discPb = _draw_wetherill_uv_as_tw(rng, discordantSpots,  stabilitySamples)
-    else:
-        concU, concPb = _draw_tw_uv(rng, concordantSpots, stabilitySamples)
-        discU, discPb = _draw_tw_uv(rng, discordantSpots,  stabilitySamples)
+    concU, concPb = _draw_in_mode(rng, concordantSpots, stabilitySamples, is_wetherill)
+    discU, discPb = _draw_in_mode(rng, discordantSpots,  stabilitySamples, is_wetherill)
 
     use_dc = bool(getattr(settings, "use_discordant_clustering", False))
     relabel_per_run = use_dc and bool(getattr(settings, "relabel_clusters_per_run", False))
@@ -618,8 +635,12 @@ def _run_cdc_on_subset(signals, sample_name: str, settings, concordantSpots, dis
     if use_dc:
         proxy_ma, keep_idx = [], []
         for idx, spot in enumerate(discordantSpots):
-            u, v = _spot_uv_tw(spot)
-            proxy_y = lower_intercept_proxy_wetherill(u, v, ages_y) if is_wetherill else lower_intercept_proxy(u, v, ages_y)
+            x, y = _spot_xy_mode(spot, is_wetherill)
+            proxy_y = (
+                lower_intercept_proxy_wetherill(x, y, ages_y)
+                if is_wetherill else
+                lower_intercept_proxy(x, y, ages_y)
+            )
             if proxy_y is not None and np.isfinite(proxy_y):
                 proxy_ma.append(proxy_y / 1e6)
                 keep_idx.append(idx)
