@@ -3,11 +3,6 @@
 This module centralises the many 'knobs' that were previously defined at the top of
 process/processing.py.
 
-Design goals
-------------
-- Keep defaults identical to the manuscript implementation.
-- Allow paper/diagnostic outputs to be enabled without hard-coded absolute paths.
-- Keep the GUI default behaviour unchanged (outputs off unless enabled).
 """
 
 from __future__ import annotations
@@ -73,7 +68,6 @@ REV_TOL_X: float = _env_float("CDC_REV_TOL_X", "1e-6")   # horizontal tolerance 
 
 # ======================  OUTPUT / UI DEFAULTS  ======================
 
-# NEW: optional legacy KS export directory (for the paper figure)
 _ks_root = os.environ.get("CDC_KS_EXPORT_DIR", "").strip()
 KS_EXPORT_ROOT: Optional[Path] = Path(_ks_root).expanduser() if _ks_root else None
 

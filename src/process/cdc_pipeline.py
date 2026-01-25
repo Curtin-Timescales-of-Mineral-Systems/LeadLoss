@@ -58,6 +58,7 @@ from process.cdc_config import (
     SMOOTH_FRAC,
     TIMING_MODE,
     USE_CLUSTER_CATALOGUE,
+    UI_SURFACE,
 )
 
 from process.cdc_diagnostics import (
@@ -227,7 +228,6 @@ def _processSample(signals, sample):
         if not completed:
             return False, skip_reason
         
-        # >>> NEW: if we used population-split, skip edge-guard entirely <<<
         st = sample.calculationSettings
         if bool(getattr(st, "split_by_concordant_population", False)):
             return True, None
@@ -251,15 +251,19 @@ def _processSample(signals, sample):
                     edge_hits = max(hit_lo, hit_hi)
 
                     if edge_hits > 0.20:
-                        span_y        = float(st.maximumRimAge) - float(st.minimumRimAge)
-                        expand_y      = 0.20 * span_y
+                        span_y = float(st.maximumRimAge) - float(st.minimumRimAge)
+                        if (not np.isfinite(span_y)) or span_y <= 0:
+                            return True, None 
+                        expand_y = 0.20 * span_y
                         widen_younger = (hit_lo >= hit_hi)
 
+                        min_allowed = float(getattr(calculations, "LOWER_AGE", 1_000_000.0))  # YEARS (1 Ma)
+
                         if widen_younger:
-                            new_min = max(0.0, float(st.minimumRimAge) - expand_y)
+                            new_min = max(min_allowed, float(st.minimumRimAge) - expand_y)
                             new_max = float(st.maximumRimAge)
                         else:
-                            new_min = float(st.minimumRimAge)
+                            new_min = max(min_allowed, float(st.minimumRimAge))
                             new_max = float(st.maximumRimAge) + expand_y
 
                         # keep grid step roughly constant
@@ -865,7 +869,6 @@ def _calculateOptimalAge(signals, sample, progress):
     smf = _smooth_frac_for_grid(ages_ma)
     Smed_raw, Delta_raw, _ = robust_ensemble_curve(S_runs_raw, smooth_frac=smf)
     Smed_pen, Delta_pen, _ = robust_ensemble_curve(S_runs_pen, smooth_frac=smf)
-    S_view = Smed_raw if (CATALOGUE_SURFACE == "RAW") else Smed_pen
 
     # ---------- (A) Run-optima median & CI (for UI) ----------
     opt_all = np.sort(np.asarray([r.optimal_pb_loss_age for r in runs], float))
@@ -1050,16 +1053,24 @@ def _calculateOptimalAge(signals, sample, progress):
         rows_pen = []
 
     # Choose which to DISPLAY in the UI strictly from the ensemble surface.
-    ui_surface = CATALOGUE_SURFACE  # "RAW" or "PEN"
+    pen_on = bool(getattr(settings, "penaliseInvalidAges", False))
+
+    ui_surface = "PEN" if pen_on else UI_SURFACE
+    if ui_surface not in {"RAW", "PEN"}:
+        ui_surface = "PEN" if pen_on else "RAW"
+
     if (ui_surface == "RAW") and rows_raw:
         rows_for_ui = rows_raw
         S_view = Smed_raw
     elif rows_pen:
         rows_for_ui = rows_pen
         S_view = Smed_pen
+    elif rows_raw:
+        rows_for_ui = rows_raw
+        S_view = Smed_raw
     else:
         rows_for_ui = []
-        S_view = Smed_pen if ui_surface != "RAW" else Smed_raw
+        S_view = Smed_pen if ui_surface == "PEN" else Smed_raw
 
     _ensure_output_dirs()
 

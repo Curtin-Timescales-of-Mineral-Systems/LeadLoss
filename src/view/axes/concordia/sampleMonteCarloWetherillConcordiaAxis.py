@@ -3,7 +3,7 @@ import math
 from process import calculations
 from utils import config
 from view.axes.concordia.abstractWetherillConcordiaAxis import WetherillConcordiaAxis
-
+from model.settings.calculation import ConcordiaMode
 
 class SampleMonteCarloWetherillConcordiaAxis(WetherillConcordiaAxis):
 
@@ -14,7 +14,6 @@ class SampleMonteCarloWetherillConcordiaAxis(WetherillConcordiaAxis):
         self.discordantData = self.axis.plot([], [], marker='x', linewidth=0, color=config.DISCORDANT_COLOUR_1)[0]
         self.leadLossAge    = self.axis.plot([], [], marker='o', linewidth=0, color=config.OPTIMAL_COLOUR_1)[0]
 
-        # These exist in the TW version; keep them for parity even if you don't currently use them.
         self.optimalAge = self.axis.plot([], [], marker='o', color=config.PREDICTION_COLOUR_1)[0]
         self.selectedAge = self.axis.plot([], [], marker='o', color=config.PREDICTION_COLOUR_1)[0]
         self.reconstructedLines = None
@@ -42,28 +41,35 @@ class SampleMonteCarloWetherillConcordiaAxis(WetherillConcordiaAxis):
         except Exception:
             return (math.nan, math.nan)
 
+
     def plotMonteCarloRun(self, monteCarloRun):
-        # Convert concordant points
-        cx, cy = [], []
-        for u, v in zip(monteCarloRun.concordant_uPb, monteCarloRun.concordant_pbPb):
-            x, y = self._tw_to_wetherill(u, v)
-            cx.append(x); cy.append(y)
+        mode = ConcordiaMode.coerce(getattr(monteCarloRun, "concordiaMode", ConcordiaMode.TW))
 
-        # Convert discordant points
-        dx, dy = [], []
-        for u, v in zip(monteCarloRun.discordant_uPb, monteCarloRun.discordant_pbPb):
-            x, y = self._tw_to_wetherill(u, v)
-            dx.append(x); dy.append(y)
+        cx, cy, dx, dy = [], [], [], []
 
-        # Convert optimal Pb-loss age point
-        ox, oy = self._tw_to_wetherill(monteCarloRun.optimal_uPb, monteCarloRun.optimal_pbPb)
+        if mode == ConcordiaMode.WETHERILL:
+            # Run is already in Wetherill coords (x=207/235, y=206/238)
+            cx = [float(x) for x in monteCarloRun.concordant_uPb]
+            cy = [float(y) for y in monteCarloRun.concordant_pbPb]
+            dx = [float(x) for x in monteCarloRun.discordant_uPb]
+            dy = [float(y) for y in monteCarloRun.discordant_pbPb]
+            ox, oy = float(monteCarloRun.optimal_uPb), float(monteCarloRun.optimal_pbPb)
+        else:
+            # Run is TW, convert TW -> Wetherill for this axis
+            for u, v in zip(monteCarloRun.concordant_uPb, monteCarloRun.concordant_pbPb):
+                x, y = self._tw_to_wetherill(u, v)
+                cx.append(x); cy.append(y)
+
+            for u, v in zip(monteCarloRun.discordant_uPb, monteCarloRun.discordant_pbPb):
+                x, y = self._tw_to_wetherill(u, v)
+                dx.append(x); dy.append(y)
+
+            ox, oy = self._tw_to_wetherill(monteCarloRun.optimal_uPb, monteCarloRun.optimal_pbPb)
 
         self.concordantData.set_xdata(cx)
         self.concordantData.set_ydata(cy)
-
         self.discordantData.set_xdata(dx)
         self.discordantData.set_ydata(dy)
-
         self.leadLossAge.set_xdata([ox])
         self.leadLossAge.set_ydata([oy])
 
