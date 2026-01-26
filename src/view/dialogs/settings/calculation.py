@@ -120,7 +120,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
     def _initPeakAndClusteringSettings(self):
         d = self.defaultSettings
-        box = QGroupBox("Peak extraction & clustering")
+        box = QGroupBox("Peak extraction and clustering")
         v = QVBoxLayout()
 
         # Cluster discordant grains

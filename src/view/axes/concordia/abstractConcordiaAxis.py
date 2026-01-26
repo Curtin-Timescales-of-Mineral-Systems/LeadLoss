@@ -28,31 +28,34 @@ class ConcordiaAxis:
         # Plot concordia curve
         xs = np.arange(xMin, xMax, 0.1)
         ys = [calculations.pb207pb206_from_u238pb206(x) for x in xs]
-        self.axis.plot(xs, ys)
+        self.axis.plot(xs, ys, linewidth=1.2, zorder=1)
 
         # Plot concordia times
         time = maxAge
-        i = 0
         increments = [500, 100, 50, 10, 5, 1]
         ts2 = []
+        i = 0
         while i < len(increments) and time >= minAge:
-            increment = increments[i]
-            while time > increment and time >= minAge:
+            inc = increments[i]
+            while time > inc and time >= minAge:
                 ts2.append(time)
-                time -= increment
+                time -= inc
             i += 1
         if time == minAge:
             ts2.append(time)
+
         xs2 = [calculations.u238pb206_from_age(t * (10 ** 6)) for t in ts2]
         ys2 = [calculations.pb207pb206_from_age(t * (10 ** 6)) for t in ts2]
-        self.axis.scatter(xs2, ys2, s=8)
-        for i, txt in enumerate(ts2):
+        self.axis.scatter(xs2, ys2, s=8, zorder=2)
+
+        for j, txt in enumerate(ts2):
             self.axis.annotate(
                 str(txt) + " ",
-                (xs2[i], ys2[i]),
+                (xs2[j], ys2[j]),
                 horizontalalignment="right",
                 verticalalignment="top",
                 fontsize="small"
             )
+
 
 

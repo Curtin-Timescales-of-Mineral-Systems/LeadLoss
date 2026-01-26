@@ -9,8 +9,8 @@ class SummaryWetherillFigure(AbstractFigure):
     def __init__(self, controller, samples):
         super().__init__()
 
-        self.concordiaPlot = SummaryWetherillConcordiaAxis(plt.subplot(111), samples)
-        plt.subplots_adjust(hspace=0.7, wspace=0.4)
+        self.concordiaPlot = SummaryWetherillConcordiaAxis(self.fig.add_subplot(111), samples)
+        self.fig.subplots_adjust(hspace=0.7, wspace=0.4)
 
         controller.signals.samplesSelected.connect(self._onSamplesSelected)
         for sample in samples:
@@ -18,7 +18,7 @@ class SummaryWetherillFigure(AbstractFigure):
             sample.signals.concordancyCalculated.connect(lambda s=sample: self._onSampleChanged(s))
             sample.signals.optimalAgeCalculated.connect(lambda s=sample: self._onSampleChanged(s))
 
-        self.canvas.draw()
+        self.redraw()
 
     def _onSampleChanged(self, sample):
         self.concordiaPlot.refreshSample(sample)
