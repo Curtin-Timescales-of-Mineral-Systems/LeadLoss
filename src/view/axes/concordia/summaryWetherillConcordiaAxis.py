@@ -5,6 +5,7 @@ from process import calculations
 from utils import config
 from utils.errorbarPlot import Errorbars
 from view.axes.concordia.abstractWetherillConcordiaAxis import WetherillConcordiaAxis
+from utils.errorEllipsePlot import ErrorEllipses
 
 
 class SummaryWetherillConcordiaAxis(WetherillConcordiaAxis):
@@ -65,16 +66,12 @@ class SamplePlot:
 
         reverse_col = getattr(config, "REVERSE_DISCORDANT_COLOUR_1", getattr(config, "DISCORDANT_COLOUR_1", "orange"))
 
-        # Match TW: Errorbars wrapper around axis.errorbar containers
-        self.unclassified = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='',
-                                                    color=config.UNCLASSIFIED_COLOUR_1, zorder=2))
-        self.concordant   = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='',
-                                                    color=config.CONCORDANT_COLOUR_1, zorder=3))
-        self.discordant   = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='',
-                                                    color=config.DISCORDANT_COLOUR_1, zorder=3))
-        self.reverse      = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='',
-                                                    color=reverse_col, zorder=4))
+        self.unclassified = ErrorEllipses(axis, color=config.UNCLASSIFIED_COLOUR_1, zorder=2, lw=1.0, alpha=0.20, marker="o", markersize=2)
+        self.concordant   = ErrorEllipses(axis, color=config.CONCORDANT_COLOUR_1,   zorder=3, lw=1.0, alpha=0.20, marker="o", markersize=2)
+        self.discordant   = ErrorEllipses(axis, color=config.DISCORDANT_COLOUR_1,   zorder=3, lw=1.0, alpha=0.20, marker="o", markersize=2)
+        self.reverse      = ErrorEllipses(axis, color=reverse_col,                  zorder=4, lw=1.0, alpha=0.20, marker="o", markersize=2)
 
+                
         self.pbLossAge   = self.axis.plot([], [], marker='o', color=config.OPTIMAL_COLOUR_1)[0]
         self.pbLossRange = self.axis.plot([], [], color=config.OPTIMAL_COLOUR_1)[0]
 

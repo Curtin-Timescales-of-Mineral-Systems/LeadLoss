@@ -6,7 +6,7 @@ from process import calculations
 from utils import config
 from utils.errorbarPlot import Errorbars
 from view.axes.concordia.abstractConcordiaAxis import ConcordiaAxis
-
+from utils.errorEllipsePlot import ErrorEllipses
 
 class SummaryConcordiaAxis(ConcordiaAxis):
 
@@ -52,11 +52,10 @@ class SamplePlot:
         self.axis = axis
         self.sample = sample
 
-        self.unclassified = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.UNCLASSIFIED_COLOUR_1, zorder=2))
-        self.concordant   = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.CONCORDANT_COLOUR_1,   zorder=3))
-        self.discordant   = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.DISCORDANT_COLOUR_1,   zorder=3))
-        self.reverse      = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.REVERSE_DISCORDANT_COLOUR_1, zorder=4))
-
+        self.unclassified = ErrorEllipses(axis, color=config.UNCLASSIFIED_COLOUR_1, zorder=2, alpha=0.2, lw=0.8)
+        self.concordant   = ErrorEllipses(axis, color=config.CONCORDANT_COLOUR_1,   zorder=3, alpha=0.2, lw=0.8)
+        self.discordant   = ErrorEllipses(axis, color=config.DISCORDANT_COLOUR_1,   zorder=3, alpha=0.2, lw=0.8)
+        self.reverse      = ErrorEllipses(axis, color=config.REVERSE_DISCORDANT_COLOUR_1, zorder=4, alpha=0.2, lw=0.8)
 
 
         self.pbLossAge   = self.axis.plot([], [], marker='o', color=config.OPTIMAL_COLOUR_1)[0]
@@ -103,16 +102,26 @@ class SamplePlot:
         else:                self.unclassified.clear_data()
 
         if sample.optimalAge:
-            xMin = calculations.u238pb206_from_age(sample.optimalAgeUpperBound)
-            xMax = calculations.u238pb206_from_age(sample.optimalAgeLowerBound)
-            xs = [xMin] if xMin == xMax else np.arange(xMin, xMax, 0.1)
-            ys = [calculations.pb207pb206_from_u238pb206(x) for x in xs]
-            if xMax is not None:
-                upper_xlim = max(upper_xlim, xMax)
-            self.pbLossAge.set_xdata([xs[0], xs[-1]])
-            self.pbLossAge.set_ydata([ys[0], ys[-1]])
-            self.pbLossRange.set_xdata(xs)
-            self.pbLossRange.set_ydata(ys)
+            t0 = sample.optimalAgeLowerBound
+            t1 = sample.optimalAgeUpperBound
+            if t0 is None or t1 is None:
+                self.pbLossAge.set_xdata([]);   self.pbLossAge.set_ydata([])
+                self.pbLossRange.set_xdata([]); self.pbLossRange.set_ydata([])
+            else:
+                t_min = min(t0, t1)
+                t_max = max(t0, t1)
+
+                ts = np.linspace(t_min, t_max, 200)
+                xs = [calculations.u238pb206_from_age(t) for t in ts]
+                ys = [calculations.pb207pb206_from_age(t) for t in ts]
+
+                self.pbLossRange.set_xdata(xs)
+                self.pbLossRange.set_ydata(ys)
+
+                self.pbLossAge.set_xdata([xs[0], xs[-1]])
+                self.pbLossAge.set_ydata([ys[0], ys[-1]])
+
+                upper_xlim = max(upper_xlim, max(xs) if xs else upper_xlim)
         else:
             self.pbLossAge.set_xdata([]);   self.pbLossAge.set_ydata([])
             self.pbLossRange.set_xdata([]); self.pbLossRange.set_ydata([])
