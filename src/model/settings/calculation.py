@@ -41,12 +41,12 @@ class LeadLossCalculationSettings:
         self.discordanceEllipseSigmas = 2
 
         # Pb-loss time grid (YEARS internally)
-        self.minimumRimAge = 500 * 10**6
-        self.maximumRimAge = 4500 * 10**6
-        self.rimAgesSampled = 100
+        self.minimumRimAge = 1 * 10**6
+        self.maximumRimAge = 2500 * 10**6
+        self.rimAgesSampled = 250
 
         # MC
-        self.monteCarloRuns = 50
+        self.monteCarloRuns = 100
 
         # Comparison
         self.dissimilarityTest = DissimilarityTest.KOLMOGOROV_SMIRNOV

@@ -5,14 +5,16 @@ from PyQt5.QtWidgets import (
 )
 from utils import stringUtils
 from utils.ui.icons import Icons
+from model.settings.calculation import ConcordiaMode
 
 
 class SummaryDataPanel(QWidget):
 
-    def __init__(self, controller, samples):
+    def __init__(self, controller, samples, mode: ConcordiaMode):
         super().__init__()
         self.controller = controller
         self.samples = samples
+        self.mode = ConcordiaMode.coerce(mode)
 
         self._createUI()
 
@@ -158,18 +160,57 @@ class SummaryDataPanel(QWidget):
                 row = self.samples.index(sample)
             except ValueError:
                 return
-        self.dataTable.setItem(row, 1, self._cell(len(sample.concordantSpots())))
-        self.dataTable.setItem(row, 2, self._cell(len(sample.discordantSpots())))
+
+        res = sample.mode_results(self.mode)
+        if res is None:
+            self.dataTable.setItem(row, 1, self._cell(""))
+            self.dataTable.setItem(row, 2, self._cell(""))
+            return
+
+        conc = res.concordant or []
+        rev  = res.reverse or []
+
+        n_conc = sum(1 for v in conc if v is True)
+        n_disc = sum(
+            1 for i, v in enumerate(conc)
+            if (v is False) and not (rev[i] if i < len(rev) else False)
+        )
+
+        self.dataTable.setItem(row, 1, self._cell(n_conc))
+        self.dataTable.setItem(row, 2, self._cell(n_disc))
         self.dataTable.resizeColumnsToContents()
 
     def _onOptimalAgeCalculated(self, sample):
-        # update the legacy row
         row = getattr(sample, "id", None)
         if row is None or row < 0 or row >= self.dataTable.rowCount():
             try:
                 row = self.samples.index(sample)
             except ValueError:
                 return
+
+        res = sample.mode_results(self.mode)
+        if res is None:
+            # clear this row’s “optimal age” fields for THIS mode
+            for col in range(3, 9):
+                self.dataTable.setItem(row, col, self._cell(""))
+            self._refreshEnsembleTable()
+            return
+
+        def put(col, val):
+            self.dataTable.setItem(row, col, self._cell(self._fmt(val)))
+
+        put(3, res.optimalAgeLowerBound/1e6 if res.optimalAgeLowerBound is not None else None)
+        put(4, res.optimalAge/1e6          if res.optimalAge is not None else None)
+        put(5, res.optimalAgeUpperBound/1e6 if res.optimalAgeUpperBound is not None else None)
+        put(6, res.optimalAgeDValue)
+        put(7, res.optimalAgePValue)
+        put(8, res.optimalAgeScore)
+
+        self.dataTable.resizeColumnsToContents()
+        self.dataTable.resizeRowsToContents()
+        self.catalogueTable.resizeRowsToContents()
+        self._refreshEnsembleTable()
+
 
         def put(col, val):
             self.dataTable.setItem(row, col, self._cell(self._fmt(val)))
@@ -186,21 +227,23 @@ class SummaryDataPanel(QWidget):
         self.catalogueTable.resizeRowsToContents()
         self._refreshEnsembleTable()
 
-
     def _onProcessingCleared(self, sample):
-        # Wipe legacy values only for this sample (keep others intact)
-        # Be robust if sample.id is not the row index
+        # Only clear this panel if THIS mode has no cached results anymore.
+        # (clearCalculation() popped the cache for the active mode only)
+        if sample.mode_results(self.mode) is not None:
+            # other mode still has results -> do nothing
+            return
+
         row = getattr(sample, "id", None)
         if row is None or row < 0 or row >= self.dataTable.rowCount():
             try:
                 row = self.samples.index(sample)
             except ValueError:
-                return  # sample not found; nothing to do
+                return
 
         for col in range(1, self.dataTable.columnCount()):
             self.dataTable.setItem(row, col, self._cell(""))
 
-        # Rebuild the ensemble table from all samples' current peak_catalogue
         self._refreshEnsembleTable()
 
 
@@ -236,7 +279,9 @@ class SummaryDataPanel(QWidget):
         rows = []
 
         for s in self.samples:
-            raw = getattr(s, "peak_catalogue", None) or []
+            res = s.mode_results(self.mode)
+            raw = (res.peak_catalogue if res is not None else []) or []
+
 
             # Normalize entries to dicts with keys we care about
             norm = []
