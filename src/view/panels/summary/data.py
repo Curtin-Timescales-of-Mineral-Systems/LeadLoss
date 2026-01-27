@@ -15,6 +15,7 @@ class SummaryDataPanel(QWidget):
         self.controller = controller
         self.samples = samples
         self.mode = ConcordiaMode.coerce(mode)
+        self._updating = False
 
         self._createUI()
 
@@ -75,10 +76,8 @@ class SummaryDataPanel(QWidget):
         topLay.addWidget(self.dataTable)
         topLay.addWidget(self.exportButton)
 
-        # --------- separator label for clarity ----------
         sep = QFrame(); sep.setFrameShape(QFrame.HLine); sep.setFrameShadow(QFrame.Sunken)
 
-        # ---- ensemble catalogue (all samples) ----
         cat_headers = ["Sample", "Peak #", "95% low", "Age (Ma)", "95% high", "Support (%)"]
         self.catalogueTable = QTableWidget(0, len(cat_headers))
         self.catalogueTable.setHorizontalHeaderLabels(cat_headers)
@@ -118,6 +117,8 @@ class SummaryDataPanel(QWidget):
         splitter.setSizes([600, 360])
 
         outer = QVBoxLayout()
+        outer.setContentsMargins(0, 0, 0, 0)
+        outer.setSpacing(2)
         outer.addWidget(splitter)
         self.setLayout(outer)
 
@@ -181,57 +182,47 @@ class SummaryDataPanel(QWidget):
         self.dataTable.resizeColumnsToContents()
 
     def _onOptimalAgeCalculated(self, sample):
-        row = getattr(sample, "id", None)
-        if row is None or row < 0 or row >= self.dataTable.rowCount():
-            try:
-                row = self.samples.index(sample)
-            except ValueError:
+        # Re-entrancy guard (prevents infinite recursion / abort)
+        if getattr(self, "_updating", False):
+            return
+        self._updating = True
+        try:
+            row = getattr(sample, "id", None)
+            if row is None or row < 0 or row >= self.dataTable.rowCount():
+                try:
+                    row = self.samples.index(sample)
+                except ValueError:
+                    return
+
+            res = sample.mode_results(self.mode)
+            if res is None:
+                for col in range(3, 9):
+                    self.dataTable.setItem(row, col, self._cell(""))
+                self._refreshEnsembleTable()
                 return
 
-        res = sample.mode_results(self.mode)
-        if res is None:
-            # clear this row’s “optimal age” fields for THIS mode
-            for col in range(3, 9):
-                self.dataTable.setItem(row, col, self._cell(""))
+            def put(col, val):
+                self.dataTable.setItem(row, col, self._cell(self._fmt(val)))
+
+            put(3, res.optimalAgeLowerBound/1e6 if res.optimalAgeLowerBound is not None else None)
+            put(4, res.optimalAge/1e6          if res.optimalAge is not None else None)
+            put(5, res.optimalAgeUpperBound/1e6 if res.optimalAgeUpperBound is not None else None)
+            put(6, res.optimalAgeDValue)
+            put(7, res.optimalAgePValue)
+            put(8, res.optimalAgeScore)
+
+            self.dataTable.resizeColumnsToContents()
+            self.dataTable.resizeRowsToContents()
+
             self._refreshEnsembleTable()
-            return
+            self.catalogueTable.resizeRowsToContents()
 
-        def put(col, val):
-            self.dataTable.setItem(row, col, self._cell(self._fmt(val)))
+        finally:
+            self._updating = False
 
-        put(3, res.optimalAgeLowerBound/1e6 if res.optimalAgeLowerBound is not None else None)
-        put(4, res.optimalAge/1e6          if res.optimalAge is not None else None)
-        put(5, res.optimalAgeUpperBound/1e6 if res.optimalAgeUpperBound is not None else None)
-        put(6, res.optimalAgeDValue)
-        put(7, res.optimalAgePValue)
-        put(8, res.optimalAgeScore)
-
-        self.dataTable.resizeColumnsToContents()
-        self.dataTable.resizeRowsToContents()
-        self.catalogueTable.resizeRowsToContents()
-        self._refreshEnsembleTable()
-
-
-        def put(col, val):
-            self.dataTable.setItem(row, col, self._cell(self._fmt(val)))
-
-        put(3, sample.optimalAgeLowerBound/(10**6) if sample.optimalAgeLowerBound is not None else None)
-        put(4, sample.optimalAge/(10**6)            if sample.optimalAge is not None else None)
-        put(5, sample.optimalAgeUpperBound/(10**6)  if sample.optimalAgeUpperBound is not None else None)
-        put(6, sample.optimalAgeDValue)
-        put(7, sample.optimalAgePValue)
-        put(8, sample.optimalAgeScore)
-        self.dataTable.resizeColumnsToContents()
-
-        self.dataTable.resizeRowsToContents()
-        self.catalogueTable.resizeRowsToContents()
-        self._refreshEnsembleTable()
 
     def _onProcessingCleared(self, sample):
-        # Only clear this panel if THIS mode has no cached results anymore.
-        # (clearCalculation() popped the cache for the active mode only)
         if sample.mode_results(self.mode) is not None:
-            # other mode still has results -> do nothing
             return
 
         row = getattr(sample, "id", None)

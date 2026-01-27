@@ -121,12 +121,11 @@ class LeadLossApplication:
             return
 
         Settings.update(settings)
-        for sample in samples:
-            sample.clearCalculation()
 
         clonedSamples = []
         for sample in samples:
             sample.startCalculation(settings)
+            sample.clearCalculation()
             clonedSamples.append(sample.createProcessingCopy())
 
         self.worker = AsyncTask(self.processing_signals, self.model.getProcessingFunction(), clonedSamples)

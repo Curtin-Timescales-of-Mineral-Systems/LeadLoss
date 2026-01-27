@@ -297,12 +297,20 @@ class Sample:
             conc = res.concordant[i] if i < len(res.concordant) else None
             disc = res.discordance[i] if i < len(res.discordance) else None
 
-            # spot.updateConcordance is your canonical setter
-            if conc is not None and disc is not None:
+            # disc may be None (ellipse method) — still restore
+            if conc is not None:
                 s.updateConcordance(bool(conc), disc)
+            else:
+                if hasattr(s, "processed"):
+                    s.processed = True
+                if hasattr(s, "concordant"):
+                    s.concordant = None
+                if hasattr(s, "discordance"):
+                    s.discordance = disc
 
             if i < len(res.reverse):
                 s.reverseDiscordant = bool(res.reverse[i])
+
 
         # refresh the UI
         if self.signals:
