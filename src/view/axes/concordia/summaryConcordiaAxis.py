@@ -101,9 +101,13 @@ class SamplePlot:
         if unclassifiedData: self.unclassified.set_data(*zip(*unclassifiedData))
         else:                self.unclassified.clear_data()
 
+        xlim_max = max(1.0, 1.2 * (upper_xlim or 1.0))
+        self.axis.set_xlim(0.0, xlim_max)
+
         if sample.optimalAge:
             t0 = sample.optimalAgeLowerBound
             t1 = sample.optimalAgeUpperBound
+
             if t0 is None or t1 is None:
                 self.pbLossAge.set_xdata([]);   self.pbLossAge.set_ydata([])
                 self.pbLossRange.set_xdata([]); self.pbLossRange.set_ydata([])
@@ -111,22 +115,33 @@ class SamplePlot:
                 t_min = min(t0, t1)
                 t_max = max(t0, t1)
 
+                # hard floor avoids near-zero ages blowing up u238/pb206
+                try:
+                    t_min = max(t_min, float(getattr(calculations, "LOWER_AGE", 1_000_000.0)))
+                except Exception:
+                    pass
+
                 ts = np.linspace(t_min, t_max, 200)
-                xs = [calculations.u238pb206_from_age(t) for t in ts]
-                ys = [calculations.pb207pb206_from_age(t) for t in ts]
+                xs = np.asarray([calculations.u238pb206_from_age(t) for t in ts], float)
+                ys = np.asarray([calculations.pb207pb206_from_age(t) for t in ts], float)
 
-                self.pbLossRange.set_xdata(xs)
-                self.pbLossRange.set_ydata(ys)
+                m = np.isfinite(xs) & np.isfinite(ys) & (xs >= 0.0) & (xs <= xlim_max)
+                xs = xs[m]; ys = ys[m]
 
-                self.pbLossAge.set_xdata([xs[0], xs[-1]])
-                self.pbLossAge.set_ydata([ys[0], ys[-1]])
+                if xs.size:
+                    self.pbLossRange.set_xdata(xs)
+                    self.pbLossRange.set_ydata(ys)
 
-                upper_xlim = max(upper_xlim, max(xs) if xs else upper_xlim)
+                    # endpoints marker/segment (kept, but now clipped)
+                    self.pbLossAge.set_xdata([xs[0], xs[-1]])
+                    self.pbLossAge.set_ydata([ys[0], ys[-1]])
+                else:
+                    # nothing visible within the plot window
+                    self.pbLossAge.set_xdata([]);   self.pbLossAge.set_ydata([])
+                    self.pbLossRange.set_xdata([]); self.pbLossRange.set_ydata([])
         else:
             self.pbLossAge.set_xdata([]);   self.pbLossAge.set_ydata([])
             self.pbLossRange.set_xdata([]); self.pbLossRange.set_ydata([])
-
-        self.axis.set_xlim(0, 1.2 * (upper_xlim or 1.0))
 
     def clearData(self):
         self.concordant.clear_data()
