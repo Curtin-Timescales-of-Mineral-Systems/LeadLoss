@@ -16,6 +16,9 @@ from utils.settings import Settings
 from view.dialogs.help import LeadLossHelpDialog
 from view.view import LeadLossView
 
+from PyQt5.QtGui import QFont
+from utils import resourceUtils
+
 class LeadLossApplication:
     """
     Main Qt application entry point for the Pb-loss modelling tool.
@@ -60,6 +63,14 @@ class LeadLossApplication:
         app = QApplication(sys.argv)
         app.setStyle(QStyleFactory.create('Fusion'))
         app.setWindowIcon(QIcon(self.get_icon()))
+
+        app.setFont(QFont("Inter", 11))  # optional (falls back if not installed)
+
+        try:
+            with open(resourceUtils.getResourcePath("theme.qss"), "r", encoding="utf-8") as f:
+                app.setStyleSheet(f.read())
+        except Exception as e:
+            print("Theme not loaded:", e)
 
         self.model = LeadLossModel(self.signals)
         self.view = LeadLossView(self, self.get_title(), config.VERSION)

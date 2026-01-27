@@ -1,0 +1,39 @@
+QMainWindow { background: #f5f6f8; }
+QWidget { font-size: 11pt; }
+
+QTabWidget::pane { border: 0; }
+QTabBar::tab {
+  padding: 8px 12px;
+  margin-right: 6px;
+  border-radius: 10px;
+  background: transparent;
+}
+QTabBar::tab:selected { background: #ffffff; }
+
+QLineEdit {
+  background: #ffffff;
+  border: 1px solid #e6e8ee;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+QPushButton {
+  border: 1px solid #e6e8ee;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+QPushButton:hover { background: #f3f4f6; }
+
+QTableWidget, QTableView {
+  background: #ffffff;
+  border: 1px solid #e6e8ee;
+  border-radius: 12px;
+  gridline-color: #eef0f5;
+}
+QHeaderView::section {
+  background: #f8fafc;
+  border: 0;
+  padding: 6px 8px;
+  font-weight: 600;
+}
