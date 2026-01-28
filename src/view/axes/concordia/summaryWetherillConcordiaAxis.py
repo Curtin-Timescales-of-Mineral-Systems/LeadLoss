@@ -3,7 +3,6 @@ import numpy as np
 
 from process import calculations
 from utils import config
-from utils.errorbarPlot import Errorbars
 from view.axes.concordia.abstractWetherillConcordiaAxis import WetherillConcordiaAxis
 from utils.errorEllipsePlot import ErrorEllipses
 
@@ -30,8 +29,10 @@ class SummaryWetherillConcordiaAxis(WetherillConcordiaAxis):
         for sample in samples:
             self.plotSample(sample)
 
+        if not samples:
+            return
         examplePlot = self.samples[samples[0]]
-        reverse_col = getattr(config, "REVERSE_DISCORDANT_COLOUR_1", getattr(config, "DISCORDANT_COLOUR_1", "orange"))
+
 
         legendEntries = [
             (examplePlot.unclassified.line, "Unclassified"),

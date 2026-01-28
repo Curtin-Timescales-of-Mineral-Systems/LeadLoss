@@ -1,5 +1,6 @@
 from view.axes.concordia.summaryConcordiaAxis import SummaryConcordiaAxis
 from view.figures.abstractFigure import AbstractFigure
+from utils import resourceUtils
 
 
 class SummaryFigure(AbstractFigure):
@@ -9,6 +10,12 @@ class SummaryFigure(AbstractFigure):
 
         self.concordiaPlot = SummaryConcordiaAxis(self.fig.add_subplot(111), samples)
         self.fig.subplots_adjust(hspace=0.7, wspace=0.4)
+
+
+        self.canvasHost.setObjectName("ConcordiaHost")
+        self.set_watermark(resourceUtils.getResourcePath("zircon.png"))
+
+        self.concordiaPlot = SummaryConcordiaAxis(self.fig.add_subplot(111), samples)
 
         controller.signals.samplesSelected.connect(self._onSamplesSelected)
         for sample in samples:

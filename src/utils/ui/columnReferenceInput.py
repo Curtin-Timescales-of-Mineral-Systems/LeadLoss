@@ -9,7 +9,7 @@ from utils.ui import uiUtils
 
 
 class ColumnReferenceInput(QWidget):
-    width = 30
+    width = 58
 
     def __init__(self, validation, referenceType, defaultValue):
         super().__init__()
@@ -23,6 +23,8 @@ class ColumnReferenceInput(QWidget):
         self.numberWidget.textChanged.connect(validation)
         self.numberWidget.setVisible(referenceType is ColumnReferenceType.NUMBERS)
         uiUtils.attachValidator(self.numberWidget, csvUtils.COLUMN_REFERENCE_TYPE_REGEXES[ColumnReferenceType.NUMBERS])
+        self.numberWidget.setFixedWidth(self.width)
+        self.numberWidget.setObjectName("ColRef")
 
         self.lettersWidget = QLineEdit(letterDefault)
         self.lettersWidget.setFixedWidth(self.width)
@@ -30,6 +32,8 @@ class ColumnReferenceInput(QWidget):
         self.lettersWidget.textChanged.connect(validation)
         self.lettersWidget.setVisible(referenceType is ColumnReferenceType.LETTERS)
         uiUtils.attachValidator(self.lettersWidget, csvUtils.COLUMN_REFERENCE_TYPE_REGEXES[ColumnReferenceType.LETTERS])
+        self.lettersWidget.setObjectName("ColRef")
+        self.lettersWidget.setFixedWidth(self.width)
 
         layout = QHBoxLayout()
         layout.addWidget(self.numberWidget)

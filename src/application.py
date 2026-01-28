@@ -16,7 +16,7 @@ from utils.settings import Settings
 from view.dialogs.help import LeadLossHelpDialog
 from view.view import LeadLossView
 
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QFontDatabase
 from utils import resourceUtils
 
 class LeadLossApplication:

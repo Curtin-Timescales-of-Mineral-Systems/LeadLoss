@@ -69,6 +69,7 @@ class SummaryDataPanel(QWidget):
         self.exportButton = QPushButton("  Export optimal-age table")
         self.exportButton.setIcon(Icons.export())
         self.exportButton.clicked.connect(self._exportOptimalAge)
+        self.exportButton.setObjectName("AccentButton")
 
         topBox = QWidget()
         topLay = QVBoxLayout(topBox)
@@ -95,14 +96,15 @@ class SummaryDataPanel(QWidget):
         self.catalogueTable.verticalHeader().setVisible(False)
         self.catalogueTable.setMinimumHeight(180)  # gives it some initial presence
 
-        self.exportCatalogueButton = QPushButton("  Export ensemble peaks")
+        self.exportCatalogueButton = QPushButton("  Export ensemble peaks table")
         self.exportCatalogueButton.setIcon(Icons.export())
+        self.exportCatalogueButton.setObjectName("AccentButton")
         self.exportCatalogueButton.clicked.connect(self._exportEnsemble)
 
         bottomBox = QWidget()
         bottomLay = QVBoxLayout(bottomBox)
         bottomLay.setContentsMargins(0, 0, 0, 0)
-        bottomLay.addWidget(QLabel("Ensemble peak catalogue (all samples)"))
+        bottomLay.addWidget(QLabel("Ensemble peak catalogue"))
         bottomLay.addWidget(sep)
         bottomLay.addWidget(self.catalogueTable)
         bottomLay.addWidget(self.exportCatalogueButton)

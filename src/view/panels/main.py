@@ -1,9 +1,8 @@
-from PyQt5.QtWidgets import QWidget, QTabWidget, QVBoxLayout, QPushButton, QLabel, QLineEdit, QHBoxLayout, QSpacerItem, QMessageBox
+from PyQt5.QtWidgets import QWidget, QTabWidget, QVBoxLayout, QPushButton, QLabel, QLineEdit, QHBoxLayout, QSpacerItem, QMessageBox, QSizePolicy
+from PyQt5.QtCore import QSignalBlocker
 from utils.ui.icons import Icons
 from view.panels.sample.samplePanel import SamplePanel
 from view.panels.summary.summary import SummaryPanel
-from PyQt5.QtCore import QSignalBlocker
-
 
 class MainPanel(QWidget):
 
@@ -24,51 +23,76 @@ class MainPanel(QWidget):
     ## Widgets ##
     #############
 
+    @staticmethod
+    def _repolish(w):
+        w.style().unpolish(w)
+        w.style().polish(w)
+        w.update()
+
     def _createTop(self, file, samples):
         layout = QHBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 5)
+        layout.setContentsMargins(10, 10, 10, 6)
+        layout.setSpacing(10)
 
+        # Process all
         self.processAllButton = QPushButton()
-        self.processAllButton.clicked.connect(self.onProcessAllClicked)
+        self.processAllButton.setObjectName("PrimaryButton")
         self.processAllButton.setIcon(Icons.process())
+        self.processAllButton.clicked.connect(self.onProcessAllClicked)
         layout.addWidget(self.processAllButton)
 
+        # Process one (only if multiple samples)
         if len(samples) == 1:
             processAllText = "  Process"
             self.processOneButton = None
         else:
             processAllText = "  Process all"
             self.processOneButton = QPushButton("  Process sample")
-            self.processOneButton.clicked.connect(self.onProcessSampleClicked)
+            self.processOneButton.setObjectName("PrimaryButton")
             self.processOneButton.setIcon(Icons.process())
+            self.processOneButton.clicked.connect(self.onProcessSampleClicked)
             layout.addWidget(self.processOneButton)
+
         self.processAllButton.setText(processAllText)
 
+        # Cancel
         self.cancelButton = QPushButton("  Cancel processing")
-        self.cancelButton.clicked.connect(self.onProcessCancelClicked)
+        self.cancelButton.setObjectName("DangerButton")
         self.cancelButton.setIcon(Icons.cancel())
+        self.cancelButton.clicked.connect(self.onProcessCancelClicked)
         self.cancelButton.setVisible(False)
         layout.addWidget(self.cancelButton)
 
-        layout.addSpacerItem(QSpacerItem(20, 0))
+        layout.addSpacing(10)
 
-        self.importFileLabel = QLabel("Current file: ")
+        # File path
+        self.importFileLabel = QLabel("Current file:")
+        layout.addWidget(self.importFileLabel)
 
         self.importFileText = QLineEdit(file)
         self.importFileText.setReadOnly(True)
+        self.importFileText.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        layout.addWidget(self.importFileText, 1)
 
-        layout.addWidget(self.importFileLabel)
-        layout.addWidget(self.importFileText)
-
-        # Add a button to export Monte Carlo runs
+        # Export
         self.exportButton = QPushButton("Export Monte Carlo Runs")
+        self.exportButton.setObjectName("GoldButton")
         self.exportButton.clicked.connect(self.onExportClicked)
         layout.addWidget(self.exportButton)
 
+        # If QSS still doesn't apply, force it:
+        self._repolish(self.processAllButton)
+        if self.processOneButton:
+            self._repolish(self.processOneButton)
+        self._repolish(self.cancelButton)
+        self._repolish(self.exportButton)
+
         widget = QWidget()
+        widget.setObjectName("TopBar")
         widget.setLayout(layout)
         return widget
 
+    
     def _createBody(self, controller, samples):
         if len(samples) == 1:
             samplePanel = SamplePanel(controller, samples[0])
@@ -76,6 +100,7 @@ class MainPanel(QWidget):
             return samplePanel
 
         self.tabs = QTabWidget()
+        self.tabs.setObjectName("MainTabs")
         self.tabs.currentChanged.connect(self.onTabChanged)
 
         summaryPanel = SummaryPanel(controller, samples)

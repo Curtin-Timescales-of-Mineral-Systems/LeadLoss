@@ -1,5 +1,5 @@
 import numpy as np
-
+from utils import resourceUtils
 from process import calculations
 
 
@@ -14,6 +14,10 @@ class ConcordiaAxis:
         self._setupAxis()
 
     def _setupAxis(self):
+        self.axis.figure.set_facecolor("none")
+        self.axis.figure.patch.set_alpha(0)     # transparent figure background
+        self.axis.set_facecolor("white")   
+        
         self.axis.set_title("TW concordia plot")
         self.axis.set_xlabel("${}^{238}U/{}^{206}Pb$")
         self.axis.set_ylabel("${}^{207}Pb/{}^{206}Pb$")
