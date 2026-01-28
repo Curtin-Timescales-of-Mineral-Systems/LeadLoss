@@ -327,7 +327,6 @@ def _calculateConcordantAges(signals, sample):
     n_spots    = max(1, len(sample.validSpots))
     timePerRow = TIME_PER_TASK / n_spots
 
-    # NEW: select concordia mode (robust to strings/old settings)
     mode = ConcordiaMode.coerce(getattr(settings, "concordiaMode", ConcordiaMode.TW))
     is_wetherill = (mode == ConcordiaMode.WETHERILL)
 
@@ -335,8 +334,15 @@ def _calculateConcordantAges(signals, sample):
     discordances  = []
     reverse_flags = []
 
+    last_emit_t = 0.0
+    emit_every = max(1, n_spots // 100)   # ~100 updates max
+
+
     for i, spot in enumerate(sample.validSpots):
-        signals.progress(ProgressType.CONCORDANCE, i / n_spots)
+        now = time.perf_counter()
+        if (i == 0) or (i == n_spots - 1) or (i % emit_every == 0) or (now - last_emit_t > 0.1):
+            last_emit_t = now
+            signals.progress(ProgressType.CONCORDANCE, i / n_spots)
         time.sleep(timePerRow)
         if signals.halt():
             signals.cancelled()
@@ -478,6 +484,10 @@ def _performRimAgeSampling(signals, sample):
     for spot, lab in zip(discordantSpots, full_labels):
         spot.cluster_id = int(lab)
 
+    #throttle sampling progress emissions
+    last_emit_t = 0.0
+    emit_every = max(1, stabilitySamples // 100)   # ~100 UI updates max
+
     # --------- sampling loop ---------
     per_run_times = []
     t0 = time.perf_counter()
@@ -514,7 +524,13 @@ def _performRimAgeSampling(signals, sample):
 
         progress = (j + 1) / stabilitySamples
         sample.addMonteCarloRun(run)
-        signals.progress(ProgressType.SAMPLING, progress, sample.name, run)
+
+        now = time.perf_counter()
+        # emit at most ~100 times (for 200 runs emit_every=2), and at most 10 Hz
+        if (j == 0) or (j == stabilitySamples - 1) or (j % emit_every == 0) or (now - last_emit_t > 0.1):
+            last_emit_t = now
+            signals.progress(ProgressType.SAMPLING, progress, sample.name, run)
+
 
     mc_elapsed = time.perf_counter() - t0
     grid_len = len(settings.rimAges()) if hasattr(settings, "rimAges") else 0
