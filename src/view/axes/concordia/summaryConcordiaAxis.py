@@ -30,7 +30,6 @@ class SummaryConcordiaAxis(ConcordiaAxis):
         ]
         self.axis.legend(*zip(*legendEntries), frameon=False)
 
-
     def plotSample(self, sample):
         self.samples[sample] = SamplePlot(self.axis, sample)
 

@@ -13,7 +13,7 @@ class SummaryFigure(AbstractFigure):
 
 
         self.canvasHost.setObjectName("ConcordiaHost")
-        self.set_watermark(resourceUtils.getResourcePath("zircon.png"))
+        self.set_watermark(resourceUtils.getResourcePath("concordia_bg.png"))
 
         self.concordiaPlot = SummaryConcordiaAxis(self.fig.add_subplot(111), samples)
 

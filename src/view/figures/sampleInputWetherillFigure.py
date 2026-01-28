@@ -1,5 +1,4 @@
-import matplotlib.pyplot as plt
-
+from utils import resourceUtils
 from view.axes.concordia.summaryWetherillConcordiaAxis import SummaryWetherillConcordiaAxis
 from view.figures.abstractFigure import AbstractFigure
 
@@ -11,6 +10,9 @@ class SampleInputWetherillFigure(AbstractFigure):
 
         self.concordiaPlot = SummaryWetherillConcordiaAxis(self.fig.add_subplot(111), [sample])
         self.fig.subplots_adjust(hspace=0.7, wspace=0.4)
+
+        self.canvasHost.setObjectName("ConcordiaHost")
+        self.set_watermark(resourceUtils.getResourcePath("concordia_bg.png"))
 
         sample.signals.processingCleared.connect(lambda s=sample: self._onSampleChanged(s))
         sample.signals.concordancyCalculated.connect(lambda s=sample: self._onSampleChanged(s))

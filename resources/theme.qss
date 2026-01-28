@@ -131,37 +131,49 @@ QLineEdit { selection-background-color: #D0DCFF; selection-color: #0B1F3A; }
 
 QComboBox::drop-down { border-left: 1px solid #E6E8EE; width: 26px; }
 
-/* ---------- Radio buttons: make checked state obvious ---------- */
-QRadioButton { spacing: 8px; }
+/* ---------- Radio buttons as toggle pills ---------- */
+QRadioButton {
+    spacing: 0px;                 /* no indicator spacing */
+    padding: 6px 12px;
+    border-radius: 10px;
+    border: 2px solid #E6E8EE;
+    background: #FBFCFF;
+    color: #0B1F3A;
+    font-weight: 800;
+  }
+  
+  QRadioButton:hover {
+    background: #D5E3FF;
+  }
+  
+  /* Hide the default circle */
+  QRadioButton::indicator {
+    width: 0px;
+    height: 0px;
+  }
+  
+  /* Checked = active pill */
+  QRadioButton:checked {
+    background: #E2AD00;
+    border: 2px solid #005B96;
+    color: #0B1F3A;
+  }
+  
+  /* Disabled */
+  QRadioButton:disabled {
+    color: #9CA3AF;
+    border: 2px solid #E6E8EE;
+    background: #F3F4F6;
+  }
 
-QRadioButton::indicator {
-  width: 18px;
-  height: 18px;
-  border-radius: 9px;
-
-  background: #FFFFFF;
-  border: 2px solid #005B96;     /* focus blue outline */
-}
-
-QRadioButton::indicator:unchecked:hover {
-  background: #D5E3FF;           /* hover tint */
-}
-
-/* Checked = gold fill + navy ring (very obvious) */
-QRadioButton::indicator:checked {
-  background: #E2AD00;           /* gold */
-  border: 2px solid #0B1F3A;     /* navy */
-}
-
-QRadioButton::indicator:checked:hover {
-  background: #F0BF2A;
-}
-
-QRadioButton::indicator:disabled {
-  background: #F3F4F6;
-  border: 2px solid #9CA3AF;
-}
-
+  /* Make groupbox headings bold */
+  QGroupBox::title {
+    subcontrol-origin: padding;
+    subcontrol-position: top left;
+    left: 12px;
+    top: 6px;
+  }
+  
 /* ---------- Buttons ---------- */
 QPushButton {
   background: #FBFCFF;
