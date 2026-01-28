@@ -64,7 +64,7 @@ class LeadLossApplication:
         app.setStyle(QStyleFactory.create('Fusion'))
         app.setWindowIcon(QIcon(self.get_icon()))
 
-        app.setFont(QFont("Inter", 11))  # optional (falls back if not installed)
+        app.setFont(QFont("Helvetica Neue", 11)) 
 
         try:
             with open(resourceUtils.getResourcePath("theme.qss"), "r", encoding="utf-8") as f:

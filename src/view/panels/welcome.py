@@ -11,7 +11,7 @@ class WelcomePanel(QWidget):
         super().__init__()
         self.setObjectName("WelcomePanel")
 
-        self._bg = QPixmap(resourceUtils.getResourcePath("welcome_bg_4.png"))
+        self._bg = QPixmap(resourceUtils.getResourcePath("welcome_bg.png"))
 
         self._overlay = QColor(220, 232, 255, 120)
 
