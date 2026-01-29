@@ -144,23 +144,3 @@ class LeadLossModel:
             actualAge = self.optimalAge
 
         return actualAge, self.dValuesByAge[actualAge], self.pValuesByAge[actualAge], self.reconstructedAges[actualAge]
-    
-    ################
-    ## Export data ##
-    ################
-
-    def exportMonteCarloRuns(self, append=False):
-        filename = QFileDialog.getSaveFileName(
-            caption='Save CSV file',
-            directory='.',
-            options=QFileDialog.DontUseNativeDialog
-        )[0]
-        if not filename:
-            return
-        mode = 'a' if append else 'w'
-        with open(filename, mode, newline="") as csvfile:
-            writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-            for sample in self.samples:
-                for run in sample.getMonteCarloRuns():
-                    run.calculateOptimalAge()
-                    writer.writerow(run.toList())
