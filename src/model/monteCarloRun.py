@@ -219,7 +219,6 @@ class MonteCarloRun:
                 if ui is not None and math.isfinite(ui):
                     all_ui[i] = float(ui)
 
-            # Do NOT raise if all are NaN; stats class already handles "no valid discordants".
 
         # No clustering → evaluate all together
         if self.labels is None:

@@ -3,7 +3,7 @@ from PyQt5.QtCore import pyqtSignal, QObject
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
-from model.settings.calculation import ConcordiaMode  # you already use this elsewhere
+from model.settings.calculation import ConcordiaMode 
 
 @dataclass
 class ModeResults:
@@ -76,7 +76,6 @@ class Sample:
         self._peak_catalogue = val
 
     def concordantSpots(self):
-        # Use explicit bool() checks so numpy.bool_ values are handled and skip unprocessed spots.
         return [
             spot for spot in self.validSpots
             if spot.processed and bool(spot.concordant)
@@ -181,19 +180,35 @@ class Sample:
             self.signals.optimalAgeCalculated.emit()
 
     def createProcessingCopy(self):
-        signals = self.signals
-        saved_results = getattr(self, "_results_by_mode", None)
-        saved_active  = getattr(self, "activeConcordiaMode", None)
+        # Save sample-level state
+        saved_sample_signals = self.signals
+        saved_results = self._results_by_mode
+        saved_active = self.activeConcordiaMode
 
+        # Save spot-level signals
+        saved_spot_signals = []
+        for spot in self.spots:
+            saved_spot_signals.append(getattr(spot, "signals", None))
+            if hasattr(spot, "signals"):
+                spot.signals = None
+
+        # Strip non-picklable state
         self.signals = None
-        self._results_by_mode = {}  # do not deepcopy cached results
-        copy = deepcopy(self)
+        self._results_by_mode = {}
 
-        self.signals = signals
-        self._results_by_mode = saved_results if saved_results is not None else {}
+        # Deep copy
+        clone = deepcopy(self)
+
+        # Restore original object state
+        self.signals = saved_sample_signals
+        self._results_by_mode = saved_results
         self.activeConcordiaMode = saved_active
 
-        return copy
+        for spot, sig in zip(self.spots, saved_spot_signals):
+            if sig is not None:
+                spot.signals = sig
+
+        return clone
 
     def _current_mode(self) -> ConcordiaMode:
         mode = getattr(self.calculationSettings, "concordiaMode", None)
@@ -211,14 +226,12 @@ class Sample:
         res.optimalAgeNumberOfInvalidPoints = self.optimalAgeNumberOfInvalidPoints
         res.optimalAgeScore = self.optimalAgeScore
 
-        # keep whatever your catalogue type is (tuples/dicts) as-is
         res.peak_catalogue = deepcopy(self.peak_catalogue) if self.peak_catalogue else []
         res.disc_cluster_labels = deepcopy(self.disc_cluster_labels)
         res.disc_cluster_summary = deepcopy(self.disc_cluster_summary) if self.disc_cluster_summary else []
 
         res.monteCarloRuns = list(self.monteCarloRuns) if self.monteCarloRuns else []
 
-        # snapshot spot classification (do NOT copy raw values; only classification state)
         res.processed  = [bool(getattr(s, "processed", False)) for s in self.validSpots]
         res.concordant = [
             (bool(getattr(s, "concordant", False)) if bool(getattr(s, "processed", False)) else None)
@@ -231,7 +244,6 @@ class Sample:
         self.activeConcordiaMode = mode
 
     def _clear_spot_classification_only(self):
-        # IMPORTANT: do NOT call spot.clear() here (that might wipe imported values)
         for s in self.validSpots:
             if hasattr(s, "processed"):
                 s.processed = False
@@ -249,7 +261,6 @@ class Sample:
         res = self._results_by_mode.get(mode, None)
 
         if res is None:
-            # no results for this mode => show "unprocessed" state for this mode
             self.optimalAge = None
             self.optimalAgeLowerBound = None
             self.optimalAgeUpperBound = None
