@@ -56,7 +56,7 @@ class LeadLossCalculationSettings:
         self.useSummedKS = False
         self.summedKSSmoothSigma = 1.0
 
-        # Clustering toggles (old semantics)
+        # Clustering toggles
         self.use_discordant_clustering = False
         self.relabel_clusters_per_run  = False
 

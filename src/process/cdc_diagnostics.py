@@ -3,10 +3,6 @@
 Everything in here should be safe to *exclude* from normal GUI usage:
 - No outputs are written unless CDC_WRITE_OUTPUTS=1 (and/or CDC_KS_EXPORT_DIR is set).
 - Paths are configurable via environment variables (see process.cdc_config).
-
-Keeping this separate from the main processing pipeline makes it much easier to:
-- build a clean GUI release; and
-- keep manuscript reproduction artifacts in one place.
 """
 
 from __future__ import annotations
@@ -343,3 +339,4 @@ def export_legacy_ks(
             w.writerow([header])
             for t in ui_ma:
                 w.writerow([f"{t:.6f}"])
+

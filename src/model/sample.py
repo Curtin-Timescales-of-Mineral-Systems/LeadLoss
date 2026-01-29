@@ -195,10 +195,6 @@ class Sample:
 
         return copy
 
-
-    def getMonteCarloRuns(self):
-        return self.monteCarloRuns
-
     def _current_mode(self) -> ConcordiaMode:
         mode = getattr(self.calculationSettings, "concordiaMode", None)
         return ConcordiaMode.coerce(mode) if mode is not None else self.activeConcordiaMode
@@ -311,11 +307,22 @@ class Sample:
             if i < len(res.reverse):
                 s.reverseDiscordant = bool(res.reverse[i])
 
-
         # refresh the UI
         if self.signals:
             self.signals.concordancyCalculated.emit()
             self.signals.optimalAgeCalculated.emit()
+
+    def getMonteCarloRuns(self, mode=None):
+        """
+        If mode is None -> current active runs (backwards compatible).
+        If mode is TW/WETHERILL -> return cached runs for that mode (or []).
+        """
+        if mode is None:
+            return list(self.monteCarloRuns)
+
+        mode = ConcordiaMode.coerce(mode)
+        res = self._results_by_mode.get(mode)
+        return list(res.monteCarloRuns) if (res is not None and res.monteCarloRuns) else []
 
     def mode_results(self, mode: ConcordiaMode) -> Optional[ModeResults]:
         mode = ConcordiaMode.coerce(mode)

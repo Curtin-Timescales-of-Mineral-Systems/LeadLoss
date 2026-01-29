@@ -19,6 +19,8 @@ from view.view import LeadLossView
 from PyQt5.QtGui import QFont, QFontDatabase
 from utils import resourceUtils
 
+from model.settings.calculation import ConcordiaMode
+
 class LeadLossApplication:
     """
     Main Qt application entry point for the Pb-loss modelling tool.
@@ -136,7 +138,7 @@ class LeadLossApplication:
         clonedSamples = []
         for sample in samples:
             sample.startCalculation(settings)
-            sample.clearCalculation()
+            sample.clearCalculation()   # ok if it clears only active mode results (your current version does)
             clonedSamples.append(sample.createProcessingCopy())
 
         self.worker = AsyncTask(self.processing_signals, self.model.getProcessingFunction(), clonedSamples)
@@ -227,32 +229,24 @@ class LeadLossApplication:
         self.signals.taskComplete.emit(True, "Export complete")
 
     def exportMonteCarloRuns(self):
-
-        # Get all samples
         samples = self.model.samples
-
-        # Get the output file
         output_file = self.view.getOutputFile()
-
-        # Check if the user canceled the dialog
         if not output_file:
             self.signals.taskComplete.emit(False, "Export canceled by user")
-            return  # Exit the function early
+            return
 
-        # Initialize an empty list for the distribution
         distribution = []
-
         for sample in samples:
-            # Get the Monte Carlo runs from the sample
-            monte_carlo_runs = sample.getMonteCarloRuns()
+            for mode in (ConcordiaMode.TW, ConcordiaMode.WETHERILL):
+                runs = sample.getMonteCarloRuns(mode)
+                if not runs:
+                    continue
+                distribution.extend([run.toList() for run in runs])
 
-            # Convert each MonteCarloRun object to a list
-            distribution.extend([run.toList() for run in monte_carlo_runs])
-
-        # Write the Monte Carlo runs to the output file
         write_monte_carlo_output(distribution, output_file, write_headers=True)
 
         self.signals.taskComplete.emit(True, "Export Monte Carlo runs complete")
+
 
     ###########
     ## Other ##

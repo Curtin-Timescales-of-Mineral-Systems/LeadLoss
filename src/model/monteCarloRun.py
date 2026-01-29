@@ -1,5 +1,4 @@
 from process import calculations
-from process.ensemble import per_run_peaks
 import numpy as np
 import math
 import copy
@@ -180,11 +179,6 @@ class MonteCarloRun:
         # Per-cluster, per-age KS stats for later stacking (used in processing)
         self._stats_by_age_by_cluster = {}  # {cluster_id: {age_years: MonteCarloRunPbLossAgeStatistics}}
 
-        # --- per-run peak attributes (RAW & PEN) ---
-        self.peaks_ma_raw = None
-        self.peaks_ma_pen = None
-        self.peaks_ma     = None   # legacy alias (RAW by default)
-
         # legacy surface shim (penalised dissimilarity)
         self.ks_surface = None
 
@@ -266,12 +260,10 @@ class MonteCarloRun:
 
         self.statistics_by_pb_loss_age[leadLossAge] = out
 
-
-
     def calculateOptimalAge(self):
         """
         Choose the node with the MINIMUM penalised dissimilarity (score = D*).
-        Also compute per-run peaks on RAW and PEN goodness surfaces (old thresholds).
+        Also compute per-run peaks on RAW and PEN goodness surfaces.
         Keep a small ks_surface shim for downstream code.
         """
         if not self.statistics_by_pb_loss_age:
@@ -292,16 +284,13 @@ class MonteCarloRun:
         # Run-level optimum from penalised curve
         j = _find_optimal_index(D_pen)
         best_age_y = float(ages_year[j])
-
-
         self.optimal_pb_loss_age = best_age_y
 
+        # store optimum point
         if self.concordiaMode == ConcordiaMode.WETHERILL:
-            # store optimum point in Wetherill coords (x=207/235, y=206/238)
             self.optimal_uPb  = calculations.pb207u235_from_age(best_age_y)  # x
             self.optimal_pbPb = calculations.pb206u238_from_age(best_age_y)  # y
         else:
-            # store optimum point in TW coords (u=238/206, v=207/206)
             self.optimal_uPb  = calculations.u238pb206_from_age(best_age_y)
             self.optimal_pbPb = calculations.pb207pb206_from_age(best_age_y)
 
@@ -309,28 +298,6 @@ class MonteCarloRun:
 
         # Legacy surface (penalised dissimilarity)
         self.ks_surface = _KSSurface(age_ma, D_pen)
-
-        # Per-run peaks on BOTH surfaces (old semantics and thresholds)
-        S_raw = 1.0 - D_raw
-        S_pen = 1.0 - D_pen
-        try:
-            self.peaks_ma_raw = per_run_peaks(
-                age_ma, S_raw,
-                prom_frac=0.04, min_dist=3, min_width_nodes=3,
-                require_full_prom=False, max_keep=None, fallback_global_max=False
-            )
-            self.peaks_ma_pen = per_run_peaks(
-                age_ma, S_pen,
-                prom_frac=0.03, min_dist=3, min_width_nodes=3,
-                require_full_prom=False, max_keep=None, fallback_global_max=False
-            )
-        except TypeError:
-            # Legacy signature fallback (match old thresholds)
-            self.peaks_ma_raw = per_run_peaks(age_ma, S_raw, prom_frac=0.03, min_dist=3)
-            self.peaks_ma_pen = per_run_peaks(age_ma, S_pen, prom_frac=0.03, min_dist=3)
-
-        # Legacy alias (RAW by default)
-        self.peaks_ma = self.peaks_ma_raw
 
     def createHeatmapData(self, minAge, maxAge, resolution):
         """
@@ -374,6 +341,7 @@ class MonteCarloRun:
         self.heatmapColumnData = colData
 
     def toList(self):
-        # Convert to Ma in the exported row
-        return [self.sample_name, self.run_number,
-                (self.optimal_pb_loss_age / 1_000_000.0) if self.optimal_pb_loss_age is not None else float("nan")]
+        mode = "WETHERILL" if self.concordiaMode == ConcordiaMode.WETHERILL else "TW"
+        age_ma = (self.optimal_pb_loss_age / 1_000_000.0) if self.optimal_pb_loss_age is not None else float("nan")
+        return [self.sample_name, self.run_number, mode, age_ma]
+

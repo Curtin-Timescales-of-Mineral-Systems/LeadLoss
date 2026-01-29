@@ -96,16 +96,33 @@ def read_input(input_file, settings):
     return headers, rows
 
 def write_monte_carlo_output(distribution, output_file, write_headers=False):
-    with open(output_file, 'a', newline='') as csvfile:  
+    """
+    Accept rows as either:
+      [SampleID, Run, Pb loss age (Ma)]
+    or
+      [SampleID, Run, Mode, Pb loss age (Ma)]
+    """
+    with open(output_file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        
+
         if write_headers:
-            headers = ['SampleID', 'Run', 'Pb loss age (Ma)']
+            has_mode = bool(distribution) and len(distribution[0]) >= 4
+            headers = ['SampleID', 'Run', 'Mode', 'Pb loss age (Ma)'] if has_mode else ['SampleID', 'Run', 'Pb loss age (Ma)']
             writer.writerow(headers)
-        
+
         for row in distribution:
-            row[2] = round(row[2],2)
+            row = list(row)
+            if not row:
+                continue
+
+            # age is last column in both formats
+            try:
+                row[-1] = round(float(row[-1]), 2)
+            except Exception:
+                pass
+
             writer.writerow(row)
+
 
 def write_output(headers, rows, output_file, is_monte_carlo = False):
     with open(output_file, 'w', newline='') as csvfile:

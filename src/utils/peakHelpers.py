@@ -82,7 +82,6 @@ def find_peaks_1d_prom(
         mad_all = np.median(np.abs(y - np.median(y)))
         sigma_thr = 1.4826 * mad_all
 
-    # --- thresholds (scalar, old semantics)
     abs_height = float(height_frac) * float(np.nanmax(y))
     abs_prom   = max(float(promin_frac) * float(np.ptp(y)),
                      float(promin_frac) * float(sigma_thr))
@@ -110,7 +109,7 @@ def summed_ks_surface(runs, transform: str = "1-D", smooth_sigma: float = 1):
     if not runs:
         return None, None
 
-    # --- prefer ks_surface when present (old path)
+    # --- prefer ks_surface when present
     try:
         ages_ma = np.asarray(runs[0].ks_surface.ages, float)
         stack = np.vstack([
