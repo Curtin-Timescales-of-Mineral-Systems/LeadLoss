@@ -4,6 +4,7 @@ import traceback
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMessageBox, QApplication, QStyleFactory
+from process.cdc_config import PER_RUN_PROM_FRAC, PER_RUN_MIN_DIST, PER_RUN_MIN_WIDTH
 
 from utils.csvUtils import write_monte_carlo_output
 from controller.signals import Signals, ProcessingSignals
@@ -138,7 +139,7 @@ class LeadLossApplication:
         clonedSamples = []
         for sample in samples:
             sample.startCalculation(settings)
-            sample.clearCalculation()   # ok if it clears only active mode results (your current version does)
+            sample.clearCalculation()
             clonedSamples.append(sample.createProcessingCopy())
 
         self.worker = AsyncTask(self.processing_signals, self.model.getProcessingFunction(), clonedSamples)
@@ -241,12 +242,72 @@ class LeadLossApplication:
                 runs = sample.getMonteCarloRuns(mode)
                 if not runs:
                     continue
-                distribution.extend([run.toList() for run in runs])
+                mode_str = "WETHERILL" if mode == ConcordiaMode.WETHERILL else "TW"
+                distribution.extend([[sample.name, run.run_number, mode_str, float(run.optimal_pb_loss_age) / 1e6] for run in runs])
+
 
         write_monte_carlo_output(distribution, output_file, write_headers=True)
 
         self.signals.taskComplete.emit(True, "Export Monte Carlo runs complete")
 
+    def exportPerRunPeaks(self):
+        from process.ensemble import per_run_peaks
+        import numpy as np
+
+        output_file = self.view.getOutputFile()
+        if not output_file:
+            self.signals.taskComplete.emit(False, "Export canceled by user")
+            return
+
+        headers = ["Sample", "Mode", "Run #", "Surface", "Peak #", "Peak age (Ma)", "Weight"]
+        rows = []
+
+        for sample in self.model.samples:
+            for mode in (ConcordiaMode.TW, ConcordiaMode.WETHERILL):
+                runs = sample.getMonteCarloRuns(mode)
+                if not runs:
+                    continue
+
+                for run in runs:
+                    items = sorted(run.statistics_by_pb_loss_age.items(), key=lambda kv: kv[0])
+                    if not items:
+                        continue
+
+                    ages_ma = np.asarray([a for a, _ in items], float) / 1e6
+                    D_raw   = np.asarray([st.test_statistics[0] for _, st in items], float)
+                    D_pen   = np.asarray([st.score for _, st in items], float)
+
+                    S_raw = 1.0 - D_raw
+                    S_pen = 1.0 - D_pen
+
+                    pk_raw = per_run_peaks(
+                        ages_ma, S_raw,
+                        prom_frac=PER_RUN_PROM_FRAC,
+                        min_dist=PER_RUN_MIN_DIST,
+                        min_width_nodes=PER_RUN_MIN_WIDTH,
+                        require_full_prom=False, max_keep=None, fallback_global_max=False
+                    )
+                    pk_pen = per_run_peaks(
+                        ages_ma, S_pen,
+                        prom_frac=PER_RUN_PROM_FRAC,
+                        min_dist=PER_RUN_MIN_DIST,
+                        min_width_nodes=PER_RUN_MIN_WIDTH,
+                        require_full_prom=False, max_keep=None, fallback_global_max=False
+                    )
+
+
+                    w_raw = 1.0 / len(pk_raw) if len(pk_raw) else 0.0
+                    w_pen = 1.0 / len(pk_pen) if len(pk_pen) else 0.0
+
+                    mode_str = "WETHERILL" if mode == ConcordiaMode.WETHERILL else "TW"
+
+                    for i, p in enumerate(pk_raw, 1):
+                        rows.append([sample.name, mode_str, run.run_number, "RAW", i, float(p), w_raw])
+                    for i, p in enumerate(pk_pen, 1):
+                        rows.append([sample.name, mode_str, run.run_number, "PEN", i, float(p), w_pen])
+
+        csvUtils.write_output(headers, rows, output_file)
+        self.signals.taskComplete.emit(True, "Export Monte Carlo peak picks complete")
 
     ###########
     ## Other ##

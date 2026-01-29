@@ -80,6 +80,11 @@ class MainPanel(QWidget):
         self.exportButton.clicked.connect(self.onExportClicked)
         layout.addWidget(self.exportButton)
 
+        self.exportPeaksButton = QPushButton("Export Monte Carlo Peak Picks")
+        self.exportPeaksButton.setObjectName("GoldButton")
+        self.exportPeaksButton.clicked.connect(self.controller.exportPerRunPeaks)
+        layout.addWidget(self.exportPeaksButton)
+
         # If QSS still doesn't apply, force it:
         self._repolish(self.processAllButton)
         if self.processOneButton:
