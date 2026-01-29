@@ -1,6 +1,7 @@
 import traceback
 from enum import Enum
 from multiprocessing import Process, Queue, Value
+import queue as pyqueue
 
 from PyQt5.QtCore import pyqtSignal, QThread
 
@@ -63,7 +64,6 @@ class AsyncTask(QThread):
     main thread through a pyqtSignal.
     """
     msg_from_job = pyqtSignal(object)
-    running = True
 
     def __init__(self, pyqtSignals, jobFn, *args):
         super().__init__()
@@ -72,13 +72,50 @@ class AsyncTask(QThread):
         self.pyqtSignals = pyqtSignals
         self.processSignals = ProcessSignals()
 
+        self._proc = None
+        self.running = True
+
     def run(self):
         self.running = True
 
         p = Process(target=wrappedJobFn, args=(self.jobFn, self.processSignals, *self.args))
+        self._proc = p
         p.start()
-        while self.running:
-            self._processOutput(self.processSignals.queue.get())
+
+        try:
+            while self.running:
+                try:
+                    output = self.processSignals.queue.get(timeout=0.1)
+                except pyqueue.Empty:
+                    # If the child died without telling us, stop the thread.
+                    if not p.is_alive():
+                        # Emit something so UI can unwind cleanly
+                        self.pyqtSignals.processingErrored.emit((RuntimeError("Worker process exited unexpectedly"),))
+                        break
+                    continue
+
+                self._processOutput(output)
+
+        finally:
+            # Stop loop
+            self.running = False
+
+            # Give the process a moment to exit cleanly; then kill if needed
+            try:
+                if p.is_alive():
+                    p.join(timeout=1.0)
+                if p.is_alive():
+                    p.terminate()
+                p.join(timeout=5.0)
+            except Exception:
+                pass
+
+            # Close Queue resources to avoid semaphore/FD leaks
+            try:
+                self.processSignals.queue.close()
+                self.processSignals.queue.cancel_join_thread()
+            except Exception:
+                pass
 
     def _processOutput(self, output):
         if output[0] is SignalType.NEW_TASK:
@@ -110,4 +147,10 @@ class AsyncTask(QThread):
             return
 
     def halt(self):
+        # Ask worker to stop (if it cooperates)
         self.processSignals.setHalt()
+
+        # Also stop our thread loop
+        self.running = False
+
+        # If the process keeps running, it will be terminated in finally.
