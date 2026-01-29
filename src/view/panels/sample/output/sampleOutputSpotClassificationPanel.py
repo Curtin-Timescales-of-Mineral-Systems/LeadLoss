@@ -28,24 +28,32 @@ class SampleOutputSpotClassificationPanel(QWidget):
         calculationSettings = self.sample.calculationSettings
         importHeaders = importSettings.getHeaders()
 
-        if calculationSettings.discordanceClassificationMethod.value == DiscordanceClassificationMethod.PERCENTAGE.value:
-            baseHeaders = ["Discordance (%)"]
-        else:
-            baseHeaders = []
+        baseHeaders = ["Discordance (%)"] if (
+            calculationSettings.discordanceClassificationMethod.value
+            == DiscordanceClassificationMethod.PERCENTAGE.value
+        ) else []
 
         concordantHeaders = importHeaders + baseHeaders
-        concordantSpots = self.sample.concordantSpots()
-
         discordantHeaders = importHeaders + baseHeaders
+
+        concordantSpots = self.sample.concordantSpots()
         discordantSpots = self.sample.discordantSpots()
 
-        layout = self.layout()
-        layout.addWidget(QLabel("Concordant points"))
-        layout.addWidget(spotTable.createSpotTable(concordantHeaders, concordantSpots))
-        layout.addWidget(QLabel("Discordant points"))
-        layout.addWidget(spotTable.createSpotTable(discordantHeaders, discordantSpots))
+        # IMPORTANT: build a new widget to return
+        w = QWidget(self)
+        v = QVBoxLayout(w)
+
+        v.addWidget(QLabel("Concordant points"))
+        v.addWidget(spotTable.createSpotTable(concordantHeaders, concordantSpots))
+
+        v.addWidget(QLabel("Discordant points"))
+        v.addWidget(spotTable.createSpotTable(discordantHeaders, discordantSpots))
+
         if invalidWarningWidget:
-            layout.addWidget(invalidWarningWidget)
+            v.addWidget(invalidWarningWidget)
+
+        return w
+
 
     def _createInvalidWarningWidget(self):
         n = len(self.sample.invalidSpots)
@@ -64,4 +72,6 @@ class SampleOutputSpotClassificationPanel(QWidget):
 
     def _onConcordancyCalculated(self):
         uiUtils.clearChildren(self.layout())
-        self.layout().addWidget(self._createSpotsWidget())
+        w = self._createSpotsWidget()
+        if w is not None:
+            self.layout().addWidget(w)

@@ -131,6 +131,16 @@ QLineEdit { selection-background-color: #D0DCFF; selection-color: #0B1F3A; }
 
 QComboBox::drop-down { border-left: 1px solid #E6E8EE; width: 26px; }
 
+/* ---------- Checkboxes / Radio buttons ---------- */
+
+QCheckBox { spacing: 10px; }
+
+
+QRadioButton::indicator {
+  width: 18px;
+  height: 18px;
+}
+
 /* ---------- Buttons ---------- */
 QPushButton {
   background: #FBFCFF;
