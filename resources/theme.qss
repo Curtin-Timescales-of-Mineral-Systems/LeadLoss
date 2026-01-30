@@ -85,17 +85,18 @@ QGroupBox {
   margin-top: 10px;
   padding: 22px 12px 12px 12px;
 }
+
 QGroupBox::title {
-    subcontrol-origin: padding;
-    subcontrol-position: top left;
-    left: 12px;
-    top: 6px;
-    padding: 0;
-    background: transparent;
-    color: #0B1F3A;
-    font-weight: 900;
-    font-size: 12pt;
-  }  
+  subcontrol-origin: padding;
+  subcontrol-position: top left;
+  left: 12px;
+  top: 6px;
+  padding: 0;
+  background: transparent;
+  color: #0B1F3A;
+  font-weight: 700;   /* was 900 */
+  /* remove font-size override */
+}
 
 /* Nested groupboxes used as label wrappers */
 QGroupBox QGroupBox {
@@ -131,16 +132,6 @@ QLineEdit { selection-background-color: #D0DCFF; selection-color: #0B1F3A; }
 
 QComboBox::drop-down { border-left: 1px solid #E6E8EE; width: 26px; }
 
-/* ---------- Checkboxes / Radio buttons ---------- */
-
-QCheckBox { spacing: 10px; }
-
-
-QRadioButton::indicator {
-  width: 18px;
-  height: 18px;
-}
-
 /* ---------- Buttons ---------- */
 QPushButton {
   background: #FBFCFF;
@@ -156,17 +147,15 @@ QPushButton:disabled { color: #9CA3AF; }
 /* Focus ring (gold) */
 QPushButton:focus { border: 2px solid #E2AD00; }
 
-/* Primary (your gold button) */
 QPushButton#PrimaryButton {
   background: #E2AD00;
-  color: #0B1F3A;                
-  border: 2px solid #005B96;   
+  color: #0B1F3A;
+  border: 2px solid #005B96;
   font-weight: 800;
 }
 QPushButton#PrimaryButton:hover { background: #F0BF2A; }
 QPushButton#PrimaryButton:pressed { background: #D39F00; }
 
-/* Gold outline */
 QPushButton#GoldButton {
   background: #FFFFFF;
   color: #0B1F3A;
@@ -176,7 +165,6 @@ QPushButton#GoldButton {
 QPushButton#GoldButton:hover { background: #FFF7D6; }
 QPushButton#GoldButton:pressed { background: #FCE9A8; }
 
-/* Danger */
 QPushButton#DangerButton {
   background: #B91C1C;
   color: #FFFFFF;
@@ -196,6 +184,42 @@ QPushButton#AccentButton {
 }
 QPushButton#AccentButton:hover { background: #D5E3FF; }
 QPushButton#AccentButton:pressed { background: #C6D8FF; }
+/* ---------- Checkboxes / Radio buttons (macOS dark-mode safe, no gradients) ---------- */
+
+QCheckBox, QRadioButton {
+  spacing: 10px;
+  color: #111827;
+}
+
+QCheckBox::indicator,
+QRadioButton::indicator {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #94A3B8;
+  background-color: #FFFFFF;
+}
+
+QCheckBox::indicator:hover,
+QRadioButton::indicator:hover {
+  border: 2px solid #005B96;
+}
+
+QCheckBox::indicator:checked {
+  background-color: #FFFFFF;
+  border: 2px solid #E2AD00;      /* gold ring */
+}
+
+QRadioButton::indicator:checked {
+  background-color: #FFFFFF;
+  border: 2px solid #E2AD00;      /* gold ring */
+}
+
+/* Disabled */
+QCheckBox::indicator:disabled,
+QRadioButton::indicator:disabled {
+  background-color: #F3F4F6;
+  border: 2px solid #CBD5E1;
+}
 
 /* ---------- Tables ---------- */
 QTableWidget, QTableView {

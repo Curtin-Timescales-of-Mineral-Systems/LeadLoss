@@ -326,15 +326,27 @@ class SummaryDataPanel(QWidget):
 
     # ---------- exports ----------
     def _exportOptimalAge(self):
+        mode_txt = "TW" if self.mode == ConcordiaMode.TW else "WETHERILL"
         n = self.dataTable.columnCount()
-        headers = [self.dataTable.horizontalHeaderItem(i).text().replace("\n", " ") for i in range(n)]
-        data = [[self.dataTable.item(r, c).text() if self.dataTable.item(r, c) else ""
-                 for c in range(n)] for r in range(self.dataTable.rowCount())]
+        headers = ["Mode"] + [self.dataTable.horizontalHeaderItem(i).text().replace("\n", " ") for i in range(n)]
+        data = []
+        for r in range(self.dataTable.rowCount()):
+            row = [mode_txt] + [
+                self.dataTable.item(r, c).text() if self.dataTable.item(r, c) else ""
+                for c in range(n)
+            ]
+            data.append(row)
         self.controller.exportCSV(headers, data)
 
     def _exportEnsemble(self):
+        mode_txt = "TW" if self.mode == ConcordiaMode.TW else "WETHERILL"
         n = self.catalogueTable.columnCount()
-        headers = [self.catalogueTable.horizontalHeaderItem(i).text().replace("\n", " ") for i in range(n)]
-        data = [[self.catalogueTable.item(r, c).text() if self.catalogueTable.item(r, c) else ""
-                 for c in range(n)] for r in range(self.catalogueTable.rowCount())]
+        headers = ["Mode"] + [self.catalogueTable.horizontalHeaderItem(i).text().replace("\n", " ") for i in range(n)]
+        data = []
+        for r in range(self.catalogueTable.rowCount()):
+            row = [mode_txt] + [
+                self.catalogueTable.item(r, c).text() if self.catalogueTable.item(r, c) else ""
+                for c in range(n)
+            ]
+            data.append(row)
         self.controller.exportCSV(headers, data)
