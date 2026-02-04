@@ -17,7 +17,7 @@ from utils.settings import Settings
 from view.dialogs.help import LeadLossHelpDialog
 from view.view import LeadLossView
 
-from PyQt5.QtGui import QFont, QFontDatabase
+from PyQt5.QtGui import QFont, QPalette, QColor
 from utils import resourceUtils
 
 from model.settings.calculation import ConcordiaMode
@@ -65,9 +65,20 @@ class LeadLossApplication:
 
         app = QApplication(sys.argv)
         app.setStyle(QStyleFactory.create('Fusion'))
-        app.setWindowIcon(QIcon(self.get_icon()))
+        pal = QPalette()
+        pal.setColor(QPalette.Window, QColor("#DCE8FF"))
+        pal.setColor(QPalette.WindowText, QColor("#111827"))
+        pal.setColor(QPalette.Base, QColor("#FFFFFF"))
+        pal.setColor(QPalette.AlternateBase, QColor("#FBFCFF"))
+        pal.setColor(QPalette.Text, QColor("#111827"))
+        pal.setColor(QPalette.Button, QColor("#FBFCFF"))
+        pal.setColor(QPalette.ButtonText, QColor("#111827"))
+        pal.setColor(QPalette.Highlight, QColor("#D0DCFF"))
+        pal.setColor(QPalette.HighlightedText, QColor("#0B1F3A"))
+        app.setPalette(pal)
 
-        app.setFont(QFont("Helvetica Neue", 11)) 
+        app.setWindowIcon(QIcon(self.get_icon()))
+        app.setFont(QFont("Helvetica Neue", 11))
 
         try:
             with open(resourceUtils.getResourcePath("theme.qss"), "r", encoding="utf-8") as f:
@@ -131,6 +142,10 @@ class LeadLossApplication:
         self.view.getCalculationSettings(samples, defaultSettings, callback)
 
     def _processSamples(self, samples, settings):
+        if self.worker is not None and self.worker.isRunning():
+            QMessageBox.information(None, "Processing", "Processing is already running.")
+            return
+
         if not settings:
             return
 
@@ -142,14 +157,23 @@ class LeadLossApplication:
             sample.clearCalculation()
             clonedSamples.append(sample.createProcessingCopy())
 
-        self.worker = AsyncTask(self.processing_signals, self.model.getProcessingFunction(), clonedSamples)
-        self.worker.start()
+        worker = AsyncTask(self.processing_signals, self.model.getProcessingFunction(), clonedSamples)
+
+        worker.finished.connect(lambda w=worker: self._onWorkerFinished(w))
+        worker.finished.connect(worker.deleteLater)
+
+        self.worker = worker
         self.signals.processingStarted.emit()
+        worker.start()
+
+    def _onWorkerFinished(self, finished_worker):
+        if finished_worker is self.worker:
+            self.worker = None
+
 
     def cancelProcessing(self):
-        if self.worker is not None:
+        if self.worker is not None and self.worker.isRunning():
             self.worker.halt()
-
 
     ############
     ## Events ##
@@ -203,11 +227,14 @@ class LeadLossApplication:
         self.signals.taskComplete.emit(False, "Cancelled processing of data")
         self.signals.processingFinished.emit()
 
-    def onProcessingErrored(self, exception):
+    def onProcessingErrored(self, payload):
         self.signals.taskComplete.emit(False, "Error whilst processing data")
-        message = exception.__class__.__name__ + ": " + str(exception)
-        QMessageBox.critical(None, "Error", "An error occurred during processing: \n\n" + message)
+        if isinstance(payload, (tuple, list)) and payload:
+            payload = payload[0]
+        message = payload if isinstance(payload, str) else (payload.__class__.__name__ + ": " + str(payload))
+        QMessageBox.critical(None, "Error", "An error occurred during processing:\n\n" + message)
         self.signals.processingFinished.emit()
+
 
     def onProcessingCompleted(self, output):
         self.signals.taskComplete.emit(True, "Processing complete")

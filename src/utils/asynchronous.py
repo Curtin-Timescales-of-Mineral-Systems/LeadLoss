@@ -46,15 +46,21 @@ class ProcessSignals():
     def skipped(self, sample_name, skip_reason):
         self.queue.put((SignalType.SKIPPED, sample_name, skip_reason))
 
-
 # Can't be part of AsyncTask as this function must be picklable under windows:
 # (see https://docs.python.org/2/library/multiprocessing.html#windows)
 def wrappedJobFn(jobFn, processSignals, *args):
     try:
         jobFn(processSignals, *args)
-    except Exception as e:
-        traceback.print_exc()
-        processSignals.errored(e)
+    except Exception:
+        tb = traceback.format_exc()
+        # Send something definitely picklable across processes:
+        processSignals.errored(tb)
+    else:
+        # Always terminate the QThread run-loop cleanly
+        if processSignals.halt():
+            processSignals.cancelled()
+        else:
+            processSignals.completed()
 
 
 class AsyncTask(QThread):

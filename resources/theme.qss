@@ -1,4 +1,3 @@
-
 /* ---------- Palette  ----------
    BG tint:      #DCE8FF
    Card:         #FBFCFF
@@ -9,128 +8,236 @@
    Border:       #E6E8EE
    Text muted:   #374151
    Hover tint:   #D5E3FF
---------------------------------------------------------------------- */
+-------------------------------- */
 
 /* ---------- Base ---------- */
 QMainWindow, QDialog { background: #DCE8FF; }
 QWidget { color: #111827; font-size: 11pt; }
 
+QLabel { background: transparent; border: 0; padding: 0; color: #111827; }
+QFrame { background: transparent; border: 0; padding: 0; }
+
+QToolTip {
+  background: #FBFCFF;
+  color: #111827;
+  border: 1px solid #E6E8EE;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+
+/* ---------- Card ---------- */
+QFrame#Card {
+  background: rgba(251, 252, 255, 220);
+  border: 1px solid #E6E8EE;
+  border-radius: 16px;
+}
+
 /* Column reference mini inputs (A, AA, 12, etc) */
 QLineEdit#ColRef {
-    padding: 2px 6px;
-    min-height: 24px;
-    border-radius: 8px;
-  }
-  
-/* Labels plain */
-QLabel { background: transparent; border: 0; padding: 0; color: #111827; }
-
-QFrame { background: transparent; border: 0; padding: 0; }
-/* QFrame#Card { background: #FBFCFF; border: 1px solid #E6E8EE; border-radius: 12px; } */
-QFrame#Card {
-    background: rgba(251, 252, 255, 220);   /* slightly see-through */
-    border: 1px solid #E6E8EE;
-    border-radius: 16px;
-  }
-/* ---------- Pane ---------- */
-QTabWidget::pane {
-  background: #DCE8FF;
-  border: 1px solid #005B96;      /* focus blue */
-  border-radius: 12px;
+  padding: 2px 6px;
+  min-height: 24px;
+  border-radius: 8px;
 }
 
 /* ---------- Tabs ---------- */
+
+QTabWidget::pane {
+  background: #DCE8FF;
+  border: 1px solid #005B96;
+  border-radius: 12px;
+}
+
+/* Give the tabbar itself room (this helps bold fonts not clip) */
+QTabBar {
+  min-height: 52px;
+  background: transparent;
+}
+
+/* Default tab bars */
 QTabBar::tab {
   background: transparent;
-  padding: 7px 12px;
-  margin-right: 6px;
+
+  /* Insets so glyphs never touch the top edge */
+  padding: 10px 16px;
+  margin: 8px 6px 8px 0px;
+
   border-radius: 10px;
   color: #374151;
+  font-weight: 600;
+  font-size: 11pt;
 }
+
 QTabBar::tab:hover { background: #D5E3FF; }
+
 QTabBar::tab:selected {
   background: #D0DCFF;
   color: #0B1F3A;
   border: 1px solid #E6E8EE;
-  border-bottom: 3px solid #E2AD00;  /* gold */
+  border-bottom: 3px solid #E2AD00;
+  font-weight: 800;
+
+  /* keep text centered despite thicker bottom border */
+  padding-bottom: 12px;
 }
 
 /* Main top-level tabs strip (objectName = MainTabs) */
 QTabWidget#MainTabs QTabBar {
   background: #11315C;
   border-radius: 12px;
-  padding: 4px;
+
+  /* do NOT use padding here; use tab margins instead */
+  padding: 0px;
 }
+
+/* Tabs inside the navy strip */
 QTabWidget#MainTabs QTabBar::tab {
   background: transparent;
   color: #E5E7EB;
-  padding: 7px 12px;
-  margin-right: 6px;
+
+  padding: 10px 16px;
+  margin: 8px 6px 8px 0px;
+
   border-radius: 10px;
+  font-weight: 650;
+  font-size: 11pt;
 }
+
+QTabWidget#MainTabs QTabBar::tab:first { margin-left: 14px; }
+QTabWidget#MainTabs QTabBar::tab:last  { margin-right: 14px; }
+
 QTabWidget#MainTabs QTabBar::tab:hover {
   background: rgba(255,255,255,0.10);
 }
+
 QTabWidget#MainTabs QTabBar::tab:selected {
   background: #11315C;
   color: #FFFFFF;
   border: 2px solid #E2AD00;
-}
+  font-weight: 900;
 
+  /* compensate for 2px border so text doesn't feel squeezed */
+  padding: 9px 15px;
+}
 /* ---------- GroupBoxes ---------- */
 QGroupBox {
   background: #FBFCFF;
-  border: 1px solid #E6E8EE;      /* removed purple */
+  border: 1px solid #E6E8EE;
   border-radius: 12px;
-  margin-top: 10px;
-  padding: 22px 12px 12px 12px;
+  margin-top: 12px;
+  padding: 30px 12px 12px 12px;
 }
 
 QGroupBox::title {
   subcontrol-origin: padding;
   subcontrol-position: top left;
   left: 12px;
-  top: 6px;
-  padding: 0;
+  top: 8px;
+  padding: 0 8px 0 0;
   background: transparent;
   color: #0B1F3A;
-  font-weight: 700;   /* was 900 */
-  /* remove font-size override */
+  font-weight: 850;
+  font-size: 13pt;
 }
 
-/* Nested groupboxes used as label wrappers */
+/* Nested groupboxes: reserve title space so tables don't paint over titles */
 QGroupBox QGroupBox {
   background: transparent;
   border: 0;
   border-radius: 0;
   margin-top: 0;
-  padding: 0;
+  padding: 22px 0 0 0;
 }
+
 QGroupBox QGroupBox::title {
   top: 0;
   left: 0;
-  font-weight: 700;
+  font-weight: 750;
+  font-size: 12pt;
   color: #374151;
 }
 
 /* ---------- Inputs ---------- */
-
 QLineEdit, QComboBox, QSpinBox, QDoubleSpinBox, QTextEdit, QPlainTextEdit {
   background: #FFFFFF;
   border: 2px solid #E6E8EE;
   border-radius: 10px;
   padding: 6px 10px;
-  min-height: 30px;
+  min-height: 32px;
 }
+
 QLineEdit:focus, QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus,
 QTextEdit:focus, QPlainTextEdit:focus {
   border: 2px solid #005B96;
 }
 
-/* Selection only for text fields */
 QLineEdit { selection-background-color: #D0DCFF; selection-color: #0B1F3A; }
 
-QComboBox::drop-down { border-left: 1px solid #E6E8EE; width: 26px; }
+/* ---------- ComboBox arrow (force visible) ---------- */
+QComboBox {
+  padding-right: 34px; /* room for arrow */
+}
+
+QComboBox::drop-down {
+  subcontrol-origin: padding;
+  subcontrol-position: top right;
+  width: 30px;
+  border-left: 1px solid #E6E8EE;
+}
+
+QComboBox::down-arrow {
+  width: 12px;
+  height: 12px;
+  image: url(:/qt-project.org/styles/commonstyle/images/arrowdown-16.png);
+}
+
+/* Popup list */
+QComboBox QAbstractItemView {
+  background: #FFFFFF;
+  border: 1px solid #E6E8EE;
+  selection-background-color: #D0DCFF;
+  selection-color: #0B1F3A;
+  outline: 0;
+}
+
+/* ---------- SpinBox arrows (force visible) ---------- */
+QAbstractSpinBox {
+  padding-right: 34px; /* room for up/down buttons */
+}
+
+QAbstractSpinBox::up-button {
+  subcontrol-origin: border;
+  subcontrol-position: top right;
+  width: 30px;
+  border-left: 1px solid #E6E8EE;
+  border-top-right-radius: 10px;
+  background: #FFFFFF;
+}
+
+QAbstractSpinBox::down-button {
+  subcontrol-origin: border;
+  subcontrol-position: bottom right;
+  width: 30px;
+  border-left: 1px solid #E6E8EE;
+  border-bottom-right-radius: 10px;
+  background: #FFFFFF;
+}
+
+QAbstractSpinBox::up-button:hover,
+QAbstractSpinBox::down-button:hover {
+  background: #F3F4F6;
+}
+
+QAbstractSpinBox::up-arrow {
+  width: 12px;
+  height: 12px;
+  image: url(:/qt-project.org/styles/commonstyle/images/arrowup-16.png);
+}
+
+QAbstractSpinBox::down-arrow {
+  width: 12px;
+  height: 12px;
+  image: url(:/qt-project.org/styles/commonstyle/images/arrowdown-16.png);
+}
 
 /* ---------- Buttons ---------- */
 QPushButton {
@@ -138,13 +245,14 @@ QPushButton {
   border: 2px solid #E6E8EE;
   border-radius: 10px;
   padding: 6px 12px;
-  min-height: 30px;
+  min-height: 32px;
+  font-weight: 650;
 }
+
 QPushButton:hover { background: #F3F4F6; }
 QPushButton:pressed { background: #E5E7EB; }
 QPushButton:disabled { color: #9CA3AF; }
 
-/* Focus ring (gold) */
 QPushButton:focus { border: 2px solid #E2AD00; }
 
 QPushButton#PrimaryButton {
@@ -184,41 +292,12 @@ QPushButton#AccentButton {
 }
 QPushButton#AccentButton:hover { background: #D5E3FF; }
 QPushButton#AccentButton:pressed { background: #C6D8FF; }
-/* ---------- Checkboxes / Radio buttons (macOS dark-mode safe, no gradients) ---------- */
 
+/* ---------- Checkboxes / Radio buttons (native indicators) ---------- */
 QCheckBox, QRadioButton {
   spacing: 10px;
   color: #111827;
-}
-
-QCheckBox::indicator,
-QRadioButton::indicator {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #94A3B8;
-  background-color: #FFFFFF;
-}
-
-QCheckBox::indicator:hover,
-QRadioButton::indicator:hover {
-  border: 2px solid #005B96;
-}
-
-QCheckBox::indicator:checked {
-  background-color: #FFFFFF;
-  border: 2px solid #E2AD00;      /* gold ring */
-}
-
-QRadioButton::indicator:checked {
-  background-color: #FFFFFF;
-  border: 2px solid #E2AD00;      /* gold ring */
-}
-
-/* Disabled */
-QCheckBox::indicator:disabled,
-QRadioButton::indicator:disabled {
-  background-color: #F3F4F6;
-  border: 2px solid #CBD5E1;
+  font-weight: 600;
 }
 
 /* ---------- Tables ---------- */
@@ -228,6 +307,7 @@ QTableWidget, QTableView {
   border-radius: 12px;
   gridline-color: #EEF0F5;
 }
+
 QHeaderView::section {
   background: #0B1F3A;
   color: #FFFFFF;
@@ -249,7 +329,5 @@ QScrollBar::handle:vertical:hover { background: #9CA3AF; }
 QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }
 QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: transparent; }
 
-
 /* ---------- Status bar ---------- */
 QStatusBar { background: transparent; color: #374151; }
-

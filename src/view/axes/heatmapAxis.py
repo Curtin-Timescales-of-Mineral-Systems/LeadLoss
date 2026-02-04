@@ -22,7 +22,7 @@ class HeatmapAxis:
         self.figure = figure
         self.axis = axis
         self.colorbar = None
-
+        self._workers = []
         # cache for peaks/curve to repaint after heatmap refresh
         self._peaks_ma = None
         self._last_ages_ma = None
@@ -61,8 +61,22 @@ class HeatmapAxis:
         self.axis.set_ylim(0.0, 1.0)
 
     def plotRuns(self, runs, settings):
-        self._worker = AsyncTask(self.processingSignals, processing.calculateHeatmapData, runs, settings)
-        self._worker.start()
+        # request old heatmap tasks to stop
+        for w in self._workers:
+            if w.isRunning():
+                w.halt()
+
+        worker = AsyncTask(self.processingSignals, processing.calculateHeatmapData, runs, settings)
+
+        self._workers.append(worker)
+
+        def _cleanup(w=worker):
+            if w in self._workers:
+                self._workers.remove(w)
+            w.deleteLater()
+
+        worker.finished.connect(_cleanup)
+        worker.start()
 
     def _plotRuns(self, args):
         if not (isinstance(args, tuple) and len(args) == 2):
