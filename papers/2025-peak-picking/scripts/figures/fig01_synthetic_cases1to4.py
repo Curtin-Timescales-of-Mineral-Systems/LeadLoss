@@ -25,7 +25,7 @@ ERR_X_MULT    = 1.0
 ERR_Y_MULT    = 1.5                # widen σy so ellipses are not needles
 RHO_CONST     = 0.85               # used in Reimink export (if needed)
 
-ERR_X_MULT_CONC = 1.0              # concordant grains – keep realistic
+ERR_X_MULT_CONC = 1.0           
 ERR_Y_MULT_CONC = 1.0
 
 # ------------------------------------------------------------------
@@ -342,7 +342,7 @@ def make_one_discordant_TW(chord: Chord, tier: Tier) -> Tuple[float,float,float,
     applying the existing passes_filter().
     """
     # Trim near-concordia end by the discordance threshold
-    D_MARGIN = 0.005  # keep a bit beyond your MIN_DISCORDANCE
+    D_MARGIN = 0.005 
     f_threshold = f_at_discordance(chord, MIN_DISCORDANCE + D_MARGIN)
     f_lo = max(chord.f_min, f_threshold)
     f_hi = chord.f_max

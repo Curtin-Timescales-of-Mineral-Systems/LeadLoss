@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""fig08_cdc_upgrade.py
+"""fig09_cdc_upgrade.py
 
-Figure 8: "CDC upgrade" diagnostic for one dataset (default: synthetic Case 2A).
+Figure 9: "CDC upgrade" diagnostic for one dataset (default: synthetic Case 2A).
 
 This script compares:
   A) legacy "per-run optimum" histogram (from penalised run surfaces)
@@ -22,11 +22,11 @@ You can run it inside the repository and point it at defaults:
 Outputs
 ---------------------
 Writes to:
-  <paper>/outputs/figures/fig08_cdc_upgrade_<SAMPLE>.(png|pdf|svg)
+  <paper>/outputs/figures/fig09_cdc_upgrade_<SAMPLE>.(png|pdf|svg)
 
 Run
 ---
-  python scripts/figures/fig08_cdc_upgrade.py --sample-id 2A --runs-npz /path/to/2A_runs_S.npz --save
+  python scripts/figures/fig09_cdc_upgrade.py --sample-id 2A --runs-npz /path/to/2A_runs_S.npz --save
 
 Author: Lucy Mathieson
 Date: 30/12/2025
@@ -149,7 +149,7 @@ def _plateau_midpoint_argmax(row):
 def _parse_args() -> argparse.Namespace:
     paper_dir = _default_paper_dir()
 
-    ap = argparse.ArgumentParser(description="Figure 8 CDC upgrade diagnostic.")
+    ap = argparse.ArgumentParser(description="Figure 9 CDC upgrade diagnostic.")
 
     ap.add_argument("--paper-dir", type=Path, default=paper_dir, help="Paper/repo root directory.")
     ap.add_argument("--sample-id", type=str, default="2A", help="Dataset tag (e.g. '2A').")
@@ -425,10 +425,10 @@ def main() -> None:
         fmts = [s.strip().lower() for s in str(args.formats).split(",") if s.strip()]
         out_paths = []
         for ext in fmts:
-            out_path = fig_dir / f"fig08_cdc_upgrade_{sample_id}.{ext}"
+            out_path = fig_dir / f"fig09_cdc_upgrade_{sample_id}.{ext}"
             fig.savefig(out_path, bbox_inches="tight")
             out_paths.append(out_path)
-        print("[Fig08] wrote:")
+        print("[Fig09] wrote:")
         for p in out_paths:
             print("  ", p)
 
