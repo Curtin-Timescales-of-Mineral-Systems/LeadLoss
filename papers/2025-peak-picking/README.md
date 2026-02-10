@@ -5,17 +5,19 @@ This folder contains the data and Python scripts used to reproduce the **figures
 ## Directory layout
 
 - `data/inputs/` — input CSVs used by the workflows.
+  - `data/inputs/ga_gawler_fig08/` — analysis-ready inputs for the illustrative natural dataset used in Fig. 08 (Gawler Craton). See the README in that folder for dataset links, filters, and column definitions.
 - `data/derived/` — derived datasets used by the manuscript scripts.
-  - `ensemble_catalogue.csv` — CDC ensemble catalogue used by figures/tables.
+  - `ensemble_catalogue.csv` — CDC ensemble catalogue used by figures/tables (includes the peak ages/CIs reported for the Gawler example).
   - `ks_exports/` — exported K–S goodness summaries used in figures/tables.
   - `reimink_discordance_dating/` — bootstrap/aggregate outputs used for DD figures and benchmark tables.
-  - `ks_diagnostics_npz.tar.gz` — archived per-run NPZ goodness surfaces required for Figures 3, 5, and 8 (see below).
+  - `ks_diagnostics_npz.tar.gz` — archived per-run NPZ goodness surfaces required for Figs. 3, 5, and 9 (extracts to `data/derived/ks_diagnostics/`).
+  - `ks_diagnostics_gawler_npz.tar.gz` — archived NPZ diagnostics required for Fig. 08 (extracts to `data/derived/ks_diagnostics_gawler/`).
 - `scripts/`
   - `scripts/tables/` — table reproduction scripts.
   - `scripts/figures/` — figure reproduction scripts.
   - `scripts/_util/` — shared helpers (path handling, benchmark definitions).
-- `outputs/` — generated artefacts (tables/figures). These can be regenerated.
-- `figures/` — manuscript-ready figure exports (included for convenience).
+- `outputs/` — generated artefacts (tables/figures). These can be regenerated and are not required to be version-controlled.
+- `figures/` — manuscript-ready figure exports.
 
 ## Environment setup
 
@@ -34,23 +36,39 @@ If you are running headless (e.g., CI/server), set a non-interactive matplotlib 
 export MPLBACKEND=Agg
 ```
 
-## KS diagnostics NPZ bundle (required for Figures 3, 5, and 8)
+## NPZ diagnostics bundles
 
-To keep the Git repository lightweight, the per-run CDC goodness surfaces are provided as a single archive:
+To keep the Git repository lightweight, per-run CDC goodness surfaces are provided as tarballs. The extracted folders are intentionally ignored by git.
+
+### Benchmark NPZ bundle (Figs. 3, 5, 9)
 
 - `papers/2025-peak-picking/data/derived/ks_diagnostics_npz.tar.gz`
 
-Extract it once (from the repository root):
+Extract once (from the repository root):
 
 ```bash
-tar -xzf papers/2025-peak-picking/data/derived/ks_diagnostics_npz.tar.gz   -C papers/2025-peak-picking/data/derived
+tar -xzf papers/2025-peak-picking/data/derived/ks_diagnostics_npz.tar.gz \
+  -C papers/2025-peak-picking/data/derived
 ```
 
-This will create:
+This creates:
 
 - `papers/2025-peak-picking/data/derived/ks_diagnostics/`
 
-That extracted folder is intentionally ignored by git.
+### Gawler NPZ bundle (Fig. 08)
+
+- `papers/2025-peak-picking/data/derived/ks_diagnostics_gawler_npz.tar.gz`
+
+Extract once (from the repository root):
+
+```bash
+tar -xzf papers/2025-peak-picking/data/derived/ks_diagnostics_gawler_npz.tar.gz \
+  -C papers/2025-peak-picking/data/derived
+```
+
+This creates:
+
+- `papers/2025-peak-picking/data/derived/ks_diagnostics_gawler/`
 
 ## One-command reproduction
 
@@ -60,16 +78,16 @@ From the repository root (or any working directory):
 python papers/2025-peak-picking/scripts/run_all.py --clean
 ```
 
-This regenerates all manuscript artefacts into:
+This regenerates manuscript artefacts into:
 
 - `papers/2025-peak-picking/outputs/tables/`
 - `papers/2025-peak-picking/outputs/figures/`
 
 Notes:
 
-- `run_all.py` will extract `ks_diagnostics_npz.tar.gz` automatically if required.
+- `run_all.py` runs figure scripts headlessly (MPLBACKEND=Agg).
+- `run_all.py` will extract required NPZ tarballs automatically if needed.
 - `outputs/` contains generated artefacts and can be deleted/regenerated.
-- `figures/` contains manuscript-ready exports (included for convenience).
 
 ## Reproducing tables
 
@@ -102,41 +120,65 @@ python papers/2025-peak-picking/scripts/figures/fig01_synthetic_cases1to4.py
 
 ### Figure 2 — synthetic cases 5–7
 
-This script is CLI-driven. To keep output locations consistent with the other figure scripts, pass `--fig-dir`:
-
 ```bash
-python papers/2025-peak-picking/scripts/figures/fig02_synthetic_cases5to7.py   --save-fig   --fig-dir papers/2025-peak-picking/outputs/figures   --formats svg,png,pdf
+python papers/2025-peak-picking/scripts/figures/fig02_synthetic_cases5to7.py \
+  --save-fig \
+  --fig-dir papers/2025-peak-picking/outputs/figures \
+  --formats svg,png,pdf
 ```
 
 ### Figures 3 and 5 — CDC goodness grids
 
-These figures use NPZ goodness surfaces under `data/derived/ks_diagnostics/` (created by extracting the NPZ bundle above).
-
 ```bash
-python papers/2025-peak-picking/scripts/figures/fig03_fig05_cdc_goodness_grids.py   --ks-dir papers/2025-peak-picking/data/derived/ks_diagnostics   --no-show
+python papers/2025-peak-picking/scripts/figures/fig03_fig05_cdc_goodness_grids.py \
+  --ks-dir papers/2025-peak-picking/data/derived/ks_diagnostics \
+  --no-show
 ```
 
 ### Figures 4 and 6 — DD likelihood grids
 
 ```bash
-python papers/2025-peak-picking/scripts/figures/fig04_fig06_dd_likelihood_grids.py   --dd-dir papers/2025-peak-picking/data/derived/reimink_discordance_dating   --no-show
+python papers/2025-peak-picking/scripts/figures/fig04_fig06_dd_likelihood_grids.py \
+  --dd-dir papers/2025-peak-picking/data/derived/reimink_discordance_dating \
+  --no-show
 ```
 
 ### Figure 7 — K–S goodness example (case 2A)
 
 ```bash
-python papers/2025-peak-picking/scripts/figures/fig07_ks_goodness_case2a.py --no-show
+python papers/2025-peak-picking/scripts/figures/fig07_ks_goodness_case2a.py \
+  --no-show
 ```
 
-### Figure 8 — CDC upgrade diagnostic (default: sample 2A)
+### Figure 8 — illustrative natural example (Gawler Craton)
 
-This figure also requires the extracted `data/derived/ks_diagnostics/` folder.
+Inputs:
+- `papers/2025-peak-picking/data/inputs/ga_gawler_fig08/` (see folder README)
+- `papers/2025-peak-picking/data/derived/ks_diagnostics_gawler/` (created by extracting `ks_diagnostics_gawler_npz.tar.gz`)
+
+Figure script:
+- `papers/2025-peak-picking/scripts/figures/fig08_gawler_natural_example.py`
+
+Run:
 
 ```bash
-python papers/2025-peak-picking/scripts/figures/fig08_cdc_upgrade.py   --sample-id 2A   --no-show
+python papers/2025-peak-picking/scripts/figures/fig08_gawler_natural_example.py \
+  --no-show \
+  --fig-dir papers/2025-peak-picking/outputs/figures \
+  --outfile f08
+```
+
+### Figure 9 — CDC upgrade diagnostic (default: sample 2A)
+
+This figure requires the extracted `data/derived/ks_diagnostics/` folder (created by extracting `ks_diagnostics_npz.tar.gz`).
+
+```bash
+python papers/2025-peak-picking/scripts/figures/fig09_cdc_upgrade.py \
+  --sample-id 2A \
+  --no-show \
+  --fig-dir papers/2025-peak-picking/outputs/figures
 ```
 
 ## Notes
 
-- `outputs/` can be regenerated. If you prefer a lightweight clone, you can choose not to version-control `outputs/` (see the repo root `.gitignore`).
 - If you are reviewing this repository and only want the manuscript-ready figures, see `papers/2025-peak-picking/figures/`.

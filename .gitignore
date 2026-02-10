@@ -148,7 +148,7 @@ output*/
 papers/*/outputs/
 
 # --- Paper NPZ diagnostics: store as a single tarball, ignore the extracted folder
-papers/**/data/derived/ks_diagnostics/
+papers/**/data/derived/ks_diagnostics*/
 
 # --- R session junk (never commit)
 *.RData
