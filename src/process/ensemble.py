@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import warnings
 import numpy as np
 from typing import List, Dict, Optional, Tuple, Any
 from scipy.ndimage import gaussian_filter1d
@@ -280,7 +281,17 @@ def build_ensemble_catalogue(
         return []
 
     # ---------------- Shoulder merge ---------------------
-    prom, left_bases, right_bases = peak_prominences(y, pk)
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message="some peaks have a prominence of 0")
+        prom, left_bases, right_bases = peak_prominences(y, pk)
+    valid_prom = np.isfinite(prom) & (prom > 0.0)
+    if not np.all(valid_prom):
+        pk = pk[valid_prom]
+        prom = prom[valid_prom]
+        left_bases = left_bases[valid_prom]
+        right_bases = right_bases[valid_prom]
+        if pk.size == 0:
+            return []
     order = np.argsort(pk)
     pk          = pk[order]
     prom        = prom[order]

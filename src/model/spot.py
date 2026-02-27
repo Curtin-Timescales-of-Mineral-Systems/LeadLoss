@@ -1,3 +1,5 @@
+import math
+
 from model.column import Column
 from process import calculations
 
@@ -60,4 +62,11 @@ class Spot:
         self.discordance = discordance
         self.reverseDiscordant = bool(reverse)
         if discordance is not None:
-            self.displayStrings.append(stringUtils.round_to_sf(discordance * 100))
+            try:
+                discordance_pct = float(discordance) * 100.0
+            except (TypeError, ValueError):
+                discordance_pct = float("nan")
+            if math.isfinite(discordance_pct):
+                self.displayStrings.append(stringUtils.round_to_sf(discordance_pct))
+            else:
+                self.displayStrings.append("N/A")

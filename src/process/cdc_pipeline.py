@@ -132,35 +132,40 @@ def _processSample(signals, sample):
 
                     if edge_hits > 0.20:
                         span_y        = float(st.maximumRimAge) - float(st.minimumRimAge)
-                        expand_y      = 0.20 * span_y
-                        widen_younger = (hit_lo >= hit_hi)
+                        if np.isfinite(span_y) and span_y > 0.0:
+                            expand_y      = 0.20 * span_y
+                            widen_younger = (hit_lo >= hit_hi)
 
-                        if widen_younger:
-                            new_min = max(0.0, float(st.minimumRimAge) - expand_y)
-                            new_max = float(st.maximumRimAge)
-                        else:
-                            new_min = float(st.minimumRimAge)
-                            new_max = float(st.maximumRimAge) + expand_y
+                            if widen_younger:
+                                new_min = max(0.0, float(st.minimumRimAge) - expand_y)
+                                new_max = float(st.maximumRimAge)
+                            else:
+                                new_min = float(st.minimumRimAge)
+                                new_max = float(st.maximumRimAge) + expand_y
 
-                        # keep grid step roughly constant
-                        ages_ma_new = np.asarray(st.rimAges(), float) / 1e6
-                        raw_step2 = float(np.median(np.diff(ages_ma_new))) if ages_ma_new.size >= 2 else 0.0
-                        if not np.isfinite(raw_step2) or raw_step2 <= 0.0:
-                            raw_step2 = step_ma or 5.0
-                        step_ma2 = raw_step2
+                            if np.isfinite(new_min) and np.isfinite(new_max) and new_max > new_min:
+                                # keep grid step roughly constant
+                                ages_ma_new = np.asarray(st.rimAges(), float) / 1e6
+                                raw_step2 = float(np.median(np.diff(ages_ma_new))) if ages_ma_new.size >= 2 else 0.0
+                                if not np.isfinite(raw_step2) or raw_step2 <= 0.0:
+                                    raw_step2 = step_ma or 5.0
+                                step_ma2 = raw_step2
 
-                        span_ma_new      = (new_max - new_min) / 1e6
-                        safe_step_for_div = step_ma2 if step_ma2 > 1e-9 else max(span_ma_new, 1.0)
-                        st.minimumRimAge  = new_min
-                        st.maximumRimAge  = new_max
-                        st.rimAgesSampled = int(max(3, round(span_ma_new / safe_step_for_div) + 1))
+                                span_ma_new = (new_max - new_min) / 1e6
+                                safe_step_for_div = step_ma2 if (np.isfinite(step_ma2) and step_ma2 > 1e-9) else max(span_ma_new, 1.0)
+                                if not np.isfinite(safe_step_for_div) or safe_step_for_div <= 0.0:
+                                    safe_step_for_div = max(span_ma_new, 1.0)
 
-                        # re-run once with widened window
-                        sample.monteCarloRuns = []
-                        sample.peak_catalogue = []
-                        completed, skip_reason = _performRimAgeSampling(signals, sample)
-                        if not completed:
-                            return False, skip_reason
+                                st.minimumRimAge  = new_min
+                                st.maximumRimAge  = new_max
+                                st.rimAgesSampled = int(max(3, round(span_ma_new / safe_step_for_div) + 1))
+
+                                # re-run once with widened window
+                                sample.monteCarloRuns = []
+                                sample.peak_catalogue = []
+                                completed, skip_reason = _performRimAgeSampling(signals, sample)
+                                if not completed:
+                                    return False, skip_reason
 
         except Exception as _edge_guard_err:
             print(f"[CDC] Edge-guard diagnostic failed for {sample.name}: {_edge_guard_err}")
@@ -1076,4 +1081,3 @@ def _calculateOptimalAge(signals, sample, progress):
         signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, payload)
     except TypeError:
         signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, payload[:7])
-

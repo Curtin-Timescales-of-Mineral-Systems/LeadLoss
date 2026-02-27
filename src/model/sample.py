@@ -97,9 +97,8 @@ class Sample:
 
     def updateConcordance(self, concordancy, discordances, reverse_flags=None):
         for i, (spot, conc, disc) in enumerate(zip(self.validSpots, concordancy, discordances)):
-            spot.updateConcordance(conc, disc)
-            if reverse_flags is not None and i < len(reverse_flags):
-                spot.reverseDiscordant = bool(reverse_flags[i])
+            reverse = bool(reverse_flags[i]) if (reverse_flags is not None and i < len(reverse_flags)) else False
+            spot.updateConcordance(conc, disc, reverse=reverse)
         if self.signals:
             self.signals.concordancyCalculated.emit()
 
