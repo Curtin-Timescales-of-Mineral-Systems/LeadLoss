@@ -1,0 +1,182 @@
+229828.1.pdf                                                                                         Geochronology Record 1885
+
+
+
+
+               229828: feldspathic sandstone, Killaloe prospect
+                (Mount Kirk Formation, Higginsville Subgroup, Kalgoorlie Group,
+               Kalgoorlie Terrane, Eastern Goldfields Superterrane, Yilgarn Craton)
+
+
+
+Location and sampling                                               only remnants of feldspar grains are evident in massive
+                                                                    carbonate–sericite. Secondary quartz occurs as finely
+Widgiemooltha (SH 51-14), Cowan (3234)                              microcrystalline patches, probably after lithic grains. The
+                 MGA Zone 51, 395552E 6460086N                      abundance of plagioclase and microcline suggests a granitic
+                                                                    provenance. The sandstone is altered but not obviously
+Sampled on 15 January 2019                                          deformed or metamorphosed.
+This sample was collected from the 289.56 – 289.94 m
+depth interval of drillcore 14KLDH03, drilled in 2014
+by Matsa Resources Limited at their Killaloe prospect               Zircon morphology
+(Breyley, 2015). The drillhole is located on the east side of       Zircons isolated from this sample are colourless to dark
+Lake Cowan, about 16.5 km northwest of Buldania Rocks,              brown or opaque, and anhedral to subhedral. The crystals
+7.2 east-southeast of the abandoned Peninsula mine, and             are up to 400 µm long, and equant to elongate, with aspect
+2.6 km northeast of Killaloe Hill.                                  ratios up to 4:1. Concentric zoning is ubiquitous, and many
+                                                                    zircons contain inclusions of other minerals. A CL image of
+                                                                    representative zircons is shown in Figure 2.
+Geological context
+The unit sampled is a feldspathic sandstone (Fig. 1),
+assigned to the Mount Kirk Formation of the                         Analytical details
+2753– 2680 Ma Kalgoorlie Group (Hall et al., 2022).                 This sample was analysed on 24–25 September 2020,
+Within the Eundynie greenstone belt, the 2720–2690 Ma               using SHRIMP-B. Twelve analyses of the M257 standard
+Mount Kirk Formation consists mainly of metabasalt, with            were obtained during the session, of which 10 indicated
+lesser amounts of meta-ultramafic and metasedimentary               an external spot-to-spot (reproducibility) uncertainty of
+rocks (Hayman et al., 2015; Sapkota, 2022). A mafic                 0.50% (1σ) and a 238U/206Pb* calibration uncertainty of
+intrusion within the unconformably underlying                       0.25% (1σ). Calibration uncertainties are included in the
+Woolyeenyer Formation has been dated at 2714 ± 5 Ma                 errors of 238U/206Pb* ratios and dates listed in Table 1.
+(Hill et al., 1992). The present sample was collected from
+                                                                    Common-Pb corrections were applied to all analyses
+a graded bed of sandstone within a sequence of laminated
+                                                                    using contemporaneous isotopic compositions determined
+carbonaceous shale (Breyley, 2015), with the aim of
+                                                                    according to the model of Stacey and Kramers (1975).
+constraining the age of the succession of metamorphosed
+mafic–ultramafic and interflow sedimentary rocks.
+
+                                                                    Results
+Petrographic description                                            Eighteen analyses were obtained from 18 zircons. Results
+                                                                    are listed in Table 1, and shown in a concordia diagram
+The sample is an altered feldspathic sandstone (Fig. 1),            (Fig. 3).
+consisting of about 50–60% plagioclase, 30–40%
+K-feldspar, 7% lithic grains, 2% altered magnetite, 1%
+quartz and accessory zircon. Plagioclase is albitized and           Interpretation
+variably overprinted by carbonate minerals and sericite;
+microcline is strained. Lithic grains are subangular, up to         The analyses are concordant to moderately discordant
+1 mm in size, and include microcrystalline cherty grains            (Fig. 3), and form a single group, based on their
+and some replaced by fine sericite. The framework grains
+                                                                    207
+                                                                       Pb*/206Pb* ratios.
+are closely packed, there is no obvious matrix, and there           Group I comprises 18 analyses (Table 1), which yield
+is no indication of grading at the scale of the thin section.       a weighted mean 207Pb*/ 206Pb* date of 2703 ± 6 Ma
+Feldspars are angular, not abraded, and up to 1.3 mm in             (MSWD = 1.9) and a discordia with intercepts at 2713 ± 8
+size (average 0.6 mm). Quartz grains are subangular to              and c. 700 Ma (MSWD = 1.2).
+rounded, up to 0.8 mm in diameter, and weakly strained.
+Altered magnetite is mainly anhedral, equant, and irregular,        The date of 2713 ± 8 Ma for the 18 analyses in Group I is
+up to 0.4 mm in diameter, and altered to titanite and brown         interpreted as the igneous crystallization age of the source
+iron oxide minerals. Alteration consists of carbonate–              rock that yielded the dominant detrital component and a
+sericite–albite–quartz. Where the alteration is most intense,       maximum age of deposition for the sandstone.
+
+
+
+                                                                1
+229828.1.pdf                                                                                     Geochronology Record 1885
+
+
+
+
+               Figure 1.   Drillcore image (wet surface) of sample 229828: feldspathic sandstone, Killaloe
+                           prospect
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 229828:
+                           feldspathic sandstone, Killaloe prospect. Numbered circles indicate the
+                           approximate locations of analysis sites
+
+
+
+
+                                                            2
+229828.1.pdf                                                                                                                                                                  Geochronology Record 1885
+
+
+
+
+                                        Table 1. Ion microprobe analytical results for zircons from sample 229828: feldspathic sandstone, Killaloe prospect
+
+
+     Group     Spot   Grain.     238
+                                    U    232
+                                            Th        Th
+                                                    232
+                                                              ƒ204           U/206Pb
+                                                                           238                 207
+                                                                                                  Pb/206Pb             U/206Pb*
+                                                                                                                     238
+                                                                                                                                            Pb*/206Pb*
+                                                                                                                                          207                   238
+                                                                                                                                                                   U/206Pb*     207
+                                                                                                                                                                                   Pb*/206Pb*   Disc.
+       ID       no.   spot     (ppm)    (ppm)         U
+                                                    238
+                                                              (%)            ± 1σ                  ± 1σ                ± 1σ                  ± 1σ             date (Ma) ±1σ    date (Ma) ±1σ    (%)
+        I       10    10.1       217      69         0.32     0.365     2.090     0.020    0.18496       0.00097   2.098     0.020     0.18170     0.00152    2513     20      2669     14       5.8
+        I       16    16.1       257      189        0.74     0.141     2.011     0.018    0.18437       0.00083   2.014     0.018     0.18311    0.00089     2599     20      2681     8        3.1
+        I       8      8.1       245      69         0.28     0.054     1.936     0.017    0.18443       0.00081   1.937     0.017     0.18395    0.00084     2684     20      2689     8        0.2
+        I       3      3.1       192      41         0.22     0.074     2.111     0.036    0.18494       0.00097   2.113     0.036     0.18428     0.00101    2498     35      2692     9         7.2
+        I       5      5.1       188      48         0.25     -0.034    1.986     0.019    0.18446       0.00092   1.985     0.019     0.18476    0.00094     2630     21      2696     8        2.5
+        I       17     17.1      120      44         0.36     0.221     2.027     0.043    0.18686       0.00117   2.032     0.043     0.18489     0.00131    2580     46      2697     12       4.3
+        I       9      9.1       295      88         0.30     0.069     2.013     0.017    0.18559       0.00076   2.014     0.017     0.18497    0.00079     2599     19      2698     7        3.7
+        I       6      6.1       252      95         0.38     0.055     1.952     0.017    0.18569       0.00076   1.953     0.017     0.18520    0.00079     2665     20      2700     7        1.3
+        I       4      4.1       125      50         0.40     0.135     2.037     0.035    0.18663       0.00190   2.039     0.035     0.18542     0.00195    2572     36      2702     17       4.8
+        I       13    13.1       277      132        0.48     0.116     1.921     0.017    0.18659       0.00079   1.923     0.017     0.18556    0.00084     2699     20      2703     7        0.2
+        I       18    18.1       204      72         0.35     0.171     1.976     0.019    0.18761       0.00096   1.980     0.019     0.18609     0.00105    2636     22      2708     9        2.7
+        I       7      7.1       292      87         0.30     0.039     1.934     0.017    0.18676       0.00077   1.935     0.017     0.18641    0.00078     2685     19      2711     7        0.9
+        I       14    14.1       257      108        0.42     0.045     1.991     0.018    0.18681       0.00082   1.992     0.018     0.18641    0.00084     2623     19      2711     7        3.3
+        I       15    15.1       230      68         0.29      0.111    1.965     0.018    0.18746       0.00091   1.967     0.018     0.18647    0.00097     2649     21      2711     9        2.3
+        I       1      1.1       271      92         0.34     -0.086    1.949     0.017    0.18575       0.00076   1.947     0.017     0.18652    0.00080     2672     19      2712     7        1.5
+        I       12    12.1       209      69         0.33     0.033     1.960     0.019    0.18690       0.00141   1.961     0.019     0.18660     0.00142    2657     21      2713     13       2.1
+        I       2      2.1       101      29         0.29     0.483     1.965     0.022    0.19154       0.00127   1.975     0.022     0.18723     0.00155    2641     25      2718     14       2.8
+        I       11     11.1      242      75         0.31     0.009     1.893     0.017    0.18771       0.00085   1.893     0.017     0.18763    0.00086     2735     21      2722     8        -0.5
+
+
+
+
+                                                                                                     3
+229828.1.pdf                                                                                                                        Geochronology Record 1885
+
+
+
+
+               Figure 3.       U–Pb analytical data for sample 229828: feldspathic sandstone, Killaloe prospect. Yellow squares
+                               indicate Group I (magmatic zircons). The dashed line indicates a discordia regression through
+                               data in Group I
+
+
+
+
+References                                                                                   Re­commended reference for this
+Breyley, R 2015, Matsa Resources Limited Annual Report for the Period 1                      publication
+   July 2014 to 30 June 2015, Killaloe, Combined Annual Report C6/2008,
+                                                                                             Wingate, MTD, Fielding, IOH, Lu, Y and Smithies, RH 2022, 229828:
+   Mineral Exploration Report A107015 (unpublished), 15p.
+                                                                                               feldspathic sandstone, Killaloe prospect; Geochronology Record 1885:
+Hall, CE, Wyche, NL, Sapkota, J, De Paoli, MC and Wyche, S (partial                            Geological Survey of Western Australia, 4p.
+   report), Kalgoorlie Group (A-KG-xbb-u): Geological Survey of Western
+   Australia, WA Geology Online, Explanatory Notes extract, viewed                           Data obtained:       25 September 2020
+   04 April 2022, <www.dmp.wa.gov.au/ens>.
+Hayman, PC, Thebaud, N, Pawley, MJ, Barnes, SJ, Cas, RAF, Amelin,
+                                                                                             Data released:       20 May 2022
+   Y, Sapkota, J, Squire, RJ, Campbell, IH and Pegg, I 2015, Evolution
+   of a ~2.7 Ga large igneous province: A volcanological, geochemical
+   and geochronological study of the Agnew Greenstone Belt, and new
+   regional correlations for the Kalgoorlie Terrane (Yilgarn Craton,
+   Western Australia): Precambrian Research, v. 270, p. 334-368.
+Hill, RI, Chappell, BW and Campbell, IH 1992, Late Archean granites of
+    the south-eastern Yilgarn Block, Western Australia: age, geochemistry,
+    and origin: Earth and Environmental Science Transactions of the Royal
+    Society of Edinburgh, v. 83, p. 211–226.
+Sapkota, J (partial report), Mount Kirk Formation (A-KGmk- xbb-u):
+   G e o l o g i c a l S u r vey o f We s t e r n A u s t r a l i a , WA G e o l o g y
+   Online, Explanatory Notes extract, viewed 04 April 2022,
+   <www.dmp.wa.gov.au/ens>.
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead isotope
+   evolution by a two-stage model: Earth and Planetary Science Letters,
+   v. 26, p. 207–221.
+
+
+
+
+                                                                                         4
+

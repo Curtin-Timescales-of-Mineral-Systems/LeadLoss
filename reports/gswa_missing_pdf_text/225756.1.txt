@@ -1,0 +1,290 @@
+225756.1.pdf                                                                                         Geochronology Record 1810
+
+
+
+
+                  225756: volcaniclastic rock, Wittenoom Gorge
+                         (Dales Gorge Member, Brockman Iron Formation,
+                       Hamersley Group, Hamersley Basin, Capricorn Orogen)
+
+
+
+Location and sampling                                                Pale green chlorite forms oval and elongate features up
+                                                                     to 0.15 mm long, and smaller, less well-defined grains
+Mount Bruce (SF 50-11), Wittenoom (2553)                             intergrown with clay minerals. The chlorite does not
+                 MGA Zone 50, 636102E 7529919N                       resemble typical detrital mica and is considered more
+                                                                     likely to be authigenic, possibly infilling pores during
+Sampled on 11 September 2017                                         diagenesis. Opaque grains are mostly <0.05 mm in size,
+This sample was collected from a subvertical exposure                have cubic or elongate forms, and are mostly magnetite
+on the east side of Joffre Creek in Wittenoom Gorge,                 and hematite, and minor high-relief rutile. Rare detrital
+about 23 km east-southeast of Mount King, 8.5 km north-              quartz grains are angular and up to 0.1 mm in size. There
+northeast of Joffre Falls, and 2.0 km southwest of Club              is no indication of sedimentary layering, although there
+Pool.                                                                is a poorly developed fissility defined by discontinuous
+                                                                     wavy dark iron oxide folia. No evidence for a volcanic
+                                                                     origin was observed in thin section, although this may
+                                                                     have been obliterated by the abundant clay. The sample is
+Geological context                                                   not deformed or metamorphosed.
+The unit sampled is a volcaniclastic bed within the
+2494–2454 Ma Brockman Iron Formation of the Hamersley
+Group (Martin, 2020a). The Brockman Iron Formation                   Zircon morphology
+is about 0.5 km thick, consists of banded iron-formation,            Zircons isolated from this sample are colourless to dark
+chert, mudstone, and siltstone, with minor dolerite sills,           brown, anhedral to euhedral, and variably rounded. The
+and conformably overlies the Mount McRae Shale and                   crystals are up to 200 µm long, and equant to elongate,
+is conformably overlain by the Weeli Wolli Formation                 with aspect ratios up to 4:1. In cathodoluminescence (CL)
+(Martin, 2020a). Numerous tuffaceous horizons within                 images, most zircons exhibit concentric zoning, some are
+the Brockman Iron Formation have been dated, and                     dominated by high-U metamict zones, and many contain
+indicate depositional ages between 2495 and 2454 Ma                  inclusions of other minerals. A CL image of representative
+(Trendall et al., 1998; Pickard, 2002; Trendall et al., 2004).       zircons is shown in Figure 2.
+Tuffaceous horizons within the Dales Gorge Member
+are marker beds that are commonly referred to as shale
+bands (Trendall and Blockley, 1968) and abbreviated as
+DS1-16. The sampled volcaniclastic layer is about 10 cm
+                                                                     Analytical details
+thick (Fig. 1) and occurs within DS9 in the middle of the            This sample was analysed over three sessions: on 17–18,
+2494–2464 Ma Dales Gorge Member, which is 120–180 m                  18–19, and 25–26 January 2019, using SHRIMP-B.
+thick and the lowermost of four members within the                   Analyses 1.1 to 29.1 (spot numbers 1–29) were obtained
+Brockman Iron Formation (Martin, 2020b). An underlying               during the first session, together with 13 analyses of the
+volcaniclastic bed within DS9 at this locality yielded               M257 standard, of which 12 analyses indicated an external
+a maximum depositional age of 2477 ± 4 Ma (GSWA                      spot-to-spot (reproducibility) uncertainty of 0.50% (1σ)
+225757, Wingate et al., 2021a). Tuffaceous volcanic                  and a 238U/206Pb* calibration uncertainty of 0.17% (1σ).
+rocks near the base of the Dales Gorge Member (DS1                   Analyses 30.1 to 49.1 (spot numbers 30–49) were obtained
+and DS2), about 0.9 km to the northeast, yielded igneous             during the second session, together with 11 analyses of
+crystallization ages of 2485 ± 9 Ma (GSWA 225758,                    the M257 standard, which indicated an external spot-
+Wingate et al., 2021b) and 2480 ± 7 Ma (GSWA 225760,                 to-spot (reproducibility) uncertainty of 0.50% (1σ) and
+Wingate et al., 2021c).                                              a 238U/ 206Pb* calibration uncertainty of 0.19% (1σ).
+                                                                     Analyses 50.1 to 55.1 (spot numbers 50–55) were obtained
+                                                                     during the third session, together with 11 analyses of
+Petrographic description                                             the M257 standard, of which 10 analyses indicated an
+                                                                     external spot-to-spot (reproducibility) uncertainty of
+The sample is an altered volcaniclastic rock, consisting             0.71% (1σ) and a 238U/206Pb* calibration uncertainty of
+of about 80–85% clay minerals, 15–20% chlorite, and                  0.31% (1σ). Calibration uncertainties are included in the
+trace rutile, quartz, and opaque minerals. The main clay             errors of 238U/206Pb* ratios and dates listed in Table 1.
+minerals are pale yellow to orange, fibrous crystals up              Common-Pb corrections were applied to all analyses
+to 0.1 mm long, which are either not aligned or form                 using contemporaneous isotopic compositions determined
+bundles of radiating fibres. The clay exhibits moderate              according to the model of Stacey and Kramers (1975).
+birefringence and may be a smectite group mineral.
+
+
+                                                                 1
+225756.1.pdf                                                                                Geochronology Record 1810
+
+
+
+
+               Figure 1.   Outcrop image for sample 225756: volcaniclastic rock, Wittenoom Gorge. The
+                           geochronology sample was obtained from the dark layer
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 225756:
+                           volcaniclastic rock, Wittenoom Gorge. Numbered circles indicate the
+                           approximate locations of analysis sites
+
+
+
+
+                                                          2
+225756.1.pdf                                                                                                                                                              Geochronology Record 1810
+
+
+                                        Table 1. Ion microprobe analytical results for zircons from sample 225756: volcaniclastic rock, Wittenoom Gorge
+
+
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th       Th
+                                                   232
+                                                             ƒ204          U/206Pb
+                                                                         238
+                                                                                               Pb/206Pb
+                                                                                             207
+                                                                                                                     U/206Pb*
+                                                                                                                   238
+                                                                                                                                         Pb*/206Pb*
+                                                                                                                                       207                  238
+                                                                                                                                                               U/206Pb*    207
+                                                                                                                                                                              Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)     238
+                                                     U       (%)           ± 1σ                 ± 1σ                 ± 1σ                 ± 1σ            date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      Y         4      4.1        86     102       1.18      0.224     2.135    0.020    0.16183       0.00089   2.139    0.020     0.15984     0.00102   2472     20     2454     11       -0.8
+
+
+      S         29    29.1       187     78        0.42      0.060     2.167    0.017    0.16154       0.00061   2.168    0.017     0.16100    0.00063    2445     16     2466     7        0.9
+      S         53    53.1       137     86        0.63      0.067     2.162    0.023    0.16170       0.00076   2.163    0.023     0.16110    0.00079    2449     22     2467     8        0.7
+      S         54    54.1       210     154       0.73      0.040     2.173    0.021    0.16146       0.00059   2.174    0.021     0.16110    0.00061    2440     20     2467     6        1.1
+      S         31    31.1       209     91        0.44      0.052     2.177    0.037    0.16163       0.00060   2.178    0.037     0.16117    0.00062    2435     35     2468     6        1.3
+      S         12    12.1       142     90        0.64      0.015     2.178    0.029    0.16133       0.00068   2.179    0.029     0.16119    0.00069    2435     27     2468     7        1.3
+      S         13    13.1       154     55        0.35      0.000     2.126    0.033    0.16134       0.00068   2.126    0.033     0.16134    0.00068    2485     32     2470     7        -0.6
+      S         36    36.1       229     104       0.46      0.146    2.247     0.029    0.16278       0.00096   2.250    0.029     0.16148    0.00099    2371     25     2471     10       4.1
+      S         3      3.1       245     181       0.74      0.042     2.179    0.022    0.16190       0.00054   2.180    0.022     0.16153    0.00055    2434     20     2472     6        1.5
+      S         6      6.1       227     100       0.44      0.020     2.139    0.016    0.16182       0.00055   2.140    0.016     0.16165    0.00056    2472     15     2473     6        0.0
+      S         46    46.1       256     133       0.52      0.019     2.163    0.017    0.16184       0.00054   2.164    0.017     0.16167    0.00055    2449     16     2473     6        1.0
+      S         51    51.1       185     86        0.46      0.066     2.137    0.021    0.16226       0.00063   2.139    0.021     0.16168    0.00066    2473     21     2473     7        0.0
+      S         52    52.1       185     143       0.77      0.124    2.250     0.022    0.16282       0.00065   2.253    0.022     0.16172    0.00071    2368     20     2474     7        4.3
+      S         43    43.1       380     196       0.51      0.007     2.153    0.023    0.16180       0.00045   2.153    0.023     0.16174    0.00045    2459     22     2474     5        0.6
+      S         30    30.1       244     160       0.65      0.025     2.117    0.016    0.16197       0.00055   2.118    0.016     0.16175    0.00056    2493     15     2474     6        -0.8
+      S         17     17.1      186     252       1.35      0.026    2.202     0.032    0.16200       0.00064   2.203    0.032     0.16177    0.00065    2413     29     2474     7        2.5
+      S         45    45.1       244     111       0.45      0.016     2.152    0.016    0.16194       0.00057   2.152    0.016     0.16180    0.00057    2460     15     2475     6        0.6
+      S         32    32.1       145     58        0.40      0.067     2.193    0.028    0.16241       0.00072   2.194    0.028     0.16180    0.00075    2421     26     2475     8        2.2
+      S         25    25.1       253     184       0.73      0.233    2.207     0.023    0.16391       0.00054   2.212    0.023     0.16184    0.00065    2405     21     2475     7        2.8
+      S         20    20.1       472     561       1.19      0.100    2.239     0.018    0.16276       0.00038   2.241    0.018     0.16187    0.00041    2379     16     2475     4        3.9
+      S         27     27.1      266     123       0.46      0.023     2.145    0.015    0.16214       0.00053   2.146    0.015     0.16193    0.00054    2466     15     2476     6        0.4
+      S         24    24.1       305     185       0.61      0.101     2.214    0.024    0.16285       0.00051   2.217    0.024     0.16195    0.00054    2400     22     2476     6        3.1
+      S         5      5.1       304     353       1.16      0.000     2.130    0.015    0.16197       0.00051   2.130    0.015     0.16197    0.00051    2481     15     2476     5        -0.2
+      S         21    21.1       150     146       0.98      0.071     2.167    0.017    0.16263       0.00066   2.169    0.018     0.16200    0.00069    2444     17     2477     7        1.3
+      S         23    23.1       207     232       1.12      0.000     2.193    0.017    0.16205       0.00061   2.193    0.017     0.16205    0.00061    2422     15     2477     6        2.2
+      S         38    38.1       232     125       0.54      0.006     2.134    0.030    0.16211       0.00059   2.135    0.030     0.16206    0.00059    2477     29     2477     6        0.0
+      S         14    14.1       200     106       0.53      0.006    2.252     0.034    0.16211       0.00059   2.252    0.034     0.16206    0.00060    2369     30     2477     6        4.4
+      S         49    49.1       226     140       0.62      0.150     2.201    0.017    0.16342       0.00061   2.204    0.017     0.16208    0.00067    2412     15     2478     7        2.7
+
+
+
+
+                                                                                                   3
+225756.1.pdf                                                                                                                                                     Geochronology Record 1810
+
+
+                                                                                   Table 1. continued
+
+
+   Group   Spot     Grain.     238
+                                  U    232
+                                          Th   232
+                                                     Th   ƒ204         U/206Pb
+                                                                     238
+                                                                                        Pb/206Pb
+                                                                                      207
+                                                                                                               U/206Pb*
+                                                                                                             238              207
+                                                                                                                                 Pb*/206Pb*       238
+                                                                                                                                                     U/206Pb*    207
+                                                                                                                                                                    Pb*/206Pb*   Disc.
+     ID     no.     spot     (ppm)    (ppm)    238
+                                                     U    (%)          ± 1σ              ± 1σ                  ± 1σ               ± 1σ          date (Ma) ±1σ   date (Ma) ±1σ    (%)
+     S         37    37.1      264     159      0.60      -0.004   2.158   0.016   0.16210       0.00053   2.158    0.016   0.16214   0.00053   2455     15     2478     5        0.9
+     S         8     8.1       201     114      0.57      0.011    2.148   0.016   0.16226       0.00057   2.148    0.016   0.16216   0.00057   2464     16     2478     6        0.6
+     S         26   26.1       205     136      0.66      0.034    2.148   0.030   0.16250       0.00059   2.148    0.030   0.16219   0.00060   2464     29     2479     6        0.6
+     S         41   41.1       199     153      0.77      -0.030   2.160   0.017   0.16195       0.00061   2.159    0.017   0.16222   0.00062   2453     16     2479     6        1.0
+     S         2     2.1       229     111      0.49      0.073    2.205   0.016   0.16291       0.00056   2.207    0.016   0.16227   0.00059   2409     15     2479     6        2.8
+     S         50   50.1       244     137      0.56      0.056    2.173   0.027   0.16282       0.00059   2.174    0.027   0.16232   0.00061   2439     26     2480     6        1.6
+     S         19   19.1       247     192      0.78      0.041    2.157   0.028   0.16270       0.00053   2.158    0.028   0.16233   0.00055   2455     27     2480     6        1.0
+     S         16   16.1       195     84       0.43      0.019    2.176   0.017   0.16252       0.00063   2.177    0.017   0.16235   0.00063   2437     16     2480     7        1.7
+     S         10   10.1       125     106      0.85      0.036    2.140   0.018   0.16272       0.00075   2.140    0.018   0.16240   0.00076   2471     18     2481     8        0.4
+     S         47    47.1      179     206      1.15      -0.014   2.193   0.017   0.16234       0.00065   2.193    0.017   0.16246   0.00065   2422     16     2481     7        2.4
+     S         1     1.1       188     123      0.66      0.048    2.137   0.032   0.16300       0.00061   2.138    0.032   0.16257   0.00063   2474     31     2483     7        0.4
+     S         55   55.1       238     142      0.60      0.000    2.212   0.021   0.16267       0.00056   2.212    0.021   0.16267   0.00056   2404     19     2484     6        3.2
+     S         40   40.1       204     128      0.63      -0.013   2.172   0.017   0.16266       0.00063   2.172    0.017   0.16278   0.00064   2442     16     2485     7        1.7
+     S         22   22.1       116     102      0.88      0.124    2.200   0.019   0.16397       0.00080   2.203    0.019   0.16286   0.00086   2413     18     2486     9        2.9
+     S         44   44.1       229     137      0.60      -0.022   2.149   0.027   0.16269       0.00059   2.148    0.027   0.16288   0.00059   2464     26     2486     6        0.9
+     S         9     9.1       138     153      1.11      0.106    2.126   0.025   0.16399       0.00069   2.128    0.025   0.16305   0.00074   2483     24     2488     8        0.2
+     S         7     7.1       139     96       0.70      -0.059   2.132   0.018   0.16278       0.00072   2.131    0.018   0.16331   0.00074   2481     17     2490     8        0.4
+     S         48   48.1       228     122      0.53      0.066    2.147   0.030   0.16390       0.00058   2.149    0.030   0.16331   0.00061   2463     28     2490     6        1.1
+     S         33   33.1       180     235      1.31      0.101    2.164   0.026   0.16471       0.00073   2.166    0.027   0.16382   0.00153   2447     25     2495     16       1.9
+     S         39   39.1       265     130      0.49      0.021    2.187   0.029   0.16410       0.00063   2.188    0.029   0.16392   0.00064   2427     27     2497     7        2.8
+     S         15   15.1       109     75       0.69      -0.010   2.096   0.019   0.16664       0.00081   2.096    0.019   0.16673   0.00081   2515     19     2525     8        0.4
+     S         34   34.1       204     100      0.49      0.030    1.935   0.021   0.18146       0.00061   1.935    0.021   0.18119   0.00062   2685     24     2664     6        -0.8
+
+
+     D         28   28.1       112     38       0.34      0.000    2.207   0.019   0.14232       0.02191   2.207    0.019   0.14232   0.02191   2409     18     2256    266       -6.8
+     D         18   18.1       167    1618      9.68      0.167    2.371   0.035   0.16294       0.00072   2.375    0.035   0.16145   0.00080   2265     28     2471     8        8.3
+     D         42   42.1       158     233      1.48      0.081    2.294   0.032   0.16225       0.00071   2.295    0.032   0.16152   0.00075   2331     27     2472     8        5.7
+     D         35   35.1       188     182      0.97      0.073    2.281   0.018   0.16262       0.00062   2.283    0.018   0.16197   0.00064   2342     15     2476     7        5.4
+     D         11    11.1      292     326      1.12      0.078    2.289   0.022   0.16272       0.00049   2.291    0.022   0.16203   0.00051   2335     19     2477     5        5.7
+
+
+
+
+                                                                                             4
+225756.1.pdf                                                                                         Geochronology Record 1810
+
+
+
+
+         Figure 3.    U–Pb analytical data for zircons from sample 225756: volcaniclastic rock, Wittenoom Gorge. Blue
+                      square indicates Group Y (youngest detrital zircon); red squares indicate Group S (older detrital
+                      zircons); crossed squares indicate Group D (discordance >5%)
+
+
+
+
+          Figure 4.   Probability density diagram and histogram for sample 225756: volcaniclastic rock, Wittenoom
+                      Gorge. Thick curve, maxima values, and blue histogram (bin width 10 Ma) include only data
+                      with discordance <5% (50 analyses of 50 zircons). Thin curve includes all data (55 analyses of
+                      55 zircons)
+
+
+
+
+                                                                5
+225756.1.pdf                                                                                                    Geochronology Record 1810
+
+
+Results                                                                   Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+                                                                             isotope evolution by a two-stage model: Earth and Planetary Science
+Fifty-five analyses were obtained from 55 zircons. Results                   Letters, v. 26, p. 207–221.
+are listed in Table 1, and shown in a concordia diagram                   Trendall, AF and Blockley, JG 1968, Stratigraphy of the Dales Gorge
+(Fig. 3) and a probability density plot (Fig. 4).                            Member of the Brockman Iron Formation, in the Precambrian
+                                                                             Hamersley Group of Western Australia, in Annual Report for the
+                                                                             year 1967: Geological Survey of Western Australia, Perth, Western
+Interpretation                                                               Australia, p. 48–53.
+
+The analyses are concordant to moderately discordant                      Trendall, AF, Compston, W, Nelson, DR, de Laeter, JR and Bennett, VC
+                                                                             2004, SHRIMP zircon ages constraining the depositional chronology
+(Fig. 3). Five analyses are >5% discordant. The dates
+                                                                             of the Hamersley Group, Western Australia: Australian Journal of
+obtained from these five analyses (Group D; Table 1)                         Earth Sciences, v. 51, no. 5, p. 621–644.
+are unreliable, and are considered not to be geologically
+significant. The remaining 50 analyses can be divided into                Trendall, AF, Nelson, DR, de Laeter, JR and Hassler, SW 1998,
+                                                                             Precise zircon U-Pb ages from the Marra Mamba Iron Formation
+two groups, based on their 207Pb*/206Pb* ratios.
+                                                                             and Wittenoom Formation, Hamersley Group, Western Australia:
+Group Y comprises one analysis (Table 1), which yields a                     Australian Journal of Earth Sciences, v. 45, p. 137–142.
+207
+   Pb*/206Pb* date of 2454 ± 11 Ma (1σ).                                  Wingate, MTD, Fielding, IOH, Lu, Y and Martin, DMcB 2021a, 225757:
+                                                                             volcaniclastic rock, Wittenoom Gorge; Geochronology Record 1811:
+Group S comprises 49 analyses (Table 1), which yield                         Geological Survey of Western Australia, 7p.
+207
+   Pb*/206Pb* dates of 2664–2466 Ma.                                      Wingate, MTD, Fielding, IOH, Lu, Y and Martin, DMcB 2021b, 225758:
+                                                                             tuffaceous volcanic rock, Wittenoom Gorge; Geochronology Record
+It is possible that all of the analyses in Groups Y                          1812: Geological Survey of Western Australia, 4p.
+and S are of unmodified detrital zircons, in which case
+the date of 2454 ± 11 (1σ) for the single analysis in                     Wingate, MTD, Fielding, IOH, Lu, Y and Martin, DMcB 2021c, 225760:
+                                                                             tuffaceous volcanic rock, Wittenoom Gorge; Geochronology Record
+Group Y represents a maximum depositional age. A more
+                                                                             1813: Geological Survey of Western Australia, 4p.
+conservative estimate of the maximum depositional age
+can be based on the weighted mean 207Pb*/206Pb* date of
+2477 ± 2 Ma (MSWD = 0.83) for the youngest 47 analyses                    Recommended reference for this
+in Groups Y and S.
+                                                                          publication
+The data for combined Groups Y and S indicate a
+                                                                          Wingate, MTD, Fielding, IOH, Lu, Y and Martin, DMcB 2021, 225756:
+significant age component at c. 2476 Ma, based on                           volcaniclastic rock, Wittenoom Gorge; Geochronology Record 1810:
+contributions from approximately 45 analyses (Fig. 4).                      Geological Survey of Western Australia, 6p.
+This is interpreted as the age of the dominant zircon-
+crystallizing rock in the detrital source region, or as the               Data obtained:       26 January 2021
+age of the dominant detrital component within sediments
+that have been reworked into this rock.                                   Data released:       12 November 2021
+
+
+
+References
+Martin, DMcB 2020a, Brockman Iron Formation (P_-HAb-cib):
+  Geological Survey of Western Australia, WA Geology Online,
+  Explanatory Notes extract, viewed 31 August 2021, <www.dmp.
+  wa.gov.au/ens>.
+Martin, DMcB 2020b, Dales Gorge Member (P_-HAbd-cib): Geological
+  Survey of Western Australia, WA Geology Online, Explanatory Notes
+  extract, viewed 31 August 2021, <www.dmp.wa.gov.au/ens>.
+Pickard, AL 2002, SHRIMP U-Pb zircon ages of tuffaceous mudrocks
+   in the Brockman Iron Formation of the Hamersley Range, Western
+   Australia: Australian Journal of Earth Sciences, v. 49, no. 3,
+   p. 491–507.
+
+
+
+
+                                                                      6
+

@@ -1,0 +1,186 @@
+201536.1.pdf                                                                                       Geochronology Record 1822
+
+
+
+
+                   201536: metamonzogranite, Frogmore Bore
+                        (Tuckanarra Suite, Youanmi Terrane, Yilgarn Craton)
+
+
+
+
+Location and sampling                                            fine microcline twinning. Quartz forms anhedral,
+                                                                 moderately strained grains up to 2 mm in size, as well as
+Ninghan (SH 50-7), Bungar (2539)                                 aggregates up to 3.5 mm in diameter composed of grains
+                  MGA Zone 50, 626733E 6776667N                  with sutured, intergrown boundaries. Oval and irregular
+                                                                 lobes of myrmekite at the edges of K-feldspar are up to
+Sampled on 9 March 2017                                          0.5 mm in size and have smoothly curved margins. Biotite,
+This sample was collected from outcrop on the                    partially replaced by chlorite, forms anhedral to subhedral
+southwestern side of a track on Narndee Station, about           laths up to 1 mm long, many of which are crudely aligned
+7.5 km south of Dixon Bore, 6.7 km due east of the Paynes        in short folia that define an incipient foliation. Muscovite
+Find – Sandstone Road, and 5.6 km north of Frogmore              is subhedral, non-aligned, up to 0.7 mm in size, and has
+Bore.                                                            partly replaced plagioclase. Magnetite is subhedral to
+                                                                 euhedral, equant, and up to 0.35 mm in diameter, and
+                                                                 partially replaced by hematite. Bladed euhedral apatite
+                                                                 is up to 0.1 mm long. Apart from the crude alignment
+Geological context                                               of biotite folia, the sample lacks a penetrative foliation.
+The unit sampled is a metamonzogranite dyke of the               However, the strain in quartz and the development of
+2697–2657 Ma Tuckanarra Suite, which consists mainly             microcline and trace myrmekite are consistent with solid-
+of porphyritic or equigranular metamonzogranite to               state deformation at low to moderate metamorphic grade.
+metagranodiorite (Van Kranendonk et al., 2013; Zibra,
+2019). Plutons range from subcircular and non-deformed
+to elongate and strongly deformed adjacent to major              Zircon morphology
+shear zones (Zibra et al., 2014). Granitic rocks of the          Zircons isolated from this sample are colourless to dark
+Tuckanarra Suite crosscut the 2825–2733 Ma Annean                brown or opaque, mainly subhedral to euhedral, and
+Supersuite and 2732–2686 Ma Big Bell Suite, and are              slightly rounded. The crystals are up to 350 µm long,
+intruded by the 2665–2640 Ma Jungar and 2650–2600 Ma             and mainly elongate, with aspect ratios up to 8:1. In
+Walganna Suites (Zibra, 2019). Tuckanarra Suite plutons          cathodoluminescence (CL) images, concentric zoning
+also intrude supracrustal rocks of the Norie and Polelle         is ubiquitous, most crystals are dominated by high-U,
+Groups (Zibra, 2019). The metamonzogranite dyke at               metamict domains, and some appear to contain older cores.
+this locality exhibits ductile features and appears to           A CL image of representative zircons is shown in Figure 2.
+be syn-magmatic with respect to the fine- to medium-
+grained seriate to equigranular biotite metamonzogranite
+into which it is intruded. A gneissic monzogranite of
+the Tuckanarra Suite collected about 18.2 km to the              Analytical details
+west-northwest yielded an igneous crystallization age of         This sample was analysed on 18–19 March 2021,
+2679 ± 8 Ma (GSWA 185997, Wingate et al., 2015a). A              using SHRIMP-B. Ten analyses of the M257 standard
+porphyritic monzogranite of the Tuckanarra Suite collected       obtained during the session indicated an external spot-
+about 17.7 km to the west-southwest yielded an igneous           to-spot (reproducibility) uncertainty of 0.61% (1σ) and
+crystallization age of 2681 ± 5 Ma (GSWA 198212,                 a 238U/ 206Pb* calibration uncertainty of 0.28% (1σ).
+Wingate et al., 2015b).                                          Isotopic mass fractionation of 207Pb/206Pb ratios during the
+                                                                 session was corrected by reference to the OGC1 standard;
+                                                                 measured ratios were decreased by 0.25%. Calibration
+Petrographic description                                         uncertainties are included in the errors of 238U/206Pb* ratios
+                                                                 and dates listed in Table 1. Common-Pb corrections were
+The sample is a fine- to medium-grained                          applied to all analyses using contemporaneous isotopic
+metamonzogranite, consisting of about 35% plagioclase,           compositions determined according to the model of Stacey
+30% K-feldspar, 25–30% quartz, 3% biotite–chlorite, 2%           and Kramers (1975).
+muscovite, 1–2% magnetite–hematite, 1% myrmekite,
+and trace apatite and zircon. Plagioclase is anhedral to
+subhedral, mainly equant, and up to 1.5 mm in size,              Results
+although there are also some tabular phenocrysts up to
+4 mm long. Twinning is poorly developed and obscured             Twenty-one analyses were obtained from 20 zircons.
+in some crystals by alteration to sericite and muscovite.        Results are listed in Table 1, and shown in a concordia
+K-feldspar is anhedral, up to 2 mm in size, and exhibits         diagram (Fig. 3).
+
+                                                             1
+201536.1.pdf                                                                                Geochronology Record 1822
+
+
+
+
+               Figure 1.   Hand specimen image of sample 201536: metamonzogranite, Frogmore Bore
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 201536:
+                           metamonzogranite, Frogmore Bore. Numbered circles indicate the approximate
+                           locations of analysis sites
+
+
+
+
+                                                          2
+201536.1.pdf                                                                                                                                                           Geochronology Record 1822
+
+
+
+
+                                         Table 1. Ion microprobe analytical results for zircons from sample 201536: metamonzogranite, Frogmore Bore
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th     232
+                                                        Th   ƒ204       238
+                                                                           U/206Pb            Pb/206Pb
+                                                                                            207
+                                                                                                                    U/206Pb*
+                                                                                                                  238
+                                                                                                                                       Pb*/206Pb*
+                                                                                                                                     207                 238
+                                                                                                                                                            U/206Pb*    207
+                                                                                                                                                                           Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)     238
+                                                        U    (%)           ± 1σ                ± 1σ                 ± 1σ                ± 1σ           date (Ma) ±1σ   date (Ma) ±1σ    (%)
+       I        4      4.1        55     34        0.62      0.261    1.949    0.052    0.18379       0.00149   1.954    0.052    0.18145    0.00168   2664     58     2666     15       0.1
+       I        6      6.1        33     14        0.44      0.155    1.904    0.034    0.18379       0.00323   1.907    0.034    0.18241    0.00334   2718     40     2675     30       -1.6
+       I        2      2.1        96     94        0.98      0.068    1.977    0.023    0.18316       0.00118   1.978    0.023    0.18256    0.00122   2637     26     2676     11       1.5
+       I        14    13.1       169     33        0.19      0.107    1.921    0.019    0.18466       0.00092   1.923    0.019    0.18371    0.00096   2699     22     2687     9        -0.5
+       I        1      1.1       133     79        0.59      0.124    1.974    0.021    0.18483       0.00103   1.976    0.021    0.18372    0.00109   2640     23     2687     10       1.8
+       I        5      5.1       138     40        0.29      0.081    1.957    0.021    0.18506       0.00099   1.959    0.021    0.18433    0.00103   2659     23     2692     9        1.2
+       I        3      3.1        76     36        0.48      0.103    1.942    0.024    0.18537       0.00232   1.944    0.024    0.18445    0.00236   2675     28     2693     21       0.7
+       I        18     17.1       79     33        0.42      0.124    1.976    0.025    0.18567       0.00128   1.978    0.025    0.18457    0.00136   2638     27     2694     12       2.1
+       I        20    19.1        77     42        0.55      0.373    2.012    0.025    0.18789       0.00127   2.019    0.025    0.18457    0.00149   2593     27     2694     13       3.8
+       I        13    12.1        94     71        0.76      0.071    1.999    0.035    0.18567       0.00120   2.001    0.035    0.18505    0.00124   2613     38     2699     11       3.2
+       I        7      6.2       209     160       0.77      0.215    1.932    0.019    0.18702       0.00134   1.936    0.019    0.18511    0.00139   2684     22     2699     12       0.6
+       I        17    16.1       134     109       0.82      0.036    1.950    0.030    0.18613       0.00102   1.950    0.030    0.18580    0.00103   2668     34     2705     9        1.4
+       I        16    15.1        93     53        0.57      -0.072   1.912    0.023    0.18554       0.00121   1.911    0.023    0.18618    0.00125   2713     27     2709     11       -0.2
+       I        10     9.1       179     115       0.64      0.265    1.960    0.019    0.18868       0.00091   1.965    0.019    0.18632    0.00101   2652     22     2710     9        2.1
+       I        11    10.1       107     109       1.01      0.045    1.936    0.022    0.18748       0.00174   1.937    0.022    0.18708    0.00176   2683     25     2717     15       1.2
+       I        19    18.1        82     55        0.67      -0.021   1.989    0.024    0.18707       0.00131   1.989    0.024    0.18726    0.00132   2626     27     2718     12       3.4
+
+
+      X         12     11.1       62     60        0.97      0.000    1.937    0.026    0.18961       0.00162   1.937    0.026    0.18961    0.00162   2683     30     2739     14       2.0
+      X         8      7.1       264     190       0.72      0.157    1.892    0.017    0.19813       0.00082   1.895    0.017    0.19674    0.00087   2731     21     2799     7        2.4
+      X         21    20.1       166     130       0.78      0.078    1.873    0.018    0.19837       0.00092   1.874    0.018    0.19768    0.00094   2757     23     2807     8        1.8
+
+
+      D         9      8.1        22     14        0.61      2.994    3.584    0.073    0.21337       0.00328   3.695    0.078    0.18673    0.00647   1544     29     2714     57       43.1
+      D         15    14.1       107     43        0.40      0.739    1.867    0.021    0.21859       0.00123   1.880    0.021    0.21203    0.00160   2749     26     2921     12       5.9
+
+
+
+
+                                                                                                  3
+201536.1.pdf                                                                                                        Geochronology Record 1822
+
+
+
+
+            Figure 3.    U–Pb analytical data for sample 201536: metamonzogranite, Frogmore Bore. Yellow squares
+                         indicate Group I (magmatic zircons); red circles indicate Group X (inherited zircon cores);
+                         crossed squares indicate Group D (discordance >5%). One analysis in Group D is not shown
+
+
+
+
+Interpretation                                                               Wingate, MTD, Kirkland, CL and Ivanic, TJ 2015, 185997a: granitic
+                                                                               gneiss, Tandys Bore; Geochronology Record 1229: Geological
+The analyses are concordant to strongly discordant                             Survey of Western Australia, 3p.
+(Fig. 3). Two analyses are >5% discordant. The dates                         Wingate, MTD, Kirkland, CL and Ivanic, TJ 2015b, 198212: porphyritic
+obtained from these two analyses (Group D; Table 1)                            monzogranite, Meroin Rock; Geochronology Record 1232:
+are unreliable, and are considered not to be geologically                      Geological Survey of Western Australia, 4p.
+significant. The remaining 19 analyses can be divided into                   Zibra, I 2019, Tuckanarra Suite (A-TU-mg): Geological Survey of
+two groups, based on their 207Pb*/206Pb* ratios and their                       Western Australia, WA Geology Online, Explanatory Notes extract,
+positions within the crystals.                                                  viewed 06 October 2021, <www.dmp.wa.gov.au/ens>.
+
+Group I comprises 16 analyses of 15 zircons (Table 1),                       Zibra, I, Smithies, RH, Wingate, MTD and Kirkland, CL 2014,
+                                                                                Incremental pluton emplacement during inclined transpression:
+which yield a weighted mean 207Pb*/ 206Pb* date of
+                                                                                Tectonophysics, v. 623, p. 100–122, doi:10.1016/j.tecto.2014.03.020.
+2697 ± 7 Ma (MSWD = 1.3).
+Group X comprises three analyses of three zircon
+cores (Table 1), which yield 207Pb*/ 206Pb* dates of                         Re­commended reference for this
+2807– 2739 Ma.                                                               publication
+The date of 2697 ± 7 Ma for the 16 analyses in Group I                       Wingate, MTD, Fielding, IOH, Lu, Y and Smithies, RH 2021, 201536:
+is interpreted as the igneous crystallization age of the                       metamonzogranite, Frogmore Bore; Geochronology Record 1822:
+                                                                               Geological Survey of Western Australia, 4p.
+monzogranite. The dates of 2807–2739 Ma for the
+three analyses in Group X are interpreted as the ages of                     Data obtained:        19 March 2021
+inherited zircons.
+                                                                             Data released:        26 November 2021
+
+References
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+   isotope evolution by a two-stage model: Earth and Planetary Science
+   Letters, v. 26, p. 207–221.
+Van Kranendonk, MJ, Ivanic, TJ, Wingate, MTD and Kirkland, CL 2013,
+   Long-lived, autochthonous development of the Archean Murchison
+   Domain, and implications for Yilgarn Craton tectonics: Precambrian
+   Research, v. 229, p. 49–92.
+
+
+
+                                                                         4
+

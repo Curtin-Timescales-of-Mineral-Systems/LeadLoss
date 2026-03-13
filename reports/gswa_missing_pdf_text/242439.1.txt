@@ -1,0 +1,166 @@
+                                   GSWA Geochronology Record
+                                           www.dmirs.wa.gov.au/geochron
+                                     Department of Mines, Industry Regulation and Safety
+
+242439.1.pdf                                                                                Geochronology Record 1918
+
+                   242439.1: granodiorite gneiss, Mt Marvel quarry
+                          (Yilgarn Craton granites; Youanmi Terrane, Yilgarn Craton)
+                                SS Romano, Y Lu, IOH Fielding, MTD Wingate and TJ Ivanic
+
+
+Location and sampling
+PERENJORI SH50-06, PERENJORI 2139                                                 Zone 50, MGA 411691E 6780029N
+Warox Site TJIROT190059                                                                     Sampled on 15 May 2019
+This sample was collected from the southern side of the Mount Marvel quarry, about 10.6 km east of Pintharuka, 3.6 km
+northwest of Pinjarra Hill, and 1.7 km west of the Morawa Yalgoo Road.
+
+Geological context
+The unit sampled is a granodiorite gneiss of Yilgarn Craton granites (Fig. 1). A metamonzogranite of the Bunnawarra
+Suite, Thundelarra Supersuite, sampled about 32 km to the east, yielded an igneous crystallization age of 2946 ± 4 Ma
+(GSWA 219311, Wingate et al. 2020). Although the 3010–2930 Ma Thundelarra Supersuite was previously considered the
+oldest basement unit in the Youanmi Terrane (Ivanic et al., 2022), the igneous crystallization age of this sample discussed
+below suggests existence of even older basement up to at least c. 3275 Ma in the Youanmi Terrane.
+
+
+
+
+                       Figure 1.    Hand specimen image for sample 242439: granodiorite
+                                    gneiss, Mount Marvel quarry
+
+Petrographic description
+The sample is a fine- to medium-grained, equigranular biotite granodiorite gneiss, consisting of about 55% plagioclase,
+25% quartz, 15% K-feldspar, 5% biotite and accessory magnetite, apatite and zircon. Plagioclase occurs as subhedral,
+mainly equant to slightly tabular grains to 2.5 mm in size with most grains altered by sericite and minor muscovite. Quartz
+occurs as anhedral grains up to 1 mm in size, forming irregular aggregates between larger feldspar grains, or as
+recrystallized polygonal grains to 0.1 mm in diameter throughout the sample. K-feldspar is perthitic, occurs as anhedral
+grains to 2 mm in diameter, and is often fringed by recrystallized polygonal grains of mainly K-feldspar. Some relict K-
+feldspar contains inclusions of plagioclase and quartz. Biotite is brown and occurs as subhedral laths to 0.5 mm in length
+within small aggregates of either decussate or well-aligned grains, mostly around the margins of feldspar. Biotite is also a
+minor component of the recrystallized aggregates. Magnetite occurs as disseminated, anhedral and subhedral grains within
+small aggregates of biotite. Apatite occurs as euhedral grains to 0.1 mm in size. Partial recovery involving grain boundary
+adjustment in quartz and minor fine-grained recrystallization indicate a moderate metamorphic overprint.
+
+                                                              1
+Zircon morphology
+Zircons isolated from this sample are colourless to dark brown or opaque and subhedral to euhedral. The crystals are up to
+250 µm long, and equant to elongate, with aspect ratios up to 5:1. In cathodoluminescence (CL) images, concentric zoning
+is ubiquitous, and some crystals appear to contain older or metamict cores. A CL image of representative zircons is shown
+in Figure 2.
+
+
+
+
+Figure 2.   Cathodoluminescence image of representative zircons from sample 242439: granodiorite gneiss, Mount
+            Marvel quarry. Numbered circles indicate the approximate locations of analysis sites
+
+Analytical details
+This sample was analysed on 10–11 February 2022, using SHRIMP-B. Fourteen analyses of the M257 standard were
+obtained during the session, of which 12 analyses indicated an external spot-to-spot (reproducibility) uncertainty of 0.50%
+(1σ) and a 238U/206Pb* calibration uncertainty of 0.14% (1σ). Calibration uncertainties are included in the errors of
+238U/206Pb* ratios and dates listed in Table 1 (provided in the Links section). Common-Pb corrections were applied to all
+analyses using contemporaneous isotopic compositions determined according to the model of Stacey and Kramers (1975).
+
+Results
+Eighteen analyses were obtained from 18 zircons. Results are listed in Table 1 and shown in a concordia diagram (Fig. 3).
+
+Interpretation
+The analyses are concordant to moderately discordant (Fig. 2). One analysis is >8% discordant. The date obtained from this
+analysis (Group D, Table 1) is unreliable and considered not to be geologically significant. The remaining 17 analyses can
+be divided into four groups, based on their 207Pb*/206Pb* ratios.
+
+Group I comprises 11 analyses (Table 1), which yield a weighted mean 207Pb*/206Pb* date of 3275 ± 5 Ma (MSWD =
+2.1).
+
+Group X comprises one analysis of a zircon core (Table 1), which yields a 207Pb*/206Pb* date of 3506 ± 4 Ma (1σ).
+
+                                                             2
+Group P comprises three analyses (Table 1), which yield 207Pb*/206Pb* dates of 3260–3250 Ma.
+
+Group Z comprises two analyses (Table 1), which yield 207Pb*/206Pb* dates of c. 1492 and 1491 Ma.
+The date of 3275 ± 5 Ma for the 11 analyses in Group I is interpreted as the igneous crystallization age of the granodiorite
+protolith.
+The date of 3506 ± 4 Ma for the single analysis in Group X is interpreted as the age of an inherited component. The dates
+of 3260–3250 Ma for the three analyses in Group P are interpreted to reflect minor ancient loss of radiogenic Pb. The dates
+of c. 1492 and 1491 Ma for the two analyses in Group Z are interpreted as the ages of contaminants introduced during
+sample processing.
+
+
+
+
+Figure 3.   U–Pb analytical data for zircons from sample 242439: granodiorite gneiss, Mount Marvel quarry. Yellow
+            squares indicate Group I (magmatic zircons); red circle indicates Group X (xenocrystic zircon core);
+            black squares indicate Group P (radiogenic-Pb loss); crossed square indicates Group D (discordance
+            >8%). Two analyses in Group Z are not shown
+
+
+
+
+Links
+Table 1. Ion microprobe analytical results for zircons from sample 242439: granodiorite gneiss, Mount Marvel quarry:
+242439.1.Table1.xls
+SHRIMP spot images: 242439_spots.pdf
+Introduction to geochronology information: Intro_2023.pdf
+References
+Ivanic, TJ, Wingate, MTD, Lowrey, JR and Lu, Y 2022, Formation of the Yilgarn protocraton by rift-related magmatism
+     from 3.01 to 2.92 Ga: Geological Survey of Western Australia, Report 232, 34p.
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead isotope evolution by a two-stage model: Earth and
+     Planetary Science Letters, v. 26, p. 207–221.
+Wingate, MTD, Lu, Y and Zibra, I 2020, 219311: metamonzogranite, North Paradise Well; Geochronology Record 1680:
+     Geological Survey of Western Australia, 4p., <www.dmirs.wa.gov.au/geochron>. View Reference online
+                                                              3
+Recommended reference for this publication
+Romano, SS, Lu, Y, Fielding, IOH, Wingate, MTD and Ivanic, TJ 2023, 242439.1: granodiorite gneiss, Mt Marvel quarry;
+   Geochronology Record 1918: Geological Survey of Western Australia, WA Geology Online, Explanatory Notes
+   extract viewed 11 October 2023. <www.dmirs.wa.gov.au/geochron>
+
+ Data obtained: 11 February 2022
+ Date released: 31 October 2023
+
+This page was last modified on 11 October 2023.
+
+Grid references in this publication refer to the Geocentric Datum of Australia 2020 (GDA20). All locations are quoted to at least the
+nearest 100 m.
+Capitalized names in text refer to standard 1:100 000 map sheets, unless otherwise indicated.
+WAROX is GSWA’s field observation and sample database. WAROX site IDs have the format ‘ABCXXXnnnnnnSS’, where ABC =
+geologist username, XXX = project or map code, nnnnnn = 6-digit site number, and SS = optional alphabetic suffix (maximum 2
+characters).
+Isotope and element analyses are routinely conducted using the GeoHistory laser ablation ICP-MS and Sensitive High-Resolution
+Ion Microprobe (SHRIMP) facilities at the John de Laeter Centre (JdLC), Curtin University, with the financial support of the
+Australian Research Council and AuScope National Collaborative Research Infrastructure Strategy (NCRIS), and the Microscopy
+Australia laser ablation ICP-MS facility at the Centre for Microscopy, Characterisation & Analysis (CMCA), The University of
+Western Australia (UWA). The TESCAN Integrated Mineral Analyser (TIMA) instrument was funded by a grant from the Australian
+Research Council (LE140100150) and is operated by the JdLC with the support of the Geological Survey of Western Australia, UWA
+and Murdoch University. Mineral analyses are routinely obtained using the electron probe microanalyser (EPMA) facilities at the
+CMCA at UWA, at Adelaide Microscopy at the University of Adelaide and the Central Science Laboratory at the University of
+Tasmania.
+Digital data related to WA Geology Online, including geochronology and digital geology, are available online at the Department’s
+Data and Software Centre and may be viewed in map context at GeoVIEW.WA. For further information about this Geochronology
+Record, please contact geochronology@dmirs.wa.gov.au and quote the geochronology record and/or the sample number.
+Further details of geoscience products are available from:
+Information Centre
+Department of Mines, Industry Regulation and Safety
+100 Plain Street
+EAST PERTH, WA 6004
+Telephone: +61 8 9222 3459 | Facsimile: +61 8 9222 3444
+www.dmirs.wa.gov.au /GSWApublications
+Acknowledgment of Country
+The Government of Western Australia acknowledges Aboriginal people as the traditional custodians throughout Western Australia
+and their enduring connection to the land, waterways and community. We pay our respects to Elders past and present.
+Disclaimer
+This product uses information from various sources. The Department of Mines, Industry Regulation and Safety (DMIRS) and the
+State cannot guarantee the accuracy, currency or completeness of the information. Neither the department nor the State of Western
+Australia nor any employee or agent of the department shall be responsible or liable for any loss, damage or injury arising from the
+use of or reliance on any information, data or advice (including incomplete, out of date, incorrect, inaccurate or misleading
+information, data or advice) expressed or implied in, or coming from, this publication or incorporated into it by reference, by any
+person whosoever.
+
+                   © State of Western Australia (Department of Mines, Industry Regulation and Safety) 2023
+With the exception of the Western Australian Coat of Arms and other logos, and where otherwise noted, these data are provided
+under a Creative Commons Attribution 4.0 International License. (https://creativecommons.org/licenses/by/4.0/legalcode)
+
+
+
+
+                                                                  4
+

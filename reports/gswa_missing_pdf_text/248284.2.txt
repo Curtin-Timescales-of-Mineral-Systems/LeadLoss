@@ -1,0 +1,163 @@
+                                GSWA Geochronology Record
+                                           www.dmirs.wa.gov.au/geochron
+                                     Department of Mines, Industry Regulation and Safety
+
+248284.2.pdf                                                                               Geochronology Record 1908
+
+                    248284.2: metamonzogranite, Merino prospect
+                          (Yilgarn Craton granites; Youanmi Terrane, Yilgarn Craton)
+                                      IOH Fielding, Y Lu, MTD Wingate and TJ Ivanic
+
+
+Location and sampling
+CORRIGIN SI50-03, NAREMBEEN 2533                                                    Zone 50, MGA 636856E 6440455N
+Warox Site TJISWT000026                                                                 Sampled on 22 October 2020
+This sample was collected from the 72.4 – 74.0 m depth interval of diamond drillcore THDD025, drilled in 2018 by
+Explaurum Operations Pty Ltd at the Merino prospect of their Tampia gold project (Franey, 2019). The drillhole is located
+about 5.6 km west of Rodger Road, 2.8 km southwest of Mount Arrowsmith, and 2.2 km north of Tampia Hill.
+
+Geological context
+The unit sampled is a metamonzogranite (Fig. 1) within the western Youanmi Terrane of the Yilgarn Craton (Quentin de
+Gromard et al., 2021). Monazites from this sample yielded an age of metamorphism of 2617 ± 8 Ma (Fielding et al, 2022).
+A metagranodiorite sampled about 30 km to the north yielded an igneous crystallization age of 2657 ± 5 Ma (GSWA
+250432, Wingate et al., 2021). A high-Ca monzogranite sampled about 31 km to the east-northeast yielded U–Pb zircon
+dates of c. 2680–2630 Ma (Qui and McNaughton, 1999).
+
+
+
+
+                       Figure 1. Drillcore image (wet surface) of sample 248284:
+                                 metamonzogranite, Merino prospect
+
+Petrographic description
+The sample is an equigranular, medium-grained, cordierite–orthopyroxene–garnet-bearing metamonzogranite (Fig. 1),
+consisting of about 30–35% K-feldspar, 30% quartz, 25% plagioclase, 3% myrmekite, 3% biotite, 2% garnet, 1%
+orthopyroxene, 1% magnetite, <1% cordierite and accessory muscovite, sulfide minerals and zircon. K-feldspar is anhedral
+to subhedral, up to 4.5 mm long. Larger grains are microperthitic, some exhibit microcline twinning, and many contain
+round inclusions of quartz and plagioclase. Quartz is anhedral, irregular, up to 6 mm in size, weakly strained, and exhibits
+smooth, curved boundaries with adjacent feldspar grains resulting in a semipolygonal texture. Plagioclase (andesine, An32)
+is anhedral to subhedral, equant to slightly tabular, and up to 4 mm in size. Curved lobes of myrmekite occur at the margins
+of some K-feldspar grains. Biotite forms anhedral skeletal laths up to 1.5 mm long, intergrown with quartz, and smaller
+bladed laths, some of which contain randomly oriented acicular rutile. Garnet is anhedral, embayed, fractured and up to 4.5
+                                                             1
+mm in size. Orthopyroxene (hypersthene) is subhedral, equant, up to 1 mm in size and associated with biotite. Cordierite is
+anhedral and >2 mm in size. Magnetite is anhedral to subhedral, equant, embayed, and up to 0.8 mm in diameter. Muscovite
+forms anhedral and subhedral laths up to 0.5 mm long and is partly replaced by carbonate. The sample lacks a tectonic
+foliation, although its semipolygonal texture, abundance of microcline and myrmekite, indicate it has been deformed and
+partly recovered at moderate metamorphic conditions (at least amphibolite facies, based on the presence of cordierite). The
+sample retains its igneous texture, and the garnet and orthopyroxene may be primary rather than metamorphic.
+
+Zircon morphology
+Zircons isolated from this sample are colourless to dark brown and mainly subhedral, and slightly rounded. The crystals are
+up to 450 µm long, and equant to slightly elongate, with aspect ratios up to 4:1. In cathodoluminescence (CL) images,
+most zircons exhibit concentric zoning, and some appear to contain older cores. A CL image of representative zircons is
+shown in Figure 2.
+
+
+
+
+Figure 2. Cathodoluminescence image of representative zircons from sample 248284:
+          metamonzogranite, Merino prospect. Numbered circles indicate the approximate
+          locations of analysis sites
+
+Analytical details
+This sample was analysed on 3–4 June 2021, using SHRIMP-B. Twelve analyses of the M257 standard were obtained
+during the session, of which 10 analyses indicated an external spot-to-spot (reproducibility) uncertainty of 0.50% (1σ) and a
+238U/206Pb* calibration uncertainty of 0.15% (1σ). Isotopic mass fractionation of 207Pb*/206Pb* ratios during the session
+was corrected by reference to the OGC1 standard; measured ratios were increased by 0.24%. Calibration uncertainties are
+included in the errors of 238U/206Pb* ratios and dates listed in Table 1 (provided in the Links section). Common-Pb
+corrections were applied to all analyses using contemporaneous isotopic compositions determined according to the model
+of Stacey and Kramers (1975).
+
+
+
+                                                             2
+Results
+Nineteen analyses were obtained from 18 zircons. Results are listed in Table 1 and shown in a concordia diagram (Fig. 3).
+
+Interpretation
+The analyses are concordant to strongly discordant (Fig. 3). Four analyses are >5% discordant. The dates obtained from
+these four analyses (Group D; Table 1) are unreliable and considered not to be geologically significant. The remaining 15
+analyses form a single group, based on their 207Pb*/206Pb* ratios.
+
+Group I comprises 15 analyses of 15 zircons (Table 1), which yield a weighted mean 207Pb*/206Pb* date of 2639 ± 7 Ma
+(MSWD = 2.2).
+The date of 2639 ± 7 Ma for the 15 analyses in Group I is interpreted as the igneous crystallization age of the
+metamonzogranite.
+
+
+
+
+Figure 3. U–Pb analytical data for zircons from sample 248284: metamonzogranite, Merino
+          prospect. Yellow squares indicate Group I (magmatic zircons); crossed squares
+          indicate Group D (discordance >5%). One analysis in Group D is not shown
+
+Links
+Table 1. Ion microprobe analytical results for zircons from sample 248284: metamonzogranite, Merino prospect:
+248284.2.Table1.xls
+SHRIMP spot images: 248284_spots.pdf
+Introduction to geochronology information: Intro_2023.pdf
+References
+Fielding, IOH, Wingate, MTD, Ivanic, TJ and Fisher, CM 2022, 248284: metamonzogranite, Merino prospect;
+     Geochronology Record 1879: Geological Survey of Western Australia, 4p., <www.dmirs.wa.gov.au/geochron>.
+Franey, D 2019, Tampia Gold Project EIS co-funded Deep Diamond Drilling (R#16); Explaurum Operations Pty Ltd:
+     Geological Survey of Western Australia, Statutory mineral exploration report A119888, 18p.
+Qiu, YM and McNaughton, NJ 1999, Source of Pb in orogenic lode-gold mineralisation: Pb isotope constraints from deep
+     crustal rocks from the southwestern Archaean Yilgarn Craton, Australia: Mineralium Deposita, v. 34, p. 366–381.
+                                                              3
+Quentin de Gromard, R, Ivanic, TJ and Zibra, I 2021, Pre-Mesozoic interpreted bedrock geology of the southwest Yilgarn,
+     2021, in Accelerated Geoscience Program extended abstracts: Geological Survey of Western Australia, Record
+     2021/4, p. 122–144.
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead isotope evolution by a two-stage model: Earth and
+     Planetary Science Letters, v. 26, p. 207–221.
+Wingate, MTD, Fielding, IOH, Lu, Y and Ivanic, TJ 2021, 250432: metagranodiorite, Chitterberrin prospect;
+     Geochronology Record 1799: Geological Survey of Western Australia, 4p., <www.dmirs.wa.gov.au/geochron>.
+
+Recommended reference for this publication
+Fielding, IOH, Lu, Y, Wingate, MTD and Ivanic, TJ 2023, 248284.2: metamonzogranite, Merino prospect; Geochronology
+     Record 1908: Geological Survey of Western Australia, WA Geology Online, Explanatory Notes extract viewed 5 July
+     2023. <www.dmirs.wa.gov.au/geochron>
+
+ Data obtained: 4 June 2021
+ Date released: 30 June 2023
+
+This page was last modified on 26 June 2023.
+
+Grid references in this publication refer to the Geocentric Datum of Australia 2020 (GDA20). All locations are quoted to at least the
+nearest 100 m.
+
+Capitalized names in text refer to standard 1:100 000 map sheets, unless otherwise indicated.
+
+WAROX is GSWA's field observation and sample database. WAROX site IDs have the format ‘ABCXXXnnnnnnSS’, where ABC =
+geologist username, XXX = project or map code, nnnnnn = 6 digit site number, and SS = optional alphabetic suffix (maximum 2
+characters).
+
+Digital data related to WA Geology Online, including geochronology and digital geology, are available online at the Department's
+Data and Software Centre and may be viewed in map context at GeoVIEW.WA. For further information about this Geochronology
+Record, please contact geochronology@dmirs.wa.gov.au and quote the geochronology record and/or the sample number.
+
+Further details of geoscience products are available from:
+Information Centre
+Department of Mines, Industry Regulation and Safety
+100 Plain Street
+EAST PERTH, WA 6004
+Telephone: +61 8 9222 3459 | Facsimile: +61 8 9222 3444
+www.dmirs.wa.gov.au /GSWApublications
+
+Disclaimer
+This product uses information from various sources. The Department of Mines, Industry Regulation and Safety(DMIRS) and the
+State cannot guarantee the accuracy, currency or completeness of the information. Neither the department nor the State of Western
+Australia nor any employee or agent of the department shall be responsible or liable for any loss, damage or injury arising from the
+use of or reliance on any information, data or advice(including incomplete, out of date, incorrect, inaccurate or misleading
+information, data or advice) expressed or implied in, or coming from, this publication or incorporated into it by reference, by any
+person whosoever.
+
+                 © State of Western Australia (Department of Mines, Industry Regulation and Safety) 2023
+With the exception of the Western Australian Coat of Arms and other logos, and where otherwise noted, these data are provided
+under a Creative Commons Attribution 4.0 International License. (https://creativecommons.org/licenses/by/4.0/legalcode)
+
+
+
+
+                                                                  4
+

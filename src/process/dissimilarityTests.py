@@ -1,6 +1,6 @@
 from enum import Enum
 
-from scipy.stats import stats
+from scipy.stats import ks_2samp
 
 
 class DissimilarityTest(Enum):
@@ -10,13 +10,13 @@ class DissimilarityTest(Enum):
     # CRAMER_VON_MISES = "Cramér-von-Mises"
 
     def __eq__(self, other):
-        return self.value == other.value
+        return self.value == getattr(other, "value", other)
 
     def perform(self, distribution1, distribution2):
         if self == DissimilarityTest.KOLMOGOROV_SMIRNOV:
             if not distribution1 or not distribution2:
                 return (1.0, 0.0)
-            return stats.ks_2samp(distribution1, distribution2)
+            return ks_2samp(distribution1, distribution2)
 
     def getComparisonValue(self, statistic):
         if self == DissimilarityTest.KOLMOGOROV_SMIRNOV:

@@ -1,0 +1,202 @@
+245122.1.pdf                                                                                         Geochronology Record 1837
+
+
+
+
+                245122: volcaniclastic sandstone, Carbine mine
+                   (‘Paradigm sandstone’, Black Flag Group, Kalgoorlie Terrane,
+                         Eastern Goldfields Superterrane, Yilgarn Craton)
+
+
+
+Location and sampling                                               suggest volcanic provenance. Quartz grains are variably
+                                                                    strained, and some are fractured or slightly recrystallized
+Kalgoorlie (SH 51-9), Davyhurst (3037)                              at their margins. About half the quartz is recrystallized and
+                  MGA Zone 51, 301832E 6627510N                     forms well-aligned lenses up to 7 mm long, composed of
+                                                                    polygonal quartz with intergrown carbonate and sulfide
+Sampled on 22 September 2020                                        minerals. Secondary biotite forms anhedral, irregular
+This sample was collected from the 263.90 – 265.72 m                grains up to 1 mm in size, and crudely aligned subhedral
+depth interval of drillcore PDDD18003, drilled in 2018 by           laths up to 0.3 mm long. Some biotite is slightly altered
+Northern Star Resources Limited at their Carbine prospect.          to chlorite. Sulfide minerals include irregular, anhedral
+The drillhole is located on Mount Burges Station, about             pyrrhotite up to 1 mm in size and anhedral arsenopyrite
+7.8 km east-southeast of Rowles Lagoon, 5.5 km southwest            up to 0.1 mm across. The sandstone is interpreted as
+of Brown Lagoon, and 0.6 km north-northwest of the                  relatively poorly sorted and derived from a felsic volcanic
+Carbine mine open pit.                                              source. Minor variation in grain size is interpreted as
+                                                                    primary layering and is parallel to the foliation defined by
+                                                                    quartz lenses and biotite. The sample has been partially
+                                                                    recrystallized at the biotite zone of greenschist facies.
+Geological context
+The unit sampled is a felsic volcaniclastic sandstone,
+known informally as the Paradigm sandstone, and assigned            Zircon morphology
+to the Black Flag Group (Morris, 1998; Hall et al., 2021).
+The 2692–2655 Ma Black Flag Group of the southwestern               Zircons isolated from this sample are colourless to dark
+Eastern Goldfields Superterrane is an extensive northwest-          brown and mainly subhedral. The crystals are up to 350 μm
+trending unit, consisting of felsic metavolcaniclastic and          long, and equant to elongate, with aspect ratios up to 5:1.
+metasedimentary rocks with subordinate felsic and mafic             In cathodoluminescence (CL) images, concentric zoning is
+metavolcanic rocks (Squire et al., 2010). The Black Flag            ubiquitous. A CL image of representative zircons is shown
+Group overlies the 2753–2680 Ma Kalgoorlie Group, is                in Figure 2.
+unconformably overlain by the 2664–2655 Ma Merougil
+Formation (Hall et al., 2021), and in part is intruded by
+the c. 2680 Ma Golden Mile Dolerite (Rasmussen et al.,              Analytical details
+2009). A porphyritic andesite of the Black Flag Group,              This sample was analysed on 25–26 June and 8 July
+collected about 36 km to the east-southeast, yielded                2021, using SHRIMP-B. Analyses 1.1 to 18.1 (spot
+an igneous crystallization age of 2690 ± 7 Ma (GSWA                 numbers 1–18) were obtained during the first session,
+211051, Lu et al., 2017).                                           together with 10 analyses of the M257 standard, of
+                                                                    which seven analyses indicated an external spot-to-
+                                                                    spot (reproducibility) uncertainty of 1.29% (1σ) and
+Petrographic description                                            a 238U/ 206Pb* calibration uncertainty of 0.53% (1σ).
+                                                                    Analyses 19.1 to 7.2 (spot numbers 19–26) were obtained
+The sample is a foliated volcaniclastic sandstone (Fig. 1),         during the second session, together with three analyses
+consisting of about 60–70% microcrystalline material and            of the M257 standard, of which two analyses indicated
+altered plagioclase, 20–25% quartz, 7–8% biotite, 5–7%              an external spot-to-spot (reproducibility) uncertainty of
+sulfide minerals, and minor chlorite, carbonate minerals            0.50% (1σ) and a 238U/206Pb* calibration uncertainty of
+and zircon. The texture of this rock has been substantially         0.27% (1σ). Calibration uncertainties are included in the
+modified by deformation, recrystallization and phyllic              errors of 238U/206Pb* ratios and dates listed in Table 1.
+alteration. The microcrystalline material displays few              Common-Pb corrections were applied to all analyses
+grain shapes or internal textures although rare shapes up           using contemporaneous isotopic compositions determined
+to 2 mm long may be volcanic-derived clasts of felsic               according to the model of Stacey and Kramers (1975).
+groundmass material. Plagioclase grain shapes are not well
+preserved, although a few equant to tabular grains are up
+to 1 mm in size. Plagioclase has been albitized and some            Results
+grains are altered to sericite and carbonate. Detrital quartz
+grains constitute about 10% of the sample and a similar             Twenty-six analyses were obtained from 22 zircons. Results
+amount occurs in recrystallized lenses. Quartz grains               are listed in Table 1, and shown in concordia diagrams
+are up to 2 mm in size and rare preserved embayments                (Figs 3, 4).
+
+                                                                1
+245122.1.pdf                                                                               Geochronology Record 1837
+
+
+
+
+               Figure 1.   Drillcore image (wet surface) of sample 245122: volcaniclastic sandstone,
+                           Carbine mine
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 245122:
+                           volcaniclastic sandstone, Carbine mine. Numbered circles indicate the
+                           approximate locations of analysis sites
+
+
+
+
+                                                         2
+245122.1.pdf                                                                                                                                                                Geochronology Record 1837
+
+
+
+
+                                        Table 1. Ion microprobe analytical results for zircons from sample 245122: volcaniclastic sandstone, Carbine mine
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th        Th
+                                                    232
+                                                              ƒ204          U/206Pb
+                                                                          238                 207
+                                                                                                 Pb/206Pb              U/206Pb*
+                                                                                                                     238
+                                                                                                                                           Pb*/206Pb*
+                                                                                                                                         207                  238
+                                                                                                                                                                 U/206Pb*    207
+                                                                                                                                                                                Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)      238
+                                                      U       (%)           ± 1σ                  ± 1σ                 ± 1σ                 ± 1σ            date (Ma) ±1σ   date (Ma) ±1σ    (%)
+       I        13    13.1       337     306        0.91      0.023     1.978    0.030    0.18426        0.00065   1.979    0.030    0.18405     0.00066    2637     34     2690     6        2.0
+       I        16    16.1       431     175        0.41      0.023    2.023     0.030    0.18473        0.00059   2.023    0.030    0.18452     0.00060    2589     33     2694     5        3.9
+       I        3      3.1       126     120        0.95     -0.016     2.011    0.034    0.18439        0.00107   2.011    0.034    0.18453     0.00108    2602     37     2694     10       3.4
+       I        8      8.1       337     147        0.43      0.019    2.057     0.031    0.18484        0.00068   2.057    0.031    0.18467     0.00069    2554     33     2695     6        5.3
+       I        26     7.2       652     298        0.46      0.023     1.975    0.014    0.18510        0.00042   1.975    0.014    0.18490     0.00043    2641     16     2697     4        2.1
+       I        15    15.1       271     147        0.54      0.057     2.016    0.031    0.18559        0.00078   2.017    0.031    0.18509     0.00080    2596     34     2699     7        3.8
+       I        25     4.2       402     352        0.88      0.000     2.100    0.016    0.18509        0.00053   2.100    0.016    0.18509     0.00053    2510     16     2699     5         7.0
+       I        19    19.1       383      75        0.20     -0.004     1.977    0.015    0.18556        0.00055   1.977    0.015    0.18559     0.00055    2639     17     2704     5        2.4
+       I        11     11.1      677     327        0.48      0.014     1.935    0.028    0.18622        0.00052   1.935    0.028    0.18609     0.00052    2686     33     2708     5        0.8
+       I        23     9.2       267     181        0.68      0.027    2.035     0.016    0.18637        0.00065   2.036    0.016    0.18612     0.00066    2576     18     2708     6        4.9
+       I        14    14.1       507      79        0.16      0.012     1.968    0.029    0.18629        0.00056   1.969    0.029    0.18618     0.00056    2648     33     2709     5        2.2
+       I        7      7.1       302     173        0.57      0.041    2.008     0.031    0.18734        0.00072   2.009    0.031    0.18698     0.00073    2604     34     2716     6        4.1
+
+
+      P         10    10.1       554     235        0.42      0.058    2.147     0.032    0.17825        0.00052   2.148    0.032    0.17773     0.00054    2464     31     2632     5        6.4
+      P         18    18.1       798     734        0.92      0.006    2.135     0.031    0.17793        0.00045   2.135    0.031    0.17788     0.00046    2476     31     2633     4        6.0
+      P         24    14.2       589     175        0.30      0.015    2.032     0.015    0.18008        0.00046   2.032    0.015    0.17995     0.00046    2579     16     2652     4        2.8
+      P         9      9.1       495     247        0.50      0.004    2.058     0.031    0.18220        0.00054   2.058    0.031    0.18216     0.00054    2553     32     2673     5        4.5
+      P         4      4.1       609     340        0.56      0.031     2.018    0.030     0.18311       0.00048   2.019    0.030    0.18283     0.00049    2594     32     2679     4        3.2
+      P         2      2.1       567     287        0.51      0.014     1.992    0.029     0.18301       0.00051   1.992    0.029    0.18289     0.00052    2623     33     2679     5        2.1
+      P         5      5.1       265     138        0.52      0.037     1.973    0.030    0.18404        0.00074   1.974    0.030    0.18371     0.00075    2642     34     2687     7        1.7
+      P         1      1.1       505     312        0.62      0.107    2.006     0.030    0.18467        0.00056   2.009    0.030    0.18371     0.00059    2605     33     2687     5        3.1
+
+
+      D         12    12.1      2002     230        0.11      0.014    3.128     0.045    0.12478        0.00050   3.129    0.045    0.12466     0.00050    1788     23     2024     7        11.7
+      D         6      6.1      2031     795        0.39      0.028    2.719     0.039    0.14092        0.00050   2.720    0.039    0.14066     0.00050    2018     25     2235     6        9.7
+      D         17     17.1     1676     511        0.31      0.141    2.898     0.043    0.14288        0.00033   2.902    0.043    0.14163     0.00036    1909     25     2247     4        15.1
+      D         20    20.1       927     392        0.42      0.042    2.592     0.022    0.15490        0.00126   2.593    0.022    0.15453     0.00126    2103     16     2397     14       12.3
+      D         21    21.1       868     505        0.58      0.015    2.336     0.016    0.16597        0.00035   2.336    0.016    0.16583     0.00036    2297     14     2516     4        8.7
+      D         22    22.1       706     480        0.68      0.005    2.437     0.017    0.16966        0.00039   2.437    0.017    0.16962     0.00039    2216     13     2554     4        13.2
+
+
+
+
+                                                                                                     3
+245122.1.pdf                                                                                      Geochronology Record 1837
+
+
+
+
+          Figure 3.   U–Pb analytical data for sample 245122: volcaniclastic sandstone, Carbine mine. Yellow squares
+                      indicate Group I (magmatic zircons); black squares indicate Group P (radiogenic-Pb loss);
+                      crossed squares indicate Group D (discordance >7%)
+
+
+
+
+          Figure 4.   Expanded view of U–Pb analytical data for sample 245122: volcaniclastic sandstone, Carbine
+                      mine. Symbols as in Figure 3
+
+
+
+
+                                                              4
+245122.1.pdf                                                                                                              Geochronology Record 1837
+
+
+Interpretation                                                                     Morris, PA 1998, Archaean felsic volcanism in parts of the Eastern
+                                                                                     Goldfields region, Western Australia: Geological Survey of Western
+The analyses are concordant to strongly discordant                                   Australia, Report 55, 80p.
+(Fig. 3). Six analyses are >7% discordant. The dates                               Rasmussen, B, Mueller, AG and Fletcher, IR 2009, Zirconolite and
+obtained from these six analyses (Group D; Table 1)                                   xenotime U-Pb age constraints on the emplacement of the Golden
+are unreliable, and are considered not to be geologically                             Mile Dolerite sill and gold mineralization at the Mt Charlotte mine,
+significant. The remaining 20 analyses can be divided into                            Eastern Goldfields Province, Yilgarn Craton, Western Australia:
+two groups, based on their 207Pb*/206Pb* ratios.                                      Contributions to Mineralogy and Petrology, v. 157, p. 559–572.
+                                                                                   Squire, RJ, Allen, CM, Cas, RAF, Campbell, IH, Blewett, RS and
+Group I comprises 12 analyses of 11 zircons (Table 1),                                Nemchin, AA 2010, Two cycles of voluminous pyroclastic volcanism
+which yield a weighted mean 207Pb*/ 206Pb* date of                                    and sedimentation related to episodic granite emplacement during the
+2701 ± 5 Ma (MSWD = 1.8).                                                             late Archean: Eastern Yilgarn Craton, Western Australia: Precambrian
+                                                                                      Research, v. 183, no. 2, p. 251–274.
+Group P comprises eight analyses of eight zircons
+                                                                                   Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+( Ta b l e 1 ) , w h i c h y i e l d 2 0 7 P b * / 2 0 6 P b * d a t e s o f          isotope evolution by a two-stage model: Earth and Planetary Science
+2687– 2632 Ma.                                                                        Letters, v. 26, p. 207–221.
+The date of 2701 ± 5 Ma for the 12 analyses in Group I
+is interpreted as the igneous crystallization age of the
+volcanic rock. The dates of 2687–2632 Ma for the
+                                                                                   Re­commended reference for this
+10 analyses in Group P are interpreted to reflect loss of                          publication
+radiogenic Pb.                                                                     Wingate, MTD, Fielding, IOH, Lu, Y and Smithies, RH 2021, 245122:
+                                                                                     volcaniclastic sandstone, Carbine mine; Geochronology Record 1837:
+                                                                                     Geological Survey of Western Australia, 5p.
+References                                                                         Data obtained:        8 July 2021
+Hall, CE, Wyche, NL and Sapkota, J (partial report), Black Flag Group
+   (A-BF-xf-s): Geological Survey of Western Australia, WA Geology                 Data released:        10 December 2021
+   Online, Explanatory Notes extract, viewed 09 February 2021,
+   <www.dmp.wa.gov.au/ens>.
+Lu, Y, Wingate, MTD, Sapkota, JK and De Paoli, M 2017, 211051:
+   porphyritic andesite, White Flag Lake; Geochronology Record 1426:
+   Geological Survey of Western Australia, 4p.
+
+
+
+
+                                                                               5
+

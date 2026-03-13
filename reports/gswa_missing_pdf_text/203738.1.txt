@@ -1,0 +1,195 @@
+203738.1.pdf                                                                                             Geochronology Record 1881
+
+
+
+
+                    203738: porphyritic metasyenite, Lake Carey
+                                (Yilgarn Craton granites, Kurnalpi Terrane,
+                             Eastern Goldfields Superterrane, Yilgarn Craton)
+
+
+
+Location and sampling                                                inclusions of rutile and likely represents former amphibole
+                                                                     phenocrysts. The groundmass is dominated by granular-
+Laverton (SH 51-2), Laverton (3340)                                  textured anhedral to subhedral feldspar laths (K-feldspar
+                   MGA Zone 51, 436769E 6797459N                     and minor plagioclase), and minor interstitial quartz.
+                                                                     Minor acicular to equant apatite crystals form aggregates
+Sampled on 2 September 2020                                          associated with biotite. Accessory minerals include pyrite
+                                                                     and zircon. Aggregates and discontinuous stringers of
+This sample was collected from the 341.0 – 343.0 m depth
+                                                                     carbonate minerals are associated with fine-grained,
+interval of drillcore LCDD0076, drilled in 2017 by GSM
+                                                                     irregular biotite and feldspars are partially altered to sericite.
+Mining Company Pty Ltd at their Northern Fleet prospect.
+The drillhole is located on Mount Weld Station, in the
+northeastern part of Lake Carey, about 20 km southeast of
+Mount Margaret, 13.1 km north-northwest of Sunrise Dam,              Zircon morphology
+and 9.3 km west-southwest of Brumby Well.                            Zircons isolated from this sample are colourless to dark
+                                                                     brown and anhedral to subhedral. The crystals are up to
+                                                                     200 µm long, and mostly equant, with aspect ratios less than
+Geological context                                                   2:1. In cathodoluminescence (CL) images, concentric zoning
+                                                                     is ubiquitous, and some zircons exhibit high-U, metamict
+The unit sampled is a porphyritic metasyenite (Fig. 1)
+within the Laverton greenstone belt of the Kurnalpi Terrane          outer zones. A CL image of all zircons is shown in Figure 2.
+(Stewart, 2001; Standing, 2008). The unit consists of
+multiple intrusions, mainly metamorphosed syenite and
+monzonite, that intruded metasedimentary and minor felsic            Analytical details
+metavolcanic rocks in the Lake Carey domain (Standing,               This sample was analysed over three sessions, on 9–10,
+2008). A felsic volcanic rock about 0.9 km to the southwest          15–16, and 22–23 October 2020, using SHRIMP-B.
+in drillcore LCDD0013 yielded an igneous crystallization             Analyses 1.1 to 6.1 (spot numbers 1–6) were obtained
+age of 2696 ± 6 Ma (GSWA 203739, Wingate et al., 2022).              during the first session, together with 13 analyses of the
+A porphyritic metasyenite at the Wallaby mine, about                 M257 standard, of which 12 analyses indicated an external
+11.1 km to the north-northwest, indicated an igneous                 spot-to-spot (reproducibility) uncertainty of 0.50% (1σ)
+crystallization age of 2688 ± 27 Ma (GSWA 203740,                    and a 238U/206Pb* calibration uncertainty of 0.24% (1σ).
+Wingate et al., 2022b). Detrital zircons in a sandstone              Isotopic mass fractionation of 207Pb/206Pb ratios during
+horizon within conglomerate at the Wallaby mine, about               the first session was corrected by reference to the OGC1
+11.8 km to the north-northwest, yielded a conservative               standard; measured ratios were increased by 0.39%.
+maximum depositional age of 2673 ± 5 Ma (sample E319,                Analyses 7.1 to 4.2 (spot numbers 7–17) were obtained
+Kositcin et al., 2008). An andesite-derived sandstone at the         during the second session, together with 16 analyses of the
+Sunrise Dam mine, about 15.8 km to the south-southeast,              M257 standard, of which 14 analyses indicated an external
+yielded a conservative maximum depositional age of                   spot-to-spot (reproducibility) uncertainty of 0.50% (1σ)
+2715 ± 5 Ma (sample E324, Kositcin et al., 2008). Detrital           and a 238U/206Pb* calibration uncertainty of 0.28% (1σ).
+zircons in a polymictic breccia unit at the Granny Smith             Analyses 11.2 to 8.2 (spot numbers 18–29) were obtained
+mine, about 18.4 km to the north-northeast, indicated a              during the third session, together with 12 analyses of
+youngest detrital age component at 2663 ± 5 Ma (sample               the M257 standard, of which 11 analyses indicated an
+E401, Kositcin et al., 2008). A feldspar–quartz-porphyritic          external spot-to-spot (reproducibility) uncertainty of
+rock at Ida Hill, about 27 km to the north-northeast,                0.50% (1σ) and a 238U/206Pb* calibration uncertainty of
+provided an igneous crystallization age of c. 2660 Ma                0.31% (1σ). Calibration uncertainties are included in the
+(sample E258, Kositcin et al., 2008).                                errors of 238U/206Pb* ratios and dates listed in Table 1.
+                                                                     Common-Pb corrections were applied to all analyses
+                                                                     using contemporaneous isotopic compositions determined
+Petrographic description                                             according to the model of Stacey and Kramers (1975).
+The sample is a medium-grained, porphyritic metasyenite
+(Fig. 1). The porphyritic texture is mainly defined by sparse,
+subhedral to euhedral, zoned K-feldspar phenocrysts and              Results
+rare plagioclase phenocrysts. Smaller phenocrysts of                 Twenty-nine analyses were obtained from 19 zircons.
+elongate to equant biotite are partly altered to chlorite.           Results are listed in Table 1, and shown in a concordia
+Some biotite contains numerous, very fine acicular                   diagram (Fig. 3).
+
+                                                                 1
+203738.1.pdf                                                                                   Geochronology Record 1881
+
+
+
+
+               Figure 1.   Drillcore image of sample 203738: porphyritic metasyenite, Lake Carey
+
+
+
+
+               Figure 2.   Cathodoluminescence image of all zircons from sample 203738: porphyritic
+                           metasyenite, Lake Carey. Numbered circles indicate the approximate locations
+                           of analysis sites
+
+
+
+
+                                                           2
+203738.1.pdf                                                                                                                                                              Geochronology Record 1881
+
+
+                                          Table 1. Ion microprobe analytical results for zircons from sample 203738: porphyritic syenite, Lake Carey
+
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th      Th
+                                                  232
+                                                            ƒ204           U/206Pb
+                                                                         238
+                                                                                               Pb/206Pb
+                                                                                             207
+                                                                                                                     U/206Pb*
+                                                                                                                   238
+                                                                                                                                         Pb*/206Pb*
+                                                                                                                                       207                  238
+                                                                                                                                                               U/206Pb*    207
+                                                                                                                                                                              Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)       U
+                                                  238
+                                                            (%)            ± 1σ                 ± 1σ                 ± 1σ                 ± 1σ            date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      I         13    13.1       313     343       1.10     0.018     2.018     0.024    0.17939       0.00115   2.019    0.024     0.17923     0.00116   2594     26     2646     11       2.0
+      I         1      1.1       452     667       1.48     0.025     2.028     0.020    0.17976       0.00148   2.029    0.020     0.17954    0.00149    2583     22     2649     14       2.5
+      I         19    12.2       281     300       1.07     0.055     2.007     0.024    0.18073       0.00115   2.008    0.025     0.18024     0.00118   2605     27     2655     11       1.9
+      I         28     7.2       192     114       0.60     0.000     2.017     0.028    0.18107       0.00145   2.017    0.028     0.18107    0.00145    2595     30     2663     13       2.5
+      I         2      2.1       243     319       1.31     0.000     2.060     0.048    0.18131       0.00136   2.060    0.048     0.18131    0.00136    2551     49     2665     12       4.3
+      I         4      4.1       262     321       1.23     -0.032    2.038     0.025    0.18119       0.00133   2.037    0.025     0.18148    0.00134    2575     26     2666     12       3.4
+      I         7      7.1       156     91        0.58     -0.126    2.056     0.030    0.18103       0.00150   2.053    0.030     0.18216    0.00160    2558     31     2673     15       4.3
+      I         16     2.2       141     132       0.94     0.086     2.003     0.032    0.18317       0.00176   2.005    0.032     0.18240    0.00185    2609     35     2675     17       2.5
+      I         15     1.2       335     395       1.18     -0.049    2.047     0.024    0.18236       0.00110   2.046    0.024     0.18279     0.00112   2565     25     2678     10       4.2
+
+
+      P         9      9.1       197     186       0.94     0.024     2.144     0.028    0.17284       0.00127   2.144    0.028     0.17262    0.00129    2468     27     2583     12       4.5
+      P         17     4.2       275     269       0.98     0.042     2.147     0.027    0.17326       0.00120   2.148    0.027     0.17288    0.00123    2464     26     2586     12       4.7
+      P         24     17.1      728    1129       1.55     0.109     2.585     0.047    0.13964       0.00156   2.588    0.047     0.13868    0.00159    2106     33     2211     20       4.7
+      P         20    14.2       570     667       1.17     0.185     2.509     0.068    0.14385       0.00237   2.514    0.068     0.14221    0.00242    2159     50     2254     29       4.2
+
+
+      D         22    15.2       493     550       1.12     0.129     3.184     0.087    0.14918       0.00186   3.188    0.087     0.14804    0.00190    1759     42     2323     22       24.3
+      D         21    15.1       417     580       1.39     0.156     2.428     0.025    0.16358       0.00144   2.431    0.025     0.16218    0.00149    2221     20     2479     16       10.4
+      D         11     11.1      416     343       0.83     0.108     2.232     0.024    0.16744       0.00094   2.234    0.024     0.16648    0.00100    2385     22     2523     10       5.5
+      D         5      5.1       330     385       1.17     0.051     2.328     0.037    0.16744       0.00119   2.329    0.037     0.16699    0.00121    2303     31     2528     12       8.9
+      D         29     8.2       367     312       0.85     0.057     2.262     0.027    0.17204       0.00115   2.263    0.027     0.17153     0.00119   2359     24     2573     12       8.3
+      D         18     11.2      362     319       0.88     0.200     2.314     0.027    0.17530       0.00114   2.319    0.027     0.17351    0.00126    2311     23     2592     12       10.8
+      D         25    18.1       467     520       1.11     0.167     2.168     0.024    0.17585       0.00097   2.171    0.024     0.17436    0.00105    2442     23     2600     10       6.1
+      D         3      3.1       171     93        0.54     0.048     2.164     0.027    0.17566       0.00149   2.165    0.027     0.17522    0.00152    2448     26     2608     14       6.1
+      D         23    16.1       274     269       0.98     -0.037    2.200     0.026    0.17554       0.00113   2.199    0.026     0.17587     0.00116   2416     24     2614     11        7.6
+      D         8      8.1       360     347       0.96     0.056     2.206     0.024    0.17742       0.00099   2.207    0.024     0.17692    0.00102    2409     22     2624     10       8.2
+      D         6      6.1       337     330       0.98     0.000     2.219     0.024    0.17705       0.00125   2.219    0.024     0.17705    0.00125    2398     21     2625     12       8.7
+      D         14    14.1       259     203       0.78     0.181     2.390     0.030    0.17938       0.00135   2.394    0.030     0.17777    0.00148    2250     24     2632     14       14.5
+      D         10    10.1       218     176       0.81     0.056     2.236     0.029    0.17873       0.00140   2.237    0.029     0.17824    0.00145    2382     27     2637     13       9.7
+      D         12    12.1       237     224       0.95     0.135     2.174     0.028    0.18042       0.00140   2.177    0.028     0.17922    0.00150    2437     27     2646     14        7.9
+      D         26    19.1       315     373       1.18     0.038     2.213     0.039    0.17959       0.00119   2.214    0.039     0.17925    0.00122    2403     35     2646     11       9.2
+      D         27     2.3       146     135       0.93     0.036     2.097     0.030    0.18114       0.00161   2.098    0.030     0.18082    0.00164    2513     31     2660     15       5.5
+
+
+
+                                                                                                   3
+203738.1.pdf                                                                                                          Geochronology Record 1881
+
+
+
+
+            Figure 3.   U–Pb analytical data for sample 203738: porphyritic metasyenite, Lake Carey. Yellow squares
+                        indicate Group I (magmatic zircons); black squares indicate Group P (radiogenic-Pb loss); crossed
+                        squares indicate Group D (discordance >5%)
+
+
+
+
+Interpretation                                                               Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead isotope
+                                                                                evolution by a two-stage model: Earth and Planetary Science Letters,
+The analyses are concordant to strongly discordant (Fig. 3).                    v. 26, p. 207–221.
+Sixteen analyses are >5% discordant. The dates obtained                      Standing, JG 2008, Terrane amalgamation in the Eastern Goldfields
+from these 16 analyses (Group D; Table 1) are unreliable,                       Superterrane, Yilgarn Craton: Evidence from tectonostratigraphic
+and are considered not to be geologically significant. The                      studies of the Laverton Greenstone Belt: Precambrian Research,
+remaining 13 analyses can be divided into two groups,                           v. 161, p. 114–134.
+based on their 207Pb*/206Pb* ratios.                                         Stewart, AJ 2001, Laverton, WA Sheet SH 51-2; 1:250 000 Geological
+                                                                                Series Explanatory Notes, 2nd Edition: Geological Survey of Western
+Group I comprises nine analyses of six zircons (Table 1),                       Australia, 37p
+which yield a weighted mean 207 Pb*/ 206 Pb* date of
+2663 ± 8 Ma (MSWD = 0.94).                                                   Wingate, MTD, Fielding, IOH, Lu, Y, Cassidy, KF and Smithies, RH
+                                                                               2022a, 203739: felsic metavolcanic rock, Lake Carey; Geochronology
+Group P comprises four analyses of four zircons (Table 1),                     Record 1882: Geological Survey of Western Australia, 5p.
+which yield 207Pb*/206Pb* dates of 2586–2211 Ma.                             Wingate, MTD, Fielding, IOH, Lu, Y, Cassidy, KF and Smithies, RH
+                                                                               2022b, 203740: porphyritic metasyenite, Wallaby mine; Geochronology
+The date of 2663 ± 8 Ma for the nine analyses in Group I is                    Record 1883: Geological Survey of Western Australia, 4p.
+interpreted as a minimum age for igneous crystallization,
+because the average composition is about 3.1% discordant.
+The dates of 2586–2211 Ma for the four analyses in                           Re­commended reference for this
+Group P are interpreted to reflect loss of radiogenic Pb.                    publication
+                                                                             Wingate, MTD, Fielding, IOH, Lu, Y, Cassidy, KF and Smithies, RH 2022,
+                                                                                203738: porphyritic metasyenite, Lake Carey; Geochronology Record
+References                                                                      1881: Geological Survey of Western Australia, 4p.
+
+Kositcin, N, Brown, SJA, Barley, ME, Krapež, B, Cassidy, KF and              Data obtained:        23 October 2020
+  Champion, DC 2008, SHRIMP U-Pb zircon age constraints on the Late
+  Archaean tectonostratigraphic architecture of the Eastern Goldfields       Data released:        20 May 2022
+  Superterrane, Yilgarn Craton, Western Australia: Precambrian
+  Research, v. 161, p. 5–33.
+
+
+
+
+                                                                         4
+

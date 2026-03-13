@@ -18,6 +18,58 @@ _EPS = 1e-12
 ADAPT_FR = True
 
 # -------------------------- utilities ----------------------------------------
+def _step_from_grid(x: np.ndarray) -> float:
+    x = np.asarray(x, float)
+    if x.size >= 2:
+        step = float(np.median(np.diff(x)))
+        if np.isfinite(step) and step > 0.0:
+            return step
+    return 1.0
+
+
+def _append_diagnostic_peak(
+    diagnostic_rows: Optional[List[Dict]],
+    x: np.ndarray,
+    y_ref: np.ndarray,
+    idx: int,
+    *,
+    reason: str,
+    direct_support: float = np.nan,
+    winner_support: float = np.nan,
+    ci_low: Optional[float] = None,
+    ci_high: Optional[float] = None,
+) -> None:
+    if diagnostic_rows is None:
+        return
+    x = np.asarray(x, float)
+    y_ref = np.asarray(y_ref, float)
+    if x.size == 0 or y_ref.size != x.size:
+        return
+
+    j_ref = _crest_index(y_ref, int(idx), half_win=2)
+    age = float(_parabolic_refine(x, y_ref, j_ref))
+    step = _step_from_grid(x)
+    lo = float(ci_low) if ci_low is not None else max(float(x[0]), age - step)
+    hi = float(ci_high) if ci_high is not None else min(float(x[-1]), age + step)
+    tol = max(0.51 * step, 1e-6)
+
+    for row in diagnostic_rows:
+        prev_age = float(row.get("age_ma", np.nan))
+        if (str(row.get("reason", "")) == str(reason)) and np.isfinite(prev_age) and abs(prev_age - age) <= tol:
+            return
+
+    diagnostic_rows.append(
+        dict(
+            age_ma=age,
+            ci_low=lo,
+            ci_high=hi,
+            direct_support=float(direct_support),
+            winner_support=float(winner_support),
+            reason=str(reason),
+        )
+    )
+
+
 def _parabolic_refine(x: np.ndarray, y: np.ndarray, k: int) -> float:
     """
     Quadratic vertex refinement using 3 points around index k; clamps to bracket.
@@ -96,8 +148,10 @@ def per_run_peaks(
     if pk.size == 0:
         return (np.array([], float), []) if return_details else np.array([], float)
 
-    prom, _, _ = peak_prominences(y, pk)
-    width, _, _, _ = peak_widths(y, pk, rel_height=0.5)
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message="some peaks have a width of 0")
+        prom, _, _ = peak_prominences(y, pk)
+        width, _, _, _ = peak_widths(y, pk, rel_height=0.5)
 
     keep = (prom >= prom_thr) & (width >= float(min_width_nodes))
     if require_full_prom:
@@ -181,6 +235,10 @@ def build_ensemble_catalogue(
     optima_ma: Optional[np.ndarray] = None,
     # optional injection of per-run peak lists
     per_run_peaks_list: Optional[List[np.ndarray]] = None,
+    # merge guards
+    merge_per_hump: bool = True,
+    merge_shoulders: bool = True,
+    diagnostic_rows: Optional[List[Dict]] = None,
     **_ignored: Any,
 ) -> List[Dict]:
     """
@@ -189,6 +247,10 @@ def build_ensemble_catalogue(
       • at most ONE fine-scale peak per coarse hump,
       • keep only peaks reproducible across runs by local votes,
       • CIs from per-peak optima distribution.
+
+    Notes on support:
+      • support is computed from runs with an explicit per-run peak inside the
+        candidate window (fallback local-crest votes do not increase support).
     """
     x = np.asarray(age_grid, float)
     S = np.asarray(goodness_runs, float)
@@ -231,13 +293,23 @@ def build_ensemble_catalogue(
         )
 
     if pk_major.size == 0:
-        # Fallback: treat the global max of the fine curve as one hump
-        j0 = int(np.nanargmax(y))  # y = sign * S_med_s (fine ensemble curve)
-        if j0 <= 0 and G > 2:
-            j0 = 1
-        elif j0 >= G - 1 and G > 2:
-            j0 = G - 2
-        pk_major = np.array([j0], dtype=int)
+        pk_diag, _ = find_peaks(
+            y,
+            distance=1,
+            width=w_min_nodes,
+            prominence=max(prom_abs * 0.5, _EPS),
+        )
+        for idx in np.asarray(pk_diag, int):
+            _append_diagnostic_peak(
+                diagnostic_rows,
+                x,
+                S_med_s,
+                int(idx),
+                reason="coarse_surface_no_separate_mode",
+            )
+        # No resolved interior hump on the coarse ensemble surface:
+        # abstain instead of forcing a boundary/global optimum pseudo-peak.
+        return []
 
     # ---------------- Fine-scale candidate peaks ----------------------------
     family_nodes = max(1, int(np.ceil(f_d * G)))       # peak-family window (nodes)
@@ -254,26 +326,50 @@ def build_ensemble_catalogue(
         # Still nothing at all → give up
         return []
 
-    # --------- FORCE: at most one fine peak per coarse hump -----------------
-    # window size within which a fine peak can represent a coarse hump
-    major_rad = max(1, int(0.05 * G))  # ~10 nodes for G=200 (~100 Ma on 1–2000[200])
+    if merge_per_hump:
+        # --------- FORCE: at most one fine peak per coarse hump -----------------
+        # window size within which a fine peak can represent a coarse hump
+        major_rad = max(1, int(0.05 * G))  # ~10 nodes for G=200 (~100 Ma on 1–2000[200])
 
-    chosen_idx: List[int] = []
-    for pM in pk_major:
-        # indices in pk_fine that are close to this major crest
-        idx_in_win = np.where(np.abs(pk_fine - int(pM)) <= major_rad)[0]
-        if idx_in_win.size == 0:
-            continue
-        # pick the highest fine-scale crest in this window
-        best_local = idx_in_win[np.argmax(y[pk_fine[idx_in_win]])]
-        chosen_idx.append(int(best_local))
+        chosen_idx: List[int] = []
+        for pM in pk_major:
+            # indices in pk_fine that are close to this major crest
+            idx_in_win = np.where(np.abs(pk_fine - int(pM)) <= major_rad)[0]
+            if idx_in_win.size == 0:
+                continue
+            # pick the highest fine-scale crest in this window
+            best_local = idx_in_win[np.argmax(y[pk_fine[idx_in_win]])]
+            chosen_idx.append(int(best_local))
 
-    if not chosen_idx:
-        # coarse humps exist but none supported by a fine peak ⇒ no peaks
-        return []
+        if not chosen_idx:
+            for idx in np.asarray(pk_fine, int):
+                _append_diagnostic_peak(
+                    diagnostic_rows,
+                    x,
+                    S_med_s,
+                    int(idx),
+                    reason="coarse_surface_no_separate_mode",
+                )
+            # coarse humps exist but none supported by a fine peak ⇒ no peaks
+            return []
 
-    chosen_idx = sorted(set(chosen_idx))
-    pk = pk_fine[chosen_idx]
+        chosen_idx = sorted(set(chosen_idx))
+        chosen_set = set(chosen_idx)
+        for local_i, idx in enumerate(np.asarray(pk_fine, int)):
+            if local_i in chosen_set:
+                continue
+            close_to_major = np.any(np.abs(pk_major - int(idx)) <= major_rad)
+            reason = "suppressed_nearby_weaker_peak" if close_to_major else "coarse_surface_no_separate_mode"
+            _append_diagnostic_peak(
+                diagnostic_rows,
+                x,
+                S_med_s,
+                int(idx),
+                reason=reason,
+            )
+        pk = pk_fine[chosen_idx]
+    else:
+        pk = np.asarray(np.unique(pk_fine), int)
 
     # guard against edges
     pk = pk[(pk >= edge_guard) & (pk <= G - 1 - edge_guard)]
@@ -281,61 +377,72 @@ def build_ensemble_catalogue(
         return []
 
     # ---------------- Shoulder merge ---------------------
-    with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", message="some peaks have a prominence of 0")
-        prom, left_bases, right_bases = peak_prominences(y, pk)
-    valid_prom = np.isfinite(prom) & (prom > 0.0)
-    if not np.all(valid_prom):
-        pk = pk[valid_prom]
-        prom = prom[valid_prom]
-        left_bases = left_bases[valid_prom]
-        right_bases = right_bases[valid_prom]
+    if merge_shoulders:
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", message="some peaks have a prominence of 0")
+            prom, left_bases, right_bases = peak_prominences(y, pk)
+        valid_prom = np.isfinite(prom) & (prom > 0.0)
+        if not np.all(valid_prom):
+            pk = pk[valid_prom]
+            prom = prom[valid_prom]
+            left_bases = left_bases[valid_prom]
+            right_bases = right_bases[valid_prom]
+            if pk.size == 0:
+                return []
+        order = np.argsort(pk)
+        pk          = pk[order]
+        prom        = prom[order]
+        left_bases  = left_bases[order]
+        right_bases = right_bases[order]
+        pk_before_shoulder = pk.copy()
+
+        kept_idx_local: List[int] = []
+        i = 0
+        while i < pk.size:
+            winner = i
+            j = i + 1
+            while j < pk.size:
+                sep = pk[j] - pk[winner]
+                if sep >= family_nodes:
+                    break
+
+                lo, hi = int(min(pk[winner], pk[j])), int(max(pk[winner], pk[j]))
+                valley = float(np.nanmin(y[lo:hi + 1]))
+                lower_crest = min(y[pk[winner]], y[pk[j]])
+                shallow = (lower_crest - valley) < f_v * min(prom[winner], prom[j])
+
+                if shallow:
+                    if prom[j] > prom[winner] * (1.0 + 0.05):
+                        winner = j
+                    elif (
+                        abs(prom[j] - prom[winner])
+                        <= 0.05 * max(prom[j], prom[winner])
+                        and y[pk[j]] > y[pk[winner]]
+                    ):
+                        winner = j
+                    j += 1
+                else:
+                    break
+
+            kept_idx_local.append(winner)
+            i = j
+
+        kept_idx_local = sorted(set(kept_idx_local))
+        removed_local = sorted(set(range(pk.size)) - set(kept_idx_local))
+        for local_i in removed_local:
+            _append_diagnostic_peak(
+                diagnostic_rows,
+                x,
+                S_med_s,
+                int(pk_before_shoulder[local_i]),
+                reason="suppressed_nearby_weaker_peak",
+            )
+        pk          = pk[kept_idx_local]
+        prom        = prom[kept_idx_local]
+        left_bases  = left_bases[kept_idx_local]
+        right_bases = right_bases[kept_idx_local]
         if pk.size == 0:
             return []
-    order = np.argsort(pk)
-    pk          = pk[order]
-    prom        = prom[order]
-    left_bases  = left_bases[order]
-    right_bases = right_bases[order]
-
-    kept_idx_local: List[int] = []
-    i = 0
-    while i < pk.size:
-        winner = i
-        j = i + 1
-        while j < pk.size:
-            sep = pk[j] - pk[winner]
-            if sep >= family_nodes:
-                break
-
-            lo, hi = int(min(pk[winner], pk[j])), int(max(pk[winner], pk[j]))
-            valley = float(np.nanmin(y[lo:hi + 1]))
-            lower_crest = min(y[pk[winner]], y[pk[j]])
-            shallow = (lower_crest - valley) < f_v * min(prom[winner], prom[j])
-
-            if shallow:
-                if prom[j] > prom[winner] * (1.0 + 0.05):
-                    winner = j
-                elif (
-                    abs(prom[j] - prom[winner])
-                    <= 0.05 * max(prom[j], prom[winner])
-                    and y[pk[j]] > y[pk[winner]]
-                ):
-                    winner = j
-                j += 1
-            else:
-                break
-
-        kept_idx_local.append(winner)
-        i = j
-
-    kept_idx_local = sorted(set(kept_idx_local))
-    pk          = pk[kept_idx_local]
-    prom        = prom[kept_idx_local]
-    left_bases  = left_bases[kept_idx_local]
-    right_bases = right_bases[kept_idx_local]
-    if pk.size == 0:
-        return []
 
     # ---------------- Optional global height filter -------------------------
     if height_frac > 0.0:
@@ -344,10 +451,15 @@ def build_ensemble_catalogue(
         if np.isfinite(h_max) and h_max > 0.0:
             thr = h_max * float(height_frac)
             keep = heights >= thr
+            for idx in np.asarray(pk[~keep], int):
+                _append_diagnostic_peak(
+                    diagnostic_rows,
+                    x,
+                    S_med_s,
+                    int(idx),
+                    reason="below_global_height_gate",
+                )
             pk          = pk[keep]
-            prom        = prom[keep]
-            left_bases  = left_bases[keep]
-            right_bases = right_bases[keep]
             if pk.size == 0:
                 return []
 
@@ -375,11 +487,13 @@ def build_ensemble_catalogue(
 
     out: List[Dict] = []
     optima_ma = np.asarray(optima_ma, float) if optima_ma is not None else None
+    j_ref_all = np.array([_crest_index(S_med_s, int(jc), half_win=2) for jc in pk], int)
+    age_ref_all = np.array([_parabolic_refine(x, S_med_s, int(jr)) for jr in j_ref_all], float)
 
     for j_idx, j_c in enumerate(pk):
         # refine apex on unoriented ensemble curve
-        j_ref   = _crest_index(S_med_s, int(j_c), half_win=2)
-        age_ref = float(_parabolic_refine(x, S_med_s, int(j_ref)))
+        j_ref = int(j_ref_all[j_idx])
+        age_ref = float(age_ref_all[j_idx])
 
         a = max(1, int(j_c) - vote_nodes)
         b = min(G - 2, int(j_c) + vote_nodes)
@@ -398,6 +512,7 @@ def build_ensemble_catalogue(
             f_r_eff = float(f_r)
 
         votes: List[float] = []
+        direct_votes: List[float] = []
         optima_for_peak: List[float] = []
 
         for r in range(R):
@@ -424,6 +539,13 @@ def build_ensemble_catalogue(
                 if y_r[j_abs] < thr:
                     continue
                 age_vote = float(_parabolic_refine(x, S[r], j_abs))
+                direct_votes.append(age_vote)
+
+            # Prevent one run from supporting multiple nearby candidate peaks.
+            if age_ref_all.size > 1:
+                nearest = int(np.argmin(np.abs(age_ref_all - age_vote)))
+                if nearest != j_idx:
+                    continue
 
             votes.append(age_vote)
 
@@ -432,51 +554,100 @@ def build_ensemble_catalogue(
                 if np.isfinite(opt_val) and (lo_ma_win <= opt_val <= hi_ma_win):
                     optima_for_peak.append(opt_val)
 
-        support = len(votes) / float(R)
+        # "Actual support": only runs with explicit per-run peaks in-window count.
+        support = len(direct_votes) / float(R)
 
         if support < max(float(support_min), float(r_min) / float(max(R, 1))):
+            _append_diagnostic_peak(
+                diagnostic_rows,
+                x,
+                S_med_s,
+                int(j_ref),
+                reason="low_support",
+                direct_support=float(support),
+                winner_support=float(len(optima_for_peak) / float(max(R, 1))) if optima_ma is not None else np.nan,
+                ci_low=lo_ma_win,
+                ci_high=hi_ma_win,
+            )
             continue
 
-        # CI from optima / votes
+        # CI from the same evidence stream as support when possible.
+        # Support is based on explicit per-run peaks in-window, so prefer those
+        # votes for CI before falling back to run-optima or generic local votes.
         step = float(x[1] - x[0])
-        if optima_ma is not None and len(optima_for_peak) >= 3:
+        if len(direct_votes) >= 3:
+            lo_ci, hi_ci = np.nanpercentile(direct_votes, [2.5, 97.5])
+        elif optima_ma is not None and len(optima_for_peak) >= 3:
             lo_ci, hi_ci = np.nanpercentile(optima_for_peak, [2.5, 97.5])
         elif len(votes) >= 3:
+            # fallback-only rows can still get a CI, but support remains low.
             lo_ci, hi_ci = np.nanpercentile(votes, [2.5, 97.5])
         else:
             lo_ci, hi_ci = age_ref - step, age_ref + step
 
-        if len(votes) >= 1:
+        if len(direct_votes) >= 1:
+            med_votes = float(np.median(direct_votes))
+        elif len(optima_for_peak) >= 1:
+            med_votes = float(np.median(optima_for_peak))
+        elif len(votes) >= 1:
             med_votes = float(np.median(votes))
         else:
             med_votes = age_ref
-        shift = age_ref - med_votes
-        lo_ci = float(lo_ci + shift)
-        hi_ci = float(hi_ci + shift)
+        age_out = float(med_votes if np.isfinite(med_votes) else age_ref)
 
         lo_ci = max(lo_ci, float(x[0]))
         hi_ci = min(hi_ci, float(x[-1]))
         if (not np.isfinite(lo_ci)) or (not np.isfinite(hi_ci)) or (hi_ci <= lo_ci):
-            lo_ci, hi_ci = max(age_ref - step, float(x[0])), min(age_ref + step, float(x[-1]))
+            lo_ci, hi_ci = max(age_out - step, float(x[0])), min(age_out + step, float(x[-1]))
         if (hi_ci - lo_ci) < (0.75 * step):
-            lo_ci, hi_ci = max(age_ref - step, float(x[0])), min(age_ref + step, float(x[-1]))
+            lo_ci, hi_ci = max(age_out - step, float(x[0])), min(age_out + step, float(x[-1]))
 
         min_steps = 5.0
         min_width = min_steps * step
         if (hi_ci - lo_ci) < min_width:
-            lo_ci = max(age_ref - 0.5 * min_width, float(x[0]))
-            hi_ci = min(age_ref + 0.5 * min_width, float(x[-1]))
+            lo_ci = max(age_out - 0.5 * min_width, float(x[0]))
+            hi_ci = min(age_out + 0.5 * min_width, float(x[-1]))
+        if age_out < lo_ci:
+            age_out = float(lo_ci)
+        elif age_out > hi_ci:
+            age_out = float(hi_ci)
 
         out.append(dict(
             sample=sample_name,
             peak_no=0,  # set after sort
-            age_ma=age_ref,
+            age_ma=age_out,
             ci_low=float(lo_ci),
             ci_high=float(hi_ci),
             support=float(support),
         ))
 
     out.sort(key=lambda d: d["age_ma"])
+
+    # In "no-merge" mode we still collapse obvious duplicate picks that sit on
+    # the same flat crest (very close in age and strongly CI-overlapping).
+    if (not merge_per_hump) and (not merge_shoulders) and len(out) > 1:
+        step_ma = float(abs(x[1] - x[0])) if x.size >= 2 else 1.0
+        near_ma = max(3.0 * step_ma, 20.0)
+        deduped: List[Dict] = [dict(out[0])]
+
+        def _score(rr: Dict) -> tuple:
+            sup = float(rr.get("support", 0.0))
+            width = float(rr["ci_high"]) - float(rr["ci_low"])
+            return (sup, -width)
+
+        for rr in out[1:]:
+            prev = deduped[-1]
+            sep = abs(float(rr["age_ma"]) - float(prev["age_ma"]))
+            overlap = (float(rr["ci_low"]) <= float(prev["ci_high"])) and (
+                float(rr["ci_high"]) >= float(prev["ci_low"])
+            )
+            if sep <= near_ma and overlap:
+                if _score(rr) > _score(prev):
+                    deduped[-1] = dict(rr)
+            else:
+                deduped.append(dict(rr))
+        out = deduped
+
     for i, d in enumerate(out, 1):
         d["peak_no"] = i
     return out

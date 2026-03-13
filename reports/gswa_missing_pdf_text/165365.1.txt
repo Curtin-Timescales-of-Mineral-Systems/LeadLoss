@@ -1,0 +1,224 @@
+165365.1.pdf - Geochronology dataset 218                                                          Geochronology data obtained in 2002
+
+
+               165365: foliated biotite granodiorite, Coomb Bore
+
+
+  Location and sampling                                                260 × 400 µm in size. Most grains have faint internal
+                                                                       zonation or have unzoned, fractured interiors surrounded
+  YOUANMI (SH 50-4), ATLEY (2741)              MGA Zone 50,            by strongly zoned exteriors, but a minority of grains are
+                                          745650E 6894870N             internally structureless. Many are metamict. Catho-
+                                                                       doluminescence images of representative zircons are given
+  Sampled on 29 August 2001                                            in Figure 1.
+  The sample was taken from a 3 m-long boulder at the top
+  of a 15 m-high rocky ridge, 1.5 km north of Coomb Bore.              Analytical details
+                                                                       This sample was analysed on 30 June 2002. The counter
+  Tectonic unit/relations                                              deadtime during the analysis session was 24 ns. Twenty-
+                                                                       one analyses of the CZ3 standard obtained during the
+  The sample is from a dark pinkish-grey, medium-grained
+                                                                       analysis session indicated a Pb*/U calibration uncertainty
+  porphyritic biotite granodiorite that has intruded the Edale
+                                                                       of 3.48% (1σ). Common-Pb corrections were applied
+  Shear Zone of the Southern Cross Granite–Greenstone
+                                                                       assuming Broken Hill common-Pb isotopic compositions
+  Terrane. The granodiorite contains abundant tabular
+                                                                       for all analyses, with the exception of analysis 7.2, for
+  feldspar phenocrysts, up to 5 mm long and aligned with
+                                                                       which isotopic compositions determined using the method
+  the foliation. The foliation is subvertical and trends at
+                                                                       of Cumming and Richards (1975) were assumed.
+  330°. The sample was collected to constrain the age of
+  the Edale Shear Zone (Riganti, 2003).
+                                                                       Results
+  Petrographic description                                             Twenty-three analyses were obtained from 22 zircons.
+                                                                       Results are given in Table 1 and shown on a concordia
+  The principal minerals in this sample are plagioclase
+                                                                       plot in Figure 2.
+  (45 vol.%), quartz (30 vol.%), orthoclase (20 vol.%),
+  chloritized biotite (4 vol.%), opaque oxide (<1 vol.%), and
+  apatite (<1 vol.%), with accessory altered possibly                  Interpretation
+  radioactive grains. This is an altered granodiorite with
+  chlorite, sericite, and rare prehnite, as well as altered            The analyses are concordant to highly discordant, with the
+  zircon. There are abundant rounded or euhedral feldspar              discordance pattern consistent with both ancient and recent
+  augen, from 2 to 15 mm long in a foliated granitic matrix.           episodes of radiogenic-Pb loss. Eighteen concordant to
+  The larger augen are clouded but untwinned orthoclase                slightly discordant analyses of 18 zircons have 207Pb/206Pb
+  grains have rounded inclusions of quartz and sericite-               ratios defining a single population and indicating a
+  clouded plagioclase. Smaller augen of plagioclase,                   weighted mean 207Pb/206Pb date of 2686 ± 5 Ma (chi-
+  irregularly dusted with sericite, are more abundant. The             squared = 1.08). Discordant analyses 4.1, 5.1, 6.1, 7.2, and
+  matrix is dominated by largely recrystallized quartz with            9.1 indicate slightly younger 207Pb/206Pb dates than the
+  a fabric in which the quartz c-axes are mostly within 30             main population.
+  to 40° of a foliation defined by chloritized biotite lamellae.
+  Rare patches of prehnite are adjacent to the altered biotite.            The date of 2686 ± 5 Ma indicated by the weighted
+  Some larger quartz grains are up to 1 mm in diameter, and            mean 207Pb/ 206Pb ratio of 18 concordant to slightly
+  there are lenses of fine-grained recrystallized plagioclase,         discordant analyses of 18 zircons is interpreted as the age
+  generally clouded by clays. Lenses of opaque oxide and               of igneous crystallization of the granodiorite. The
+  apatite are also present. Altered, possibly metamict grains          remaining discordant analyses are interpreted to be of
+  up to 0.4 mm long could include altered zircon. These                analysis sites that have undergone radiogenic-Pb loss
+  grains have been partly replaced by a reddish-brown or               during several disturbance events.
+  yellow-brown microcrystalline material.
+                                                                       Recommended reference for this publication:
+                                                                       Geochronologist:     D. R. Nelson
+  Zircon morphology                                                    Data obtained:
+                                                                       NELSON,              2002
+                                                                                   D. R., 2004, 165365: foliated biotite granodiorite,
+                                                                       Data
+                                                                       Coombreleased:       2004
+                                                                                Bore; Geochronology   dataset 218; in Compilation of
+  The zircons isolated from this sample are typically                  geochronology data, June 2006 update: Western Australia
+  colourless to dark reddish-brown and black, euhedral and             Geological Survey.
+  equant to slightly elongate, and between 20 × 80 µm and
+                                                                       Data obtained: 30/06/2002; Data released: 06/12/2004
+
+
+
+
+                                                                   1
+D. R. Nelson, 2004
+
+
+
+
+a)                                                               b)
+                                           1.1                                    9.1
+
+                     2.1
+
+
+
+
+                                                                                                                8.1
+        100 µm                                                           100 µm
+
+
+
+
+c)                                                               d)
+
+
+
+                                                                           15.1                     16.1
+
+
+
+
+                           14.1
+        100 µm
+                                                   13.1               100 µm
+
+
+
+
+e)                                                               f)
+                                                                                        19.1
+
+
+
+
+        50 µm                                    18.1                   100 µm
+
+DN348                                                                                                            30.04.04
+
+
+Figure 1.       Cathodoluminescence images of representative zircons from sample 165365: foliated biotite granodiorite,
+                Coomb Bore
+
+
+
+
+                                                             2
+                                             Table 1. Ion microprobe analytical results for sample 165365: foliated biotite granodiorite, Coomb Bore
+
+
+    Grain      U       Th      Pb    ƒ206%      207
+                                                      Pb/206Pb    ±1σ         208
+                                                                                    Pb/206Pb    ±1σ       206
+                                                                                                                Pb/238U    ±1σ        207
+                                                                                                                                            Pb/235U    ±1σ          %        207
+                                                                                                                                                                                   Pb/206Pb   ±1σ
+    .spot    (ppm)   (ppm)   (ppm)                                                                                                                             concordance          Age
+
+     1.1      325       52   172     0.885       0.18412         0.00104        0.04411        0.00178      0.4858         0.0170      12.334          0.446       95               2 690      9
+     2.1      251      266   161     0.483       0.18373         0.00102        0.28872        0.00200      0.4991         0.0175      12.644          0.457       97               2 687      9
+     3.1      327       58   173     0.672       0.18527         0.00101        0.05379        0.00165      0.4834         0.0169      12.348          0.445       94               2 701      9
+     4.1      768      111   182     0.564       0.15374         0.00080        0.05180        0.00134      0.2242         0.0078       4.751          0.171       55               2 388      9
+     5.1      554      492   302     1.047       0.17214         0.00090        0.24565        0.00184      0.4321         0.0151      10.255          0.369       90               2 579      9
+     6.1      396       58   210     0.555       0.18083         0.00087        0.04149        0.00135      0.4955         0.0173      12.353          0.443       98               2 660      8
+     7.1      248       73   141     0.851       0.18327         0.00120        0.07628        0.00205      0.5087         0.0178      12.853          0.469       99               2 683     11
+     8.1      345       68   183     0.684       0.18403         0.00102        0.05614        0.00169      0.4858         0.0170      12.327          0.445       95               2 690      9
+     9.1      379       77   197     1.255       0.15305         0.00133        0.04832        0.00251      0.4802         0.0169      10.132          0.377      106               2 380     15
+3
+
+
+
+
+    10.1      387      705   281     0.495       0.18517         0.00087        0.48427        0.00205      0.4968         0.0174      12.685          0.455       96               2 700      8
+    11.1      405       58   211     0.858       0.18289         0.00096        0.04473        0.00164      0.4790         0.0167      12.078          0.435       94               2 679      9
+    12.1      496       64   259     0.179       0.18286         0.00059        0.03459        0.00070      0.4953         0.0173      12.487          0.443       97               2 679      5
+    13.1      296       87   165     0.253       0.18426         0.00079        0.08245        0.00112      0.5051         0.0177      12.832          0.459       98               2 692      7
+    14.1      128      119    82     0.862       0.18229         0.00149        0.24984        0.00297      0.5027         0.0177      12.635          0.469       98               2 674     14
+    15.1      128      189    91     0.780       0.18514         0.00148        0.39670        0.00328      0.5098         0.0179      13.013          0.482       98               2 699     13
+    16.1      181      183   118     1.452       0.18214         0.00150        0.28017        0.00317      0.4983         0.0175      12.514          0.463       98               2 672     14
+    17.1      209       67   115     0.445       0.18321         0.00102        0.08587        0.00161      0.4947         0.0173      12.496          0.452       97               2 682      9
+    18.1      119      113    76     0.714       0.18194         0.00149        0.25609        0.00296      0.5038         0.0177      12.639          0.469       98               2 671     14
+    19.1      189      300   135     0.407       0.18348         0.00107        0.41988        0.00238      0.5122         0.0180      12.956          0.470       99               2 685     10
+    20.1      176      250   122     0.143       0.18480         0.00098        0.38743        0.00208      0.5103         0.0179      13.003          0.469       99               2 696      9
+
+
+
+
+                                                                                                                                                                                                    Geochronology data obtained in 2002
+    21.1      231      112   137     0.441       0.18421         0.00094        0.12994        0.00153      0.5152         0.0180      13.084          0.471      100               2 691      8
+     7.2    1 052    1 093   396     3.206       0.14079         0.00097        0.27207        0.00232      0.2828         0.0099       5.491          0.200       72               2 237     12
+    22.1      357      416   237     0.242       0.18218         0.00069        0.31541        0.00135      0.5117         0.0179      12.853          0.458      100               2 673      6
+                                                                                                                                                 D. R. Nelson, 2004
+            0.55
+
+
+
+
+                                                                                               2650
+
+            0.50                                                                2600
+
+
+                              Analysis 9.1                        2550      Analysis 6.1
+    Pb/ 238 U
+
+
+
+                                                                                                    18 analyses of 18 zircons
+                                                                                                    2686 ± 5 Ma (95% confidence)
+                                                 2500
+    206
+
+
+
+
+                                     2450
+4
+
+
+
+
+                       2400
+            0.45
+
+
+
+
+                                             Analysis 5.1
+
+
+
+
+                                                        (Discordant analyses 4.1 & 7.2 not shown)
+                                                                                                                                   165365
+
+            0.40
+                   9                 10                      11                        12                     13                            14
+                                                                   207
+    DN317                                                                Pb/ 235 U                                                 28.01.04
+
+
+                        Figure 2. Concordia plot for sample 165365: foliated biotite granodiorite, Coomb Bore
+

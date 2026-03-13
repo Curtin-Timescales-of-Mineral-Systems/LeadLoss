@@ -1,0 +1,174 @@
+235129.1.pdf                                                                                        Geochronology Record 1833
+
+
+
+
+                           235129: quartz metadiorite, Duketon
+                              (Yilgarn Craton granites, Burtville Terrane,
+                           Eastern Goldfields Superterrane, Yilgarn Craton)
+
+
+
+Location and sampling                                              zones, or along fractures. Biotite is forms subhedral,
+                                                                   equant laths up to 1 mm long. Pale green chlorite has
+Duketon (SG 51-14), Duketon (3342)                                 replaced biotite and to a lesser extent, hornblende, and also
+                 MGA Zone 51, 428613E 6943353N                     occurs in decussate aggregates in fractures, together with
+                                                                   recrystallized quartz. Magnetite is anhedral, equant, up
+Sampled on 27 October 2020                                         to 0.2 mm across, and partially overgrown or replaced by
+This sample was collected from the 50.50 – 51.88 m depth           titanite. Apatite is euhedral, prismatic, and up to 0.15 mm
+interval of drillcore LSHD7, drilled in 1982 by Western            long. The narrow zones of recrystallized quartz and
+Mining Corporation Limited at their Swanson Hill prospect          chlorite and the presence of strained quartz are interpreted
+(Brooke, 1983). The drillhole is located north-northwest           as the effects of deformation at low (greenschist facies)
+of the historic Duketon battery site on Banjawarn Station,         metamorphic grade.
+about 6.6 km east-southeast of Mason Hill, 5.3 km north
+of Pinje-Eda Hill, and 0.8 km southeast of the Lake Wells
+Road.                                                              Zircon morphology
+                                                                   Zircons isolated from this sample are colourless and
+                                                                   mainly euhedral. The crystals are up to 300 µm long,
+Geological context                                                 and equant to elongate, with aspect ratios up to 8:1. In
+The unit sampled is a quartz metadiorite of the northern           cathodoluminescence (CL) images, concentric zoning is
+Duketon greenstone belt, near the western margin of the            ubiquitous. A CL image of representative zircons is shown
+Burtville Terrane in the Eastern Goldfields Superterrane           in Figure 2.
+(Pawley et al., 2012). Samples of metadacite, collected
+from drillcore LSHD6, about 4.4 km to the east-southeast,
+yielded igneous crystallization ages of 2714 ± 5 Ma                Analytical details
+(GSWA 153317, Nelson, 2004a) and 2719 ± 5 Ma
+(GSWA 153318, Nelson, 2004b). Metadacite in drillcore              This sample was analysed on 25–26 June 2021, using
+LSHD10, about 11.3 km to the north, yielded an                     SHRIMP-B. Ten analyses of the M257 standard were
+igneous crystallization age of 2808 ± 3 Ma (GSWA                   obtained during the session, of which seven analyses
+235199, Wingate et al., 2021). Near the western margin             indicated an external spot-to spot (reproducibility)
+of the Duketon belt, about 32 km to the south, a felsic            uncertainty of 1.29% (1σ) and a 238U/206Pb* calibration
+volcaniclastic rock provided an igneous crystallization            uncertainty of 0.53% (1σ). Calibration uncertainties are
+age of 2714 ± 4 Ma, and a porphyritic intrusion within             included in the errors of 238U/206Pb* ratios and dates listed
+that succession yielded an igneous crystallization age of          in Table 1. Common-Pb corrections were applied to all
+2704 ± 6 Ma (samples E380, E382, Kositcin et al., 2008).           analyses using contemporaneous isotopic compositions
+                                                                   determined according to the model of Stacey and Kramers
+                                                                   (1975).
+Petrographic description
+The sample is an equigranular, medium-grained,                     Results
+hornblende–biotite quartz metadiorite (Fig. 1), consisting
+                                                                   Sixteen analyses were obtained from 16 zircons. Results are
+of about 60% plagioclase, 15–20% hornblende–actinolite,
+                                                                   listed in Table 1, and shown in a concordia diagram (Fig. 3).
+10–15% quartz, 5–8% biotite, 5% chlorite, and accessory
+magnetite–titanite, apatite and zircon. Plagioclase
+(andesine) is subhedral, tabular, randomly oriented, up to
+2.5 mm long, and partially replaced by sericite and fine           Interpretation
+epidote. Green hornblende is subhedral, tabular, up to             The analyses are concordant to slightly discordant (Fig. 3),
+2 mm in size, partially replaced by actinolite and chlorite,       and form a single group, based on their 207Pb*/206Pb*
+and occurs in aggregates with biotite and magnetite.               ratios.
+Quartz is anhedral, irregular, up to 1.5 mm in size, and
+interstitial to plagioclase. Quartz is moderately strained,        Group I comprises 16 analyses (Table 1), which yield
+exhibits incipient subgraining and recrystallization around        a weighted mean 207Pb*/206Pb* date of 2716 ± 5 Ma
+grain margins, and is completely recrystallized in narrow          (MSWD = 1.0).
+
+
+
+                                                               1
+235129.1.pdf                                                                                   Geochronology Record 1833
+
+
+
+
+               Figure 1.   Drillcore image (wet surface) of sample 235129: quartz metadiorite, Duketon
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 235129:
+                           quartz metadiorite, Duketon
+
+
+
+
+                                                           2
+235129.1.pdf                                                                                                                                                                 Geochronology Record 1833
+
+
+
+
+                                             Table 1. Ion microprobe analytical results for zircons from sample 235129: quartz metadiorite, Duketon
+
+    Group      Spot   Grain.    238
+                                   U   232
+                                          Th          Th
+                                                    232
+                                                             ƒ204         238
+                                                                                U/206Pb        207
+                                                                                                     Pb/206Pb         238
+                                                                                                                            U/206Pb*       207
+                                                                                                                                              Pb*/206Pb*      238
+                                                                                                                                                                 U/206Pb*       Pb*/206Pb*
+                                                                                                                                                                              207
+                                                                                                                                                                                             Disc.
+      ID        no.   spot     (ppm)   (ppm)       238
+                                                      U      (%)                ± 1σ                  ± 1σ                  ± 1σ               ± 1σ          date (Ma) ±1σ   date (Ma) ±1σ   (%)
+       I        9      9.1       70     29          0.42     0.000     1.848        0.035   0.18476       0.00147   1.848        0.035   0.18476   0.00147   2788     44     2696    13       -3.4
+       I        4      4.1       93     51          0.55     0.085     1.933        0.034   0.18627       0.00125   1.935        0.034   0.18551   0.00131   2686     40     2703    12       0.6
+       I        8      8.1       71     44          0.62     0.173     1.968        0.037   0.18730       0.00146   1.972        0.037   0.18576   0.00159   2645     41     2705    14       2.2
+       I        7      7.1       117    85          0.72     0.000     1.897        0.032   0.18592       0.00112   1.897        0.032   0.18592   0.00112   2729     39     2706    10       -0.8
+       I        11     11.1      170    86          0.51     0.000     1.912        0.031   0.18610       0.00091   1.912        0.031   0.18610   0.00091   2712     37     2708     8       -0.1
+       I        15    15.1       186    112         0.60     0.022     1.886        0.030   0.18657       0.00089   1.887        0.030   0.18637   0.00090   2741     37     2710     8       -1.1
+       I        3      3.1       121    91          0.75      0.016    1.906        0.032   0.18689       0.00110   1.907        0.032   0.18674   0.00110   2718     38     2714    10       -0.2
+       I        13    13.1       285    245         0.86     0.007     1.927        0.030   0.18693       0.00073   1.927        0.030   0.18686   0.00073   2695     35     2715     6       0.7
+       I        2      2.1       129    93          0.72     0.047     1.982        0.033   0.18735       0.00110   1.983        0.033   0.18693   0.00113   2632     37     2715    10       3.1
+       I        12    12.1       117    48          0.41     -0.035    2.002        0.034   0.18675       0.00115   2.001        0.034   0.18706   0.00117   2613     37     2717    10       3.8
+       I        16    16.1       103    78          0.76     -0.112    1.875        0.033   0.18615       0.00118   1.873        0.033   0.18715   0.00125   2758     40     2717    11       -1.5
+       I        14    14.1       148    80          0.55     -0.073    1.921        0.032   0.18652       0.00104   1.919        0.032   0.18716   0.00107   2704     38     2717     9       0.5
+       I        10    10.1       147    99          0.67     0.040     1.931        0.032   0.18762       0.00100   1.932        0.032   0.18726   0.00102   2689     37     2718     9       1.1
+       I        1      1.1       162    85          0.53     -0.023    1.931        0.032   0.18751       0.00092   1.930        0.032   0.18771   0.00093   2691     38     2722     8       1.1
+       I        5      5.1       108    83          0.77     0.054     1.974        0.034   0.18946       0.00117   1.975        0.034   0.18898   0.00120   2641     38     2733    10       3.4
+       I        6      6.1       118    90          0.76     -0.063    1.933        0.033   0.18900       0.00109   1.932        0.033   0.18956   0.00113   2689     38     2738    10       1.8
+
+
+
+
+                                                                                                      3
+235129.1.pdf                                                                                                   Geochronology Record 1833
+
+
+
+
+            Figure 3.    U–Pb analytical data for sample 235129: quartz metadiorite, Duketon. Yellow squares indicate
+                         Group I (magmatic zircons)
+
+
+
+
+The date of 2716 ± 5 Ma for the 16 analyses in Group I is                    Re­commended reference for this
+interpreted as the igneous crystallization age of the quartz
+diorite.
+                                                                             publication
+                                                                             Wingate, MTD, Fielding, IOH, Lu, Y and Grech, LL 2021, 235129:
+References                                                                     quartz metadiorite, Duketon; Geochronology Record 1833:
+                                                                               Geological Survey of Western Australia, 4p.
+Brooke, WJL 1983, Report on Swanson Hill tenement block, 9th
+   December, 1981 to 19th July, 1983: Western Mining Corporation Ltd,        Data obtained:     26 June 2021
+   Mineral Exploration Report A12785, 681p. (unpublished).
+                                                                             Data released:     10 December 2021
+Kositcin, N, Brown, SJA, Barley, ME, Krapez, B, Cassidy, KF and
+   Champion DC 2008, SHRIMP U–Pb zircon age constraints on
+   the Late Archaean tectonostratigraphic architecture of the Eastern
+   Goldfields Superterrane, Yilgarn Craton, Western Australia:
+   Precambrian Research, v. 161, p. 5–33.
+Nelson, DR 2004a, 153317: dacite, Duketon Battery; Geochronology
+   Record 72: Geological Survey of Western Australia, 4p.
+Nelson, DR 2004b, 153318: dacite, Duketon Battery; Geochronology
+   Record 64: Geological Survey of Western Australia, 4p.
+Pawley, MJ, Wingate, MTD, Kirkland, CL, Wyche, S, Hall, CE,
+  Romano, SS and Doublier, MP 2012, Adding pieces to the puzzle:
+  episodic crustal growth and a new terrane in the northeast Yilgarn
+  Craton, Western Australia: Australian Journal of Earth Sciences,
+  v. 59, p. 603–623.
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+   isotope evolution by a two-stage model: Earth and Planetary Science
+   Letters, v. 26, p. 207–221.
+Wingate, MTD, Fielding, IOH, Lu, Y and Grech, LL 2021, 235199:
+  metadacite, Duketon; Geochronology Record 1834: Geological
+  Survey of Western Australia, 5p.
+
+
+
+
+                                                                         4
+

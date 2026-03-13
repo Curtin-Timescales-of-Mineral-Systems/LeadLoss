@@ -1,0 +1,187 @@
+228446.1.pdf                                                                                      Geochronology Record 1731
+
+
+
+
+                        228446: metagranodiorite, Ilbianna Well
+                                  (Granitic basement, Capricorn Orogen)
+
+
+
+
+Location and sampling                                              The granodiorite has undergone solid-state deformation
+                                                                   and recovered at probable low to moderate grade. The
+Roy Hill (SF 50-12), Weeli Wolli (2752)                            rock has subsequently undergone brittle deformation to
+                   MGA Zone 50, 756339E 7502954N                   produce narrow zones of fine brecciation, which have been
+                                                                   preferentially altered.
+Sampled on 18 October 2017
+This sample was collected from the 1885.48 – 1887.40 m
+depth interval of diamond drillcore DD83FVG1, drilled in           Zircon morphology
+1983–1984 by CRA Exploration Pty Ltd in the Fortescue              Zircons isolated from this sample are colourless to dark
+Valley (Andrew, 1985). The drillhole is located on                 brown or opaque and subhedral to euhedral. The crystals
+Marillana Station, about 10.7 km north of Old Woolshed             are up to 300 µm long, and mainly elongate, with aspect
+Bore on the Munjina – Roy Hill Road, 6.2 km east-                  ratios up to 5:1. In cathodoluminescence (CL) images,
+northeast of No. 2 Bore, and 0.7 km north-northeast of             concentric zoning is ubiquitous, some crystals contain
+Ilbianna Well.                                                     high-uranium, metamict zones, and some appear to contain
+                                                                   older cores. A CL image of representative zircons is shown
+                                                                   in Figure 2.
+Geological context
+The unit sampled is a metagranodiorite, overlain by the
+Kylena and Jeerinah Formations of the 2775–2629 Ma                 Analytical details
+Fortescue Group and the Marra Mamba Iron Formation
+and Wittenoom Formation of the 2629–2494 Ma lower                  This sample was analysed on 5–6 September 2019, using
+Hamersley Group (Thorne and Trendall, 2001). A poorly              SHRIMP-B. Twelve analyses of the M257 standard
+defined Rb–Sr isochron date of c. 2.4 Ga for altered               obtained during the session indicated an external spot-
+granodiorite in this drillcore is younger than the expected        to-spot (reproducibility) uncertainty of 1.00% (1σ) and
+age of the basement granitic rocks, and possibly represents        a 238U/ 206Pb* calibration uncertainty of 0.33% (1σ).
+the time of alteration (Andrew, 1985).                             Calibration uncertainties are included in the errors of
+                                                                   238
+                                                                       U/206Pb* ratios and dates listed in Table 1. Common-
+                                                                   Pb corrections were applied to all analyses using
+Petrographic description                                           contemporaneous isotopic compositions determined
+                                                                   according to the model of Stacey and Kramers (1975).
+The sample is an altered, medium-grained biotite
+metagranodiorite, consisting of about 50–55% plagioclase,
+20–25% quartz, 15–20% K-feldspar, 5% biotite, 2%                   Results
+titanite, and accessory myrmekite, allanite, apatite and           Eighteen analyses were obtained from 18 zircons. Results
+zircon. Plagioclase is subhedral, equant and tabular,              are listed in Table 1, and shown in a concordia diagram
+up to 3 mm long, and has been altered by fine sericite,            (Fig. 3).
+carbonate, chlorite and probably albite. Quartz is anhedral,
+irregular, and up to 4 mm in size. Some quartz aggregates
+have serrated intergrown boundaries, and larger quartz             Interpretation
+grains exhibit strong undulose extinction as well as sub-
+                                                                   The analyses are concordant to moderately discordant
+graining and minor recrystallization. K-feldspar is in part
+                                                                   (Fig. 3). Four analyses are >7% discordant. The dates
+tabular, micropoikilitic and microperthitic, up to at least
+                                                                   obtained from these four analyses (Group D; Table 1)
+6.5 mm long, and smaller (1 mm) anhedral interstitial
+                                                                   are unreliable, and are considered not to be geologically
+K-feldspar grains display microcline twinning and small
+                                                                   significant. The remaining 14 analyses can be divided into
+lobes of myrmekite around their margins. Unaltered
+                                                                   two groups, based on their 207Pb*/206Pb* ratios and their
+biotite forms subhedral laths up to 1.5 mm long, although
+                                                                   locations within the crystals.
+most is significantly altered to chlorite. Euhedral diamond-
+shape grains composed of oxide and clay minerals                   Group I comprises seven analyses (Table 1), which yield
+after titanite are up to 1 mm long. Brown metamict                 a weighted mean 207Pb*/206Pb* date of 2903 ± 4 Ma
+allanite is subhedral, tabular, and up to 0.2 mm long.             (MSWD = 0.61).
+
+
+
+
+                                                               1
+228446.1.pdf                                                                                     Geochronology Record 1731
+
+
+
+
+               Figure 1.   Drillcore image (wet surface) for sample 228446: metagranodiorite, Ilbianna Well
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 228446:
+                           metagranodiorite, Ilbianna Well. Numbered circles indicate the approximate
+                           locations of analysis sites
+
+
+
+
+                                                            2
+228446.1.pdf                                                                                                                                                                Geochronology Record 1731
+
+
+
+
+                                               Table 1. Ion microprobe analytical results for zircons from sample 228446: metagranodiorite, Ilbianna Well
+
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th         Th
+                                                     232
+                                                               ƒ204          U/206Pb
+                                                                           238
+                                                                                                 Pb/206Pb
+                                                                                               207
+                                                                                                                        U/206Pb*
+                                                                                                                      238
+                                                                                                                                           Pb*/206Pb*
+                                                                                                                                         207                  238
+                                                                                                                                                                 U/206Pb*    207
+                                                                                                                                                                                Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)       238
+                                                       U       (%)           ± 1σ                 ± 1σ                  ± 1σ                ± 1σ            date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      I         6      6.1       323     273         0.85      0.007     1.765    0.021    0.20890        0.00058   1.765    0.021    0.20883    0.00058    2893     28     2897     5        0.1
+      I         12    12.1       138     160         1.16      0.050     1.791    0.023    0.21010        0.00087   1.792    0.023    0.20965    0.00089    2858     30     2903     7        1.5
+      I         16    16.1       294     331         1.13      0.073     1.832    0.022    0.21034        0.00092   1.833    0.022    0.20969    0.00093    2806     27     2903     7        3.3
+      I         8      8.1       387     316         0.82     -0.009     1.868    0.022    0.20960        0.00053   1.868    0.022    0.20968    0.00053    2764     26     2903     4        4.8
+      I         3      3.1       307     125         0.41      0.132     1.899    0.026     0.21113       0.00067   1.901    0.026    0.20996    0.00070    2725     31     2905     5        6.2
+      I         17     17.1      226     174         0.77      0.043     1.820    0.027    0.21067        0.00066   1.821    0.027    0.21028    0.00067    2821     34     2908     5        3.0
+      I         1      1.1       137     127         0.93      0.066     1.803    0.023    0.21094        0.00086   1.804    0.023    0.21035    0.00089    2843     30     2908     7        2.3
+
+
+      X         2      2.1       265     64          0.24      0.026     1.611    0.024    0.23911        0.00069   1.611    0.024    0.23888    0.00070    3113     38     3113     5        0.0
+      X         9      9.1       162     84          0.52      0.271     1.614    0.020    0.25068        0.00085   1.618    0.020    0.24831    0.00095    3102     31     3174     6        2.3
+      X         5      5.1       214     120         0.56      0.234     1.587    0.019    0.25118        0.00077   1.590    0.019    0.24913    0.00084    3145     31     3179     5        1.1
+      X         11     11.1      133     105         0.79      0.130     1.599    0.021    0.25062        0.00157   1.601    0.021    0.24948     0.00159   3128     33     3182     10       1.7
+      X         18    18.1       268     198         0.74      0.041     1.593    0.022    0.25150        0.00105   1.594    0.022    0.25114     0.00105   3139     35     3192     7        1.7
+      X         10    10.1        96     68          0.71      0.056     1.525    0.021    0.26366        0.00112   1.525    0.021    0.26317     0.00113   3250     36     3266     7        0.5
+      X         7      7.1       167     63          0.38      0.027     1.507    0.025    0.27143        0.00091   1.507    0.025    0.27119    0.00091    3281     44     3313     5        1.0
+
+
+      D         13    13.1       443     429         0.97      0.019    2.231     0.025    0.19602        0.00051   2.232    0.025    0.19585    0.00051    2387     23     2792     4        14.5
+      D         14    14.1       431     351         0.81      0.022     1.969    0.025    0.20386        0.00047   1.970    0.025    0.20366    0.00047    2647     28     2856     4         7.3
+      D         15    15.1       299     203         0.68      0.061     1.968    0.023    0.20433        0.00058   1.969    0.023    0.20378    0.00059    2648     26     2857     5         7.3
+      D         4      4.1       131     85          0.65      0.111     1.784    0.023    0.24917        0.00101   1.786    0.023    0.24819     0.00105   2866     31     3173     7        9.7
+
+
+
+
+                                                                                                      3
+228446.1.pdf                                                                                                   Geochronology Record 1731
+
+
+
+
+            Figure 3.    U–Pb analytical data for zircons from sample 228446: metagranodiorite, Ilbianna Well. Yellow
+                         squares indicate Group I (magmatic zircons); red circles indicate Group X (xenocrystic zircon
+                         cores); crossed squares indicate Group D (discordance >7%)
+
+
+
+
+Group X comprises seven analyses of zircon                                   Recommended reference for this
+cores (Table 1), which yield 207Pb*/ 206Pb* dates of
+3313– 3113 Ma. Four analyses in Group X yield a
+                                                                             publication
+weighted mean 207Pb*/ 206Pb* date of 3181 ± 12 Ma                            Wingate, MTD, Lu, Y, Fielding, IOH and Howard, HM 2021, 228446:
+(MSWD = 1.4).                                                                  metagranodiorite, Ilbianna Well; Geochronology Record 1731:
+                                                                               Geological Survey of Western Australia, 4p.
+The date of 2903 ± 4 Ma for the seven analyses in
+Group I is interpreted as the igneous crystallization age                    Data obtained:     6 September 2019
+of the granodiorite. The dates of 3313–3113 Ma for                           Data released:     31 March 2021
+the seven analyses in Group X are interpreted as the
+ages of inherited zircons. The date of 3181 ± 12 Ma for
+four analyses in Group X is interpreted as the age of an
+inherited component.
+
+
+References
+Andrew, RL 1985, CRA Exploration Pty Ltd, final report on exploration:
+  Geological Survey of Western Australia, Mineral Exploration Report
+  A15679, 139p. (unpublished).
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+   isotope evolution by a two-stage model: Earth and Planetary Science
+   Letters, v. 26, p. 207–221.
+Thorne, AM and Trendall, AF 2001, Geology of the Fortescue Group,
+   Pilbara Craton, Western Australia: Geological Survey of Western
+   Australia, Bulletin 144, 249p
+
+
+
+
+                                                                         4
+

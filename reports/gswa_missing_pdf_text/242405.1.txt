@@ -1,0 +1,181 @@
+242405.1.pdf                                                                                       Geochronology Record 1805
+
+
+
+
+               242405: metamonzogranite, Mount Gibson mine
+                    (Thundelarra Supersuite, Youanmi Terrane, Yilgarn Craton)
+
+
+
+
+Location and sampling                                            to 0.4 mm diameter in the recrystallized patches. Some
+                                                                 K-feldspar displays microcline twinning. Rounded lobes
+Ninghan (SH 50-7), Mount Gibson (2338)                           of myrmekite up to 1 mm in size occur on the margins
+                  MGA Zone 50, 513503E 6707680N                  of some of the larger K-feldspar grains. Biotite forms
+                                                                 anhedral to subhedral laths up to 2 mm long that are partly
+Sampled on 12 May 2019                                           overprinted by aggregates of randomly oriented subhedral
+This sample was collected from outcrop on Mount Gibson           laths up to 0.5 mm long. Muscovite forms subhedral laths
+Station, west of the Mount Gibson mining area, about             up to 0.5 mm long, and subhedral magnetite grains are
+9.9 km east of the Goodlands Road intersection with the          up to 0.4 mm in diameter. Bladed apatite grains are up to
+Great Northern Highway, 1.9 km west of the Wombat                0.1 mm long. Feldspars are weakly altered by sericite and
+open pit, and 1.0 km south of the Mount Gibson mine              clay minerals, and biotite shows minor chlorite alteration.
+accommodation village.                                           The sample lacks a foliation although microcline twinning
+                                                                 and undulose extinction are evidence of deformation and
+                                                                 grain boundary adjustment. The recrystallized patches
+                                                                 of fine-grained feldspar and quartz and development of
+Geological context                                               myrmekite suggest metamorphism at relatively high-
+The unit sampled is a metamonzogranite of the                    temperature amphibolite conditions.
+Thundelarra Supersuite. The 3010–2930 Ma Thundelarra
+Supersuite consists of metagranitic to metatonalitic
+rocks, and is the oldest basement unit in the Murchison          Zircon morphology
+Domain, coeval with the oldest recognized felsic                 Zircons isolated from this sample are colourless to dark
+metavolcanic rocks, represented by the Madoonga, Gossan          brown or opaque, and subhedral to euhedral. The crystals
+Hill, and Mount Gibson Formations (Van Kranendonk                are up to 350 µm long, and elongate, with aspect ratios up
+et al., 2013). A drillcore sample of Mount Gibson                to 7:1. In cathodoluminescence (CL) images, concentric
+Formation metadacite, from a drillcore about 23 km               zoning is ubiquitous, and many crystals are dominated by
+to the north, yielded an igneous crystallization age of          high-U, metamict zones. A CL image of representative
+2932 ± 5 Ma (GSWA 242407, Wingate et al., 2021). A               zircons is shown in Figure 2.
+metamonzogranite of the Thundelarra Supersuite, sampled
+about 101 km to the northwest, yielded an igneous
+crystallization age of 2946 ± 4 Ma (GSWA 219311,
+Wingate et al., 2020).
+                                                                 Analytical details
+                                                                 This sample was analysed on 4–5 September 2020,
+                                                                 using SHRIMP-B. Nine analyses of the M257 standard
+Petrographic description                                         obtained during the session indicated an external spot-
+                                                                 to-spot (reproducibility) uncertainty of 0.50% (1σ)
+The sample is medium-grained metamonzogranite                    and a 238U/206Pb* calibration uncertainty of 0.21% (1σ).
+(Fig. 1), consisting of about 35% plagioclase, 30% quartz,       Isotopic mass fractionation of 207Pb/206Pb ratios during the
+20–25% K-feldspar, 7–8% biotite, 3% myrmekite, and               session was corrected by reference to the OGC1 standard;
+trace magnetite, hematite, muscovite, apatite and zircon.        measured ratios were decreased by 0.55%. Calibration
+The rock was probably originally equigranular, but is            uncertainties are included in the errors of 238U/206Pb* ratios
+partially recrystallized, forming fine-grained patches of        and dates listed in Table 1. Common-Pb corrections were
+polygonal or anhedral grains. Plagioclase is anhedral            applied to all analyses using contemporaneous isotopic
+to subhedral, equant to tabular, and up to 2.5 mm                compositions determined according to the model of Stacey
+long; within the recrystallized patches, plagioclase is          and Kramers (1975).
+xenoblastic and up to 0.4 mm in diameter. Quartz forms
+irregular, monomineralic patches up to 12 mm in diameter,
+containing anhedral intergrown grains that exhibit               Results
+undulose extinction and are up to 3 mm in size. Quartz
+forms xenoblastic polygonal grains in the recrystallized         Sixteen analyses were obtained from 16 zircons. Results
+patches. Microperthitic K-feldspar is anhedral, equant,          are listed in Table 1, and shown in a concordia diagram
+and up to 5 mm in size, and forms polygonal grains up            (Fig. 3).
+
+
+
+
+                                                             1
+242405.1.pdf                                                                               Geochronology Record 1805
+
+
+
+
+               Figure 1.   Hand specimen image of sample 242405: metamonzogranite, Mount Gibson mine
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 242405:
+                           metamonzogranite, Mount Gibson mine. Numbered circles indicate the
+                           approximate locations of analysis sites
+
+
+
+
+                                                         2
+242405.1.pdf                                                                                                                                                              Geochronology Record 1805
+
+
+
+
+                                         Table 1. Ion microprobe analytical results for zircons from sample 242405: metamonzogranite, Mount Gibson mine
+
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th      Th
+                                                  232
+                                                            ƒ204          U/206Pb
+                                                                        238
+                                                                                             Pb/206Pb
+                                                                                           207
+                                                                                                                    U/206Pb*
+                                                                                                                  238
+                                                                                                                                      Pb*/206Pb*
+                                                                                                                                    207                     238
+                                                                                                                                                               U/206Pb*    207
+                                                                                                                                                                              Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)       U
+                                                  238
+                                                            (%)           ± 1σ                ± 1σ                  ± 1σ               ± 1σ               date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      I         1      1.1       148     29        0.20     0.050    1.753     0.019    0.21185       0.00129   1.753    0.019   0.21140    0.00131       2909     26     2916     10       0.2
+      I         11     11.1      214     81        0.38     0.018    1.760     0.017    0.21171       0.00114   1.760    0.017   0.21155    0.00115       2901     23     2917     9        0.6
+      I         8      8.1       344     150       0.44     0.060     1.774   0.020     0.21282       0.00100   1.775    0.020   0.21230    0.00102       2881     27     2923     8        1.4
+      I         2      2.1       137     65        0.48     0.083    1.765    0.020     0.21303       0.00133   1.767    0.020   0.21231    0.00137       2891     27     2923     10       1.1
+      I         4      4.1       293     111       0.38     0.007    1.764     0.016    0.21244       0.00105   1.764    0.016   0.21238    0.00105       2895     21     2924     8        1.0
+      I         3      3.1       194     69        0.36     0.108    1.963    0.020     0.21350       0.00122   1.965    0.020   0.21254    0.00126       2652     22     2925     10       9.3
+      I         13    13.1       225     119       0.53     -0.017   1.775     0.017    0.21261       0.00114   1.775    0.017   0.21276    0.00114       2881     23     2927     9        1.6
+      I         5      5.1       477     325       0.68     0.139    1.831     0.014    0.21402       0.00093   1.834    0.014   0.21279    0.00096       2806     18     2927     7        4.1
+      I         15    15.1       306     349       1.14     0.039    1.785     0.016    0.21314       0.00105   1.786    0.016   0.21279    0.00106       2867     21     2927     8        2.0
+      I         16    16.1       405     176       0.43     0.030    1.839     0.015    0.21391       0.00138   1.839    0.015   0.21364    0.00138       2799     19     2933     10       4.6
+      I         7      7.1       176     112       0.64     0.259    2.246    0.023     0.21596       0.00129   2.252    0.023   0.21367    0.00138       2369     20     2934     10       19.2
+      I         6      6.1       185     95        0.51     0.037    1.986    0.030     0.21421       0.00128   1.986    0.030   0.21389    0.00130       2629     33     2935     10       10.4
+      I         10    10.1       267     178       0.67    -0.007    1.954     0.018    0.21390       0.00182   1.954    0.018   0.21396    0.00182       2664     20     2936     14       9.2
+      I         14    14.1       186     73        0.39     0.011    1.789     0.018    0.21473       0.00125   1.790    0.018   0.21463    0.00126       2862     24     2941     9        2.7
+      I         12    12.1       166     96        0.58     0.034    1.750     0.018    0.21508       0.00125   1.750    0.018   0.21478    0.00126       2914     25     2942     10       1.0
+
+
+      D         9      9.1       125     178       1.43     0.513    3.212    0.066     0.21892       0.00337   3.229    0.067   0.21438    0.00356       1739     32     2939     27       40.8
+
+
+
+
+                                                                                                  3
+242405.1.pdf                                                                                                   Geochronology Record 1805
+
+
+
+
+            Figure 3.    U–Pb analytical data for sample 242405: metamonzogranite, Mount Gibson mine. Yellow squares
+                         indicate Group I (magmatic zircons). One highly discordant analysis in Group D is not shown
+
+
+
+
+Interpretation                                                               Recommended reference for this
+The analyses are concordant to strongly discordant                           publication
+(Fig. 3). One analysis is >40% discordant. The date                          Wingate, MTD, Fielding, IOH, Lu, Y and Ivanic, T 2021, 242405:
+obtained from this analysis (Group D; Table 1) is                              metamonzogranite, Mount Gibson mine; Geochronology Record
+unreliable, and considered not to be geologically                              1805: Geological Survey of Western Australia, 4p.
+significant. The remaining 15 analyses form a single
+group, based on their 207Pb*/206Pb* ratios.                                  Data obtained:     5 September 2020
+
+Group I comprises 15 analyses (Table 1), which yield                         Data released:     21 October 2021
+a weighted mean 207Pb*/206Pb* date of 2928 ± 5 Ma
+(MSWD = 0.66).
+The date of 2928 ± 5 Ma for the 15 analyses in Group I
+is interpreted as the igneous crystallization age of the
+monzogranite.
+
+
+References
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+   isotope evolution by a two-stage model: Earth and Planetary Science
+   Letters, v. 26, p. 207–221.
+Van Kranendonk, MJ, Ivanic, TJ, Wingate, MTD and Kirkland, CL 2013,
+   Long-lived, autochthonous development of the Archean Murchison
+   Domain, and implications for Yilgarn Craton tectonics: Precambrian
+   Research, v. 229, p. 49–92.
+Wingate, MTD, Fielding, IOH, Lu, Y and Ivanic, T 2021, 242407:
+  metadacite, Bungeye Well; Geochronology Record 1806: Geological
+  Survey of Western Australia, 4p.
+Wingate, MTD, Lu, Y and Zibra, I 2020, 219311: metamonzogranite,
+  North Paradise Well; Geochronology Record 1680: Geological
+  Survey of Western Australia, 4p.
+
+
+
+
+                                                                         4
+

@@ -1,0 +1,182 @@
+240118.1.pdf                                                                                        Geochronology Record 1832
+
+
+
+
+                      240118: metamonzogranite, Mount Mason
+                     (Yilgarn Craton granites, Youanmi Terrane, Yilgarn Craton)
+
+
+
+
+Location and sampling                                              Magnetite is anhedral to subhedral, up to 0.7 mm in size,
+                                                                   and partly altered to hematite. Apatite forms euhedral laths
+Menzies (SH 51-5), Mount Mason (2939)                              up to 0.15 mm long, and pale brown metamict allanite
+                   MGA Zone 51, 245341E 6772951N                   is up 0.25 mm diameter. Fine-grained purple fluorite is
+                                                                   interstitial to fine-grained magnetite. The sample lacks
+Sampled on 5 May 2019                                              a tectonic foliation, although strained grains, microcline
+This sample was collected from a low outcrop, about                twinning, myrmekite development, and recrystallization
+12.9 km west of Spotted Dog Hill, 9.4 km north-northwest           suggest deformation and recovery at moderate to high-
+of Mount Ida, and 3.5 km southeast of Mount Mason.                 grade metamorphic conditions.
+
+
+
+Geological context                                                 Zircon morphology
+The unit sampled is a metamonzogranite adjacent to the             Zircons isolated from this sample are pale brown to dark
+western margin of the Mount Ida greenstone belt in the             brown or opaque and mainly subhedral to euhedral. The
+eastern Youanmi Terrane (Wyche and Duggan, 2003). The              crystals are up to 350 µm long, and mostly elongate, with
+metamonzogranite is interpreted to postdate deformation            aspect ratios up to 9:1. In cathodoluminescence (CL)
+in the adjacent greenstones (Zibra et al., 2020). A                images, concentric zoning is ubiquitous, and most crystals
+weathered, foliated monzogranite sampled 10.3 km to the            are dominated by high-U, metamict zones. A CL image of
+west-southwest provided an igneous crystallization age             representative zircons is shown in Figure 2.
+of 2693 ± 5 Ma (sample GA 96969016, Bodorkos, 2011).
+A porphyritic metamicrogranite collected about 14.3 km
+to the southeast yielded an igneous crystallization age of         Analytical details
+2700 ± 9 Ma (GSWA 169078, Nelson, 2002).
+                                                                   This sample was analysed on 13–14 August 2020, using
+                                                                   SHRIMP-B. Ten analyses of the M257 standard were
+                                                                   obtained during the session, of which eight analyses
+Petrographic description                                           indicated an external spot-to-spot (reproducibility)
+                                                                   uncertainty of 0.61% (1σ) and a 238U/206Pb* calibration
+The sample is a medium- to coarse-grained biotite
+                                                                   uncertainty of 0.32% (1σ). Calibration uncertainties are
+metamonzogranite (Fig. 1), consisting of about 35–40%
+                                                                   included in the errors of 238U/206Pb* ratios and dates listed
+K-feldspar, 30% plagioclase, 25% quartz, 5% myrmekite,
+                                                                   in Table 1. Common-Pb corrections were applied to all
+3% biotite, <1% magnetite–hematite and accessory
+                                                                   analyses using contemporaneous isotopic compositions
+muscovite, chlorite, apatite, allanite, fluorite and zircon.
+                                                                   determined according to the model of Stacey and Kramers
+K-feldspar is anhedral, equant to tabular, microperthitic,
+                                                                   (1975).
+and up to 10 mm in size. Some K-feldspar grains show
+microcline twinning, some contain small plagioclase
+inclusions, and some are recrystallized along fractures and
+grain margins. Plagioclase is subhedral, mostly equant,            Results
+up to 5 mm in diameter, is partially altered to sericite
+                                                                   Seventeen analyses were obtained from 17 zircons. Results
+or clay minerals, and some crystals are compositionally
+                                                                   are listed in Table 1, and shown in a concordia diagram
+zoned. Quartz forms aggregates or lenses up to 12 mm
+                                                                   (Fig. 3).
+long of microcrystalline recrystallized grains, which have
+strongly serrated, intergrown boundaries, and exhibit
+undulose extinction. Myrmekite forms invasive lobes and
+aggregates up to 1.5 mm in diameter at the margins of              Interpretation
+larger K-feldspar grains. Myrmekite also forms irregular           The analyses are concordant to strongly discordant
+aggregates up to 2.5 mm in size that consist of many small         (Fig. 3). Three analyses are >20% discordant. The dates
+myrmekite lobes that have replaced entire K-feldspar               obtained from these three analyses (Group D; Table 1)
+grains. Biotite forms anhedral to subhedral, equant grains         are unreliable, and are considered not to be geologically
+and laths up to 1 mm in size, many in small aggregates,            significant. The remaining 14 analyses form a single
+and is partially altered to chlorite. Muscovite occurs             group, based on their 207Pb*/206Pb* ratios.
+with biotite or in the cores of some plagioclase grains.
+
+
+
+                                                               1
+240118.1.pdf                                                                             Geochronology Record 1832
+
+
+
+
+               Figure 1.   Hand specimen image of sample 240118: metamonzogranite, Mount Mason
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 240118:
+                           metamonzogranite, Mount Mason. Numbered circles indicate the approximate
+                           locations of analysis sites
+
+
+
+
+                                                         2
+240118.1.pdf                                                                                                                                                           Geochronology Record 1832
+
+
+
+
+                                          Table 1. Ion microprobe analytical results for zircons from sample 240118: metamonzogranite, Mount Mason
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                             Th      Th
+                                                   232
+                                                             ƒ204       238
+                                                                           U/206Pb            Pb/206Pb
+                                                                                            207
+                                                                                                                    U/206Pb*
+                                                                                                                  238               207
+                                                                                                                                       Pb*/206Pb*        238
+                                                                                                                                                            U/206Pb*    207
+                                                                                                                                                                           Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)     238
+                                                     U       (%)           ± 1σ                ± 1σ                 ± 1σ                ± 1σ           date (Ma) ±1σ   date (Ma) ±1σ    (%)
+       I        14    14.1       230      41       0.18      0.258    1.960    0.021    0.18469       0.00093   1.965    0.021   0.18238     0.00106   2652     24     2675     10       0.9
+       I        3      3.1       198      51       0.26      0.146    2.034    0.022    0.18408       0.00104   2.037    0.022   0.18278     0.00112   2575     24     2678     10       3.8
+       I        16    16.1       100      84       0.84      0.145    1.990    0.028    0.18425       0.00150   1.993    0.028   0.18295     0.00161   2621     31     2680     15       2.2
+       I        9      9.1       253     390       1.55      0.196    1.912    0.020    0.18471       0.00089   1.916    0.020   0.18297    0.00099    2708     24     2680     9        -1.0
+       I        11     11.1      165     229       1.39      0.388    2.225    0.036    0.18673       0.00118   2.234    0.036   0.18327     0.00140   2385     33     2683     13       11.1
+       I        12    12.1        96      81       0.84     -0.055    1.932    0.027    0.18291       0.00141   1.931    0.027   0.18340     0.00145   2690     31     2684     13       -0.2
+       I        15    15.1       170      47       0.27      0.324    1.979    0.023    0.18630       0.00106   1.985    0.023   0.18341     0.00124   2630     25     2684     11       2.0
+       I        4      4.1       276      50       0.18      0.162    1.890    0.019    0.18533       0.00089   1.893    0.019   0.18389    0.00097    2735     23     2688     9        -1.7
+       I        5      5.1       252      55       0.22      0.033    1.938    0.020    0.18425       0.00090   1.938    0.020   0.18395    0.00092    2682     23     2689     8        0.3
+       I        8      8.1        79      49       0.62      0.000    1.950    0.029    0.18415       0.00165   1.950    0.029   0.18415     0.00165   2669     33     2691     15       0.8
+       I        2      2.1       172     102       0.59      0.566    2.057    0.025    0.18990       0.00122   2.068    0.025   0.18485     0.00155   2542     26     2697     14       5.7
+       I        13    13.1       162      66       0.41     -0.017    2.111    0.025    0.18472       0.00113   2.111    0.025   0.18487     0.00114   2500     25     2697     10        7.3
+       I        10    10.1       894     391       0.44      0.023    1.926    0.016    0.18591       0.00078   1.926    0.016   0.18570    0.00078    2696     19     2705     7        0.3
+       I        6      6.1       308      73       0.24      0.376    2.001    0.020    0.18978       0.00091   2.008    0.020   0.18643     0.00116   2605     22     2711     10       3.9
+
+
+      D         17     17.1      746     408       0.55      0.179    2.806    0.039    0.16314       0.00155   2.811    0.040   0.16154     0.00158   1962     24     2472     16       20.6
+      D         7      7.1       196     151       0.77      1.231    3.622    0.084    0.19452       0.00138   3.668    0.085   0.18354    0.00223    1554     32     2685     20       42.1
+      D         1      1.1       187     111       0.59      0.904    2.758    0.062    0.19175       0.00104   2.783    0.063   0.18368     0.00158   1979     39     2686     14       26.3
+
+
+
+
+                                                                                                  3
+240118.1.pdf                                                                                                     Geochronology Record 1832
+
+
+
+
+            Figure 3.     U–Pb analytical data for sample 240118: metamonzogranite, Mount Mason. Yellow squares
+                          indicate Group I (magmatic zircons); crossed squares indicate Group D (discordance >20%)
+
+
+
+
+Group I comprises 14 analyses (Table 1), which yield                            Re­commended reference for this
+a weighted mean 207Pb*/206Pb* date of 2690 ± 7 Ma
+(MSWD = 1.2).
+                                                                                publication
+                                                                                Wingate, MTD, Fielding, IOH, Lu, Y and Zibra, I 2021, 240118:
+The date of 2690 ± 7 Ma for the 14 analyses in Group I                            metamonzogranite, Mount Mason; Geochronology Record 1832:
+is interpreted as the igneous crystallization age of the                          Geological Survey of Western Australia, 4p.
+monzogranite.
+                                                                                Data obtained:     14 August 2020
+                                                                                Data released:     10 December 2021
+References
+Bodorkos, S 2011, Geoscience Australia’s Geochron Delivery system
+  (first release: September 2011): Geoscience Australia, Canberra,
+  <http://pid.geoscience.gov.au/dataset/ga/72841>.
+Nelson, DR 2002, 169078: quartz-feldspar porphyry, Fifty One Mile
+   Well; Geochronology Record 113: Geological Survey of Western
+   Australia, 4p.
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+   isotope evolution by a two-stage model: Earth and Planetary Science
+   Letters, v. 26, p. 207–221.
+Wyche, S and Duggan, MB 2003, Mount Mason, WA Sheet 2939:
+  Geological Survey of Western Australia, 1:100 000 Geological Series.
+Zibra, I, Weinberg, RF and Peternell, M 2020, Neoarchean synmagmatic
+   crustal extrusion in the transpressional Yilgarn Orogen: Tectonics 39,
+   doi.org/10.1029/2019TC005947.
+
+
+
+
+                                                                            4
+

@@ -1,0 +1,202 @@
+245115.1.pdf                                                                                      Geochronology Record 1836
+
+
+
+
+       245115: porphyritic microgranite, Kanowna Consols mine
+                 (‘Red Hill porphyry’, Yilgarn Craton granites, Kalgoorlie Terrane,
+                        Eastern Goldfields Superterrane, Yilgarn Craton)
+
+
+
+Location and sampling                                              Zircon morphology
+Kurnalpi (SH 51-10), Kanowna (3236)                                Zircons isolated from this sample are colourless and
+                  MGA Zone 51, 366687E 6614391N                    anhedral to euhedral. Large, anhedral crystals are up to
+                                                                   400 mm long, and typically broken, whereas subhedral
+Sampled on 22 September 2020                                       to euhedral prisms are up to about 250 µm long, and
+                                                                   equant to elongate, with aspect ratios up to 5:1. In
+This sample was collected from the 319.45 – 320.37 m               cathodoluminescence (CL) images, concentric zoning is
+depth interval of drillcore RHDD18007, drilled in 2018 by          ubiquitous. A CL image of representative zircons is shown
+Northern Star Resources Limited. The drillhole is located          in Figure 2.
+near the southern edge of the Kanowna Consols open pit,
+about 9.3 km southeast of Centre Loftys Dam, 5.2 km north
+of Kanowna Dam, and 4.0 km southwest of Four Mile Hill.
+                                                                   Analytical details
+                                                                   This sample was analysed on 24–25 June and 8–9 July
+Geological context                                                 2021, using SHRIMP-B. Analyses 1.1 to 19.1 (spot
+                                                                   numbers 1–20) were obtained during the first session,
+The unit sampled is a porphyritic microgranite of the              together with 14 analyses of the M257 standard, of
+Kalgoorlie Terrane, known informally as the Red Hill               which 12 analyses indicated an external spot-to-spot
+porphyry or Red Hill granite (Davis et al., 2010). The Red         (reproducibility) uncertainty of 0.83% (1σ) and a
+Hill porphyry is dacitic in composition, about 1500 m long         238
+                                                                       U/ 206 Pb* calibration uncertainty of 0.30% (1σ).
+and 250 m wide in plan view, has numerous associated               Analyses 20.1 to 2.2 (spot numbers 21–32) were obtained
+radiating dykes, and hosts gold-mineralized quartz veins           during the second session, together with eight analyses
+(Davis et al., 2010). The Red Hill porphyry is intruded into       of the M257 standard, of which six analyses indicated
+volcaniclastic conglomerates and sandstones, including a           an external spot-to-spot (reproducibility) uncertainty of
+sandstone with a maximum depositional age of c. 2670 Ma            1.01% (1σ) and a 238U/206Pb* calibration uncertainty of
+(sample LB112, Squire and Cas, 2006). A metadacite                 0.44% (1σ). Calibration uncertainties are included in the
+collected about 2.2 km to the west yielded an igneous              errors of 238U/206Pb* ratios and dates listed in Table 1.
+crystallization age of 2708 ± 7 Ma (GSWA 104958,                   Common-Pb corrections were applied to all analyses
+Nelson, 1996). A volcaniclastic sandstone collected                using contemporaneous isotopic compositions determined
+about 5.1 km to the west-southwest yielded an igneous              according to the model of Stacey and Kramers (1975).
+crystallization age of 2664 ± 4 Ma (GSWA 245105,
+Wingate et al., 2021b). A metadacite collected about
+2.3 km to the north yielded an igneous crystallization age
+of 2653 ± 9 Ma (GSWA 222662, Wingate et al., 2021a).               Results
+                                                                   Thirty-two analyses were obtained from 24 zircons. Results
+                                                                   are listed in Table 1, and shown in a concordia diagram
+Petrographic description                                           (Fig. 3).
+
+The sample is a medium-grained, altered, plagioclase-
+phyric microgranite (Fig. 1), consisting of about 95%              Interpretation
+groundmass, 3–4% plagioclase phenocrysts, 1% pyrite and
+                                                                   The analyses are concordant to moderately discordant
+trace rutile. The groundmass is a massive, microcrystalline
+                                                                   (Fig. 3). Three analyses are >5% discordant. The dates
+aggregate of interlocking anhedral feldspar and quartz
+                                                                   obtained from these three analyses (Group D; Table 1)
+grains up to 0.25 mm in size. Feldspar, most of which is
+                                                                   are unreliable, and are considered not to be geologically
+poorly to well-twinned plagioclase, is more abundant than
+                                                                   significant. The remaining 29 analyses can be divided into
+quartz. Much of the groundmass texture is obscured by
+                                                                   two groups, based on their 207Pb*/206Pb* ratios.
+pervasive phyllic (sericite–carbonate–pyrite) alteration.
+Plagioclase phenocrysts are subhedral to euhedral, mostly          Group I comprises 19 analyses of 14 zircons (Table 1),
+tabular, and up to 2 mm long. Pyrite is subhedral to               which yield a weighted mean 207Pb*/ 206Pb* date of
+euhedral, equant, evenly disseminated, and up to 0.4 mm            2688 ± 6 Ma (MSWD = 1.5).
+in size. Lath-shaped grains of rutile, up to 0.2 mm long,
+may be pseudomorphs after original magnetite. The                  Group P comprises 10 analyses of 10 zircons (Table 1),
+sample is not deformed or obviously metamorphosed.                 which yield 207Pb*/206Pb* dates of 2669–2643 Ma.
+
+                                                               1
+245115.1.pdf                                                                                  Geochronology Record 1836
+
+
+
+
+               Figure 1.   Drillcore image (wet surface) of sample 245115: porphyritic microgranite,
+                           Kanowna Consols mine
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 245115:
+                           porphyritic microgranite, Kanowna Consols mine. Numbered circles indicate the
+                           approximate locations of analysis sites
+
+
+
+
+                                                           2
+245115.1.pdf                                                                                                                                                                   Geochronology Record 1836
+
+
+                                        Table 1. Ion microprobe analytical results for zircons from sample 245115: porphyritic microgranite, Kanowna Consuls mine
+
+     Group     Spot   Grain.     238
+                                    U         232
+                                                 Th        Th
+                                                         232
+                                                                  ƒ204           U/206Pb
+                                                                               238                207
+                                                                                                     Pb/206Pb             U/206Pb*
+                                                                                                                        238
+                                                                                                                                              Pb*/206Pb*
+                                                                                                                                            207                  238
+                                                                                                                                                                    U/206Pb*    207
+                                                                                                                                                                                   Pb*/206Pb*   Disc.
+       ID       no.   spot     (ppm)         (ppm)      238
+                                                           U      (%)            ± 1σ                 ± 1σ                ± 1σ                 ± 1σ            date (Ma) ±1σ   date (Ma) ±1σ    (%)
+       I        22    12.2        88           55        0.63     -0.052    2.029    0.030     0.18130      0.00111   2.028    0.029    0.18177     0.00114    2584     32     2669     10       3.2
+       I        30    24.1        96           64        0.67      0.074    1.996    0.028     0.18258      0.00103   1.998    0.028    0.18192     0.00107    2616     31     2671     10       2.0
+       I        8      8.1        86           30        0.35     0.180     1.947    0.028     0.18376      0.00128   1.950    0.028    0.18215     0.00140    2668     31     2673     13       0.2
+       I        14    14.1        72           33        0.46     0.142     1.951    0.030     0.18350      0.00142   1.954    0.030    0.18224     0.00153    2664     34     2673     14       0.3
+       I        1      1.1        60           17        0.28     0.062     2.003    0.031     0.18280      0.00148   2.004    0.031    0.18225     0.00153    2610     34     2673     14       2.4
+       I        31     7.2        70           36        0.52     0.025     1.908    0.030     0.18253      0.00133   1.908    0.030    0.18230     0.00135    2716     35     2674     12       -1.6
+       I        5      5.1        86           54        0.63     0.044     1.961    0.028     0.18351      0.00126   1.962    0.028    0.18311     0.00129    2656     31     2681     12       1.0
+       I        6      6.1        86           48        0.56     0.042     1.966    0.027     0.18366      0.00123   1.966    0.027    0.18328     0.00126    2650     31     2683     11       1.2
+       I        12    12.1       181           68        0.37     0.032     1.972    0.023     0.18369      0.00089   1.972    0.023    0.18340     0.00090    2644     26     2684     8        1.5
+       I        16    15.2        77           45        0.58     -0.024    1.911    0.028     0.18318      0.00132   1.911    0.028    0.18340     0.00134    2713     33     2684     12       -1.1
+       I        15    15.1       104           60        0.58      0.113    1.975    0.027     0.18470      0.00117   1.978    0.027    0.18370     0.00124    2638     29     2687     11       1.8
+       I        21    20.1        77           58        0.75     0.120     2.000    0.030     0.18500      0.00120   2.002    0.030    0.18393     0.00128    2612     33     2689     12       2.9
+       I        27     4.2        32            7        0.23     0.000     1.994    0.038     0.18405      0.00186   1.994    0.038    0.18405     0.00186    2620     42     2690     17       2.6
+       I        7      7.1       133           91        0.69     -0.043    1.948    0.025     0.18436      0.00102   1.947    0.025    0.18474     0.00104    2672     28     2696     9        0.9
+       I        32     2.2        96           29        0.30     0.145     2.013    0.029     0.18628      0.00109   2.015    0.029    0.18498     0.00118    2597     31     2698     11       3.7
+       I        28    22.1       132           89        0.68     0.045     1.990    0.027     0.18544      0.00091   1.990    0.027    0.18504     0.00093    2624     30     2699     8        2.8
+       I        25    18.2        68           39        0.58     -0.022    1.999    0.030     0.18537      0.00126   1.998    0.030    0.18557     0.00128    2616     33     2703     11       3.2
+       I        19    18.1        78           43        0.55     -0.023    1.983    0.029     0.18598      0.00131   1.983    0.029    0.18618     0.00133    2633     31     2709     12       2.8
+       I        2      2.1       115           44        0.39     0.089     1.945    0.025     0.18737      0.00106   1.947    0.025    0.18657     0.00111    2672     28     2712     10       1.5
+
+
+       P        4      4.1        64           20        0.31     0.164     2.002    0.030     0.18043      0.00138   2.005    0.030    0.17896     0.00151    2608     32     2643     14       1.3
+       P        18     17.1      103           35        0.34     0.087     1.993    0.026     0.18039      0.00110   1.995    0.026    0.17962     0.00115    2620     29     2649     11       1.1
+       P        17    16.1        48           14        0.30     0.150     1.988    0.033     0.18186      0.00265   1.991    0.033    0.18052     0.00273    2623     36     2658     25       1.3
+       P        23    21.1        43           23        0.54     0.033     1.958    0.034     0.18088      0.00152   1.959    0.034    0.18058     0.00155    2659     38     2658     14       0.0
+       P        29    23.1        79           34        0.43     0.020     1.970    0.029     0.18103      0.00118   1.970    0.029    0.18085     0.00120    2646     33     2661     11       0.5
+       P        20    19.1        46           19        0.41     -0.126    1.985    0.034     0.17974      0.00171   1.982    0.034    0.18086     0.00183    2633     38     2661     17       1.0
+       P        10    10.1       168           109       0.65     0.034     2.032    0.024     0.18123      0.00090   2.033    0.024    0.18093     0.00091    2579     26     2661     8        3.1
+       P        9      9.1        85           42        0.50     0.000     2.034    0.029     0.18136      0.00133   2.034    0.029    0.18136     0.00133    2578     31     2665     12       3.3
+       P        11     11.1      103           86        0.84     0.036     2.042    0.028     0.18201      0.00113   2.043    0.028    0.18169     0.00116    2569     30     2668     11       3.7
+       P        3      3.1        68           40        0.59     0.000     1.913    0.029     0.18171      0.00135   1.913    0.029    0.18171     0.00135     2711    33     2669     12       -1.6
+
+
+       D        26    19.2        31            9        0.30     0.173     1.819    0.037     0.18280      0.00202   1.822    0.037    0.18126     0.00222    2820     47     2664     20       -5.8
+       D        24    16.2        34           11        0.32     -0.046    2.085    0.038     0.18169      0.00180   2.084    0.038    0.18210     0.00185    2527     39     2672     17       5.4
+       D        13    13.1        74            1        0.01     0.133     1.963    0.029     0.20239      0.00150   1.966    0.029    0.20121     0.00159    2651     33     2836     13       6.5
+
+
+
+
+                                                                                                        3
+245115.1.pdf                                                                                                       Geochronology Record 1836
+
+
+
+
+            Figure 3.     U–Pb analytical data for sample 245115: porphyritic microgranite, Kanowna Consols mine. Yellow
+                          squares indicate Group I (magmatic zircons); black squares indicate Group P (radiogenic-Pb
+                          loss); crossed squares indicate Group D (discordance >5%)
+
+
+
+
+The date of 2688 ± 6 Ma for the 19 analyses in Group I                          Re­commended reference for this
+is interpreted as the igneous crystallization age of the
+microgranite. The dates of 2669–2643 Ma for the 10
+                                                                                publication
+analyses in Group P are interpreted to reflect loss of                          Wingate, MTD, Fielding, IOH, Lu, Y and Smithies, RH 2021, 245115:
+radiogenic Pb.                                                                    porphyritic microgranite, Kanowna Consols mine; Geochronology
+                                                                                  Record 1836: Geological Survey of Western Australia, 4p.
+
+                                                                                Data obtained:      9 July 2021
+References
+                                                                                Data released:      10 December 2021
+Davis, BK, Blewett, RS, Squire, R, Champion, DC and Henson, PA
+   2010, Granite-cored domes and gold mineralisation: Architectural
+   and geodynamic controls around the Archaean Scotia–Kanowna
+   Dome, Kalgoorlie Terrane, Western Australia: Precambrian Research,
+   v. 183, p. 316-337.
+Nelson, DR 1996, 104958: metadacite, Ballarat - Last Chance;
+   Geochronology Record 20: Geological Survey of Western Australia,
+   6p.
+Squire, R and Cas, RAF 2006, Stratigraphic and structural architecture
+   of late-basin depositional systems in the Eastern Goldfields Province,
+   Yilgarn Craton: Minerals and Energy Research Institute of Western
+   Australia (MERIWA), Report 259, 85p.
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+   isotope evolution by a two-stage model: Earth and Planetary Science
+   Letters, v. 26, p. 207–221.
+Wingate, MTD, Fielding, IOH, Lu, Y and Sapkota, J 2021a, 222662:
+  porphyritic dacite, Four Mile Hill; Geochronology Record 1759:
+  Geological Survey of Western Australia, 4p.
+Wingate, MTD, Fielding, IOH, Lu, Y and Smithies, RH 2021b, 245105:
+  volcaniclastic sandstone, Kanowna Belle mine; Geochronology
+  Record 1835: Geological Survey of Western Australia, 4p.
+
+
+
+
+                                                                            4
+

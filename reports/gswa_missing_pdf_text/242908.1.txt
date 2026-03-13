@@ -1,0 +1,196 @@
+242908.1.pdf                                                                                         Geochronology Record 1819
+
+
+
+
+                242908: tuffaceous volcanic rock, Red Hill mine
+         (Ashburton Formation, Wyloo Group, Ashburton Basin, Capricorn Orogen)
+
+
+
+
+Location and sampling                                             Lath-shaped crystals, replaced by fine chalcedonic
+                                                                  quartz and tiny magnetite needles, range up to 2.5 mm
+Yarraloola (SF 50-6), Pannawonica (2154)                          in length, and exhibit a laminated texture owing to
+                  MGA Zone 50, 404362E 7579101N                   secondary magnetite inclusions. It is possible these laths
+                                                                  were originally small pumice clasts, although their very
+Sampled on 18 September 2019                                      tabular forms and abruptly terminated ends, as well as
+This sample was collected from outcrop on Red Hill                the laminar texture, is more consistent with the laths
+Station, about 9.4 km north of Red Hill homestead, 9.0 km         representing replaced biotite. The chloritized grains also
+south-southeast of Lassie Well, and 3.0 km southwest of           contain fine-grained secondary magnetite but are equant in
+the historic Red Hill mine.                                       shape, up to 0.5 mm in size and are most likely a replaced
+                                                                  ferromagnesian mineral. Probable lithic grains are variably
+                                                                  clay and limonite altered, up to 1.5 mm in size, and have
+                                                                  a feathery feldspathic (?albite) texture. These could be
+Geological context                                                clasts of altered coherent lava and crystal-vitric tuff with a
+The unit sampled is a felsic volcanic rock of the                 similar composition as the host rock. There is no evidence
+2008– 1799 Ma Ashburton Formation of the Wyloo Group              of reworking in this sample, and it is interpreted as a tuff
+(Thorne and Seymour, 1991; Thorne and Johnson, 2020a)             of primary pyroclastic origin. There is no evidence of
+in the Ashburton Basin. The Ashburton Formation is about          deformation or metamorphism.
+6.5 km thick, and consists of greenschist facies mudstone,
+siltstone and lithic quartz sandstone, together with minor
+conglomerate, felsic to mafic volcanic rocks, banded              Zircon morphology
+iron-formation and chert, dolostone, and quartzite. The
+formation conformably overlies the Duck Creek Dolomite            Zircons isolated from this sample are colourless to dark
+and grades laterally into the June Hill Volcanics (Evans          brown and mainly subhedral to euhedral. The crystals are
+et al., 2003; Wilson et al., 2010; Thorne and Johnson,            up to 350 µm long, and equant to elongate, with aspect
+2020b). Both the Ashburton Formation and June Hill                ratios up to 4:1. In cathodoluminescence (CL) images,
+Volcanics are unconformably overlain by Paleoproterozoic          all zircons exhibit concentric zoning, and some appear to
+siliciclastic sedimentary rocks of the Blair, Mount Minnie,       contain older cores. A CL image of representative zircons
+Bresnahan, and Edmund Basins and by Mesozoic rocks of             is shown in Figure 2.
+the Carnarvon Basin (Thorne and Johnson, 2020a). The
+present sample was collected close to the basal contact
+with the underlying Duck Creek Dolomite.                          Analytical details
+                                                                  This sample was analysed on 11–12 February 2021,
+                                                                  using SHRIMP-B. Twelve analyses of the M257 standard
+Petrographic description                                          were obtained during the session, of which 11 analyses
+                                                                  indicated an external spot-to-spot (reproducibility)
+The sample is a coarse-grained tuffaceous rock (Fig. 1) of        uncertainty of 0.50% (1σ) and a 238U/206Pb* calibration
+probable rhyolitic composition, and consists of about 70%         uncertainty of 0.23% (1σ). Isotopic mass fractionation
+matrix, 15–18% plagioclase, 6–7% quartz, 5% quartz-               of 207Pb/206Pb ratios during the session was corrected by
+replaced laths, 2% lithic grains, 1% chlorite-replaced            reference to the OGC1 standard; measured ratios were
+grains, and accessory zircon. The matrix is composed of           decreased by 0.22%. Calibration uncertainties are included
+clay- or chlorite-altered microcrystalline material, and          in the errors of 238U/206Pb* ratios and dates listed in Table 1.
+contains abundant non-welded relict glass shards, which           Common-Pb corrections were applied to all analyses
+have been replaced by fine chalcedonic quartz. The shard          using contemporaneous isotopic compositions determined
+shapes are well preserved and include bubble wall, cuspate        according to the model of Stacey and Kramers (1975).
+and rod-like forms. There is no evidence of welding of
+the shards. Plagioclase forms tabular phenocrysts up
+to 1.2 mm long and smaller, angular crystal fragments.            Results
+Plagioclase has been completely replaced by sericite, and
+only a few grains exhibit faint twinning. Quartz forms            Twenty-two analyses were obtained from 19 zircons.
+anhedral, embayed, fractured phenocrysts up to 1.5 mm             Results are listed in Table 1, and shown in a concordia
+in size, and more abundant smaller angular fragments.             diagram (Fig. 3).
+
+
+                                                              1
+242908.1.pdf                                                                                  Geochronology Record 1819
+
+
+
+
+               Figure 1.   Outcrop image for sample 242908: tuffaceous volcanic rock, Red Hill mine
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 242908:
+                           tuffaceous volcanic rock, Red Hill mine. Numbered circles indicate the
+                           approximate locations of analysis sites
+
+
+
+
+                                                           2
+242908.1.pdf                                                                                                                                                                 Geochronology Record 1819
+
+
+
+
+                                        Table 1. Ion microprobe analytical results for zircons from sample 242908: tuffaceous volcanic rock, Red Hill mine
+
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th        Th
+                                                    232
+                                                              ƒ204        238
+                                                                             U/206Pb             Pb/206Pb
+                                                                                               207
+                                                                                                                       U/206Pb*
+                                                                                                                     238
+                                                                                                                                           Pb*/206Pb*
+                                                                                                                                         207                   238
+                                                                                                                                                                  U/206Pb*    207
+                                                                                                                                                                                 Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)      238
+                                                      U       (%)            ± 1σ                 ± 1σ                 ± 1σ                 ± 1σ             date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      I         13    10.1       284      75        0.27      0.130     3.158    0.028     0.10988       0.00067   3.162    0.028     0.10876     0.00076    1771     14     1779     13       0.4
+      I         12     9.1       158      87        0.55      0.112     3.115    0.033     0.11022       0.00088   3.119    0.033     0.10924    0.00098     1793     17     1787     16       -0.3
+      I         20     17.1      177      76        0.43      0.040     3.117    0.031     0.10959       0.00082   3.119    0.031     0.10924    0.00086     1793     16     1787     14       -0.3
+      I         17    14.1       186      66        0.35      0.000     3.180    0.032     0.10930       0.00080   3.180    0.032     0.10930    0.00080     1763     15     1788     13       1.4
+      I         11     8.1       125      58        0.46      0.029     3.132    0.036     0.10971       0.00097   3.133    0.036     0.10946     0.00101    1786     18     1790     17       0.3
+      I         9      6.2       162      34        0.21      0.000     3.195    0.033     0.10961       0.00083   3.195    0.033     0.10961    0.00083     1755     16     1793     14       2.1
+      I         16    13.1       247      58        0.24      0.318     3.134    0.029     0.11261       0.00071   3.144    0.029     0.10985    0.00093     1780     14     1797     15       0.9
+      I         15    12.1       211      49        0.23      0.017     3.118    0.030     0.11012       0.00077   3.119    0.030     0.10998    0.00078     1793     15     1799     13       0.3
+      I         1      1.1       187      82        0.44     -0.020     3.183    0.032     0.10989       0.00083   3.182    0.032     0.11007    0.00085     1762     16     1801     14       2.2
+      I         10     7.1       191      72        0.38     -0.038     3.127    0.031     0.10976       0.00080   3.126    0.031     0.11009    0.00084     1789     16     1801     14       0.7
+      I         3      2.2       349      86        0.25      0.095     3.140    0.027     0.11093       0.00062   3.143    0.027     0.11010    0.00068     1781     13     1801     11       1.1
+      I         18    15.1       194      85        0.44     -0.073     3.137    0.031     0.10950       0.00078   3.135    0.031     0.11014    0.00084     1785     15     1802     14       0.9
+      I         7      5.1       128      47        0.37      0.057     3.104    0.035     0.11065       0.00097   3.106    0.035     0.11015     0.00104    1799     18     1802     17       0.1
+      I         19    16.1       108      55        0.51     -0.067     3.189    0.038     0.10984       0.00105   3.187    0.038     0.11042     0.00113    1759     19     1806     19       2.6
+      I         21    18.1       189      92        0.49     -0.077     3.170    0.031     0.10979       0.00081   3.167    0.031     0.11046    0.00088     1769     15     1807     14       2.1
+      I         4      3.1       182      81        0.45      0.000     3.215    0.032     0.11066       0.00081   3.215    0.032     0.11066    0.00081     1746     15     1810     13       3.6
+      I         5      4.1       454     255        0.56      0.803     3.197    0.025     0.11837       0.00121   3.223    0.025     0.11138     0.00144    1742     12     1822     23       4.4
+      I         6      4.2       280      84        0.30     -0.094     3.153    0.028     0.11063       0.00069   3.150    0.028     0.11144    0.00075     1777     14     1823     12       2.5
+      I         14     11.1      126      62        0.50      -0.115    3.200    0.036     0.11065       0.00099   3.196    0.036     0.11164     0.00111    1755     18     1826     18       3.9
+      I         22    19.1       166      90        0.55     -0.065     3.133    0.032     0.11115       0.00086   3.131    0.032     0.11172    0.00092     1787     16     1828     15       2.2
+
+
+      X         2      2.1       827     231        0.28      0.100     2.776    0.020     0.12634       0.00041   2.779    0.020     0.12546    0.00045     1981     12     2035     6        2.7
+      X         8      6.1       455     202        0.44      0.347     2.177    0.017     0.16216       0.00058   2.185    0.017     0.15908    0.00071     2429     16     2446     8        0.7
+
+
+
+
+                                                                                                     3
+242908.1.pdf                                                                                      Geochronology Record 1819
+
+
+
+
+         Figure 3.    U–Pb analytical data for zircons from sample 242908: tuffaceous volcanic rock, Red Hill mine.
+                      Yellow squares indicate Group I (magmatic zircons); red circles indicate Group X (xenocrystic
+                      zircon cores)
+
+
+
+
+          Figure 4.   Expanded view of U–Pb analytical data for zircons from sample 242908: tuffaceous volcanic
+                      rock, Red Hill mine. Symbols as in Figure 3
+
+
+
+
+                                                              4
+242908.1.pdf                                                                                                      Geochronology Record 1819
+
+
+Interpretation                                                                Thorne, AM and Johnson, SP 2020a, Ashburton Formation (P_-WYa-s):
+                                                                                 Geological Survey of Western Australia, WA Geology Online,
+The analyses are concordant to slightly discordant (Fig. 3),                     Explanatory Notes extract, viewed 08 September 2021, <www.dmp.
+and can be divided into two groups, based on their                               wa.gov.au/ens>.
+207
+    Pb*/206Pb* ratios.                                                        Thorne, AM and Johnson, SP 2020b, June Hill Volcanics (P_-WYj-b):
+                                                                                 Geological Survey of Western Australia, WA Geology Online,
+Group I comprises 20 analyses of 19 zircons (Table 1),                           Explanatory Notes extract, viewed 03 September 2021, <www.dmp.
+which yield a weighted mean 207Pb*/ 206Pb* date of                               wa.gov.au/ens>.
+1801 ± 6 Ma (MSWD = 0.87).                                                    Thorne, AM and Seymour, DB 1991, Geology of the Ashburton
+                                                                                Basin, Western Australia: Geological Survey of Western Australia,
+Group X comprises two analyses of two zircon cores                              Bulletin 139, 141p.
+(Table 1), which yield 207Pb*/206Pb* dates (1σ) of 2446 ± 8
+and 2035 ± 6 Ma.                                                              Wilson, JP, Fischer, WW, Johnston, DT, Knoll, AH, Grotzinger, JP,
+                                                                                 Walter, MR, McNaughton, NJ, Simon, M, Abelson, J, Schrag, DP,
+The date of 1801 ± 6 Ma for the 20 analyses in Group I                           Summons, R, Allwood, A, Andres, M, Gammon, C, Garvin, J,
+                                                                                 Rashby, S, Schweizer, M and Watters, WA 2010, Geobiology of the
+is interpreted as the igneous crystallization age. The dates                     late Paleoproterozoic Duck Creek Formation, Western Australia:
+(1σ) of 2446 ± 8 and 2035 ± 6 Ma for the two analyses in                         Precambrian Research, v. 179, p. 135–149.
+Group X are interpreted as the ages of inherited zircons.
+
+                                                                              Recommended reference for this
+References                                                                    publication
+Evans, DAD, Sircombe, KN, Wingate, MTD, Doyle, M, McCarthy, M,                Wingate, MTD, Fielding, IOH, Lu, Y and Martin, DMcB 2021, 242908:
+   Pidgeon, RT and Van Niekerk, HS 2003, Revised geochronology                  tuffaceous volcanic rock, Red Hill mine; Geochronology Record
+   of magmatism in the western Capricorn Orogen at 1805–1785 Ma:                1819: Geological Survey of Western Australia, 5p.
+   Diachroneity of the Pilbara–Yilgarn collision: Australian Journal of
+   Earth Sciences, v. 50, p. 853–864.                                         Data obtained:       12 February 2021
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+                                                                              Data released:       12 November 2021
+   isotope evolution by a two-stage model: Earth and Planetary Science
+   Letters, v. 26, p. 207–221.
+
+
+
+
+                                                                          5
+

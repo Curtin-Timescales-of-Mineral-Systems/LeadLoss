@@ -1,0 +1,284 @@
+178065.1.pdf - Geochronology dataset 592
+
+                   178065: recrystallized sandstone, Minga Bore
+
+
+  Location and sampling                                                Analytical details
+  YOUANMI (SH 50-4), EVERETT CREEK (2841)                              This sample was analysed on 5 May 2003. The counter
+                      MGA Zone 50, 775220E 6849290N                    deadtime during the analysis session was 24 ns. Fourteen
+                                                                       analyses of the CZ3 standard obtained during the analysis
+  Sampled on 31 October 2002                                           session indicated a Pb*/U calibration uncertainty of 1.39%
+                                                                       (1σ). Common-Pb corrections were applied assuming
+  The sample was taken from a 0.5 m-diameter block about
+                                                                       Broken Hill common-Pb isotopic compositions for all
+  halfway up the southwestern side of a northwest-trending
+                                                                       analyses, with the exception of analyses 8.1 and 12.1, for
+  rocky ridge, 50 m southeast of the access track and 0.5
+                                                                       which isotopic compositions determined using the method
+  km west of Minga Bore. The sampling site is 50 m west
+  of the site of GSWA sample 178066 (dated by Nelson, this             of Cumming and Richards (1975) were assumed.
+  compilation).
+                                                                       Results
+  Tectonic unit/relations                                              Thirty-nine analyses were obtained from 39 zircons.
+  The sample is a white, coarse- and even-grained,                     Results are given in Table 1, and shown on concordia and
+  recrystallized quartz sandstone from a bedded quartzite              Gaussian-summation probability density plots in Figures 2
+  unit in the Maynard Hills greenstone belt of the Southern            and 3 respectively.
+  Cross Granite–Greenstone Terrane, Yilgarn Craton. There
+  is no established stratigraphy for this belt (Riganti, 2003).
+  Bedding in the quartzite unit strikes at 340° and dips               Interpretation
+  steeply to the southwest. The sample was taken 50 m                  The analyses are concordant to highly discordant, with
+  stratigraphically above the unit from which sample 178066            the discordance pattern consistent with both ancient and
+  was collected, and contains quartz veins up to 1 mm thick.           recent episodes of radiogenic-Pb loss. On the basis of
+  It was collected to constrain the maximum depositional               their 207Pb/206Pb ratios, many analyses can be assigned to
+  age of the sandstone precursor to the quartzite.                     one of six groups. Eight concordant to highly discordant
+                                                                       analyses of eight zircons (2.1, 4.1, 6.1, 9.1, 20.1, 22.1,
+                                                                       29.1, 36.1), assigned to Group 1, have 207Pb/206Pb ratios
+  Petrographic description                                             deﬁning a single population and indicating a weighted
+  The principal mineral is quartz (100 vol.%), with trace              mean 207Pb/206Pb date of 3276 ± 7 Ma (chi-squared = 1.57).
+  amounts of accessory muscovite, rutile, and zircon. The              Concordant analyses 13.1, 16.1, and 28.1, and discordant
+  sample consists mostly of interlocking anhedral quartz               analysis 30.1, assigned to Group 2, have 207Pb/206Pb ratios
+  grains, some of which are optically continuous over areas            deﬁning a single population and indicating a weighted
+  10 mm or more in diameter. The quartz contains ﬂuid                  mean 207Pb/206Pb date of 3324 ± 15 Ma (chi-squared =
+  inclusions. Mica forms ﬂakes 30 to 100 µm in length, and             1.27). Thirteen concordant to highly discordant analyses
+  there is a single grain of rutile 100 µm long. The mica              of 13 zircons (1.1, 3.1, 5.1, 7.1, 10.1, 14.1, 17.1, 19.1,
+  deﬁnes a weak schistosity, with the quartz c-axes mostly             26.1, 31.1, 33.1, 37.1, 39.1), assigned to Group 3,
+  within 45° of the mean orientation of the schistosity. Some          have 207 Pb/ 206 Pb ratios defining a single population
+  mica has been leached, mostly in and adjacent to fractures.          and indicating a weighted mean 207 Pb/ 206 Pb date of
+  The metamorphic grade and protolith are uncertain.                   3379 ± 6 Ma (chi-squared = 1.59). Concordant analyses
+                                                                       27.1 and 35.1, and discordant analysis 25.1, assigned
+                                                                       to Group 4, have 207Pb/206Pb ratios defining a single
+  Zircon morphology                                                    population and indicating a weighted mean 207Pb/206Pb
+                                                                       date of 3419 ± 14 Ma (chi-squared = 0.70). Concordant
+  The zircons isolated from this sample are typically                  analysis 34.1 and discordant analyses 15.1 and 32.1,
+  colourless, pale yellow, dark brown or black, elliptical             assigned to Group 5, have 207Pb/206Pb ratios defining
+  or subhedral and with rounded terminations, equant                   a single population and indicating a weighted mean
+  or slightly to substantially elongate, and between 50 ×              207
+                                                                           Pb/206Pb date of 3491 ± 19 Ma (chi-squared = 0.75).
+  80 µm and 160 × 80 µm in size. Most grains are fractured             Concordant analysis 23.1 and discordant analyses 11.1 and
+  and internally structureless, but some have faint internal           12.1, assigned to Group 6, have 207Pb/206Pb ratios deﬁning
+  zonation. Many have a speckled appearance in transmitted             a single population and indicating a weighted mean
+  light, and many are metamict. Many grain surfaces are                207
+                                                                          Pb/206Pb date of 3596 ± 19 Ma (chi-squared = 1.58). The
+  pitted, consistent with detrital transport. In reﬂected light,       remaining analyses cannot be conﬁdently grouped.
+  many surfaces have irregular, dark patches and zones.
+  Cathodoluminescence images of representative zircons                    The analyses are interpreted to be of detrital zircons.
+  are given in Figure 1.                                               The date of 3276 ± 7 Ma indicated by the weighted mean
+
+
+                                                                   1
+D. R. Nelson, 2005
+
+
+  5.1                                 6.1                                        9.1
+
+
+
+
+                           (a)                                                             (b)
+
+
+
+
+                          14.1
+        11.1
+
+
+
+
+                          13.1
+                                                                                         20.1
+                                                                                                                22.1
+                           (c)                                                             (d)
+
+
+
+                                               29.1                38.1
+
+
+
+
+                           (e)                                                             (f)
+Figure 1.   Cathodoluminescence images of representative zircons from sample 178065: recrystallized sandstone, Minga
+            Bore
+
+
+
+
+                                                           2
+                                         Table 1. Ion microprobe analytical results for zircons from sample 178065: recrystallized sandstone, Minga Bore
+
+
+
+    Grain     U       Th      Pb    ƒ206%      207Pb/ 206Pb      ±1σ         208Pb/ 206Pb       ±1σ      206Pb/ 238U       ±1σ      207Pb/ 235U      ±1σ          %        207Pb/ 206Pb   ±1σ
+    .spot   (ppm)   (ppm)   (ppm)                                                                                                                            concordance       Age
+
+    1.1     156      245     112     0.410       0.28132        0.00147         0.03927       0.00183       0.6229         0.0093       24.162       0.396        93           3 370       8
+    2.1     575      572     479     0.015       0.26465        0.00061         0.26181       0.00080       0.6338         0.0090       23.129       0.338        97           3 275       4
+    3.1     193       69     157     0.066       0.28465        0.00111         0.09327       0.00102       0.6863         0.0101       26.936       0.422        99           3 389       6
+    4.1     234      482     235     0.108       0.26304        0.00105         0.50255       0.00209       0.6563         0.0096       23.804       0.371       100           3 265       6
+    5.1     100       63      87     0.061       0.28626        0.00152         0.16668       0.00168       0.6899         0.0106       27.231       0.458       100           3 397       8
+    6.1     197      418     206     0.093       0.26603        0.00108         0.56064       0.00226       0.6622         0.0097       24.289       0.380       100           3 283       6
+    7.1     185      106     150     0.150       0.28120        0.00124         0.15616       0.00154       0.6518         0.0096       25.271       0.401        96           3 370       7
+    8.1     818      510     534     0.142       0.23906        0.00053         0.15223       0.00065       0.5422         0.0076       17.871       0.260        90           3 114       4
+    9.1      47       48      40     0.199       0.26155        0.00235         0.26690       0.00368       0.6523         0.0111       23.523       0.475        99           3 256      14
+    10.1    180       80     148    -0.015       0.28220        0.00130         0.11553       0.00178       0.6851         0.0101       26.658       0.426       100           3 375       7
+    11.1     72       67      71     0.106       0.32429        0.00201         0.24250       0.00269       0.7264         0.0115       32.478       0.576        98           3 590      10
+    12.1    474      293     346     0.305       0.32467        0.00083         0.17105       0.00103       0.5615         0.0080       25.137       0.370        80           3 592       4
+    13.1    118      126     107    -0.024       0.27497        0.00162         0.28620       0.00272       0.6773         0.0103       25.678       0.435       100           3 335       9
+    14.1    266      327     226     0.349       0.28224        0.00106         0.31443       0.00174       0.6111         0.0088       23.783       0.365        91           3 375       6
+    15.1    158       98     129     0.177       0.30447        0.00133         0.16588       0.00154       0.6403         0.0095       26.879       0.429        91           3 493       7
+    16.1    129      161     119    -0.008       0.27217        0.00131         0.32824       0.00200       0.6711         0.0101       25.183       0.410       100           3 319       8
+
+
+
+
+3
+    17.1    142       94     116     0.061       0.28227        0.00127         0.16682       0.00141       0.6532         0.0097       25.421       0.408        96           3 376       7
+    18.1    346      344     259     0.132       0.26204        0.00083         0.26410       0.00121       0.5666         0.0081       20.469       0.307        89           3 259       5
+    19.1     15        7      14     0.553       0.29803        0.00645         0.12036       0.01125       0.7279         0.0165       29.912       0.996       102           3 460      34
+    20.1    100       90      83     0.003       0.26521        0.00141         0.23983       0.00172       0.6404         0.0098       23.418       0.392        97           3 278       8
+    21.1    240      230     182     0.354       0.27797        0.00113         0.16492       0.00157       0.6037         0.0088       23.136       0.359        91           3 352       6
+    22.1    214       86     160     0.090       0.26466        0.00104         0.09628       0.00108       0.6364         0.0093       23.223       0.361        97           3 275       6
+    23.1    204       47     182     0.037       0.32743        0.00114         0.06076       0.00098       0.7449         0.0109       33.629       0.520       100           3 605       5
+    24.1    142       81     140     0.073       0.34633        0.00137         0.14555       0.00128       0.7631         0.0114       36.439       0.580        99           3 691       6
+    25.1    135       95     114     0.219       0.28899        0.00142         0.19236       0.00182       0.6609         0.0099       26.333       0.429        96           3 412       8
+    26.1     49       75      49    -0.111       0.28260        0.00420         0.40670       0.00892       0.6899         0.0117       26.882       0.643       100           3 377      23
+    27.1     83       67      75     0.170       0.28932        0.00172         0.20875       0.00220       0.6986         0.0108       27.869       0.480       100           3 414       9
+    28.1    149      134     130     0.054       0.27438        0.00121         0.23528       0.00154       0.6721         0.0100       25.426       0.407        99           3 331       7
+    29.1     42       64      41     0.363       0.26683        0.00281         0.38872       0.00538       0.6786         0.0115       24.966       0.524       102           3 288      17
+    30.1    158      142     130     0.118       0.27131        0.00133         0.23176       0.00200       0.6325         0.0094       23.663       0.383        95           3 314       8
+    31.1     84       36      70     0.093       0.28239        0.00168         0.11433       0.00172       0.6955         0.0108       27.082       0.470       101           3 376       9
+    32.1     95       28      77     0.289       0.30184        0.00181         0.05305       0.00219       0.6910         0.0107       28.758       0.496        97           3 480       9
+    33.1    253       43     189     0.166       0.28362        0.00100         0.02541       0.00088       0.6589         0.0095       25.768       0.394        96           3 383       6
+    34.1    117       21      97     0.118       0.30489        0.00154         0.04672       0.00153       0.7130         0.0108       29.975       0.497        99           3 495       8
+    35.1    411      425     384     0.062       0.29087        0.00072         0.25539       0.00091       0.6997         0.0100       28.062       0.414       100           3 422       4
+    36.1    211      226     184     0.112       0.26733        0.00107         0.28671       0.00162       0.6518         0.0095       24.026       0.374        98           3 290       6
+    37.1     89       42      74     0.055       0.28060        0.00162         0.12627       0.00169       0.6862         0.0106       26.548       0.457       100           3 366       9
+    38.1    104       98      87     0.100       0.27747        0.00154         0.18338       0.00195       0.6568         0.0100       25.127       0.423        97           3 349       9
+    39.1    126      109      95     0.124       0.28420        0.00143         0.06857       0.00139       0.6440         0.0096       25.236       0.413        95           3 386       8
+                                                                                                                                                                                                Geochronology data obtained in 2003
+D. R. Nelson, 2005
+
+            0.80
+
+
+                                                                                                                                                                          Analysis 24.1
+
+
+
+            0.75                                                                   Group 4: Analyses 25.1, 27.1 & 35.1                                        3600
+                                                                                   3419 ± 14 Ma (95% confidence)
+
+                                                                         Group 2: 4 analyses of 4 zircons                            3500
+                                                                         3324 ± 15 Ma (95% confidence)
+                                                                                                                                               Group 6: Analyses 11.1, 12.1 & 23.1
+                                                           Group 1: 8 analyses of 8 zircons
+            0.70                                           3276 ± 7 Ma (95% confidence)
+                                                                                                                                               3596 ± 19 Ma (95% confidence)
+
+                                                                                                                                   Group 5: Analyses 15.1, 32.1 & 34.1
+                                                                                                                                   3491 ± 19 Ma (95% confidence)
+
+                                                                                                                         Group 3: 13 analyses of 13 zircons
+  Pb/238U
+
+
+
+
+                                                                                                                         3379 ± 6 Ma (95% confidence)
+            0.65                                                        3200
+  206
+
+
+
+
+                                                                                                                  Analysis 5.1
+
+                                                          3100
+                                                                                              Analysis 38.1
+
+                                                                   Analysis 21.1
+            0.60                            3000
+
+
+
+                                                                    Analysis18.1
+                                                                                                   Analysis 12.1
+            0.55
+                                                   Analysis 8.1
+
+
+
+
+                                                                                                                                                                                          178065
+
+            0.50
+                16                            18             20           22             24              26              28           30            32               34           36               38
+                                                                                                           207     235
+                                                                                                                 Pb/ U
+                                                   Figure 2. Concordia plot for sample 178065: recrystallized sandstone, Minga Bore
+
+
+
+                                                                                                                                                                                          178065
+
+                                                                                              Group 4
+
+
+                                                             Group 2
+             Relative probability density
+
+
+
+
+                                                                                                                                               Group 6
+
+
+
+
+                                                                                                                                                                          Analysis 24.1
+                                                                                                                   Group 5
+
+
+
+
+                        3200                                                        3400                                                   3600                                                    3800
+                                                                                                  207     206
+                                                                                                        Pb/ Pb Age (Ma)
+            Figure 3. Gaussian-summation probability density plot for sample 178065: recrystallized sandstone, Minga Bore
+
+
+                                                                                                           4
+                                                                   Geochronology data obtained in 2003
+
+  Pb/206Pb ratio of eight concordant to highly discordant
+207
+
+analyses of Group 1 is therefore interpreted as providing
+a maximum age for deposition of the precursor sandstone.
+Source rocks within the western part of Australia having
+ages matching those of the zircons within this sample
+include the Narryer Terrane in the northwestern part of
+the Yilgarn Craton (Nelson, 1995, 1996, 1997) and the
+eastern part of the Pilbara Craton (Nelson, 1996, 1997,
+1998, 1999, 2000, 2001, 2002, this compilation).
+
+
+Recommended reference for this publication:
+Geochronologist:       D. R. Nelson
+Data obtained:
+NELSON,                 2003 recrystallized sandstone, Minga
+          D. R., 2005, 178065:
+Data Geochronology
+Bore; released:         2005 592; in Compilation of
+                     dataset
+geochronology data, June 2006 update: Western Australia
+Geological Survey.
+
+Data obtained: 05/05/2003; Data released: 30/06/2005
+
+
+
+
+                                                               5
+

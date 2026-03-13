@@ -1,0 +1,186 @@
+227268.1.pdf                                                                                          Geochronology Record 1825
+
+
+
+
+               227268: altered volcaniclastic rock, Woolgah Hill
+          (Polelle Group, Murchison Supergroup, Youanmi Terrane, Yilgarn Craton)
+
+
+
+
+Location and sampling                                               discontinuous layering. Some epidote occurs in aggregates
+                                                                    and veins of anhedral grains up to 1 mm in size. These
+Yalgoo (SH 50-2), Yalgoo (2241)                                     aggregates also contain most of the pale green actinolite,
+                   MGA Zone 50, 469409E 6881257N                    which forms very fine-grained fibrous masses up to 1 mm
+                                                                    across. Fibrous aggregates of actinolite also occur mainly
+Sampled on 10 May 2019                                              in the more intensely epidote-altered layers. Crystals
+This sample was collected from an outcrop on Gabyon                 (<0.1 mm) and aggregates of titanite also occur where
+Station, about 8.0 km east of Yilgiddie No. 1 Well, 6.3 km          epidote alteration is most intense. The amphibolite portion
+south-southeast of Warbadoo Hill, and 5.9 km northwest              of the sample consists of a microcrystalline polygonal
+of Woolgah Hill.                                                    aggregate of subequal amounts of microcrystalline to
+                                                                    fine-grained (up to 0.5 mm) quartz and feldspar, plus
+                                                                    20% well-formed, blue–green to olive–green, subhedral
+                                                                    hornblende laths up to 1 mm long, and minor titanite,
+Geological context                                                  all overprinted by patches of secondary epidote. The
+The unit sampled is a volcaniclastic rock of the Polelle            coarser grained parts include finely micropoikilitic
+Group of the Murchison Supergroup (Ivanic et al.,                   probable plagioclase, rare twinned plagioclase and some
+2015). The 2800–2735 Ma Polelle Group consists of                   microperthitic K-feldspar.
+metamorphosed basalt, komatiitic basalt, felsic volcanic
+and volcaniclastic rocks, and banded iron-formation
+(Van Kranendonk et al., 2013). The volcaniclastic unit              Zircon morphology
+strikes north-northeast near the northwestern margin
+of the Yalgoo–Singleton greenstone belt, and includes               Only six zircons were isolated from this sample, and
+meta-andesite to basaltic meta-andesite with minor                  they are colourless to dark brown and anhedral to
+metabasalt and metadacite (Ivanic et al., 2015). This unit          euhedral. The crystals are up to 100 µm long, and equant
+is interpreted to stratigraphically overlie basaltic rocks of       to slightly elongate, with aspect ratios up to 3:1. In
+the Polelle Group to the east, including a volcaniclastic           cathodoluminescence (CL) images, concentric zoning is
+metasandstone of the Yalgoo Formation, about 4.2 km                 ubiquitous, and one has a narrow luminescent rim. A CL
+to the southeast, from which detrital zircons provided              image of all zircons is shown in Figure 2.
+a maximum depositional age of 2793 ± 8 Ma (GSWA
+207686, Lu et al., 2016). A felsic metavolcaniclastic rock,
+sampled about 43 km to the south-southwest, yielded                 Analytical details
+an igneous crystallization age of 2941 ± 3 Ma (GSWA
+207670, Wingate et al., 2019).                                      This sample was analysed on 10 September 2020,
+                                                                    using SHRIMP-B. Six analyses of the M257 standard
+                                                                    obtained during the session indicated an external spot-
+                                                                    to-spot (reproducibility) uncertainty of 0.50% (1σ)
+Petrographic description                                            and a 238U/206Pb* calibration uncertainty of 0.31% (1σ).
+                                                                    Isotopic mass fractionation of 207Pb/206Pb ratios during the
+In outcrop, the rock is a strongly altered volcaniclastic
+                                                                    session was corrected by reference to the OGC1 standard;
+conglomerate (Fig. 1), consisting of cm-scale ovoid dacite
+                                                                    measured ratios were increased by 0.23%. Calibration
+clasts in a sand–silt matrix. Microscopic examination
+                                                                    uncertainties are included in the errors of 238U/206Pb* ratios
+indicates the sample is very highly altered, diffusely
+                                                                    and dates listed in Table 1. Common-Pb corrections were
+layered, and consists of about 50–55% quartz, 30–35%
+                                                                    applied to all analyses using contemporaneous isotopic
+epidote, 5–10% actinolite, <5% plagioclase, and <1%
+                                                                    compositions determined according to the model of Stacey
+titanite. There is also a small amount (~5% of the slide)
+                                                                    and Kramers (1975).
+of fine-grained amphibolite at one end of the thin section.
+Quartz forms an intergrown mosaic of anhedral, weakly
+strained grains up to 0.2 mm in size. The presence of rare
+twinned grains indicates a small amount of plagioclase.             Results
+Epidote is anhedral, colourless, and forms granular masses
+                                                                    Six analyses were obtained from 6 zircons. Results are
+that are disseminated throughout the quartz-rich mosaic
+                                                                    listed in Table 1, and shown in a concordia diagram (Fig. 3).
+and also in more intense narrow bands that define a
+
+
+
+
+                                                                1
+227268.1.pdf                                                                                  Geochronology Record 1825
+
+
+
+
+               Figure 1.   Hand specimen image for sample 227268: altered volcaniclastic rock, Woolgah
+                           Hill
+
+
+
+
+               Figure 2.   Cathodoluminescence image of all zircons from sample 227268: altered
+                           volcaniclastic rock, Woolgah Hill. Numbered circles indicate the approximate
+                           locations of analysis sites
+
+
+
+
+                                                           2
+227268.1.pdf                                                                                                                                                                   Geochronology Record 1825
+
+
+
+
+                                        Table 1. Ion microprobe analytical results for zircons from sample 227268: altered volcaniclastic rock, Woolgah Hill
+
+    Group      Spot   Grain.     238
+                                    U     232
+                                             Th        Th
+                                                     232
+                                                               ƒ204        238
+                                                                              U/206Pb             Pb/206Pb
+                                                                                                207
+                                                                                                                        U/206Pb*
+                                                                                                                      238
+                                                                                                                                             Pb*/206Pb*
+                                                                                                                                           207                   238
+                                                                                                                                                                    U/206Pb*    207
+                                                                                                                                                                                   Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)     (ppm)      238
+                                                       U       (%)            ± 1σ                 ± 1σ                 ± 1σ                  ± 1σ             date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      Y         4      4.1       443      226        0.51      0.037     1.756    0.016     0.21459       0.00091   1.756     0.016    0.21427     0.00092     2905     22     2938     7        1.1
+
+
+      S         6      6.1       127       72        0.56      0.000     1.699    0.022     0.21620       0.00137   1.699     0.022    0.21620     0.00137     2984     31     2953     10       -1.1
+      S         3      3.1       382      220        0.58      0.035     1.768    0.016     0.21662       0.00094   1.768     0.016    0.21631     0.00095     2890     22     2953     7        2.2
+      S         5      5.1       117       75        0.64      0.074     1.817    0.024     0.21711       0.00145   1.819     0.024    0.21646     0.00149     2825     31     2955     11       4.4
+
+
+      Z         2      2.1       217      141        0.65      0.050     3.462    0.037     0.10265       0.00103   3.463     0.037    0.10222     0.00107     1635     16     1665     19       1.8
+
+
+      D         1      1.1       173      145        0.84      0.564     2.777    0.032     0.17815       0.00243   2.792     0.032    0.17311     0.00264     1973     20     2588     25       23.8
+
+
+
+
+                                                                                                      3
+227268.1.pdf                                                                                              Geochronology Record 1825
+
+
+
+
+         Figure 3.   U–Pb analytical data for zircons from sample 227268: altered volcaniclastic rock, Woolgah Hill.
+                     Blue square indicates Group Y (youngest detrital zircon); red squares indicate Group S (older
+                     detrital zircons). Analyses in Groups D and Z are not shown
+
+
+
+
+Interpretation                                                    References
+The analyses are concordant to strongly discordant                Ivanic, TJ, Li, J, Meng, Y, Guo, L, Yu, J, Chen, SF, Wyche, S and Zibra, I
+(Fig. 3). One analysis is >5% discordant. The date                   2015, Yalgoo, WA Sheet 2241: Geological Survey of Western
+obtained from this analysis (Group D; Table 1) is                    Australia, 1:100 000 Geological Series.
+unreliable, and is considered not to be geologically              Lu, Y, Wingate, MTD, Kirkland, CL, and Ivanic, TJ 2016, 207686:
+significant. The remaining five analyses can be divided              volcaniclastic metasandstone, Barry No 2 Well; Geochronology
+into three groups, based on their 207Pb*/206Pb* ratios.              Record 1336: Geological Survey of Western Australia, 7p.
+                                                                  Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+Group Y comprises one analysis (Table 1), which yields a             isotope evolution by a two-stage model: Earth and Planetary Science
+207
+   Pb*/206Pb* date of 2938 ± 7 Ma (1σ).                              Letters, v. 26, p. 207–221.
+
+Group S comprises three analyses (Table 1), which yield           Van Kranendonk, MJ, Ivanic, TJ, Wingate, MTD, Kirkland, CL and
+                                                                     Wyche, S 2013, Long-lived, autochthonous development of the
+207
+   Pb*/206Pb* dates of 2955–2953 Ma.
+                                                                     Archean Murchison Domain, and implications for Yilgarn Craton
+Group Z comprises one analysis (Table 1), which yields a             tectonics: Precambrian Research, v. 229, p. 49–92.
+207
+   Pb*/206Pb* date of 1665 ± 19 Ma (1σ).                          Wingate, MTD, Lu, Y and Ivanic, TJ 2019, 207670: felsic
+                                                                    metavolcaniclastic rock, Morawa-Yalgoo Road; Geochronology
+It is possible that all of the analyses in Groups Y and             Record 1578: Geological Survey of Western Australia, 4p.
+S are of unmodified detrital zircons, in which case the
+date of 2938 ± 7 Ma (1σ) for the single analysis in
+Group Y represents a maximum depositional age. A more             Re­commended reference for this
+conservative estimate of the maximum depositional age             publication
+can be based on the weighted mean 207Pb*/206Pb* date
+of 2948 ± 8 Ma (MSWD = 1.1) for the four analyses in              Wingate, MTD, Lu, Y, Fielding, IOH and Ivanic, TJ 2021, 227268:
+Groups Y and S. This date is interpreted as the age of the          altered volcaniclastic rock, Woolgah Hill; Geochronology Record
+dominant zircon-crystallizing rock in the detrital source           1825: Geological Survey of Western Australia, 4p.
+region.                                                           Data obtained:         10 September 2020
+The date of 1665 ± 19 Ma (1σ) for the single analysis in          Data released:         26 November 2021
+Group Z is interpreted as the age of a zircon contaminant.
+
+
+
+
+                                                              4
+

@@ -1,0 +1,190 @@
+209651.1.pdf                                                                                       Geochronology Record 1831
+
+
+
+
+                     209651: metamonzogranite, Success Well
+      (Cundimurra Monzogranite, Tuckanarra Suite, Youanmi Terrane, Yilgarn Craton)
+
+
+
+
+Location and sampling                                             muscovite. Many grains are compositionally zoned with
+                                                                  altered cores and narrow transparent rims. K-feldspar
+Cue (SG 50-15), Austin (2442)                                     forms anhedral, equant grains up to 6.5 mm in diameter,
+                   MGA Zone 50, 585333E 6911764N                  and much smaller grains between plagioclase laths. Most
+                                                                  K-feldspar is strained and exhibits microcline twinning.
+Sampled on 10 October 2012                                        The larger grains contain small plagioclase inclusions.
+This sample was collected from a low outcrop on                   Irregular patches of equant plagioclase and K-feldspar
+Wynyangoo Station, about 4.5 km west of Deep Well,                grains, up to 0.2 mm in size, display polygonal texture.
+3.6 km northwest of Carey Well, and 3.1 km east-northeast         Small lobes of myrmekite are rare. Quartz forms elongate
+of Success Well.                                                  aggregates up to 7 mm long of intergrown anhedral
+                                                                  grains, which range up to 4 mm long, and are typically
+                                                                  weakly to moderately strained. Chlorite-replaced biotite
+                                                                  occurs in small clusters of subhedral laths to 0.5 mm
+Geological context                                                in length. Subhedral magnetite up to 0.4 mm in size is
+The unit sampled is the Cundimurra Monzogranite of the            partially replaced by hematite. The sample has a weak
+Tuckanarra Suite (Van Kranendonk et al., 2013; Zibra              foliation defined by elongate quartz and micas, and shows
+et al., 2014; Zibra, 2020). The 2697–2657 Ma Cundimurra           evidence of deformation and some recovery at moderate
+Monzogranite is a north-trending, elongate pluton, up to          metamorphic grade.
+200 km long and 25 km wide, which consists mainly of
+metamonzogranite and metasyenogranite, but also includes
+metatonalite, leucocratic muscovite metamonzogranite,             Zircon morphology
+and minor quartz metadiorite veins (Zibra, 2020). Plutons
+of the Tuckanarra Suite consist of strongly foliated              Zircons isolated from this sample are colourless to dark
+and locally magmatically layered metagranodiorite to              brown or opaque and subhedral to euhedral. The crystals are
+metamonzogranite. Tuckanarra Suite metagranitic rocks             up to 400 µm long, and mostly elongate, with aspect ratios
+intrude the Murchison Supergroup and are crosscut                 up to 8:1. In cathodoluminescence (CL) images, concentric
+by non-deformed granitic plutons of the Bald Rock                 zoning is ubiquitous, many crystals contain high-U,
+Supersuite (Van Kranendonk et al. 2013; Zibra, 2020). The         metamict zones, and some appear to contain older cores.
+metamonzogranite at this locality is intruded by a younger        A CL image of representative zircons is shown in Figure 2.
+metagranodiorite vein of the Cundimurra Monzogranite,
+dated at 2685 ± 6 Ma (GSWA 209650, Wingate et al.,
+2021). A monzogranite dyke, intruded into the c. 2724 Ma          Analytical details
+Crossroads Granodiorite (Zibra, 2019) about 47 km
+to the northwest, yielded an igneous crystallization              This sample was analysed on 13–14 August 2020, using
+age of 2684 ± 3 Ma and is assigned to the Tuckanarra              SHRIMP-B. Ten analyses of the M257 standard were
+Suite (GSWA 155514, Lu et al., 2017). Samples of the              obtained during the session, of which eight analyses
+Cundimurra Monzogranite, collected about 130 and                  indicated an external spot-to-spot (reproducibility)
+144 km to the south, yielded igneous crystallization ages         uncertainty of 0.61% (1σ) and a 238U/206Pb* calibration
+of 2679 ± 8 Ma (GSWA 185997, Wingate et al., 2015a)               uncertainty of 0.32% (1σ). Calibration uncertainties are
+and 2681 ± 5 Ma (GSWA 198212, Wingate et al., 2015b),             included in the errors of 238U/206Pb* ratios and dates listed
+respectively.                                                     in Table 1. Common-Pb corrections were applied to all
+                                                                  analyses using contemporaneous isotopic compositions
+                                                                  determined according to the model of Stacey and Kramers
+                                                                  (1975).
+Petrographic description
+The sample is an altered, inequigranular, medium-grained
+biotite metamonzogranite (Fig. 1), consisting of about            Results
+45–50% plagioclase, 25–30% K-feldspar, 20–25% quartz,
+                                                                  Eighteen analyses were obtained from 18 zircons. Results
+2–3% altered biotite, and minor myrmekite, magnetite
+                                                                  are listed in Table 1, and shown in a concordia diagram
+and zircon. Plagioclase (andesine, An38) is subhedral,
+                                                                  (Fig. 3).
+equant to elongate, up to 5 mm in size, and weakly to
+moderately altered to clay minerals, sericite, epidote, and
+
+
+
+                                                              1
+209651.1.pdf                                                                              Geochronology Record 1831
+
+
+
+
+               Figure 1.   Hand specimen image of sample 209651: metamonzogranite, Success Well
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 209651:
+                           metamonzogranite, Success Well. Numbered circles indicate the approximate
+                           locations of analysis sites
+
+
+
+
+                                                         2
+209651.1.pdf                                                                                                                                                            Geochronology Record 1831
+
+
+
+
+                                          Table 1. Ion microprobe analytical results for zircons from sample 209651: metamonzogranite, Success Well
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th       Th
+                                                   232
+                                                            ƒ204        238
+                                                                           U/206Pb          207
+                                                                                               Pb/206Pb              U/206Pb*
+                                                                                                                   238
+                                                                                                                                        Pb*/206Pb*
+                                                                                                                                      207                 238
+                                                                                                                                                             U/206Pb*    207
+                                                                                                                                                                            Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)     238
+                                                     U      (%)            ± 1σ                 ± 1σ                 ± 1σ                ± 1σ           date (Ma) ±1σ   date (Ma) ±1σ    (%)
+       I        13    13.1        95     42        0.44     0.204     1.937    0.027     0.18347       0.00147   1.941    0.027    0.18165    0.00163   2679     31     2668     15       -0.4
+       I        4      4.1       336     121       0.36     0.024     2.105    0.020     0.18378       0.00076   2.106    0.020    0.18356    0.00077   2505     20     2685     7        6.7
+       I        10    10.1       260     257       0.99     0.011     1.934    0.020     0.18392       0.00088   1.934    0.020    0.18383    0.00088   2686     23     2688     8        0.1
+       I        16    16.1       119     87        0.73     0.093     1.918    0.025     0.18483       0.00130   1.920    0.026    0.18400    0.00137   2703     30     2689     12       -0.5
+       I        5      5.1       187     78        0.42     0.466     2.272    0.026     0.18819       0.00116   2.282    0.026    0.18403    0.00143   2343     23     2690     13       12.9
+       I        1      1.1       260     155       0.59     0.081     2.021    0.019     0.18543       0.00075   2.023    0.019    0.18470    0.00078   2589     21     2696     7        3.9
+       I        11     11.1      139     91        0.66     -0.019    1.941    0.024     0.18470       0.00116   1.941    0.024    0.18487    0.00118   2679     28     2697     11       0.7
+       I        6      6.1       204     213       1.04     0.245     2.017    0.022     0.18738       0.00101   2.022    0.022    0.18520    0.00114   2591     24     2700     10       4.0
+       I        18    18.1       255     235       0.92     0.126     2.034    0.021     0.18649       0.00089   2.036    0.021    0.18536    0.00095   2575     22     2702     8        4.7
+       I        7      7.1       160     123       0.77     0.285     2.331    0.123     0.18840       0.00124   2.337    0.123    0.18586    0.00141   2296    102     2706     13       15.2
+       I        9      9.1       161     51        0.31     0.372     2.070    0.054     0.18930       0.00114   2.078    0.055    0.18599    0.00134   2533     55     2707     12       6.4
+       I        12    12.1       104     87        0.83     0.000     1.954    0.026     0.18641       0.00140   1.954    0.026    0.18641    0.00140   2664     30     2711     12       1.7
+       I        8      8.1       163     123       0.76     0.265     2.031    0.023     0.18903       0.00112   2.037    0.023    0.18667    0.00126   2575     25     2713     11       5.1
+       I        17     17.1      155     49        0.31     -0.055    1.924    0.023     0.18713       0.00118   1.923    0.023    0.18763    0.00121   2699     27     2722     11       0.8
+       I        14    14.1        42     22        0.54     -0.067    1.904    0.038     0.18759       0.00223   1.903    0.038    0.18819    0.00231   2723     45     2726     20       0.1
+       I        2      2.1       317     219       0.69     0.175     2.059    0.080     0.19358       0.00668   2.063    0.080    0.19202    0.00670   2548     82     2760     57        7.7
+
+
+      X         15    15.1       116     55        0.47     0.157     1.907    0.025    0.20269        0.00140   1.910    0.025    0.20129    0.00150   2715     30     2837     12       4.3
+
+
+      P         3      3.1       173     38        0.22     0.000     2.982    0.063     0.11720       0.00102   2.982    0.063    0.11720    0.00102   1864     34     1914     16       2.6
+
+
+
+
+                                                                                                   3
+209651.1.pdf                                                                                                        Geochronology Record 1831
+
+
+
+
+            Figure 3.    U–Pb analytical data for sample 209651: metamonzogranite, Success Well. Yellow squares
+                         indicate Group I (magmatic zircons); red circle indicates Group X (xenocrystic zircon). One
+                         analysis in Group P (radiogenic-Pb loss) is not shown
+
+
+
+
+Interpretation                                                               Van Kranendonk, MJ, Ivanic, TJ, Wingate, MTD, Kirkland, CL and
+                                                                                Wyche, S 2013, Long-lived, autochthonous development of the
+The analyses are concordant to strongly discordant                              Archean Murchison Domain, and implications for Yilgarn Craton
+(Fig. 3), and can be divided into three groups, based on                        tectonics: Precambrian Research, v. 229, p. 49–92.
+their 207Pb*/206Pb* ratios.                                                  Wingate, MTD, Fielding, IOH, Lu, Y and Zibra, I 2021, 209650:
+                                                                               metagranodiorite vein, Success Well; Geochronology Record 1830:
+Group I comprises 16 analyses (Table 1), which yield                           Geological Survey of Western Australia, 4p.
+a weighted mean 207Pb*/206Pb* date of 2698 ± 7 Ma                            Wingate, MTD, Kirkland, CL and Ivanic, TJ 2015a, 185997: granitic
+(MSWD = 1.5).                                                                  gneiss, Tandys Bore; Geochronology Record 1229: Geological
+                                                                               Survey of Western Australia, 3p.
+Group X comprises one analysis (Table 1), which yields a
+207
+   Pb*/206Pb* date of 2837 ± 12 Ma (1σ).                                     Wingate, MTD, Kirkland, CL and Ivanic, TJ 2015b, 198212: porphyritic
+                                                                               monzogranite, Meroin Rock; Geochronology Record 198212:
+Group P comprises one analysis (Table 1), which yields a                       Geological Survey of Western Australia, 4p.
+207
+   Pb*/206Pb* date of 1914 ± 16 Ma (1σ).                                     Zibra, I 2019, Crossroads Granodiorite (A-SDcr-mgg): Geological
+                                                                                Survey of Western Australia, WA Geology Online, Explanatory Notes
+The date of 2698 ± 7 Ma for the 16 analyses in Group I                          extract, viewed 16 November 2021, <www.dmp.wa.gov.au/ens>.
+is interpreted as the igneous crystallization age of the
+                                                                             Zibra, I 2020, Cundimurra Monzogranite (A-TUcu-mg): Geological
+monzogranite. The date of 2837 ± 12 Ma (1σ) for the                             Survey of Western Australia, WA Geology Online, Explanatory Notes
+single analysis in Group X is interpreted as the age of an                      extract, viewed 16 November 2021, <www.dmp.wa.gov.au/ens>.
+inherited zircon. The date of 1914 ± 16 Ma (1σ) for the
+                                                                             Zibra, I, Smithies, RH, Wingate, MTD and Kirkland, CL 2014,
+single analysis in Group P is tentatively interpreted to
+                                                                                Incremental pluton emplacement during inclined transpression:
+reflect loss of radiogenic Pb.                                                  Tectonophysics, v. 623, p. 100–122, doi:10.1016/j.tecto.2014.03.020.
+
+
+
+References                                                                   Re­commended reference for this
+Lu, Y, Wingate, MTD, Kirkland, CL and Zibra, I 2017, 155514:                 publication
+   monzogranite dyke, Kowergabbie Well; Geochronology Record 1392:           Wingate, MTD, Fielding, IOH, Lu, Y and Zibra, I 2021, 209651:
+   Geological Survey of Western Australia, 4p.                                 metamonzogranite, Success Well; Geochronology Record 1831:
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead             Geological Survey of Western Australia, 4p.
+   isotope evolution by a two-stage model: Earth and Planetary Science
+   Letters, v. 26, p. 207–221.                                               Data obtained:        14 August 2020
+                                                                             Data released:        10 December 2021
+
+                                                                         4
+

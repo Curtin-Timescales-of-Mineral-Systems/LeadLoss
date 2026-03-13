@@ -1,0 +1,212 @@
+203735.1.pdf                                                                                            Geochronology Record 1880
+
+
+
+
+               203735: porphyritic metagranodiorite, Lake Lefroy
+ (Black Flag Group, Kalgoorlie Terrane, Eastern Goldfields Superterrane, Yilgarn Craton)
+
+
+
+
+Location and sampling                                                a medium-grained matrix of interlocking plagioclase,
+                                                                     amphibole, and minor quartz and biotite. Feldspars
+Widgiemooltha (SH 51-14), Lake Lefroy (3235)                         are slightly altered to epidote and sericite. Amphibole
+                 MGA Zone 51, 382112E 6535588N                       phenocrysts form mainly subhedral laths up to 2 mm long,
+                                                                     partially replaced by actinolite and minor epidote and
+Sampled on 2 September 2020                                          biotite. Fine-grained biotite is partially altered to chlorite.
+This sample was collected from the 218.0 – 219.0 m depth             Accessory minerals include titanite, apatite, zircon, and rare
+interval of drillcore CD10603, drilled in 2004 by St Ives            pyrite and iron oxide minerals.
+Gold Mining Company Pty Limited at the Thunderer mine
+(O’Brien, 2005; Miller et al., 2010). The drillhole is located
+on the eastern shore of Lake Lefroy, about 17.2 km east              Zircon morphology
+of Pilbailey Hill, 14.3 south-southeast of Kambalda, and             The 15 zircons isolated from this sample are colourless to
+11.3 km west of Parker Hill.                                         dark brown and mainly subhedral. The crystals are up to
+                                                                     140 µm long, and equant to slightly elongate, with aspect
+                                                                     ratios up to 3:1. In cathodoluminescence (CL) images,
+Geological context                                                   concentric zoning is ubiquitous, and most crystals are
+The unit sampled is a porphyritic metagranodiorite (Fig. 1)          dominated by high-U, metamict zones. A CL image of all
+assigned to the 2692–2655 Ma Black Flag Group of the                 zircons is shown in Figure 2.
+Kalgoorlie Terrane (Hall et al., 2022; Smithies et al.,
+2022). The Black Flag Group consists mainly of felsic
+metavolcaniclastic and metasedimentary rocks with                    Analytical details
+subordinate felsic and mafic volcanic rocks. The Black               This sample was analysed on 9–10 and 15–16 October
+Flag Group overlies the 2753–2680 Ma Kalgoorlie Group,               2020, using SHRIMP-B. Analyses 1.1 to 8.1 (spot
+is unconformably overlain by the 2664–2655 Ma Merougil               numbers 1–8) were obtained during the first session
+Formation (Hall et al., 2022), and in part is intruded by the        together with 13 analyses of the M257 standard, of
+c. 2680 Ma Golden Mile Dolerite (Rasmussen et al., 2009).
+                                                                     which 12 analyses indicated an external spot-to-spot
+A porphyritic hornblende metagranodiorite, sampled from
+                                                                     (reproducibility) uncertainty of 0.50% (1σ) and a
+drillhole LD7006 about 1.3 km to the north-northwest,                238
+                                                                        U/206Pb* calibration uncertainty of 0.24% (1σ). Isotopic
+yielded an igneous crystallization age of 2666 ± 7 Ma
+                                                                     mass fractionation of 207 Pb/ 206 Pb ratios during the
+(GSWA 229913, Lu et al., 2020a). A porphyritic meta-
+igneous rock, sampled from drillhole NFD003 about                    first session was corrected by reference to the OGC1
+3.0 km to the east, yielded an igneous crystallization               standard; measured ratios were increased by 0.39%.
+age of 2681 ± 5 Ma (GSWA 112110, Nelson, 1995). A                    Analyses 9.1 to 11.3 (spot numbers 9–17) were obtained
+porphyritic metagranitic rock, sampled from drillhole                during the second session, together with 16 analyses of
+CD20297-W1 about 3.2 km to the south-southeast, yielded              the M257 standard, of which 14 analyses indicated an
+an igneous crystallization age of 2680 ± 8 Ma (GSWA                  external spot-to-spot (reproducibility) uncertainty of
+203736, Wingate et al., 2022). A porphyritic microgranite,           0.50% (1σ) and a 238U/206Pb* calibration uncertainty of
+sampled from drillhole LD81635 about 9.7 km to the                   0.28% (1σ). Calibration uncertainties are included in the
+north-northwest, yielded an igneous crystallization age of           errors of 238U/206Pb* ratios and dates listed in Table 1.
+2682 ± 14 Ma (GSWA 230328, Lu et al., 2020b).                        Common-Pb corrections were applied to all analyses
+                                                                     using contemporaneous isotopic compositions determined
+                                                                     according to the model of Stacey and Kramers (1975).
+Petrographic description
+The sample is a medium-grained seriate to sparsely                   Results
+porphyritic metagranodiorite, which contains distinctive
+diorite and quartz diorite enclaves and subordinate                  Seventeen analyses were obtained from 12 zircons. Results
+amphibole- and chlorite-rich greenstone xenoliths (Fig. 1).          are listed in Table 1, and shown in a concordia diagram
+Plagioclase phenocrysts are up to 8 mm in size, within               (Fig. 3).
+
+
+
+
+                                                                 1
+203735.1.pdf                                                                                   Geochronology Record 1880
+
+
+
+
+               Figure 1.   Drillcore image (wet surface) of sample 203735: porphyritic metagranodiorite,
+                           Lake Lefroy
+
+
+
+
+               Figure 2.   Cathodoluminescence image of all zircons from sample 203735: porphyritic
+                           metagranodiorite, Lake Lefroy. Numbered circles indicate the approximate
+                           locations of analysis sites
+
+
+
+
+                                                           2
+203735.1.pdf                                                                                                                                                                   Geochronology Record 1880
+
+
+
+
+                                        Table 1. Ion microprobe analytical results for zircons from sample 203735: porphyritic metagranodiorite, Lake Lefroy
+
+
+    Group      Spot   Grain.     238
+                                    U      232
+                                              Th        Th
+                                                      232
+                                                                ƒ204          U/206Pb
+                                                                            238
+                                                                                                  Pb/206Pb
+                                                                                                207
+                                                                                                                        U/206Pb*
+                                                                                                                      238
+                                                                                                                                            Pb*/206Pb*
+                                                                                                                                          207                    238
+                                                                                                                                                                    U/206Pb*    207
+                                                                                                                                                                                   Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)      (ppm)      238
+                                                        U       (%)           ± 1σ                 ± 1σ                 ± 1σ                 ± 1σ              date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      I         8      8.1       147        88        0.60     0.094     2.004     0.028    0.18457       0.00170   2.006    0.028    0.18373     0.00177      2608     30     2687     16       2.9
+      I         5      5.1       112        22        0.20     0.000     2.027     0.030    0.18381       0.00194   2.027    0.030    0.18381     0.00194      2585     32     2688     17       3.8
+      I         11     11.1       98        80        0.82     0.056     1.995     0.036    0.18505       0.00204   1.996    0.036    0.18455     0.00210      2618     39     2694     19       2.8
+      I         7      7.1       134        85        0.64     -0.033    2.000     0.029    0.18481       0.00176   1.999    0.029    0.18510     0.00178      2615     31     2699     16       3.1
+      I         15     9.2       176       177        1.01     0.848     2.059     0.030    0.19315       0.00162   2.077    0.031    0.18558     0.00222      2534     31     2703     20       6.3
+      I         17     11.3       76        39        0.51     -0.172    1.912     0.042    0.18411       0.00250   1.909    0.042    0.18564     0.00272      2715     49     2704     24       -0.4
+      I         10    10.1       209       100        0.48     0.492     1.963     0.026    0.19052       0.00349   1.973    0.027    0.18613     0.00365      2644     29     2708     32       2.4
+      I         1      1.1        88        42        0.47     -0.320    1.939     0.064    0.18454       0.00199   1.933    0.063    0.18740     0.00226      2688     72     2719     20       1.2
+
+
+      P         4      4.1       125        71        0.57     0.375     2.033     0.029    0.18195       0.00173   2.041    0.029    0.17859     0.00201      2571     31     2640     19       2.6
+      P         3      3.1        90        41        0.46     0.230     1.908     0.031    0.18082       0.00197   1.913    0.032    0.17876     0.00218      2711     37     2641     20       -2.6
+      P         12    12.1        82        66        0.81     0.068     1.995     0.039    0.17947       0.00218   1.996    0.039    0.17886     0.00227      2618     43     2642     21       0.9
+      P         14     7.2       127        71        0.56      0.178    1.972     0.033    0.18125       0.00178   1.976    0.033    0.17967     0.00195      2640     36     2650     18       0.4
+      P         13     11.2       63        47        0.74     -0.103    1.915     0.045    0.17881       0.00267   1.913    0.045    0.17973     0.00282      2710     53     2650     26       -2.3
+      P         16     1.2       102        60        0.59      0.115    1.999     0.070    0.18148       0.00201   2.001    0.070    0.18045     0.00214      2613     75     2657     20       1.7
+      P         6      6.1       197       138        0.70     0.023     1.940     0.024    0.18078       0.00149   1.941    0.024    0.18057     0.00150      2679     27     2658     14       -0.8
+      P         2      2.1       189       147        0.78      0.195    2.092     0.042    0.18348       0.00148   2.096    0.042    0.18174     0.00159      2514     42     2669     15       5.8
+
+
+      D         9      9.1       240       413        1.72     0.384     2.707     0.089    0.19092       0.00143   2.718    0.090    0.18749     0.00169      2020     57     2720     15       25.8
+
+
+
+
+                                                                                                      3
+203735.1.pdf                                                                                                                Geochronology Record 1880
+
+
+
+
+             Figure 3.    U–Pb analytical data for sample 203735: porphyritic metagranodiorite, Lake Lefroy. Yellow squares
+                          indicate Group I (magmatic zircons); black squares indicate Group P (radiogenic-Pb loss); crossed
+                          square indicates Group D (discordance >7%)
+
+
+
+
+Interpretation                                                                     References
+The analyses are concordant to strongly discordant (Fig. 3).                       Hall, CE, Wyche, NL and Sapkota, J (partial report), Black Flag Group
+One analysis is >7% discordant. The date obtained from                                (A-BF-xf-s): Geological Survey of Western Australia, WA Geology
+this analysis (Group D; Table 1) is unreliable, and is                                Online, Explanatory Notes extract, viewed 05 January 2022,
+considered not to be geologically significant. The remaining                          <www.dmp.wa.gov.au/ens>.
+16 analyses can be divided into two groups, based on their                         Lu, Y, Wingate, MTD and Smithies, RH 2020a, 229913: hornblende
+207
+    Pb*/206Pb* ratios.                                                                metagranodiorite, Lake Lefroy; Geochronology Record 1653:
+                                                                                      Geological Survey of Western Australia, 4p.
+Group I comprises eight analyses of seven zircons                                  Lu, Y, Wingate, MTD and Smithies, RH 2020b, 230328: porphyritic
+(Table 1), which yield a weighted mean 207Pb*/206Pb* date                             microgranite, Lake Lefroy; Geochronology Record 1654: Geological
+of 2698 ± 13 Ma (MSWD = 0.33).                                                        Survey of Western Australia, 4p.
+
+Group P comprises eight analyses of eight zircons                                  Miller, JML, Blewett, RS, Tunjic, J and Connors, K 2010, The role of
+( Ta b l e 1 ) , w h i c h y i e l d 2 0 7 P b * / 2 0 6 P b * d a t e s o f          early formed structures on the development of the world class St Ives
+                                                                                      goldfield, Yilgarn, WA: Precambrian Research. v. 183, p. 292–315.
+2669– 2640 Ma, and a weighted mean 207Pb*/206Pb* date of
+2653 ± 12 Ma (MSWD = 0.36). Three analyses in Group P                              Nelson, DR 1995, 112110: felsic volcanic rock, Nelson’s Fleet;
+yield 207Pb*/206Pb* dates that are significantly younger                             Geochronology Record 526: Geological Survey of Western Australia, 4p.
+than additional analyses (assigned to Group I) in the same                         O’Brien, F 2005, Gold Fields St Ives Combined Annual Technical Report
+zircons, and three more analyses yield dates that are even                            (C52/2004) for the period 1 January 2004 to 31 December 2004:
+younger.                                                                              Mineral Exploration Report (unpublished), 255p.
+                                                                                   Rasmussen, B, Mueller, AG and Fletcher, IR 2009, Zirconolite and
+The date of 2698 ± 13 Ma for the eight analyses in                                    xenotime U-Pb age constraints on the emplacement of the Golden Mile
+Group I is tentatively interpreted as the age of igneous                              Dolerite sill and gold mineralization at the Mt Charlotte mine, Eastern
+crystallization. The dates of 2669–2640 Ma for the eight                              Goldfields Province, Yilgarn Craton, Western Australia: Contributions
+analyses in Group P are interpreted to reflect loss of                                to Mineralogy and Petrology, v. 157, p. 559–572.
+radiogenic Pb, because some dates are significantly younger                        Smithies, RH, Lowrey, JR, Sapkota, J, De Paoli, MC, Hayman, P, Barnes, SJ,
+than additional analyses in the same zircons. It is possible                         Champion, DC, Masurel, Q, Thébaud, N, Grech, LL, Drummond, M and
+that one or two oldest analyses included in Group P should                           Maas, R 2022, Geochemical characterization of the magmatic stratigraphy
+be assigned to Group I, in which case the interpreted                                of the Kalgoorlie and Black Flag Groups — Ora Banda to Kambalda
+crystallization age would be younger by up to 11 Ma.                                 region: Geological Survey of Western Australia, Report 226, 100p.
+
+
+
+
+                                                                               4
+203735.1.pdf                                                                   Geochronology Record 1880
+
+
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+   isotope evolution by a two-stage model: Earth and Planetary Science
+   Letters, v. 26, p. 207–221.
+Wingate, MTD, Lu, Y, Fielding, IOH, Cassidy, KF and Smithies, RH 2022,
+   203736: porphyritic metagranitic rock, Victory deposit; Geochronology
+   Record 1852: Geological Survey of Western Australia, 4p.
+
+
+
+Re­commended reference for this
+publication
+Wingate, MTD, Fielding, IOH, Lu, Y, Cassidy, KF and Smithies, RH 2022,
+   203735: porphyritic metagranodiorite, Lake Lefroy; Geochronology
+   Record 1880: Geological Survey of Western Australia, 5p.
+
+Data obtained:        16 October 2020
+Data released:        20 May 2022
+
+
+
+
+                                                                           5
+

@@ -1,0 +1,279 @@
+178010.1.pdf - Geochronology dataset 549
+
+                     178010: lithic–quartz sandstone, Mount Olive
+
+
+  Location and sampling                                                   Zircon morphology
+  NULLAGINE (SF 51-5), EASTERN CREEK (3054)                               The zircons isolated from this sample have a range
+                      MGA Zone 51, 250130E 7615210N                       of morphologies, but are typically colourless, pale
+                                                                          yellowish-brown or dark brown, between 90 × 140 µm
+  Sampled on 25 May 2002                                                  and 160 × 280 µm in size, and equant or slightly elongate,
+                                                                          and subhedral. Many grains are fractured and many
+  The sample was taken from a 1.5 m-diameter block located                show evidence of surface pitting or abrasion, consistent
+  3 m west of the access track, 600 m west of Mount Olive,                with detrital transport. Fluid and mineral inclusions are
+  on a rocky ridge at least 30 m high and at the northern                 common. Cathodoluminescence images of representative
+  entry to a rocky gorge.                                                 zircons are given in Figure 1.
+
+
+  Tectonic unit/relations                                                 Analytical details
+  The sample is from a dark-grey, poorly sorted, coarse-                  This sample was analysed on 30 January and 6 February
+  grained sandstone near the base of the Mosquito Creek                   2003. The counter deadtime was 24 ns during both
+  Formation, East Pilbara Granite–Greenstone Terrane                      analysis sessions. During the first analysis sesssion,
+  (Farrell, in prep.). The sandstone was collected to constrain           nine analyses of the CZ3 standard obtained during the
+  the depositional age of the basal part of the Mosquito                  analysis session indicated a Pb*/U calibration uncertainty
+  Creek Formation, and obtain provenance data.                            of 1.40% (1σ). Analyses 1.1 to 18.1 were obtained
+                                                                          during the first analysis session. During the second
+                                                                          analysis session, five analyses of the CZ3 standard
+                                                                          indicated a Pb*/U calibration uncertainty of 4.18% (1σ).
+  Petrographic description                                                Common-Pb corrections were applied assuming Broken
+  This dark-grey, weakly foliated rock contains abundant                  Hill common-Pb isotopic compositions for all analyses,
+  (35 vol.%) single-crystal quartz grains, from 0.2 to 1 mm               with the exception of analyses 4.1, 7.1, and 18.1, for which
+  in diameter, accompanied by chert clasts up to 1.5 mm in                isotopic compositions determined using the method of
+  diameter (45 vol.%). It is a coarse-grained lithic (chert) –            Cumming and Richards (1975) were assumed.
+  quartz sandstone, with minor muscovite and carbonaceous
+  clasts, and transected by parallel limonite-ﬁlled fractures.
+  Crystals altered by pyrite and hematite or goethite are                 Results
+  disseminated, with rare carbonate in some of the chert                  Twenty-seven analyses were obtained from 27 zircons.
+  clasts. A few chert clasts contain disseminated carbonate               Results are given in Table 1, and shown on concordia and
+  as small rhombs, but others have limonite or sericite,                  Gaussian-summation probability density plots in Figures 2
+  passing into clasts composed of decussate ﬁne-grained                   and 3 respectively.
+  sericite. The larger clasts have a subparallel orientation
+  apparently parallel to bedding. There are also massive and
+  laminated quartz-rich clasts that could represent siliciﬁed             Interpretation
+  acid volcanic fragments. Some of the large single-crystal
+  quartz grains have inclusions of apatite, suggesting                    The analyses are concordant to highly discordant, with the
+  an igneous provenance, but others have inclusions of                    discordance pattern consistent with at least one episode
+  vermiform chlorite, indicating derivation from vein-quartz.             of radiogenic-Pb loss. On the basis of their 207Pb/206Pb
+  Rare detrital muscovite forms ﬂakes, mostly less than 1                 ratios, many analyses can be assigned to one of three
+  mm long, and rarely up to 2 mm long, and commonly                       groups. Concordant analyses 9.1, 21.1, and 27.1, and
+  rimmed by limonite. Flakes altered to ?kaolin and diffuse               slightly discordant analysis 24.1, assigned to Group 1,
+  leucoxene could have been biotite. There are small clasts               have 207 Pb/ 206 Pb ratios defining a single population
+  rich in carbonaceous matter, but they are not abundant                  and indicating a weighted mean 207 Pb/ 206 Pb date of
+  enough to account for the overall grey colour of the hand               3294 ± 14 Ma (chi-squared = 0.52). Concordant analyses
+  specimen. Other clasts contain leucoxene with or without                21.1 and 12.1, and slightly discordant analyses 5.1 and
+  quartz, and there are clasts of chlorite, sericite, or illite and       8.1, assigned to Group 2, have 207Pb/206Pb ratios deﬁning
+  quartz. There is also rare pyrite, about 0.2 mm in grain                a single population and indicating a weighted mean
+  size, and more abundant patches of limonite, hematite,                  207
+                                                                              Pb/206Pb date of 3424 ± 12 Ma (chi-squared = 0.35).
+  goethite, or hematite–goethite, apparently replacing                    Eleven concordant and slightly discordant analyses of
+  euhedral crystals of ?pyrite. Some crystals are coated                  11 zircons (3.1, 6.1, 7.1, 10.1, 11.1, 13.1, 16.1, 18.1, 19.1,
+  by ﬂakes of muscovite. Stylolite-like veins are abundant                20.1, 22.1), assigned to Group 3, have 207Pb/206Pb ratios
+  parallel to the layering and are ﬁlled with goethite. The               deﬁning a single population and indicating a weighted
+  metamorphism of this sample seems to have been weak                     mean 207Pb/206Pb date of 3461 ± 7 Ma (chi-squared = 1.50).
+  and at low to very low grade.                                           The remaining analyses cannot be conﬁdently grouped.
+
+                                                                      1
+D. R. Nelson, 2005
+
+
+
+
+                                                                                   12.1
+                                                                                                     13.1
+                                              2.1
+
+
+
+
+                          (a)                                                      (b)
+
+
+
+
+                                                                                                    19.1
+
+
+
+
+  17.1
+
+
+
+                          (c)                                                      (d)
+
+
+
+                                                                           24.1
+
+                                       20.1
+
+
+
+
+                                                                 23.1
+
+
+                                                                                    25.1
+
+                          (e)                                                      (f)
+Figure 1.   Cathodoluminescence images of representative zircons from sample 178010: lithic–quartz sandstone,
+            Mount Olive
+
+
+
+
+                                                      2
+                                        Table 1. Ion microprobe analytical results for zircons from sample 178010: lithic–quartz sandstone, Mount Olive
+
+
+
+    Grain     U       Th      Pb    ƒ206%     207Pb/ 206Pb      ±1σ         208Pb/ 206Pb       ±1σ     206Pb/ 238U        ±1σ      207Pb/ 235U      ±1σ          %        207Pb/ 206Pb   ±1σ
+    .spot   (ppm)   (ppm)   (ppm)                                                                                                                           concordance       Age
+
+    1.1      97      148      97    0.073        0.27235       0.00151         0.39810       0.00261       0.6921         0.0111       25.990       0.456       102           3 320       9
+    2.1      61       30      55    0.085        0.29252       0.00206         0.12589       0.00268       0.7326         0.0124       29.548       0.565       103           3 431      11
+    3.1     140      157     140    0.070        0.29671       0.00122         0.29129       0.00164       0.7303         0.0112       29.879       0.490       102           3 453       6
+    4.1     133       80     107    1.745        0.31543       0.00207         0.16167       0.00365       0.5962         0.0092       25.930       0.455        85           3 548      10
+    5.1     188      113     159    0.297        0.29027       0.00116         0.14588       0.00145       0.6808         0.0103       27.248       0.438        98           3 419       6
+    6.1     164       62     144    0.041        0.29964       0.00117         0.10086       0.00108       0.7284         0.0110       30.094       0.485       102           3 468       6
+    7.1     271      231     191    4.028        0.30017       0.00216         0.26075       0.00438       0.4637         0.0068       19.192       0.330        71           3 471      11
+    8.1     124      169     100    0.442        0.29192       0.00156         0.13156       0.00217       0.6490         0.0101       26.123       0.446        94           3 428       8
+    9.1     114      163     109    0.095        0.26705       0.00139         0.37475       0.00233       0.6777         0.0106       24.955       0.425       101           3 289       8
+    10.1    233       52     199    0.039        0.29797       0.00096         0.05629       0.00072       0.7306         0.0108       30.017       0.467       102           3 460       5
+
+
+
+
+3
+    11.1     53       31      48    0.233        0.29568       0.00213         0.15120       0.00257       0.7243         0.0127       29.530       0.582       102           3 448      11
+    12.1    117       60     105    0.099        0.29149       0.00136         0.13415       0.00135       0.7308         0.0113       29.370       0.492       103           3 426       7
+    13.1    172      113     158    0.273        0.29959       0.00121         0.17325       0.00153       0.7189         0.0108       29.695       0.478       101           3 468       6
+    14.1    147      104     145    0.095        0.32574       0.00129         0.18334       0.00137       0.7572         0.0116       34.008       0.554       101           3 597       6
+    15.1    168       85     168    0.030        0.35156       0.00121         0.13282       0.00102       0.7841         0.0119       38.008       0.605       100           3 714       5
+    16.1    123      127     120    0.103        0.29699       0.00139         0.26851       0.00194       0.7253         0.0114       29.702       0.502       102           3 455       7
+    17.1     99       39      89    0.387        0.30407       0.00169         0.10149       0.00221       0.7311         0.0117       30.651       0.539       101           3 491       9
+    18.1    138      151     128    0.850        0.29641       0.00158         0.28454       0.00266       0.6648         0.0103       27.169       0.462        95           3 452       8
+    19.1     16        7      14    1.472        0.28951       0.00626         0.10108       0.01112       0.7159         0.0317       28.576       1.475       102           3 415      34
+    20.1     33       16      28    0.375        0.30263       0.00320         0.12105       0.00401       0.6857         0.0294       28.613       1.302        97           3 484      16
+    21.1    145       99     128    0.077        0.26759       0.00124         0.17423       0.00137       0.7086         0.0298       26.144       1.120       105           3 292       7
+    22.1     98       46      88    0.931        0.30204       0.00203         0.11835       0.00308       0.7168         0.0302       29.853       1.299       100           3 481      10
+    23.1    164      127     166    0.104        0.32069       0.00127         0.19670       0.00139       0.7706         0.0324       34.075       1.454       103           3 573       6
+    24.1    142      244     132    0.668        0.26848       0.00160         0.46849       0.00320       0.6114         0.0257       22.633       0.976        93           3 297       9
+    25.1    193      123     169    0.296        0.28638       0.00125         0.15781       0.00164       0.6960         0.0292       27.481       1.174       100           3 398       7
+    26.1     79       35      72    0.204        0.30562       0.00203         0.10383       0.00242       0.7458         0.0315       31.426       1.369       103           3 499      10
+    27.1     74      129      78    0.234        0.27010       0.00193         0.45910       0.00365       0.7018         0.0297       26.134       1.143       104           3 307      11
+                                                                                                                                                                                               Geochronology data obtained in 2003
+D. R. Nelson, 2005
+
+                0.85
+
+
+
+                0.80                                                                                                                              Analysis 23.1              Analysis 15.1
+
+                                                                                                                                                                              3700
+                                                                                                   Analysis 25.1               Analysis 26.1
+                                                 Group 1: Analyses 9.1, 21.1, 24.1, 27.1
+                                                       3294 ± 14 Ma (95% confidence)
+                0.75                                                                                                                                         Analysis 14.1
+                                                                                                                                                      3600
+                                                                                                                             3500
+                                                                        Analysis 1.1                                                 Analysis 17.1
+
+                0.70                                                                                3400
+                                                                                                                           Group 3: 11 analyses of 11 zircons
+                                                                               3300                                        3461 ± 7 Ma (95% confidence)
+
+                0.65                                            3200
+      Pb/238U
+
+
+
+
+                                                                                                   Group 2: Analyses 2.1, 5.1, 8.1, 12.1
+                                                 3100                                              3424 ± 12 Ma (95% confidence)
+      206
+
+
+
+
+                0.60
+                                                                                                 Analysis 4.1
+
+
+
+                0.55
+
+
+
+                0.50
+
+
+
+                                                 Analysis 7.1
+                0.45
+
+
+                                                                                                                                                                                        178010
+
+                0.40
+                                         18         20            22            24               26                 28              30           32             34              36                38
+                                                                                                             207     235
+                                                                                                                   Pb/ U
+
+                                                  Figure 2. Concordia plot for sample 178010: lithic–quartz sandstone, Mount Olive
+
+
+
+
+                                                                                                                                                                                         178010
+
+
+
+
+                                                                                       Group 2
+                  Relative probability density
+
+
+
+
+                                                 Group 1                                                             Group 3
+
+
+
+
+                                                                                                                                                                     Analysis 15.1
+                                                                                                                             Analysis 13.1
+                                                                                                                                               Analysis 14.1
+
+
+
+
+                            3200                           3300                      3400                          3500                   3600                       3700                        3800
+                                                                                                    207
+                                                                                                          Pb/206Pb Age (Ma)
+
+
+        Figure 3. Gaussian-summation probability density plot for sample 178010: lithic–quartz sandstone, Mount Olive
+
+
+                                                                                                             4
+                                                                                           Geochronology data obtained in 2003
+
+     Analyses 9.1, 21.1, 24.1, and 27.1 were obtained            part of Australia having ages matching those of the
+from small (generally less than 80 × 100 µm in size),            zircons within this sample include rocks from East Pilbara
+euhedral grains and irregularly shaped grain fragments           Granite–Greenstone Terrane and the Narryer Terrane of the
+that show clear evidence of surface pitting and abrasion,        northwest Yilgarn Craton (Geological Survey of Western
+consistent with an episode of detrital transport. The            Australia, 2004).
+date of 3294 ± 14 Ma indicated by the weighted mean
+207
+    Pb/ 206Pb ratio of concordant analyses 9.1, 21.1, and
+27.1, and slightly discordant analysis 24.1 of Group 1,          Recommended reference for this publication:
+is therefore interpreted to provide a maximum age for            Geochronologist:
+                                                                 NELSON,                 D. R. Nelson
+                                                                           D. R., 2005, 178010: lithic–quartz sandstone, Mount
+deposition of the sandstone. The older dates provided            Data obtained:
+                                                                 Olive;                  2003 549; in Compilation of
+                                                                        Geochronology dataset
+by the remaining analyses are also interpreted to be of          Data released:data, June
+                                                                 geochronology           2005
+                                                                                           2006 update: Western Australia
+detrital zircons. Possible source rocks within the western       Geological Survey.
+
+                                                                 Data obtained: 06/02/2003; Data released: 30/06/2005
+
+
+
+
+                                                             5
+

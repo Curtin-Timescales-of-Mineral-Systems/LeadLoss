@@ -1,0 +1,178 @@
+133384.1.pdf                                                                                      Geochronology Record 1860
+
+
+
+
+                        133384: leucogabbro, Thompsons Bore
+                                  (Trillbar Formation, Capricorn Orogen)
+
+
+
+
+Location and sampling                                              Analytical details
+Robinson Range (SG 50-7), Moorarie (2446)                          This sample was analysed on 20 February 2005, using
+                 MGA Zone 50, 573839E 7173032N                     SHRIMP-B. Zircons were analysed in plugs cut from
+                                                                   polished thin sections, following procedures described
+Sampled on 6 June 2004                                             by Olierook et al (2018). Eleven analyses of the CZ3
+                                                                   zircon standard were obtained during the session,
+This sample was collected from one of several low                  of which 10 analyses indicated an external spot-to-
+boulders to the east of a creek on Mount Gould Station,            spot (reproducibility) uncertainty of 1.65% (1σ) and
+about 6.3 km north-northeast of Mount Seabrook, 3.6 km             a 238U/ 206Pb* calibration uncertainty of 0.65% (1σ).
+northwest of Trillbar homestead, and 3.6 km east-northeast         Calibration uncertainties are included in the errors of
+of Thompsons Bore.                                                 238
+                                                                       U/206Pb* ratios and dates listed in Table 1. Common-
+                                                                   Pb corrections were applied to all analyses using
+                                                                   contemporaneous isotopic compositions determined
+Geological context                                                 according to the model of Stacey and Kramers (1975).
+The unit sampled is the Trillbar Formation, which
+consists of metamorphosed layered gabbro, microgabbro,
+leucogabbro and melanogabbro (Myers, 1989; Occhipinti              Results
+and Myers, 1999). The Trillbar Formation is entirely fault-
+bounded and its original relationships with surrounding            Twenty-one analyses were obtained from six zircons.
+units are unknown (Occhipinti et al., 2017). The Trillbar          Results are listed in Table 1, and shown in a concordia
+Formation was previously considered a part of the                  diagram (Fig. 2).
+2014–1920 Ma Bryah Group of the Bryah Basin (Johnson
+and Thorne, 2022). However, the age of c. 2069 Ma for this
+sample (detailed below) suggests that the Trillbar Formation       Interpretation
+is significantly older than the Bryah Group. Geochemical           The analyses are concordant to moderately discordant
+data for mafic and ultramafic rocks suggest a mid-ocean            (Fig. 2). One analysis is >5% discordant and one indicates
+ridge (MORB) signature that the Trillbar Formation formed          high common Pb (f204 >1%). The dates obtained from
+at a mid-ocean ridge, whereas the Bryah Group is thought           these two analyses (Group D, Table 1) are unreliable,
+to have formed in an intracontinental rift setting (Olierook       and considered not to be geologically significant. The
+et al., 2018).                                                     remaining 19 analyses form a single group, based on their
+                                                                   207
+                                                                      Pb*/206Pb* ratios.
+Petrographic description                                           Group I comprises 19 analyses of six zircons (Table 1),
+                                                                   which yield a weighted 207Pb*/206Pb* date of 2069 ± 9 Ma
+The sample is a foliated, leucocratic metagabbro,                  (MSWD = 1.3).
+consisting of medium-grained phenocrysts of
+clinopyroxene (altered to actinolite) within a fine-grained        The date of 2069 ± 9 Ma for the 19 analyses in Group I
+matrix of plagioclase and clinopyroxene with minor                 is interpreted as the magmatic crystallization age of the
+sericite alteration. A detailed petrographic description is        leucogabbro. The high and variable Th/U ratios of the
+not available for this sample.                                     zircons (0.27 – 3.19, median 1.74) are typical of primary
+                                                                   zircons in mafic intrusions and evidence that they are not
+                                                                   inherited (e.g. Lanyon et al., 1993).
+Zircon morphology
+Zircons from this sample are anhedral, and occur as single
+crystals or in aggregates. The zircons are up to 150 µm
+long, and equant to elongate, with aspect ratios up to
+5:1. In cathodoluminescence (CL) images, most crystals
+display concentric zoning. A CL image of all zircons is
+shown in Figure 1.
+
+
+
+
+                                                               1
+133384.1.pdf                                                                                    Geochronology Record 1860
+
+
+
+
+                 Figure 1.   Cathodoluminescence images of zircons from sample 133384: leucogabbro,
+                             Thompsons Bore. Numbered circles indicate the approximate locations of
+                             analysis sites
+
+
+
+
+         Figure 2.   U–Pb analytical data for sample 133384: leucogabbro, Thompsons Bore. Yellow squares indicate
+                     Group I (magmatic zircons); crossed squares indicate Group D (discordance >5% or high
+                     common Pb)
+
+
+
+
+                                                            2
+133384.1.pdf                                                                                                                                                             Geochronology Record 1860
+
+
+
+
+                                            Table 1. Ion microprobe analytical results for zircons from sample 133384: leucogabbro, Thompsons Bore
+
+
+    Group      Mount    Grain.     238
+                                      U    232
+                                              Th      Th
+                                                    232
+                                                              ƒ204          U/206Pb
+                                                                          238                207
+                                                                                                  Pb/206Pb          U/206Pb*
+                                                                                                                  238
+                                                                                                                                        Pb*/206Pb*
+                                                                                                                                      207                  238
+                                                                                                                                                              U/206Pb*      207
+                                                                                                                                                                               Pb*/206Pb*   Disc.
+      ID        no.     spot     (ppm)    (ppm)    238
+                                                      U       (%)           ± 1σ                   ± 1σ             ± 1σ                 ± 1σ            date (Ma) ±1σ     date (Ma) ±1σ    (%)
+       I       BR0510   F.1-4      371    1045      2.92      0.083    2.611    0.048     0.12692     0.00086   2.613     0.048    0.12619    0.00091    2089     33       2046     13       -2.1
+       I       BR0510   F.1-6      392    1209      3.19      0.057    2.629    0.050     0.12680     0.00098   2.630     0.050    0.12630    0.00100    2077     34       2047     14       -1.5
+       I       BR0510   D.1-1      376     859      2.36      0.391    2.671    0.048     0.13050     0.00077   2.682     0.049    0.12705     0.00118   2043     32       2058     16       0.7
+       I       BR0510   F.1-1      444     941      2.19      0.070    2.600    0.047     0.12777     0.00079   2.601     0.047    0.12715    0.00084    2097     33       2059     12       -1.8
+       I       BR0510   D.1-4      178     291      1.69      0.142    2.740    0.056     0.12851     0.00131   2.744     0.056    0.12726    0.00140    2003     35       2060     19       2.8
+       I       BR0510   B.1-1      482     128      0.27      0.061    2.593    0.047     0.12781     0.00077   2.595     0.047    0.12727    0.00079    2101     33       2061     11       -2.0
+       I       BR0510   C.1-1      109     172      1.64      0.220    2.724    0.073     0.12933     0.00167   2.730     0.073    0.12740    0.00187    2012     46       2062     26       2.5
+       I       BR0510   D.1-5      260     520      2.07     -0.078    2.575    0.050     0.12704     0.00102   2.573     0.050    0.12773    0.00103    2116     35       2067     14       -2.4
+       I       BR0510   F.1-5      470    1307      2.87      0.000    2.677    0.050     0.12774     0.00092   2.677     0.050    0.12774    0.00092    2046     33       2067     13       1.0
+       I       BR0510   A.1-1      108     236      2.26      0.035    2.597    0.062     0.12811     0.00175   2.598     0.062    0.12780    0.00193    2099     43       2068     27       -1.5
+       I       BR0510   F.1-2      408    1105      2.80      0.033    2.566    0.047     0.12822     0.00081   2.567     0.047    0.12793    0.00083    2121     33       2070     11       -2.5
+       I       BR0510   F.1-7      500    1102      2.28      0.108    2.630    0.049     0.12948     0.00102   2.633     0.049    0.12854    0.00106    2075     33       2078     14       0.1
+       I       BR0510   G.1-1       82     87       1.09     -0.080    2.590    0.061     0.12818     0.00178   2.588     0.061    0.12888    0.00178    2106     42       2083     24       -1.1
+       I       BR0510   F.1-3      375     780      2.15      0.075    2.602    0.048     0.12989     0.00087   2.604     0.048    0.12923    0.00092    2095     33       2087     12       -0.4
+       I       BR0510   D.1-2      195     329       1.74     0.075    2.621    0.054     0.13006     0.00127   2.623     0.054    0.12940    0.00128    2082     37       2090     17       0.4
+       I       BR0510   B.1-2      268     210      0.81     -0.102    2.617    0.051     0.12874     0.00148   2.614     0.051    0.12964    0.00148    2088     35       2093     20       0.2
+       I       BR0510   D.1-3      145     201      1.43     -0.235    2.599    0.054     0.12765     0.00126   2.593     0.054    0.12971    0.00156    2103     37       2094     21       -0.4
+       I       BR0510   C.1-2       65     90       1.42     -0.408    2.518    0.067     0.12810     0.00211   2.507     0.066    0.13169    0.00216    2164     49       2121     29       -2.0
+       I       BR0510   C.1-3      104     155      1.55      0.235    2.692    0.064     0.13428     0.00182   2.699     0.064    0.13222    0.00194    2032     41       2128     26       4.5
+
+
+      D        BR0510   G.1-3       63     57       0.94      0.849    2.658    0.063     0.12638     0.00184   2.681     0.064    0.11882    0.00304    2043     41       1938     46       -5.4
+      D        BR0510   G.1-2       54     70       1.33      1.015    2.732    0.071     0.13098     0.00223   2.760     0.072    0.12197    0.00316    1993     44       1985     46       -0.4
+
+
+
+
+                                                                                              3
+133384.1.pdf                                                                                                       Geochronology Record 1860
+
+
+References                                                                      Recommended reference for this
+Johnson, SP and Thorne, AM (partial report), Bryah Group                        publication
+   (P_- BY- xsf- mw): Geological Survey of Western Australia, WA
+                                                                                Fielding, IOH, Wingate, MTD, Fletcher, IR, Rasmussen, B, Zi, J-W
+   Geology Online, Explanatory Notes extract, viewed 22 March 2022
+                                                                                   and Sheppard, S 2022, 133384: leucogabbro, Thompsons Bore;
+   <www.dmp.wa.gov.au/ens>.
+                                                                                   Geochronology Record 1860: Geological Survey of Western
+Lanyon, R, Black, LP and Seitz, H 1993, U-Pb zircon dating of mafic                Australia, 4p.
+   dykes and its application to the Proterozoic geological history of the
+   Vestfold Hills, East Antarctica: Contributions to Mineralogy and             Data obtained:      20 February 2005
+   Petrology, v. 115, p. 184–203.
+                                                                                Data released:      14 April 2022
+Myers, JS 1989, Thrust sheets on the southern foreland of the Capricorn
+  Orogen, Robinson Range, Western Australia: Professional Papers,
+  Geological Survey of Western Australia, Report 26, p. 127–130.
+Occhipinti, SA, Hocking, RM, Lindsay M, Aitken, ARA, Copp, I,
+  Jones, J, Sheppard, S, Pirajno, F and Metelka, V 2017,
+  Paleoproterozoic basin development on the northern Yilgarn Craton,
+  Western Australia: Precambrian Research, v. 300, p. 121–140.
+Occhipinti, SA and Myers, JS 1999, Geology of the Moorarie 1:100 000
+   sheet: Geological Survey of Western Australia, 1:100 000 Geological
+   Series Explanatory Notes, 20p.
+Olierook, HKH, Sheppard, S, Johnson, SP, Occhipinti, SA, Reddy, SM,
+   Clark, C, Fletcher, IR, Rasmussen, B, Zi, J-W, Pirajno, F,
+   LaFlamme, C, Do, T, Ware, B, Blandthorn, E, Lindsay, M, Lu, Y,
+   Crossley, RJ and Erickson, TM 2018, Extensional episodes in the
+   Paleoproterozoic Capricorn Orogen, Western Australia, revealed
+   by petrogenesis and geochronology of mafic–ultramafic rocks:
+   Precambrian Research, v. 306, p. 22–40.
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+   isotope evolution by a two-stage model: Earth and Planetary Science
+   Letters, v. 26, p. 207–221.
+
+
+
+
+                                                                            4
+

@@ -1,0 +1,190 @@
+222712.1.pdf                                                                                          Geochronology Record 1855
+
+
+
+
+                    222712: quartzite, Lawlers – Mount Ida Road
+                (Walter Williams Formation, Vetters Subgroup, Kalgoorlie Group,
+               Kalgoorlie Terrane, Eastern Goldfields Superterrane, Yilgarn Craton)
+
+
+
+Location and sampling                                               boundary migration during deformation and metamorphism.
+Menzies (SH 51-5), Ballard (3039)
+                    MGA Zone 51, 257518E 6788598N                   Zircon morphology
+Sampled on 7 April 2018                                             Zircons isolated from this sample are mainly colourless and
+                                                                    anhedral to euhedral. The crystals are up to 150 µm long,
+This sample was collected from an outcrop north of the              and equant to slightly elongate, with aspect ratios up to 4:1.
+Mount Ida mining centre, about 3.1 km south of Gregory              A few zircons exhibit poorly defined surface pitting and,
+Well, 1.6 km north of Forrest Belle mine, and 0.2 km east           in cathodoluminescence (CL) images, concentric zoning is
+of the Lawlers – Mount Ida Road.                                    ubiquitous and some crystals exhibit sector zoning. A CL
+                                                                    image of representative zircons is shown in Figure 2.
+Geological context
+The unit sampled is a quartzite interleaved with mafic–             Analytical details
+ultramafic rocks of the Walter Williams Formation of the            This sample was analysed on 23–24 October 2020, using
+Kalgoorlie Group, on the eastern limb of the Kurrajong              SHRIMP-B. Eleven analyses of the M257 standard were
+Anticline (Swager et al., 1990; Rattenbury, 1995; Hill              obtained during the session, of which 10 analyses indicated
+et al., 2001). The Walter Williams Formation consists               an external spot-to-spot (reproducibility) uncertainty of
+mostly of peridotite and komatiite, ultramafic schist and           0.50% (1σ) and a 238U/206Pb* calibration uncertainty of
+komatiitic basalt (Hill et al., 2001). A sample of the Forest       0.21% (1σ). Calibration uncertainties are included in the
+Belle Gabbro, collected about 4.4 km to the south, yielded          errors of 238U/206Pb* ratios and dates listed in Table 1.
+an igneous crystallization age of 2731 ± 8 Ma (GSWA                 Common-Pb corrections were applied to all analyses
+222720, Wingate et al., 2022). About 32 km to the south,
+                                                                    using contemporaneous isotopic compositions determined
+a fine-grained, thinly bedded metasedimentary rock that
+                                                                    according to the model of Stacey and Kramers (1975).
+appears to conformably overlie pyroxene-spinifex-textured
+basalt at the top of the Walter Williams Formation yielded
+a maximum depositional age of 2695 ± 5 Ma (GSWA
+185901, Wingate et al., 2010).                                      Results
+                                                                    Twenty-one analyses were obtained from 21 zircons.
+                                                                    Results are listed in Table 1, and shown in a concordia
+Petrographic description                                            diagram (Fig. 3).
+The sample is a fine-grained, massive quartzite, consisting
+of >99% quartz, <1% muscovite, and trace zircon. Parts
+of the rock are overprinted by very fine-grained zoisite
+                                                                    Interpretation
+alteration. Quartz is anhedral, mostly equant, transparent,         The analyses are concordant to moderately discordant
+unstrained or weakly strained, and averages 0.15 mm                 (Fig. 3). One analysis indicates high common Pb
+in size. Extremely faint grain boundaries suggest most              (f204 >1%). The date obtained from this analysis
+grains are subrounded or rounded, although compaction               (Group D; Table 1) is unreliable, and is considered not to
+and/or metamorphism has produced a moderately well-                 be geologically significant. The remaining 20 analyses can
+developed polygonal texture and there is only a tiny                be divided into three groups, based on their 207Pb*/206Pb*
+amount of interstitial quartz cement. Muscovite forms               ratios.
+anhedral to subhedral, moderately well-aligned laths up
+to 0.15 mm long. Zoisite grains are subhedral, equant to            Group Y comprises one analysis (Table 1), which yields a
+slightly tabular, and up to 0.1 mm in size. The sample is           207
+                                                                       Pb*/206Pb* date of 2695 ± 6 Ma (1σ).
+interpreted as a pure quartz arenite, with a closely packed,
+well-sorted framework that is texturally mature. Alignment          Group S comprises 18 analyses (Table 1), which yield
+of muscovite suggests that the quartzite has been mildly
+                                                                    207
+                                                                       Pb*/206Pb* dates of 2816–2712 Ma.
+deformed at relatively low grade, although it is unclear            Group P comprises one analysis (Table 1), which yields a
+how much of the semi-polygonal texture is the product of            207
+                                                                       Pb*/206Pb* date of 2553 ± 10 Ma (1σ).
+compaction or induration and how much is due to grain-
+
+
+
+                                                                1
+222712.1.pdf                                                                                    Geochronology Record 1855
+
+
+
+
+               Figure 1.   Hand specimen image of sample 222712: quartzite, Lawlers – Mount Ida Road
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 222712:
+                           quartzite, Lawlers – Mount Ida Road. Numbered circles indicate the approximate
+                           locations of analysis sites
+
+
+
+
+                                                            2
+222712.1.pdf                                                                                                                                                             Geochronology Record 1855
+
+
+
+
+                                        Table 1. Ion microprobe analytical results for zircons from sample 222712: quartzite, Lawlers – Mount Ida Road
+
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th     232
+                                                        Th   ƒ204          U/206Pb
+                                                                         238
+                                                                                               Pb/206Pb
+                                                                                             207
+                                                                                                                     U/206Pb*
+                                                                                                                   238                207
+                                                                                                                                         Pb*/206Pb*        238
+                                                                                                                                                              U/206Pb*    207
+                                                                                                                                                                             Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)     238
+                                                        U    (%)           ± 1σ                 ± 1σ                 ± 1σ                 ± 1σ           date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      Y         20    20.1       737     526       0.71      0.198    2.091     0.017    0.18643       0.00065   2.096    0.017    0.18466     0.00072   2515     18     2695     6        6.7
+
+
+      S         16    16.1       594     315       0.53      0.089    2.022     0.017    0.18732       0.00069   2.023    0.017    0.18652     0.00072   2589     18     2712     6        4.5
+      S         12    12.1       792     506       0.64      0.101    1.954     0.016    0.18760       0.00062   1.956    0.016    0.18669     0.00065   2662     18     2713     6        1.9
+      S         17     17.1      734     446       0.61      0.068    2.033     0.017    0.18766       0.00062   2.035    0.017    0.18705     0.00064   2577     18     2716     6        5.1
+      S         9      9.1       647     366       0.57      0.097    1.963     0.017    0.18812       0.00068   1.965    0.017    0.18725     0.00072   2652     19     2718     6        2.4
+      S         11     11.1      648     461       0.71      0.016    1.982     0.017    0.18850       0.00066   1.982    0.017    0.18836     0.00067   2633     18     2728     6        3.5
+      S         5      5.1       407     181       0.45      0.057    1.935     0.018    0.18940       0.00082   1.936    0.018    0.18890     0.00084   2685     21     2733     7        1.7
+      S         13    13.1      1038     776       0.75      0.047    1.921     0.015    0.18941       0.00150   1.922    0.015    0.18899     0.00151   2701     18     2733     13       1.2
+      S         15    15.1       486     265       0.55      0.014    1.959     0.018    0.18913       0.00075   1.960    0.018    0.18901     0.00076   2658     20     2734     7        2.8
+      S         21    21.1       679     508       0.75      -0.005   1.922     0.027    0.18903       0.00067   1.922    0.027    0.18907     0.00067   2700     32     2734     6        1.2
+      S         7      7.1       944     647       0.69      0.014    1.930     0.015    0.18921       0.00055   1.931    0.015    0.18908     0.00055   2691     18     2734     5        1.6
+      S         6      6.1       466     257       0.55      0.037    1.922     0.017    0.18957       0.00141   1.922    0.017    0.18924     0.00142   2700     20     2736     12       1.3
+      S         4      4.1       810     528       0.65      0.021    1.937     0.022    0.18968       0.00060   1.937    0.022    0.18949     0.00061   2683     25     2738     5        2.0
+      S         10    10.1       801     523       0.65      0.010    1.954     0.016    0.18994       0.00064   1.954    0.016    0.18985     0.00064   2665     18     2741     6        2.8
+      S         14    14.1       782     491       0.63      0.020    1.955     0.016    0.19022       0.00066   1.955    0.016    0.19004     0.00066   2663     19     2743     6        2.9
+      S         3      3.1       375     177       0.47      0.000    1.998     0.019    0.19005       0.00087   1.998    0.019    0.19005     0.00087   2616     21     2743     8        4.6
+      S         8      8.1       685     375       0.55      0.026    1.909     0.016    0.19147       0.00066   1.910    0.016    0.19124     0.00067   2715     19     2753     6        1.4
+      S         1      1.1       803     616       0.77      0.064    1.842     0.031    0.19378       0.00058   1.843    0.031    0.19321     0.00060   2795     39     2770     5        -0.9
+      S         18    18.1       795     519       0.65      0.020    1.728     0.014    0.19898       0.00061   1.728    0.014    0.19880     0.00062   2943     20     2816     5        -4.5
+
+
+      P         2      2.1      2028    2573       1.27      0.082    2.126     0.016    0.17030       0.00098   2.128    0.016    0.16957     0.00099   2483     16     2553     10       2.7
+
+
+      D         19    19.1      1505    1619       1.08      1.508    2.045     0.015    0.19221       0.00047   2.076    0.016    0.17876     0.00076   2535     16     2641     7        4.0
+
+
+
+
+                                                                                                   3
+222712.1.pdf                                                                                                          Geochronology Record 1855
+
+
+
+
+             Figure 3.    U–Pb analytical data for sample 222712: quartzite, Lawlers – Mount Ida Road. Blue square
+                          indicates Group Y (youngest detrital zircon); red squares indicate Group S (older detrital
+                          zircons); black square indicates Group P (radiogenic-Pb loss); crossed square indicates
+                          Group D (high common Pb)
+
+
+
+
+It is possible that all of the analyses in Groups Y and S                    Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead isotope
+are of unmodified detrital zircons, in which case the date                      evolution by a two-stage model: Earth and Planetary Science Letters,
+of 2695 ± 6 Ma (1σ) for the single analysis in Group Y                          v. 26, p. 207–221.
+represents a maximum depositional age. However, the                          Swager, CP, Griffin, TJ, Witt, WK, Wyche, S, Ahmat, AL, Hunter, WM and
+distribution of analyses in Groups Y and S suggests that                       McGoldrick, PJ 1990, Geology of the Archaean Kalgoorlie Terrane —
+the zircons have lost variable amounts of radiogenic Pb,                       an explanatory note: Geological Survey of Western Australia, Record
+and that the 207Pb*/206Pb* date of 2695 ± 6 Ma (1σ) for                        1990/12, 26p.
+the single analysis in Group Y underestimates its age of                     Wingate, MTD, Kirkland, CL, Bodorkos, S and Wyche, S 2010, 185901:
+crystallization.                                                               fine-grained metasedimentary rock, Tragedy Well; Geochronology
+                                                                               Record 882: Geological Survey of Western Australia, 4p.
+The combined 19 analyses in Groups Y and S yield a
+                                                                             Wingate, MTD, Lu, Y, Fielding, IOH and De Paoli, M 2021, 222720:
+discordia regression with intercepts at 2764 ± 8 and                           metagabbro, Oberwyl Hill; Geochronology Record 1856: Geological
+c. 1270 Ma (MSWD = 1.4). The upper intercept of                                Survey of Western Australia, 4p.
+2764 ± 8 Ma is interpreted as the age of the dominant
+detrital component, and a conservative maximum age
+of deposition. The date of 2553 ± 10 Ma (1σ) for the                         Re­commended reference for this
+single analysis in Group P is interpreted to reflect loss of
+radiogenic Pb.                                                               publication
+                                                                             Wingate, MTD, Lu, Y, Fielding, IOH and De Paoli, M 2022, 222712:
+                                                                               quartzite, Lawlers – Mount Ida Road; Geochronology Record 1855:
+                                                                               Geological Survey of Western Australia, 4p.
+References
+                                                                             Data obtained:        24 October 2020
+Hill, RET, Barnes, SJ and Dowling, SE 2001, Komatiites of the
+   Norseman–Wiluna Greenstone Belt, Western Australia — a field guide:       Data released:        29 April 2022
+   Geological Survey of Western Australia, Record 2001/10, 71p.
+Rattenbury, MS 1995, Ballard, WA Sheet 3039 (2nd edition): Geological
+   Survey of Western Australia, 1:100 000 Geological Series.
+
+
+
+
+                                                                         4
+

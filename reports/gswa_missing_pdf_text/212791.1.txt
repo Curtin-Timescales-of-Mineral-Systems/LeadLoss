@@ -1,0 +1,179 @@
+212791.1.pdf                                                                                       Geochronology Record 1824
+
+
+
+
+               212791: monzogranite gneiss, New Holland mine
+                     (Yilgarn Craton granites, Youanmi Terrane, Yilgarn Craton)
+
+
+
+
+Location and sampling                                              polygonal grains with quartz in irregular, elongate ribbons
+                                                                   up to 5 mm long. Orange–brown biotite forms subhedral
+Sir Samuel (SG 51-13), Depot Springs (2942)                        laths up to 0.5 mm long that are strongly aligned in narrow
+                  MGA Zone 51, 250125E 6901420N                    folia. Muscovite also occurs as subhedral laths to 0.5 mm
+                                                                   long, some aligned in the biotite folia and others along
+Sampled on 24 May 2014                                             feldspar grain boundaries. Magnetite is subhedral, up to
+This sample was collected from low outcrop on Pinnacles            1 mm diameter, and mostly replaced by hematite. The
+Station, about 6.0 km north of Five Mile Well, 3.1 km west         sample is not altered apart from minor sericite alteration
+of the New Holland mine openpits, and 2.5 km due south             of plagioclase. The rock has been strongly deformed
+of the Sandstone–Agnew Road.                                       to produce the foliation defined by elongate quartz and
+                                                                   biotite folia, and widespread feldspar recrystallization.
+                                                                   Deformation and partial recovery, indicated by the
+                                                                   aggregates of small polygonal grains, are inferred to have
+Geological context                                                 occurred during cooling from high-temperature conditions.
+The unit sampled is a granitic gneiss (Fig. 1) in the
+hanging wall of the c. 2660 Ma Waroonga Shear Zone
+(WSZ), along the eastern margin of the Youanmi                     Zircon morphology
+Terrane (Zibra et al., 2017). The WSZ is a west-dipping,           Zircons isolated from this sample are pale brown to
+low-angle, listric structure that postdates regional east-         dark brown or opaque, anhedral to subhedral, and
+dipping fabrics (Zibra et al., 2017). Shearing postdates           variably rounded. The crystals are up to 300 µm long,
+the <2662 Ma Scotty Creek Formation in the footwall of             and equant to elongate, with aspect ratios up to 4:1. In
+the WSZ (GA 2001967052C, Dunphy et al., 2003), and                 cathodoluminescence (CL) images, concentric zoning
+predates emplacement of the non-deformed 2655 ± 4 Ma               is ubiquitous, most crystals are dominated by high-U,
+Breakaway Well Granodiorite (GA 95969764B, Fletcher                metamict domains, and some exhibit alteration to
+et al., 2001). A syntectonic syenogranite sampled about            luminescent zircon. A CL image of representative zircons
+36 km to the north is deformed along the WSZ and has               is shown in Figure 2.
+an igneous crystallization age of 2661 ± 6 Ma (GSWA
+209610, Lu et al., 2016; Zibra et al., 2017). The present
+sample was collected from a syntectonic pluton, which
+occupies a similar structural position to GSWA 209610              Analytical details
+in the hanging wall of the WSZ and exhibits a tectonic             This sample was analysed on 20–21 and 26 September
+fabric that developed during melt-present thrusting (Zibra         2019, using SHRIMP-B. Analyses 1.1 to 11.1 (spot
+et al., 2017).                                                     numbers 1–11) were obtained during the first session,
+                                                                   together with six analyses of the M257 standard, of
+                                                                   which five analyses indicated an external spot-to-
+Petrographic description                                           spot (reproducibility) uncertainty of 0.59% (1σ) and
+                                                                   a 238U/ 206Pb* calibration uncertainty of 0.35% (1σ).
+The sample is a foliated, medium-grained monzogranite              Isotopic mass fractionation of 207Pb/206Pb ratios during
+gneiss, consisting of about 40% quartz, 30% plagioclase,           the first session was corrected by reference to the
+25% K-feldspar, 2% biotite, 1–2% muscovite, 1%                     OGC1 standard; measured ratios were decreased by
+magnetite–hematite, and trace zircon. Quartz forms                 0.71%. Analyses 12.1 to 5.2 (spot numbers 12–15)
+elongate to irregular ribbons up to 8 mm long that include         were obtained during the second session, together with
+anhedral, moderately strained grains up to 1.5 mm in size,         four analyses of the M257 standard, which indicated
+and also grains up to 1 mm in size that exhibit mutual,            an external spot-to-spot (reproducibility) uncertainty of
+low-energy curved boundaries. Plagioclase (andesine,               0.50% (1σ) and a 238U/206Pb* calibration uncertainty of
+An30–34) is anhedral, equant to slightly tabular, up to 2 mm       0.67% (1σ). Calibration uncertainties are included in the
+in size, and exhibits deformation twins in some grains.            errors of 238U/206Pb* ratios and dates listed in Table 1.
+K-feldspar is anhedral, equant to slightly elongate, up to         Common-Pb corrections were applied to all analyses
+3 mm in size, and finely microperthitic; many of the larger        using contemporaneous isotopic compositions determined
+grains display fine microcline twinning. Both feldspars            according to the model of Stacey and Kramers (1975).
+also occur as much smaller (mostly <0.3 mm in diameter),
+
+
+
+
+                                                               1
+212791.1.pdf                                                                               Geochronology Record 1824
+
+
+
+
+               Figure 1.   Outcrop image of sample 212791: monzogranite gneiss, New Holland mine
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 212791:
+                           monzogranite gneiss, New Holland mine. Numbered circles indicate the
+                           approximate locations of analysis sites
+
+
+
+
+                                                         2
+212791.1.pdf                                                                                                                                                                  Geochronology Record 1824
+
+
+
+
+                                         Table 1. Ion microprobe analytical results for zircons from sample 212791: monzogranite gneiss, New Holland mine
+
+    Group      Spot   Grain.     238
+                                     U     232
+                                              Th       Th
+                                                     232
+                                                               ƒ204        238
+                                                                                 U/206Pb        207
+                                                                                                      Pb/206Pb         238
+                                                                                                                             U/206Pb*       207
+                                                                                                                                               Pb*/206Pb*       238
+                                                                                                                                                                   U/206Pb*    207
+                                                                                                                                                                                  Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)      (ppm)        U
+                                                     238
+                                                               (%)               ± 1σ                  ± 1σ                  ± 1σ               ± 1σ          date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      X         13     1.2        118      48         0.41     0.154     1.925       0.028   0.19597       0.00144   1.928        0.029   0.19460   0.00155   2694     34     2781     13       3.1
+      X         1      1.1       120       48         0.40     0.068     1.881       0.020   0.19689       0.00096   1.882        0.020   0.19629   0.00099   2747     25     2796     8        1.7
+      X         5      5.1       137       75         0.55     0.116     1.913       0.020   0.19768       0.00086   1.916        0.020   0.19666   0.00091   2708     23     2799     8        3.2
+      X         8      8.1       347       195        0.56     0.064     1.911       0.016   0.19807       0.00056   1.912        0.016   0.19751   0.00058   2712     20     2806     5        3.4
+      X         6      6.1       218       98         0.45     0.094     1.933       0.018   0.19855       0.00070   1.935        0.018   0.19772   0.00073   2685     21     2807     6        4.3
+      X         7      7.1       1935      951        0.49     0.003     1.791       0.013   0.19918       0.00024   1.791        0.013   0.19915   0.00024   2860     18     2819     2        -1.4
+      X         2      2.1       255       129        0.51     0.174     1.903       0.017   0.20070       0.00065   1.906        0.017   0.19916   0.00072   2719     21     2819     6        3.6
+      X         11     11.1      732       361        0.49     0.003     1.877       0.015   0.19941       0.00039   1.877        0.015   0.19938   0.00039   2753     18     2821     3        2.4
+      X         9      9.1       588       285        0.48     0.041     1.842       0.015   0.20009       0.00044   1.842        0.015   0.19973   0.00045   2795     19     2824     4        1.0
+      X         3      3.1       673       508        0.75     0.035     1.794       0.014   0.20252       0.00039   1.795        0.014   0.20221   0.00040   2855     19     2844     3        -0.4
+      X         15     5.2        99       38         0.38     0.000     1.912       0.030   0.20280       0.00154   1.912        0.030   0.20280   0.00154   2712     36     2849     12       4.8
+
+
+      D         14    13.1       175       66         0.38     0.460     2.311       0.030   0.20205       0.00133   2.321        0.030   0.19795   0.00160   2309     27     2809     13       17.8
+      D         10    10.1       143       91         0.63     0.204     2.131       0.022   0.19985       0.00093   2.135        0.022   0.19805   0.00101   2476     22     2810     8        11.9
+      D         12    12.1       149       160        1.07     0.314    2.670        0.056   0.20467       0.00157   2.678        0.056   0.20187   0.00179   2045     37     2841     14       28.0
+      D         4      4.1       812       589        0.73     0.013     3.519       0.032   0.13140       0.00038   3.519        0.032   0.13128   0.00039   1612     13     2115     5        23.8
+
+
+
+
+                                                                                                       3
+212791.1.pdf                                                                                             Geochronology Record 1824
+
+
+
+
+          Figure 3.   U–Pb analytical data for sample 212791: monzogranite gneiss, New Holland mine. Red circles
+                      indicate Group X (xenocrystic zircons); crossed squares indicate Group D (discordance >5%).
+                      One strongly discordant analysis in Group D is not shown
+
+
+
+
+Results                                                            References
+Fifteen analyses were obtained from 13 zircons. Results            Dunphy, JM, Fletcher, IR, Cassidy, KF and Champion, DC 2003,
+are listed in Table 1, and shown in a concordia diagram              Compilation of SHRIMP U–Pb geochronological data, Yilgarn
+(Fig. 3).                                                            Craton, Western Australia, 2001–2002: Geoscience Australia
+                                                                     Record 2003/15, 139p.
+                                                                   Fletcher, IR, Dunphy, JM, Cassidy, KF and Champion, DC 2001,
+Interpretation                                                        Compilation of SHRIMP U–Pb geochronological data, Yilgarn
+                                                                      Craton, Western Australia, 2000–2001: Geoscience Australia
+The analyses are concordant to strongly discordant                    Record 2001/47, 111p.
+(Fig. 3). Four analyses are >5% discordant. The dates              Lu, Y, Wingate, MTD, Kirkland, CL and Zibra, I 2016, 209610:
+obtained from these four analyses (Group D; Table 1)                  clinopyroxene syenogranite, Paddy Bore; Geochronology Record
+are unreliable, and considered not to be geologically                 1347: Geological Survey of Western Australia, 4p.
+significant. The remaining 11 analyses form a single               Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+group, based on their 207Pb*/206Pb* ratios.                           isotope evolution by a two-stage model: Earth and Planetary Science
+                                                                      Letters, v. 26, p. 207–221.
+Group X comprises 11 analyses of 10 zircons (Table 1),
+which yield 207Pb*/ 206Pb* dates of 2849–2781 Ma.                  Zibra, I, Korhonen, FJ, Peternell, M, Weinberg, RF, Romano, SS,
+                                                                      Braga, R, De Paoli, MC and Roberts, M 2017, On thrusting, regional
+Four analyses of four zircons yield a weighted mean
+                                                                      unconformities and exhumation of high-grade greenstones in
+207
+    Pb*/206Pb* date of 2820 ± 3 Ma (MSWD = 0.47),                     Neoarchean orogens. The case of the Waroonga Shear Zone, Yilgarn
+and five analyses of four zircons yield a weighted mean               Craton: Tectonophysics, v. 712–713, p. 362–395.
+207
+   Pb*/206Pb* date of 2802 ± 6 Ma (MSWD = 1.2).
+The dates of 2849–2781 Ma for the 11 analyses in
+Group X are older than the c. 2660 Ma age estimated for            Re­commended reference for this
+this syntectonic pluton based on observations of melt-             publication
+present shearing (Zibra et al., 2017), hence are interpreted       Wingate, MTD, Lu, Y, Fielding, IOH and Zibra, I 2021, 212791:
+as the ages of inherited zircons. The dates of 2820 ± 3              monzogranite gneiss, New Holland mine; Geochronology Record
+and 2802 ± 6 Ma are interpreted as the possible ages of              1824: Geological Survey of Western Australia, 4p.
+inherited components.
+                                                                   Data obtained:       26 September 2019
+                                                                   Data released:       26 November 2021
+
+
+
+                                                               4
+

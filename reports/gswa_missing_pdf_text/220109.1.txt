@@ -1,0 +1,423 @@
+220109.1.pdf                                                                                         Geochronology Record 1826
+
+
+
+
+                                   220109: sandstone, Wendy 1
+                                  (unassigned unit, northern Perth Basin)
+
+
+
+
+Location and sampling                                               Petrographic description
+Geraldton (SH 50-1), Mungo (1941)                                   The sample is a homogeneous, pale yellow, quartz-rich
+                 MGA Zone 50, 305515E 6868070N                      sandstone bed about 1 m thick, between grey–green
+                                                                    sandstone and dark red claystone (Fig. 1). A detailed
+Sampled on 24 March 2017                                            petrographic description is not available for this sample.
+This sample was collected from the 323.12 – 324.12 m                However, petrography of other samples from Wendy 1 is
+depth interval of drillcore Wendy 1, a stratigraphic well           reported by Kettanah et al. (2015, and references within).
+drilled in 2004 by Victoria International Petroleum NL
+(Victoria Petroleum, 2004). The drillhole is located on the
+eastern side of Dartmoor Road, about 30 km northeast of             Zircon morphology
+Mount Erin, 13.4 km west of Wandana Hill, and 3.2 km                Zircons isolated from this sample are mainly colourless,
+north of the Yuna–Tenindewa Road.                                   anhedral to euhedral, and strongly rounded. The crystals
+                                                                    are up to 250 µm long, and equant to elongate, with aspect
+                                                                    ratios up to 6:1. Some crystals have pitted outer surfaces
+Geological context                                                  and, in cathodoluminescence (CL) images, many exhibit
+                                                                    concentric zoning truncated at grain edges, features
+The unit sampled is a quartz sandstone of the northern              consistent with abrasion during sedimentary transport. A
+Perth Basin. Although the siliciclastic interval from 112.0         CL image of representative zircons is shown in Figure 2.
+to 1210.5 m in this drillcore has previously been interpreted
+as Tumblagooda Sandstone (Victoria Petroleum, 2004;
+Retallack, 2009), Allen and Trinajstic (2017) considered it         Analytical details
+to be lithologically distinct from the composite type section
+of the Tumblagooda Sandstone in the Murchison River                 This sample was analysed on 12 June 2018, using
+gorge section. The presence of well-developed paleosols             LA- ICP-MS instruments at the GeoHistory Facility in
+and preserved rootlets in Wendy 1 is not comparable to              the John de Laeter Centre, Curtin University. Separated
+outcrop sections of the Tumblagooda Sandstone (Allen                zircons mounted in epoxy disks were ablated using a
+and Trinajstic, 2017). The age of this unit in Wendy 1 is           Resonetics RESOlution M-50A-LR sampling system,
+constrained by an Early Devonian fish assemblage (Allen             incorporating a 193 nm Compex 102 excimer laser, and
+and Trinajstic, 2017), and may be coeval with or slightly           ion signal intensities were measured using an Agilent
+younger than the Tumblagooda Sandstone. Zircons from                7700s quadrupole ICP-MS. Samples were ablated for 35 s
+a sandstone sample taken from about 784 m depth in                  at a 5 Hz repetition rate, using a 38 μm beam diameter and
+Wendy 1, and tentatively assigned to the Tumblagooda                laser energy of 2.5 J/cm2. Seventeen analyses of the 91 500
+Sandstone, yielded an age of 502 ± 3 Ma for the youngest            zircon standard obtained during the session indicated
+zircon and a conservative maximum depositional age of               a concordia age of 1062.7 ± 2.1 Ma (MSWD = 0.84),
+524 ± 4 Ma (GSWA 220110, Wingate et al., 2021). A                   in agreement with the accepted value of 1062.4 Ma.
+maximum age for deposition of the Tumblagooda Sandstone             Secondary zircon standards GJ1, OGC1 and Plešovice
+is provided by a 434 ± 16 Ma Pb-isotope age for Pb                  also yielded mean dates in agreement with their accepted
+mineralization in stratigraphically underlying metamorphic          values. Additional analytical details are provided in
+rocks of the Northampton Inlier (Richards et al., 1985). A          Fielding et al. (2021). All relevant uncertainties have been
+laser ablation U–Pb detrital zircon study of 16 Tumblagooda         propagated into the ratios and dates reported in Table 1.
+Sandstone samples yielded a youngest zircon at 466                  Dates for analyses for which 238U/206Pb ratios indicate
+± 8 Ma (1σ) and a conservative maximum depositional age             dates <1000 Ma are based on 207-corrected 238U/206Pb*
+of 481 ± 4 Ma (GSWA 214841, Markwitz et al., 2017).                 ratios; those >1000 Ma are based on uncorrected
+Based on comparable trace fossil assemblages and plant              207
+                                                                       Pb/206Pb ratios.
+remains (H Allen, 2021, written comm., 20 October) the
+Tumblagooda Sandstone may be latest Silurian to Early
+Devonian in age.                                                    Results
+                                                                    A total of 150 analyses were obtained from 150 zircons.
+                                                                    Results are listed in Table 1, and shown in concordia
+                                                                    diagrams (Figs 3, 4) and a probability density plot (Fig. 5).
+
+
+
+                                                                1
+220109.1.pdf                                                                                   Geochronology Record 1826
+
+
+
+
+               Figure 1.   Drillcore (HyLogger-3) image of sample 220109: sandstone, Wendy 1. The sample
+                           interval is highlighted in red
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 220109:
+                           sandstone, Wendy 1. Numbered circles indicate the approximate locations of
+                           analysis sites
+
+
+
+
+                                                           2
+220109.1.pdf                                                                                                                                                  Geochronology Record 1826
+
+
+                                           Table 1. LA-ICP-MS analytical results for zircons from sample 220109: sandstone, Wendy 1
+
+
+               Group   Spot   Grain.     238
+                                            U       232
+                                                       Th       Th
+                                                              232          238
+                                                                                U/206Pb            207
+                                                                                                         Pb/206Pb         U/206Pb*
+                                                                                                                        238
+                                                                                                                                         Pb*/206Pb*
+                                                                                                                                       207
+                                                                                                                                                      Disc.
+                 ID     no.   spot     (ppm)       (ppm)        U
+                                                              238
+                                                                                ± 1σ                      ± 1σ            ± 1σ            ± 1σ        (%)
+                Y       94     94         70        141        2.02    12.330       0.084       0.06690      0.00185   503       3    835        58    39.8
+
+                S      118     118        56        77         1.36    12.438       0.085       0.05790      0.00110   499       3    526        42    5.2
+                S      112     112       106        128        1.21    12.317       0.061       0.06050      0.00120   503       2    622        43    19.0
+                S      134     134        42        90         2.13    12.107       0.088       0.06080      0.00225   512       4    632        80    19.1
+                S       91     91         59        115        1.95    12.005       0.079       0.06640      0.00225   516       3    819        71    37.0
+                S       98     98        423        415        0.98    12.041       0.048       0.05704      0.00050   514       2    493        19    -4.3
+                S      138     138        87        141        1.63    11.972       0.069       0.06170      0.00105   517       3    664        36    22.1
+                S      113     113        75        185        2.48    12.063       0.080       0.05540      0.00100   513       3    428        40   -19.8
+                S       47     47         77        147        1.91    11.915       0.071       0.05660      0.00105   520       3    476        41    -9.2
+                S       96     96         58        69         1.20    11.862       0.084       0.05900      0.00110   522       4    567        41    8.0
+                S       6       6        133        200        1.50    11.763       0.053       0.05920      0.00075   526       2    574        28    8.4
+                S       48     48        157        242        1.54    11.754       0.064       0.05710      0.00075   526       3    495        29    -6.3
+                S       75     75        144        236        1.64    11.784       0.066       0.05480      0.00065   525       3    404        27   -29.9
+                S      115     115        64        86         1.35    11.730       0.069       0.05670      0.00130   527       3    480        51    -9.9
+                S       10     10        188        108        0.58    11.682       0.054       0.05868      0.00060   529       2    555        22    4.6
+                S       25     25         77        150        1.94    11.561       0.074       0.05930      0.00095   535       3    578        35     7.5
+                S       84     84         77        217        2.83    11.447       0.066       0.06170      0.00125   540       3    664        43    18.7
+                S       21     21        228        521        2.29    11.436       0.049       0.05870      0.00065   540       2    556        24    2.8
+                S      106     106       316        201        0.64    11.410       0.050       0.05780      0.00065   542       2    522        25    -3.7
+                S       43     43        308        167        0.54    11.330       0.047       0.05870      0.00055   545       2    556        20    1.9
+                S      126     126       362        70         0.19    11.210       0.046       0.05766      0.00050   551       2    517        19    -6.6
+                S      108     108       569        779        1.37    11.068       0.042       0.05788      0.00049   558       2    525        19    -6.2
+                S       35     35        429        44         0.10    10.911       0.043       0.05768      0.00050   565       2    518        19    -9.2
+                S       2       2        178        62         0.35    10.810       0.044       0.05960      0.00065   570       2    589        24    3.2
+                S      132     132        58         4         0.06    10.688       0.057       0.05730      0.00095   577       3    503        36   -14.6
+                S      129     129       205        136        0.66    10.578       0.038       0.05933      0.00060   582       2    579        22    -0.5
+                S       18     18        287        108        0.38    10.504       0.099       0.06040      0.00060   586       5    618        21    5.1
+                S       79     79        219        179        0.82    10.142       0.093       0.06000      0.00065   606       5    604        23    -0.4
+                S       97     97        195        63         0.32    10.106       0.043       0.05990      0.00060   608       2    600        22    -1.4
+                S      143     143        30        29         0.98    9.268        0.082       0.06290      0.00180   661       6    705        61    6.3
+                S       46     46        151        75         0.49    9.001        0.049       0.06224      0.00060   679       3    682        21    0.5
+                S       66     66         95        36         0.38    8.913        0.060       0.06210      0.00080   686       4    678        28    -1.2
+                S      100     100        67        160        2.38     8.741       0.046       0.06160      0.00100   698       3    660        35    -5.8
+                S      149     149        60        62         1.03    8.673        0.049       0.06600      0.00115   703       4    806        36    12.8
+                S       50     50         85        46         0.54    8.673        0.045       0.06480      0.00075   703       3    768        24    8.4
+                S       44     44        209        153        0.73    8.557        0.037       0.06960      0.00070   713       3    917        21    22.3
+                S       68     68        557        418        0.75    8.552        0.031       0.06147      0.00047   713       2    656        16    -8.7
+
+
+
+                                                                                            3
+220109.1.pdf                                                                                                                                  Geochronology Record 1826
+
+
+                                                                         Table 1. continued
+
+
+               Group   Spot   Grain.     238
+                                            U    232
+                                                    Th     Th
+                                                         232        238
+                                                                         U/206Pb                Pb/206Pb
+                                                                                              207
+                                                                                                                 U/206Pb*
+                                                                                                               238
+                                                                                                                               Pb*/206Pb*
+                                                                                                                             207
+                                                                                                                                            Disc.
+                 ID     no.   spot     (ppm)    (ppm)      U
+                                                         238
+                                                                         ± 1σ                    ± 1σ            ± 1σ           ± 1σ        (%)
+                S      101     101        96     125      1.31   8.511        0.043     0.06330     0.00095   716       3   718        32    0.3
+                S       27     27        251     282      1.12   8.499        0.036     0.06396     0.00060   717       3   740        20    3.1
+                S      121     121        85     43       0.50   8.264        0.044     0.06330     0.00085   736       4   718        29    -2.5
+                S      102     102       110     77       0.71   8.032        0.055     0.07210     0.00100   756       5   989        28    23.5
+                S       5       5        398     159      0.40   7.782        0.042     0.06670     0.00050   779       4   828        16    5.9
+                S      122     122       424     181      0.43   7.752        0.039     0.06840     0.00050   782       4   881        15    11.2
+                S       8       8        254     192      0.76   7.675        0.053     0.06754     0.00055   790       5   854        17     7.6
+                S       51     51        119     54       0.46   7.610        0.055     0.06540     0.00075   796       5   787        24    -1.1
+                S       92     92        110     60       0.54   7.564        0.049     0.06490     0.00070   800       5   771        23    -3.8
+                S       49     49        118     38       0.32   7.380        0.057     0.06600     0.00075   819       6   806        24    -1.6
+                S       12     12        109     64       0.59   7.294        0.040     0.06760     0.00075   828       4   856        23    3.3
+                S       11     11        230     140      0.61   7.231        0.039     0.06972     0.00060   835       4   920        18    9.2
+                S       37     37        237     76       0.32   7.215        0.034      0.06748    0.00055   837       4   853        17    1.9
+                S       9       9        554     186      0.33   7.200        0.026     0.06719     0.00049   838       3   844        15    0.6
+                S       40     40        185     51       0.28   7.128        0.033     0.07130     0.00065   846       4   966        19    12.4
+                S       54     54        171     182      1.06   6.878        0.033     0.06830     0.00070   875       4   878        21    0.3
+                S       60     60        140     151      1.08   6.618        0.031     0.06930     0.00075   907       4   908        22    0.1
+                S       31     31        145     49       0.34   6.596        0.033     0.06930     0.00070   910       4   908        21    -0.2
+                S       85     85         31     18       0.58   6.536        0.051     0.07540     0.00200   918       7   1079       53    15.0
+                S       26     26        755     76       0.10   6.559        0.024     0.06760     0.00048   915       3   856        15    -6.8
+                S      128     128       182     195      1.07   6.518        0.025     0.06970     0.00065   920       3   920        19    -0.1
+                S       72     72         36     32       0.89   6.443        0.046     0.06890     0.00120   930       6   896        36    -3.8
+                S      133     133       109     82       0.75   6.382        0.039     0.06820     0.00075   938       5   875        23    -7.3
+                S      103     103       329     183      0.56   6.231        0.025     0.07059     0.00055   960       4   946        16    -1.5
+                S       33     33        179     84       0.47   6.101        0.028     0.07370     0.00070   978       4   1033       19    5.3
+                S       73     73        155      1       0.01   6.028        0.031     0.07230     0.00065   989       5   994        18    0.5
+                S       99     99         63     85       1.35   5.977        0.034     0.07500     0.00090   997       5   1069       24    6.7
+                S       90     90        147     149      1.01   5.724        0.033      0.07274    0.00060   1038      5   1007       17    -3.1
+                S      148     148        61     20       0.32   5.784        0.032     0.07280     0.00105   1028      5   1008       29    -2.0
+                S       80     80        156     284      1.83   5.942        0.030     0.07326     0.00065   1003      5   1021       18    1.8
+                S       71     71        111     154      1.39   5.817        0.029     0.07340     0.00075   1023      5   1025       21    0.2
+                S      120     120       194     86       0.44   5.669        0.051     0.07350     0.00070   1047      9   1028       19    -1.9
+                S       16     16         50     59       1.17   5.336        0.037      0.07460    0.00115   1107      7   1058       31    -4.7
+                S      131     131       148     82       0.55   5.525        0.032      0.07463    0.00060   1072      6   1059       16    -1.3
+                S       88     88        393     224      0.57   5.394        0.022      0.07473    0.00050   1096      4   1061       13    -3.3
+                S       87     87        144     138      0.96   5.394        0.025      0.07480    0.00065   1096      5   1063       17    -3.1
+                S      141     141        87     98       1.12   5.698        0.029      0.07490    0.00075   1042      5   1066       20    2.2
+                S       52     52        350     141      0.40   5.402        0.022      0.07492    0.00055   1095      4   1066       15    -2.7
+
+
+
+                                                                                4
+220109.1.pdf                                                                                                                                  Geochronology Record 1826
+
+
+                                                                         Table 1. continued
+
+
+               Group   Spot   Grain.     238
+                                            U    232
+                                                    Th     Th
+                                                         232        238
+                                                                         U/206Pb                Pb/206Pb
+                                                                                              207
+                                                                                                                 U/206Pb*
+                                                                                                               238
+                                                                                                                               Pb*/206Pb*
+                                                                                                                             207
+                                                                                                                                            Disc.
+                 ID     no.   spot     (ppm)    (ppm)      U
+                                                         238
+                                                                         ± 1σ                    ± 1σ            ± 1σ           ± 1σ        (%)
+                S      123     123       361     281      0.78   5.537        0.021     0.07519     0.00055   1070      4   1074       15    0.3
+                S       95     95        431     48       0.11   5.316        0.020     0.07564     0.00050   1111      4   1086       13    -2.4
+                S      135     135       651     100      0.15   5.426        0.021     0.07567     0.00050   1090      4   1086       13    -0.4
+                S      116     116        96     105      1.09   5.336        0.027     0.07570     0.00085   1107      5   1087       23    -1.9
+                S       42     42        282     171      0.61   5.249        0.025      0.07574    0.00055   1124      5   1088       15    -3.3
+                S      146     146        46     59       1.29   5.359        0.043     0.07580     0.00105   1103      8   1090       28    -1.2
+                S       82     82        251     47       0.19   5.336        0.023     0.07585     0.00060   1107      4   1091       16    -1.5
+                S      117     117       171     132      0.77   5.672        0.027     0.07586     0.00060   1047      5   1091       16    4.1
+                S       28     28        286     173      0.61   5.214        0.024     0.07587     0.00055   1131      5   1092       15    -3.6
+                S      147     147       260     144      0.55   5.467        0.022     0.07638     0.00065   1083      4   1105       17    2.0
+                S       70     70        105     157      1.50   5.388        0.036     0.07640     0.00095   1097      7   1106       25    0.7
+                S      145     145       191     209      1.09   5.325        0.026     0.07680     0.00070   1109      5   1116       18    0.6
+                S       89     89         30     64       2.13   5.035        0.034     0.07710     0.00115   1168      7   1124       30    -3.9
+                S       63     63        181     178      0.98   5.010        0.023      0.07744    0.00065   1173      5   1133       17    -3.6
+                S      109     109        37     49       1.32   5.285        0.034     0.07770     0.00105   1117      7   1139       27    1.9
+                S      125     125       123     288      2.34   5.102        0.030     0.07905     0.00065   1154      6   1173       16    1.7
+                S       64     64        286     100      0.35   4.482        0.018     0.08278     0.00060   1298      5   1264       14    -2.7
+                S      105     105        76      1       0.01   4.669        0.021     0.08320     0.00080   1251      5   1274       19    1.8
+                S       13     13        240     55       0.23   4.658        0.025     0.08368     0.00070   1254      6   1285       16    2.4
+                S       4       4        368     352      0.96   4.440        0.018     0.08409     0.00055   1309      5   1295       13    -1.1
+                S       81     81        113     122      1.08   4.367        0.021     0.08430     0.00085   1329      6   1299       20    -2.3
+                S      114     114       164     158      0.96   4.419        0.020     0.08430     0.00070   1315      5   1299       16    -1.2
+                S      111     111       148     132      0.90   4.419        0.018     0.08467     0.00065   1315      5   1308       15    -0.5
+                S       93     93         83     114      1.38   4.529        0.019     0.08470     0.00080   1286      5   1309       18    1.7
+                S       74     74        111     123      1.11   4.266        0.017     0.08630     0.00075   1358      5   1345       17    -0.9
+                S       36     36        318     224      0.70   4.239        0.019     0.08978     0.00065   1365      5   1421       14    3.9
+                S       19     19        280     189      0.68   4.067        0.015     0.08982     0.00060   1417      5   1422       13    0.3
+                S      137     137        83     69       0.84   3.975        0.043     0.09100     0.00090   1447     14   1447       19    0.0
+                S       38     38         63     106      1.67   3.830        0.020     0.09240     0.00100   1495      7   1476       21    -1.3
+                S       83     83        199     122      0.61   4.024        0.043     0.09370     0.00085   1431     14   1502       17    4.7
+                S      130     130        70     116      1.65   3.552        0.021     0.09480     0.00075   1599      8   1524       15    -4.9
+                S       22     22         49     19       0.39   3.659        0.019     0.09630     0.00115   1558      7   1554       22    -0.3
+                S      104     104       157     116      0.74   3.639        0.017     0.09919     0.00075   1565      7   1609       14    2.7
+                S       59     59        177     135      0.76   3.631        0.015     0.09939     0.00075   1568      6   1613       14    2.8
+                S       7       7        191     121      0.64   3.475        0.014      0.10012    0.00075   1631      6   1626       14    -0.3
+                S       3       3         98     87       0.89   3.632        0.026      0.10140    0.00085   1568     10   1650       16    5.0
+                S       53     53        208     156      0.75   3.308        0.013      0.10183    0.00070   1703      6   1658       13    -2.7
+                S       29     29        337     199      0.59   3.364        0.012     0.10249     0.00070   1678      5   1670       13    -0.5
+
+
+
+                                                                                   5
+220109.1.pdf                                                                                                                                   Geochronology Record 1826
+
+
+                                                                          Table 1. continued
+
+
+               Group   Spot   Grain.     238
+                                             U    232
+                                                     Th     Th
+                                                          232        238
+                                                                          U/206Pb                Pb/206Pb
+                                                                                               207
+                                                                                                                  U/206Pb*
+                                                                                                                238
+                                                                                                                                Pb*/206Pb*
+                                                                                                                              207
+                                                                                                                                             Disc.
+                 ID     no.   spot     (ppm)     (ppm)      U
+                                                          238
+                                                                          ± 1σ                    ± 1σ            ± 1σ           ± 1σ        (%)
+                S       67     67        214      173      0.81   3.365        0.014     0.10259     0.00070   1677      6   1672       13    -0.4
+                S      136     136       164      93       0.57   3.360        0.015     0.10260     0.00080   1679      7   1672       14    -0.5
+                S       65     65        261      150      0.57   3.297        0.014     0.10448     0.00070   1708      6   1705       12    -0.1
+                S      142     142       147      97       0.66   3.248        0.014     0.10551     0.00080   1730      6   1723       14    -0.4
+                S       24     24        271      89       0.33   3.107        0.013     0.10744     0.00070   1799      7   1756       12    -2.4
+                S       55     55        174      94       0.54   3.085        0.015     0.10760     0.00080   1810      8   1759       14    -2.9
+                S      107     107        71      62       0.87   3.018        0.013     0.10890     0.00090   1845      7   1781       15    -3.6
+                S       1       1        298      79       0.27   3.240        0.013     0.10922     0.00075   1734      6   1786       13    2.9
+                S       62     62        220      160      0.72   2.581        0.009     0.12578     0.00085   2111      7   2040       12    -3.5
+                S       77     77        122      123      1.01   2.799        0.011     0.12600     0.00090   1969      7   2043       13    3.6
+                S       32     32        144      110      0.76   2.118        0.009     0.15794     0.00105   2493      9   2434       11    -2.4
+                S      150     150       224      149      0.67   2.054        0.008     0.16623     0.00110   2557      8   2520       11    -1.5
+                S       86     86        200      222      1.11   2.030        0.009     0.18270     0.00120   2582      9   2678       11    3.6
+                S       15     15        127      73       0.57   1.809        0.007     0.20110     0.00130   2837      9   2835       11    -0.1
+                S       76     76        361      67       0.19   1.742        0.010     0.22901     0.00140   2925     14   3045       10    4.0
+                S      144     144        91      228      2.51   1.639        0.008     0.23370     0.00155   3070     12   3078       11    0.2
+                S       61     61        208      102      0.49   1.611        0.007     0.24670     0.00160   3113     11   3164       10    1.6
+                S      110     110        64      64       1.00   1.585        0.007     0.25080     0.00170   3154     12   3190       11    1.1
+                S       20     20        319      104      0.33   1.562        0.006     0.26745     0.00165   3189     10   3291       10    3.1
+                S      140     140        80      66       0.82   1.462        0.007     0.26960     0.00175   3359     13   3304       10    -1.7
+
+
+                D       41     41         71      71       1.00   5.274        0.031     0.07380     0.00090   1119      6   1036       25    -8.0
+                D       30     30         96      137      1.43   5.195        0.030     0.07410     0.00085   1135      6   1044       23    -8.7
+                D      124     124        54      83       1.53   5.233        0.027     0.07470     0.00100   1127      5   1060       27    -6.3
+                D       69     69         117     82       0.70   5.784        0.032     0.07580     0.00070   1028      5   1090       19    5.7
+                D       56     56         99      72       0.73   4.912        0.021     0.07630     0.00080   1195      5   1103       21    -8.3
+                D       23     23        160      30       0.19   5.099        0.114     0.08430     0.00080   1154     24   1299       18    11.2
+                D       14     14        383      79       0.21   5.035        0.024     0.08460     0.00080   1168      5   1306       18    10.6
+                D       17     17        149      81       0.54   4.776        0.055     0.08500     0.00140   1226     13   1316       32    6.8
+                D      119     119       151      135      0.89   4.822        0.026     0.08590     0.00070   1215      6   1336       16    9.1
+                D      139     139       199      93       0.47   4.248        0.021     0.09220     0.00075   1363      6   1472       15     7.4
+                D       78     78        338      214      0.63   4.270        0.036     0.09221     0.00065   1356     10   1472       13     7.8
+                D       58     58        488      110      0.23   3.971        0.065     0.10120     0.00125   1448     21   1646       23    12.1
+                D       45     45        316      135      0.43   3.658        0.038     0.10267     0.00065   1558     14   1673       12    6.9
+                D       57     57        272      103      0.38   3.503        0.055     0.10665     0.00075   1619     22   1743       13     7.1
+                D       39     39        174      258      1.48   4.435        0.062     0.10680     0.00095   1311     17   1746       16    24.9
+                D       34     34        615      355      0.58   3.092        0.036     0.14976     0.00100   1806     18   2343       11    22.9
+                D      127     127       205      88       0.43   2.275        0.010     0.16157     0.00105   2348      9   2472       11    5.0
+
+
+
+                                                                                    6
+220109.1.pdf                                                                                         Geochronology Record 1826
+
+
+
+
+          Figure 3.   U–Pb analytical data, not corrected for common Pb, for sample 220109: sandstone, Wendy 1. Blue
+                      square indicates Group Y (youngest detrital zircon); red squares indicate Group S (older detrital
+                      zircons); crossed squares indicate Group D (date >1000 Ma and discordance >5%)
+
+
+
+
+          Figure 4.   Expanded view of U–Pb analytical data, not corrected for common Pb, for sample 220109:
+                      sandstone, Wendy 1. Symbols as in Figure 3
+
+
+
+
+                                                                7
+220109.1.pdf                                                                                                Geochronology Record 1826
+
+
+
+
+          Figure 5.   Probability density diagram and histogram for sample 220109: sandstone, Wendy 1. Thick
+                      curve, maxima values, and frequency histogram (bin width 25 Ma) only include accepted data
+                      (133 analyses of 133 zircons). Thin curve includes all data (150 analyses of 150 zircons)
+
+
+
+
+Interpretation                                                      References
+The analyses are concordant to strongly discordant                  Allen, HJ and Trinajstic, K 2017, An Early Devonian fish fauna
+(Figs 3, 4). Seventeen analyses >1000 Ma are >5%                       from an unnamed sandstone in Wendy 1 drillhole, northern Perth
+discordant. The dates obtained from these 17 analyses                  Basin: Geological Survey of Western Australia, Paleontology
+                                                                       Report 2017/1, 4p.
+(Group D; Table 1) are unreliable, and considered not to
+be geologically significant. The remaining 133 analyses             Fielding, IOH, Lu, Y and Wingate, MTD 2021, Introduction to
+can be divided into two groups, based on their 207Pb/206Pb             geochronology information 2021: Geological Survey of Western
+and 238U/206Pb* ratios.                                                Australia, 8p.
+                                                                    Kettanah, YA, Mory, AJ, Wach, GD and Wingate, MTD 2015,
+Group Y comprises one analysis (Table 1), which yields a               Provenance of the Ordovician – Lower Silurian Tumblagooda
+207-corrected 238U/206Pb* date of 497 ± 4 Ma (1σ).                     Sandstone, Western Australia: Australian Journal of Earth Sciences,
+                                                                       v. 62, p. 817–830.
+Group S comprises 132 analyses (Table 1), which yield
+                                                                    Markwitz, V, Kirkland, CL, Wyrwoll, KH, Hancock, EA, Evans, NJ
+207
+   Pb/206Pb or 238U/206Pb* dates of 3304–498 Ma.                      and Lu Y 2017, Variations in zircon provenance constrain age and
+                                                                      geometry of an Early Paleozoic rift in the Pinjarra Orogen, East
+It is possible that all of the analyses are of unmodified
+                                                                      Gondwana: Tectonics, v. 36, p. 2477–2496.
+detrital zircons, in which case the date of 497 ± 4 Ma (1σ)
+for the single analysis in Group Y represents a maximum             Retallack, GJ 2009, Cambrian, Ordovician and Silurian pedostratigraphy
+depositional age for the sandstone. A more conservative                and global events in Australia: Australian Journal of Earth Sciences,
+                                                                       v. 56, p. 571–586.
+estimate of the maximum depositional age can be based
+on the weighted mean 238U/206Pb* date of 501 ± 8 Ma                 Richards, JR, Blockley, JG and de Laeter, JR 1985, Rb–Sr and Pb isotope
+(MSWD = 2.3) for the four youngest analyses in Groups Y                data from the Northampton Block, Western Australia: Bulletin and
+and S.                                                                 Proceedings of the Australasian Institute of Mining and Metallurgy,
+                                                                       v. 290, p. 43–55.
+The data for combined Groups Y and S indicate significant           Victoria Petroleum 2004, Final well report Wendy-1 stratigraphic drilling
+age components at c. 1760, 1666, 1617, 1519, 1422,                     project EP 427: Geological Survey of Western Australia, Statutory
+1296, 1084, 991, 976, 917, 910, 838, 779, 715, 700,                    petroleum exploration report, S20948 A1, .
+582, 540, 527, 514, and 500 Ma, based on contributions              Wingate, MTD, Lu, Y and Allen, HJ 2021, 220110: sandstone, Wendy 1;
+from approximately 3, 5, 3, 3, 3, 7, 19, 7, 3, 4, 4, 4, 3, 3,          Geochronology Record 1827: Geological Survey of Western
+3, 3, 4, 5, 7, and 3 analyses, respectively (Fig. 5). These            Australia, 9p.
+are interpreted as the ages of zircon-crystallizing rocks
+in the detrital source region(s), or as the ages of detrital
+components within sediments that have been reworked
+into this rock.
+
+
+                                                                8
+220109.1.pdf                                                              Geochronology Record 1826
+
+
+Recommended reference for this
+publication
+Wingate, MTD, Lu, Y and Allen, HJ 2021, 220109: sandstone, Wendy 1;
+  Geochronology Record 1826: Geological Survey of Western
+  Australia, 9p.
+
+Data obtained:      12 June 2018
+Data released:      26 November 2021
+
+
+
+
+                                                                      9
+

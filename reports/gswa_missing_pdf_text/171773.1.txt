@@ -1,0 +1,249 @@
+171773.1.pdf - Geochronology dataset 543
+
+                       171773: quartz sandstone, Ingebong Hills
+
+
+  Location and sampling                                                70 × 90 µm and 250 × 350 µm in size, internally
+                                                                       structureless or with patchy brown discolouration, and
+  NABBERU (SG 51-5), RHODES (3147)                                     slightly elongate or equant and rounded or elliptical in
+                      MGA Zone 51, 312250E 7208470N                    shape. Fluid and mineral inclusions are common. The
+  Sampled on 9 June 2002                                               surfaces of most grains are pitted, consistent with detrital
+                                                                       transport. Cathodoluminescence images of representative
+  The sample was taken from close to the base of a                     zircons are given in Figure 1.
+  sandstone bluff that forms Ingebong Hills, northeast of the
+  parking area off the Canning Stock Route.
+                                                                       Analytical details
+  Tectonic unit/relations                                              This sample was analysed on 1 April 2003. The counter
+                                                                       deadtime during the analysis session was 24 ns. Twelve
+  The sample is from near the base of the Wonyulgunna                  analyses of the CZ3 standard indicated a Pb*/U calibration
+  Sandstone, the basal unit of the Mesoproterozoic succession          uncertainty of 2.55% (1σ). Common-Pb corrections
+  on RHODES (3147) and METHWIN (3047), within a facies                 were applied assuming Broken Hill common-Pb isotopic
+  showing very large scale cross-bedding (Hocking et al.,              compositions for all analyses.
+  2003). The Wonyulgunna Sandstone was previously
+  considered to be part of the Collier Group (Hocking and
+  Jones, 2002; Martin and Thorne, 2002) but is now considered          Results
+  to be part of the Scorpion Group (Hocking et al., 2003),
+  which is a probable correlative of the Edmund Group,                 Thirty-five analyses were obtained from 35 zircons.
+  Edmund Basin. Palaeocurrent measurements indicate                    Results are given in Table 1, and shown on concordia and
+  derivation broadly from the south to west. The sample was            Gaussian-summation probability density plots in Figures 2
+  collected to constrain the provenance, possible correlatives,        and 3 respectively.
+  and depositional age of the Wonyulgunna Sandstone.
+
+                                                                       Interpretation
+  Petrographic description
+                                                                       The analyses are concordant and indicate a wide range of
+  The sample consists principally of subrounded to rounded             207
+                                                                          Pb/206Pb dates, from c. 1750 to 2700 Ma. Twenty–four
+  and elliptical single-crystal quartz grains (85 vol.%) and           concordant and highly discordant analyses of 24 zircons
+  optically continuous silica overgrowths (15 vol.%), with             (3.1, 4.1, 5.1, 6.1, 7.1, 8.1, 11.1, 12.1, 13.1, 14.1, 15.1, 16.1,
+  trace amounts of accessory sericite, tourmaline, and zircon.         17.1, 19.1, 22.1 23.1, 25.1, 27.1, 28.1, 30.1, 31.1, 33.1,
+  This is a coarse-grained, quartz-rich sandstone with fairly          34.1, 35.1), assigned to Group 1, have 207Pb/206Pb ratios
+  common quartz overgrowths, minor lithic grains, and                  deﬁning a single population and indicating a weighted
+  incipiently stylolitic inter-granular sericite. Subrounded to        mean 207Pb/206Pb date of 1798 ± 9 Ma (chi-squared = 0.77).
+  rounded and elliptical single-crystal quartz grains dominate,        The remaining analyses indicate older 207Pb/206Pb dates and
+  with a maximum grain size between 0.8 and 1 mm.                      cannot be conﬁdently grouped.
+  Optically continuous overgrowths comprise about 15%
+  of the thin section area. About 2 vol.% of the quartz grain             Most grains with analyses belonging to Group 1
+  aggregate is composed of polycrystalline quartz grains,              have pitted surfaces and are inferred to be detrital.
+  locally clouded by limonite, clay, or both. There are rare           Consequently, the weighted mean 207Pb/206Pb date of
+  detrital grains of slaty composition with schistose sericite         1798 ± 9 Ma indicated by the 24 concordant and highly
+  and extremely ﬁne-grained quartz. The single-crystal quartz          discordant analyses of Group 1 is interpreted as a
+  grains are cemented by sporadic optically continuous                 maximum age for deposition of the sandstone.
+  overgrowths, and locally have deformation lamellae
+  indicating low-grade metamorphism involving weak                         Possible source rocks within the western part of Australia
+  deformation. Bluish-green and, less commonly, orange-                having ages matching those of the zircons within this sample
+  brown tourmaline is present, mostly as rounded grains up to          include the Rudall (Nelson, 1995, 1996), Arunta (Williams
+  0.2 mm in diameter. Interstitial sericite is scattered through       et al., 1996 and references cited therein) and Gascoyne
+  the quartz grain aggregate, and within incipient stylolitic          (Nelson, 1997, 1998, 1999, 2000, this compilation)
+  networks and laminae, indicating a pressure solution origin          Complexes. Grains 2.1, 18.1, 20.1, and 32.1 could have
+  rather than authigenic quartz deposition.                            been derived from the Yilgarn or Pilbara Cratons.
+                                                                       Recommended reference for this publication:
+
+  Zircon morphology                                                    NELSON, D. R., 2005, 171773: quartz sandstone, Ingebong
+                                                                       Geochronologist:        D. R.543;
+                                                                                                     Nelson
+                                                                       Hills; Geochronology dataset      in Compilation of
+  The zircons isolated from this sample are generally                  Data   obtained:data, June
+                                                                       geochronology           2003
+                                                                                                  2006 update: Western Australia
+  colourless or pale yellowish- to greenish-brown, between             Data   released:
+                                                                       Geological  Survey.     2005
+                                                                       Data obtained: 01/04/2003; Data released: 30/06/2005
+                                                                   1
+D. R. Nelson, 2005
+
+
+
+
+                                                                                      6.1
+
+                        2.1
+
+
+                                                                                         5.1
+
+
+
+                                                8.1
+
+                            (a)                                                           (b)
+
+
+
+
+                     18.1                                                                          23.1
+
+                                                                                  22.1
+
+  17.1                                          19.1
+
+
+
+
+                                                                                                                 24.1
+                            (c)                                                           (d)
+
+
+
+                                                                              34.1
+                                                                                                             31.1
+                     29.1
+
+
+
+
+  35.1                                                                                                    32.1
+
+
+                            (e)                                                           (f)
+  Figure 1. Cathodoluminescence images of representative zircons from sample 171773: quartz sandstone, Ingebong Hills
+
+
+
+
+                                                          2
+                                             Table 1. Ion microprobe analytical results for zircons from sample 171773: quartz sandstone, Ingebong Hills
+
+
+
+    Grain     U       Th      Pb    ƒ206%        207Pb/ 206Pb      ±1σ         208Pb/ 206Pb       ±1σ      206Pb/ 238U       ±1σ      207Pb/ 235U      ±1σ          %        207Pb/ 206Pb   ±1σ
+    .spot   (ppm)   (ppm)   (ppm)                                                                                                                              concordance       Age
+
+    1.1     133       89      49     0.081         0.12288        0.00117         0.15752       0.00210       0.3353         0.0087        5.681       0.163        93           1 998      17
+    2.1      97      138      65     0.022         0.17740        0.00127         0.39539       0.00274       0.4922         0.0128       12.039       0.336        98           2 629      12
+    3.1     119      135      30     0.389         0.11055        0.00185         0.25310       0.00417       0.2152         0.0055        3.280       0.106        69           1 808      30
+    4.1     191       88      61     0.087         0.10967        0.00111         0.12747       0.00208       0.2998         0.0077        4.534       0.130        94           1 794      18
+    5.1     170      369      82     0.128         0.10903        0.00103         0.62175       0.00359       0.3209         0.0083        4.824       0.138       101           1 783      17
+    6.1     123       88      43     0.065         0.11012        0.00111         0.21048       0.00225       0.3107         0.0080        4.718       0.136        97           1 801      18
+    7.1      81      143      37     0.079         0.10948        0.00152         0.50402       0.00463       0.3261         0.0085        4.922       0.153       102           1 791      25
+    8.1     126       86      44     0.123         0.10894        0.00136         0.19649       0.00285       0.3111         0.0080        4.673       0.140        98           1 782      23
+    9.1     128       48      53     0.123         0.13612        0.00111         0.10795       0.00158       0.3837         0.0099        7.202       0.202        96           2 178      14
+    10.1    391      219     117     0.098         0.14155        0.00080         0.07490       0.00111       0.2854         0.0073        5.570       0.150        72           2 246      10
+    11.1    142       78      48     0.266         0.10990        0.00124         0.15648       0.00238       0.3075         0.0079        4.660       0.137        96           1 798      20
+    12.1    272      399      85     0.147         0.11027        0.00088         0.32143       0.00217       0.2510         0.0064        3.816       0.106        80           1 804      15
+    13.1    186       81      57     0.038         0.11158        0.00157         0.13254       0.00331       0.2872         0.0074        4.418       0.136        89           1 825      26
+    14.1    175      107      61    -0.047         0.11053        0.00173         0.17895       0.00380       0.3128         0.0081        4.766       0.151        97           1 808      28
+
+
+
+
+3
+    15.1     58       48      21    -0.013         0.11084        0.00149         0.24082       0.00314       0.3075         0.0081        4.700       0.145        95           1 813      24
+    16.1    136       89      47     0.167         0.11073        0.00139         0.19513       0.00290       0.3043         0.0079        4.647       0.140        95           1 812      23
+    17.1    125      253      59     0.047         0.10903        0.00168         0.58623       0.00494       0.3203         0.0083        4.815       0.153       100           1 783      28
+    18.1     83       32      47     0.017         0.18529        0.00139         0.10895       0.00152       0.5111         0.0134       13.058       0.367        99           2 701      12
+    19.1    124       84      43     0.073         0.11013        0.00134         0.19429       0.00275       0.3115         0.0081        4.730       0.142        97           1 802      22
+    20.1    152       95      88     0.078         0.18148        0.00120         0.17022       0.00194       0.4979         0.0129       12.459       0.342        98           2 666      11
+    21.1    144       53      56    -0.029         0.12396        0.00105         0.10630       0.00151       0.3646         0.0094        6.232       0.176       100           2 014      15
+    22.1    178      197      69     0.246         0.10837        0.00109         0.31803       0.00267       0.3157         0.0081        4.718       0.136       100           1 772      18
+    23.1    136      127      47     0.054         0.10978        0.00118         0.22401       0.00250       0.3011         0.0078        4.557       0.133        94           1 796      20
+    24.1    217       83      94     0.024         0.14734        0.00091         0.09842       0.00133       0.4042         0.0104        8.210       0.223        95           2 315      11
+    25.1     90       81      34     0.142         0.10702        0.00169         0.25723       0.00384       0.3229         0.0084        4.765       0.153       103           1 749      29
+    26.1    464      469     145     0.143         0.20442        0.00095         0.12494       0.00129       0.2724         0.0070        7.679       0.204        54           2 862       8
+    27.1    165       96      57     0.001         0.10933        0.00095         0.17103       0.00164       0.3117         0.0080        4.699       0.133        98           1 788      16
+    28.1    206      107      69     0.077         0.11191        0.00097         0.15148       0.00180       0.3072         0.0079        4.739       0.133        94           1 831      16
+    29.1    150       58      66     0.095         0.14583        0.00111         0.10891       0.00171       0.4086         0.0105        8.215       0.228        96           2 298      13
+    30.1     72       83      28     0.013         0.10930        0.00140         0.34150       0.00362       0.3162         0.0083        4.765       0.145        99           1 788      23
+    31.1     66       48      25    -0.099         0.11161        0.00190         0.21439       0.00410       0.3329         0.0087        5.124       0.169       101           1 826      31
+    32.1    125      137      83     0.032         0.18142        0.00117         0.30649       0.00224       0.5165         0.0134       12.921       0.355       101           2 666      11
+    33.1    118       70      42     0.090         0.10842        0.00121         0.17198       0.00236       0.3269         0.0085        4.887       0.144       103           1 773      20
+    34.1    172      113      63    -0.005         0.10988        0.00085         0.19393       0.00158       0.3287         0.0085        4.980       0.138       102           1 797      14
+    35.1    204       58      66    -0.066         0.11176        0.00120         0.08471       0.00230       0.3132         0.0081        4.826       0.140        96           1 828      20
+                                                                                                                                                                                                  Geochronology data obtained in 2003
+D. R. Nelson, 2005
+
+            0.55
+
+                                                                                                                                                                 Analysis 32.1
+
+
+            0.50                                                                                                                                                2600
+                                                                                                                                                                                Analysis 18.1
+                                                                                                                                                    2500                   Analysis 20.1
+                                                                                                                                                                Analysis 2.1
+
+                                                                                                                                       2400
+            0.45
+                                                                                                                       2300
+                                                                                               Analysis 29.1
+                                                                                                      2200
+            0.40                                                                                                            Analysis 24.1
+  Pb/238U
+
+
+
+
+                                                                                          2100
+                                                                                                      Analysis 9.1
+                                                                               2000
+  206
+
+
+
+
+            0.35                                                       1900           Analysis 21.1
+                                                                                Analysis 1.1
+
+
+                                                       1700         Group 1: 24 analysis of 24 zircons
+            0.30                                                    1798 ± 9 Ma (95% confidence)
+                                                1600
+                                                                              Analysis 10.1
+
+                                                                                                                Analysis 26.1
+
+            0.25
+
+
+
+                                                                                                                                                                                        171773
+
+            0.20
+                                            3          4           5              6              7               8                 9          10           11       12           13               14
+                                                                                                                     207
+                                                                                                                           Pb/235U
+
+                                                              Figure 2. Concordia plot for sample 171773: quartz sandstone, Ingebong Hills
+
+
+
+
+                                                                                                                                                                                         177173
+
+
+
+
+                                                                        Group 1
+             Relative probability density
+
+
+
+
+                       1600                                     1800                     2000                              2200                    2400                2600                      2800
+                                                                                                         207
+                                                                                                               Pb/206Pb Age (Ma)
+                              Figure 3. Gaussian-summation probability density plot for sample 171773: quartz sandstone, Ingebong Hills
+
+
+                                                                                                                       4
+

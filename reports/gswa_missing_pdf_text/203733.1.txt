@@ -1,0 +1,191 @@
+203733.1.pdf                                                                                      Geochronology Record 1851
+
+
+
+
+           203733: porphyritic granitic rock, Great Eastern mine
+  (Lawlers Tonalite, Kalgoorlie Terrane, Eastern Goldfields Superterrane, Yilgarn Craton)
+
+
+
+
+Location and sampling                                            larger feldspar grains. Accessory minerals include titanite,
+                                                                 pyrite and zircon. Biotite is partially altered to chlorite,
+Leonora (SH 51-1), Wildara (3041)                                and granular aggregates of epidote are associated with the
+                   MGA Zone 51, 258596E 6891742N                 ferromagnesian minerals.
+Sampled on 2 September 2020
+This sample was collected from the 125.0 – 126.3 m depth         Zircon morphology
+interval of drillcore EMSD1399, drilled in 2015–16 by            Zircons isolated from this sample are colourless to dark
+Agnew Gold Mining Company Pty Ltd. The drillhole                 brown and mainly subhedral. The crystals are up to 160 µm
+is located at the Great Eastern mine, about 6.9 km east-         long, and equant to elongate, with aspect ratios up to 4:1.
+northeast of Mount McAuley, 5.7 km south of Agnew Bluff,         In cathodoluminescence (CL) images, concentric zoning
+and 2.2 km east of the Old Agnew Road.                           is ubiquitous, and many crystals contain high-U, metamict
+                                                                 zones. A CL image of all zircons is shown in Figure 2.
+Geological context
+The unit sampled is the Lawlers Tonalite of the Kalgoorlie       Analytical details
+Terrane (Sapkota et al., 2020). The Lawlers Tonalite             This sample was analysed on 9–10 and 15–16 October
+consists of multiple intrusions, mainly metamorphosed            2020, using SHRIMP-B. Analyses 1.1 to 8.1 (spot
+tonalite, quartz diorite and granodiorite, that intruded         numbers 1–8) were obtained during the first session,
+mafic–ultramafic extrusive and intrusive units in the core       together with 13 analyses of the M257 standard, of
+of the Lawlers Anticline (Foden et al., 1984; Beardsmore,        which 12 analyses indicated an external spot-to-spot
+2002; Duuring et al., 2012; Hayman et al., 2015). This           (reproducibility) uncertainty of 0.50% (1σ) and a
+sample was collected to refine the age of the Lawlers            238
+                                                                    U/206Pb* calibration uncertainty of 0.24% (1σ). Isotopic
+Tonalite. A tonalite about 10.4 km to the southwest              mass fractionation of 207 Pb/ 206 Pb ratios during the
+provided an igneous crystallization age of 2691 ± 9 Ma and
+                                                                 first session was corrected by reference to the OGC1
+an age of 2809 ± 11 Ma for an inherited zircon component
+                                                                 standard; measured ratios were increased by 0.39%.
+(sample SONG05, Thébaud et al., 2018). A monzogranite
+                                                                 Analyses 9.1 to 3.3 (spot numbers 9–18) were obtained
+gneiss, about 4.9 km to the southwest, yielded an igneous
+                                                                 during the second session, together with 16 analyses of
+crystallization age of 2690 ± 6 Ma (sample PHAG029,
+Thébaud et al., 2018). An igneous crystallization age of         the M257 standard, of which 14 analyses indicated an
+2628 ± 21 Ma was reported by Thébaud et al. (2018) for           external spot-to-spot (reproducibility) uncertainty of
+a monzogranite (sample PHAG030) about 4.2 km to the              0.50% (1σ) and a 238U/206Pb* calibration uncertainty of
+northwest, although the published data suggest that a more       0.28% (1σ). Calibration uncertainties are included in the
+appropriate age of 2677 ± 19 Ma (MSWD = 2.2) can be              errors of 238U/206Pb* ratios and dates listed in Table 1.
+based on the five oldest analyses with discordance <5%.          Common-Pb corrections were applied to all analyses
+Metagranodiorite about 9.6 km to the southwest yielded           using contemporaneous isotopic compositions determined
+dates of 2808 ± 7 and 2696 ± 7 Ma (GSWA 182454,                  according to the model of Stacey and Kramers (1975).
+Wingate et al., 2018a), and a metatonalite dyke intruded
+into greenstones about 12.0 km to the north yielded
+an igneous crystallization age of 2674 ± 3 Ma (GSWA              Results
+182455, Wingate et al., 2018b).
+                                                                 Eighteen analyses were obtained from 11 zircons. Results
+                                                                 are listed in Table 1, and shown in a concordia diagram
+                                                                 (Fig. 3).
+Petrographic description
+The sample is a medium- to coarse-grained, porphyritic           Interpretation
+granitic rock (Fig. 1). K-feldspar (orthoclase and
+microcline) is subhedral to euhedral and zoned. Rare             The analyses are concordant to strongly discordant (Fig. 3).
+plagioclase phenocrysts are up to 8 mm in size and               Twelve analyses are >5% discordant. The dates obtained
+surrounded by a fine-grained mosaic of quartz and                from these 12 analyses (Group D; Table 1) are unreliable,
+K-feldspar. Feldspars are slightly altered to epidote            and are considered not to be geologically significant. The
+and sericite. Fine-grained biotite forms aggregates and          remaining six analyses can be divided into two groups,
+discontinuous stringers that wrap around some of the             based on their 207Pb*/206Pb* ratios.
+
+                                                             1
+203733.1.pdf                                                                                      Geochronology Record 1851
+
+
+
+
+               Figure 1.   Drillcore image for sample 203733: porphyritic granitic rock, Great Eastern mine
+
+
+
+
+               Figure 2.   Cathodoluminescence image of all zircons from sample 203733: porphyritic
+                           granitic rock, Great Eastern mine. Numbered circles indicate the approximate
+                           locations of analysis sites
+
+
+
+
+                                                            2
+203733.1.pdf                                                                                                                                                                       Geochronology Record 1851
+
+
+
+
+                                        Table 1. Ion microprobe analytical results for zircons from sample 203733: porphyritic granitic rock, Great Eastern mine
+
+
+    Group      Spot   Grain.     238
+                                    U       232
+                                               Th        Th
+                                                       232
+                                                                 ƒ204           U/206Pb
+                                                                              238
+                                                                                                    Pb/206Pb
+                                                                                                  207
+                                                                                                                          U/206Pb*
+                                                                                                                        238
+                                                                                                                                              Pb*/206Pb*
+                                                                                                                                            207                      238
+                                                                                                                                                                        U/206Pb*    207
+                                                                                                                                                                                       Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)       (ppm)         U
+                                                       238
+                                                                 (%)            ± 1σ                 ± 1σ                 ± 1σ                 ± 1σ                date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      P         15     6.2       439         554        1.26     0.027     2.091     0.038    0.17688       0.00185   2.091    0.038     0.17664     0.00186       2519     38     2622     17       3.9
+      P         4      4.1       282         260        0.92     0.099     2.115     0.023    0.17761       0.00133   2.117    0.024     0.17673     0.00138       2494     23     2622     13       4.9
+
+
+      I         3      3.1       360         401        1.12     -0.012    2.038     0.021    0.18174       0.00122   2.038    0.021     0.18185     0.00122       2574     23     2670     11       3.6
+      I         13     1.2       288         170        0.59     0.020     2.025     0.025    0.18214       0.00121   2.025    0.025     0.18196     0.00122       2587     27     2671     11       3.1
+      I         2      2.1       283         180        0.64     0.128     2.005     0.023    0.18320       0.00129   2.008    0.023     0.18206     0.00134       2605     24     2672     12       2.5
+      I         1      1.1       204         118        0.58     0.132     2.044     0.025    0.18437       0.00147   2.047    0.025     0.18319     0.00154       2565     26     2682     14       4.4
+
+
+      D         9      9.1       616        1239        2.01     0.193     3.156     0.031    0.13451       0.00076   3.162    0.031     0.13281    0.00088        1772     16     2135     12       17.0
+      D         12     4.2       773        1442        1.87     0.146     2.802     0.059    0.13646       0.00294   2.806    0.059     0.13516    0.00296        1965     36     2166     38       9.3
+      D         11     11.1      627         510        0.81     0.172     2.885     0.234    0.14569       0.00858   2.890    0.234     0.14417    0.00860        1915    134     2278    103       15.9
+      D         8      8.1       664         384        0.58     0.082     2.525     0.033    0.15384       0.00158   2.527    0.033     0.15311     0.00159       2150     24     2381     18       9.7
+      D         10    10.1       525         257        0.49     0.084     2.397     0.024    0.15672       0.00079   2.399    0.024     0.15597    0.00083        2246     19     2412     9        6.9
+      D         7      7.1       644         816        1.27     0.014     2.343     0.021    0.15864       0.00100   2.343    0.021     0.15851     0.00101       2292     18     2440     11       6.1
+      D         6      6.1       370         627        1.69     -0.033    2.295     0.023    0.16176       0.00112   2.294    0.023     0.16205     0.00113       2332     20     2477     12       5.9
+      D         17     1.3       435         438        1.01     -0.058    2.232     0.025    0.17260       0.00176   2.230    0.025     0.17312     0.00177       2388     22     2588     17        7.7
+      D         14     2.2       352         304        0.87     0.081     2.395     0.028    0.17655       0.00120   2.397    0.028     0.17583     0.00126       2248     22     2614     12       14.0
+      D         5      5.1       342         244        0.71     0.068     2.170     0.023    0.17730       0.00124   2.172    0.023     0.17669     0.00127       2442     22     2622     12       6.9
+      D         16     3.2       237         253        1.07     0.095     2.109     0.042    0.17987       0.00130   2.111    0.042     0.17903     0.00137       2500     42     2644     13       5.4
+      D         18     3.3       176         89         0.51     0.115     2.165     0.032    0.18064       0.00166   2.168    0.032     0.17961     0.00176       2445     30     2649     16        7.7
+
+
+
+
+                                                                                                        3
+203733.1.pdf                                                                                                              Geochronology Record 1851
+
+
+
+
+             Figure 3.    U–Pb analytical data for sample 203733: porphyritic granitic rock, Great Eastern mine. Yellow
+                          squares indicate Group I (magmatic zircons); black squares indicate Group P (radiogenic-
+                          Pb loss); crossed squares indicate Group D (discordance >5%). The dashed line indicates a
+                          discordia regression through data in Groups I and P and selected data in Group D
+
+
+
+
+Group I comprises four analyses of three zircons (Table 1),                      Hayman, PC, Thébaud, N, Pawley, MJ, Barnes, SJ, Cas, RAF, Amelin, Y,
+which yield a weighted mean 207 Pb*/ 206 Pb* date of                                Sapkota, J, Squire, RJ, Campbell, IH and Pegg, I 2015, Evolution of
+2673 ± 12 Ma (MSWD = 0.18).                                                         a ~2.7 Ga large igneous province: A volcanological, geochemical
+                                                                                    and geochronological study of the Agnew Greenstone Belt, and new
+Group P comprises two analyses of two zircons (Table 1),                            regional correlations for the Kalgoorlie Terrane (Yilgarn Craton,
+which yield 207Pb*/206Pb* dates of c. 2622 Ma.                                      Western Australia): Precambrian Research, v. 270, p. 334–368.
+                                                                                 Sapkota, J, Wyche, S and Wingate, MTD 2020, Lawlers Tonalite
+The date of 2673 ± 12 Ma for the four analyses in Group I                           (A-_lt-gt): Geological Survey of Western Australia, WA Geology
+is 3.4% discordant, and therefore interpreted as a minimum                          Online, Explanatory Notes extract, viewed 23 December 2021,
+age for igneous crystallization. The dates of c. 2622 Ma for                        <www.dmp.wa.gov.au/ens>.
+the two analyses in Group P are interpreted to reflect loss                      Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead isotope
+of radiogenic Pb.                                                                   evolution by a two-stage model: Earth and Planetary Science Letters,
+                                                                                    v. 26, p. 207–221.
+A discordia regression (Fig. 3) through 10 analyses in                           Thébaud, N, Sugiono, D, LaFlamme, C, Miller, J, Fisher, L, Voute,
+Groups I, P and D that indicate dates >2500 Ma and are                              F, Tessalina, S, Sonntag, I and Fiorentini, M 2018, Protracted and
+<8% discordant yields concordia intercepts at 2718 ± 42                             polyphased gold mineralisation in the Agnew District (Yilgarn Craton,
+and c. 1400 Ma (MSWD = 0.77). The upper intercept of                                Western Australia): Precambrian Research, v. 310, p. 291–304,
+2718 ± 42 Ma may overestimate the crystallization age,                              doi:10.1016/j.precamres.2018.02.013.
+because the distribution of all data indicates the zircons                       Wingate, MTD, Lu, Y, Kirkland, CL and Spaggiari, CV 2018a, 182454:
+have been affected by more than one episode of Pb loss.                            metagranodiorite, Hanson Well; Geochronology Record 1441:
+                                                                                   Geological Survey of Western Australia, 6p.
+                                                                                 Wingate, MTD, Lu, Y, Kirkland, CL and Spaggiari, CV 2018b, 182455:
+References                                                                         metatonalite dyke, Harris No. 2 Well; Geochronology Record 1452:
+                                                                                   Geological Survey of Western Australia, 5p.
+Beardsmore, TJ 2017, The geology, tectonic evolution and gold
+  mineralization of the Lawlers region: a synopsis of knowledge to 2001:
+  Geological Survey of Western Australia, Report 167, 734p.
+                                                                                 Re­commended reference for this
+Duuring, P, Bleeker, W, Beresford, SW, Fiorentini, ML and Rosengren,
+  NM 2012, Structural evolution of the Agnew-Wiluna greenstone                   publication
+  belt, Eastern Yilgarn Craton and implications for komatiite-hosted Ni          Wingate, MTD, Lu, Y, Fielding, IOH, Smithies, RH and Cassidy, KF
+  sulfide exploration: Australian Journal of Earth Sciences, v. 59, no. 5,         2021, 203733: porphyritic granitic rock, Lawlers mine; Geochronology
+  p. 765–791.                                                                      Record 1851: Geological Survey of Western Australia, 4p.
+Foden, JD, Nesbitt, RW and Rutland, RWR 1984, The geochemistry and               Data obtained:        16 October 2020
+   crustal origin of the Archaean acid intrusive rocks of the Agnew Dome,
+   Lawlers, western Australia: Precambrian Research, v. 23, p. 247–271.          Data released:        29 April 2022
+
+                                                                             4
+

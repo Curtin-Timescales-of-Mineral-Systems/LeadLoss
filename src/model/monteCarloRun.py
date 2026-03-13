@@ -2,7 +2,6 @@ from process import calculations
 from process.ensemble import per_run_peaks
 import numpy as np
 import math
-import copy
 from scipy.stats import ks_2samp as _ks2  # exact-parity fallback for KS
 
 # ---------------------------
@@ -57,12 +56,13 @@ class MonteCarloRunPbLossAgeStatistics:
         self.valid_concordant_ages = ca[np.isfinite(ca)].tolist()
         self.valid_discordant_ages = da[np.isfinite(da)].tolist()
 
-        self.number_of_ages         = int(da.size)
+        self.number_of_ages = int(da.size)
         self.number_of_invalid_ages = int(da.size - len(self.valid_discordant_ages))
 
-        # Old behavior: if no valid discordants, force KS=(1.0, 1.0)
+        # If no valid discordants, force worst KS distance and non-significant p.
+        # Using p=0.0 avoids falsely inflating mean p-values with empty runs.
         if len(self.valid_discordant_ages) == 0:
-            ks_d, ks_p = 1.0, 1.0
+            ks_d, ks_p = 1.0, 0.0
         else:
             # Try the provided test; if that fails, use scipy’s ks_2samp for parity
             try:
@@ -87,11 +87,7 @@ class MonteCarloRunPbLossAgeStatistics:
 
 class MonteCarloRun:
     """
-    One Monte Carlo realisation. Supports optional clustering:
-    pass either `discordant_labels` (new) or `discord_clusters` (old). At each grid
-    age we evaluate clusters separately and keep:
-        • RAW (KS–D) from the RAW-minimising cluster
-        • PENALISED score from the PEN-minimising cluster
+    One Monte Carlo realisation over the Pb-loss age grid.
     """
 
     def __init__(self,
@@ -101,8 +97,6 @@ class MonteCarloRun:
                  concordant_pbPb,
                  discordant_uPb,
                  discordant_pbPb,
-                 discordant_labels=None,     # new name
-                 discord_clusters=None,      # old alias (still accepted)
                  settings=None):
 
         self.run_number   = run_number
@@ -121,16 +115,6 @@ class MonteCarloRun:
         self.dis_u = self.discordant_uPb
         self.dis_p = self.discordant_pbPb
 
-        # Accept both label argument names
-        if discordant_labels is None and discord_clusters is not None:
-            discordant_labels = discord_clusters
-
-        self.labels = None
-        if discordant_labels is not None:
-            lab = np.asarray(discordant_labels)
-            if lab.shape[0] == self.dis_u.shape[0]:
-                self.labels = lab.astype(int)
-
         # Cache concordant ages (YEARS) for this run
         self.concordant_ages = []
         for u, p in zip(self.concordant_uPb, self.concordant_pbPb):
@@ -142,6 +126,7 @@ class MonteCarloRun:
                 pass
 
         self.statistics_by_pb_loss_age = {}  # key: age (YEARS) -> MonteCarloRunPbLossAgeStatistics
+        self._raw_statistics_by_pb_loss_age = {}  # key: age (YEARS) -> MonteCarloRunPbLossAgeStatistics
         self.optimal_pb_loss_age = None
         self.optimal_uPb = None
         self.optimal_pbPb = None
@@ -150,8 +135,7 @@ class MonteCarloRun:
         self.heatmapColumnData = None
         self.lead_loss_ages = []
 
-        # Per-cluster, per-age KS stats for later stacking (used in processing)
-        self._stats_by_age_by_cluster = {}  # {cluster_id: {age_years: MonteCarloRunPbLossAgeStatistics}}
+        self._all_statistics_by_pb_loss_age = {}
 
         # --- per-run peak attributes (RAW & PEN) ---
         self.peaks_ma_raw = None
@@ -174,45 +158,13 @@ class MonteCarloRun:
             ui = calculations.discordant_age(xL, yL, float(du), float(dp))
             all_ui[i] = np.nan if ui is None else float(ui)
 
-        # No clustering → evaluate all together
-        if self.labels is None:
-            st = MonteCarloRunPbLossAgeStatistics(
-                self.concordant_ages, all_ui.tolist(), dissimilarity_test, penalise_invalid_ages
-            )
-            self.statistics_by_pb_loss_age[leadLossAge] = st
-            self._stats_by_age_by_cluster.setdefault(0, {})[float(leadLossAge)] = st
-            return
-
-        # Clustered path: keep RAW-min and PEN-min (possibly different clusters)
-        best_raw_val, best_raw_stat = float('inf'), None
-        best_pen_val, best_pen_stat = float('inf'), None
-
-        for lab in np.unique(self.labels):
-            mask = (self.labels == lab)
-            if not np.any(mask):
-                continue
-            ages_k = all_ui[mask].tolist()
-            st_k = MonteCarloRunPbLossAgeStatistics(
-                self.concordant_ages, ages_k, dissimilarity_test, penalise_invalid_ages
-            )
-            self._stats_by_age_by_cluster.setdefault(int(lab), {})[float(leadLossAge)] = st_k
-
-            D_raw  = float(st_k.test_statistics[0])
-            Sc_pen = float(st_k.score)
-
-            if D_raw < best_raw_val:
-                best_raw_val, best_raw_stat = D_raw, st_k
-            if Sc_pen < best_pen_val:
-                best_pen_val, best_pen_stat = Sc_pen, st_k
-
-        # Compose: raw fields from RAW-minimising; penalised score from PEN-minimising
-        out = copy.copy(best_raw_stat)
-        out.score = best_pen_val
-        if best_pen_stat is not None:
-            out.number_of_invalid_ages = best_pen_stat.number_of_invalid_ages
-            out.number_of_ages         = best_pen_stat.number_of_ages
-
-        self.statistics_by_pb_loss_age[leadLossAge] = out
+        # Store one statistics object per age using all discordant analyses.
+        st_all = MonteCarloRunPbLossAgeStatistics(
+            self.concordant_ages, all_ui.tolist(), dissimilarity_test, penalise_invalid_ages
+        )
+        self._all_statistics_by_pb_loss_age[leadLossAge] = st_all
+        self.statistics_by_pb_loss_age[leadLossAge] = st_all
+        self._raw_statistics_by_pb_loss_age[leadLossAge] = st_all
 
     def calculateOptimalAge(self):
         """
@@ -233,19 +185,33 @@ class MonteCarloRun:
         ages_year = np.asarray([a for a, _ in items], float)
         age_ma    = ages_year / 1e6
         D_pen     = np.asarray([st.score              for _, st in items], float)
-        D_raw     = np.asarray([st.test_statistics[0] for _, st in items], float)
+        D_raw = np.asarray(
+            [
+                self._raw_statistics_by_pb_loss_age.get(a, self.statistics_by_pb_loss_age[a]).test_statistics[0]
+                for a in ages_year
+            ],
+            float,
+        )
 
-        # Run-level optimum from penalised curve
-        j = _find_optimal_index(D_pen)
+        # Run-level optimum follows the active primary channel.
+        prefer_pen = bool(getattr(self.settings, "penaliseInvalidAges", True))
+        D_primary = D_pen if prefer_pen else D_raw
+        j = _find_optimal_index(D_primary)
         best_age_y = float(ages_year[j])
 
         self.optimal_pb_loss_age = best_age_y
         self.optimal_uPb  = calculations.u238pb206_from_age(best_age_y)
         self.optimal_pbPb = calculations.pb207pb206_from_age(best_age_y)
-        self.optimal_statistic = self.statistics_by_pb_loss_age[best_age_y]
+        if prefer_pen:
+            self.optimal_statistic = self.statistics_by_pb_loss_age[best_age_y]
+        else:
+            self.optimal_statistic = self._raw_statistics_by_pb_loss_age.get(
+                best_age_y,
+                self.statistics_by_pb_loss_age[best_age_y],
+            )
 
-        # Legacy surface (penalised dissimilarity)
-        self.ks_surface = _KSSurface(age_ma, D_pen)
+        # Legacy surface shim now follows active primary channel.
+        self.ks_surface = _KSSurface(age_ma, D_primary)
 
         # Per-run peaks on BOTH surfaces (old semantics and thresholds)
         S_raw = 1.0 - D_raw
@@ -272,10 +238,35 @@ class MonteCarloRun:
     def createHeatmapData(self, minAge, maxAge, resolution):
         """
         Build a per-run column vector over the grid (length <= resolution) with
-        penalised dissimilarity (D*) values, linearly interpolated across gaps.
+        primary dissimilarity values, linearly interpolated across gaps.
+
+        Primary channel follows GUI intent:
+          - penaliseInvalidAges=True  -> use penalised score (D*)
+          - penaliseInvalidAges=False -> use raw KS D
         """
+        prefer_pen = bool(getattr(self.settings, "penaliseInvalidAges", True))
+        stats_map = self.statistics_by_pb_loss_age if prefer_pen else self._raw_statistics_by_pb_loss_age
+        if not isinstance(stats_map, dict) or not stats_map:
+            stats_map = getattr(self, "_all_statistics_by_pb_loss_age", None)
+
+        if not isinstance(stats_map, dict) or not stats_map:
+            self.heatmapColumnData = []
+            return
+
+        def _value_at(age_key: float) -> float:
+            st = stats_map.get(float(age_key))
+            if st is None:
+                return float("nan")
+            if prefer_pen:
+                v = float(st.score)
+            else:
+                v = float(st.test_statistics[0])
+            if not np.isfinite(v):
+                return float("nan")
+            return float(np.clip(v, 0.0, 1.0))
+
         ageInc = (maxAge - minAge) / resolution
-        runAges = sorted(list(self.statistics_by_pb_loss_age.keys()))
+        runAges = sorted(list(stats_map.keys()))
         if not runAges:
             self.heatmapColumnData = []
             return
@@ -299,14 +290,16 @@ class MonteCarloRun:
             if prevNonEmptyCol != nextNonEmptyCol:
                 prevAge  = max(colAges[prevNonEmptyCol])
                 nextAge  = min(colAges[nextNonEmptyCol])
-                prevStat = self.statistics_by_pb_loss_age[prevAge].score
-                nextStat = self.statistics_by_pb_loss_age[nextAge].score
+                prevStat = _value_at(prevAge)
+                nextStat = _value_at(nextAge)
                 prevDiff = col - prevNonEmptyCol
                 nextDiff = nextNonEmptyCol - col
                 totalDiff = nextDiff + prevDiff
                 value = (nextDiff * prevStat + prevDiff * nextStat) / totalDiff
             else:
-                value = float(np.mean([self.statistics_by_pb_loss_age[a].score for a in colAges[col]]))
+                vals = np.asarray([_value_at(a) for a in colAges[col]], float)
+                vals = vals[np.isfinite(vals)]
+                value = float(np.mean(vals)) if vals.size else float("nan")
             colData.append(value)
         self.heatmapColumnData = colData
 

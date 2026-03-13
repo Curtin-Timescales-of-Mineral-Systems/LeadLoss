@@ -39,6 +39,32 @@ def _env_bool(name: str, default: str = "0") -> bool:
         return bool(int(default))
 
 
+def _env_choice(name: str, default: str, choices: tuple[str, ...]) -> str:
+    """Return env value normalised to upper-case, constrained to choices."""
+    raw = str(os.environ.get(name, default)).strip().upper()
+    allowed = tuple(str(c).strip().upper() for c in choices)
+    if raw in allowed:
+        return raw
+    return str(default).strip().upper()
+
+
+PROFILE: str = _env_choice("CDC_PROFILE", "CUSTOM", ("CUSTOM", "PAPER", "EXPLORATORY"))
+
+
+def _profile_default(name: str, custom: str, paper: Optional[str] = None, exploratory: Optional[str] = None) -> str:
+    """
+    Return a string default for env readers based on CDC_PROFILE.
+    Explicit env vars for `name` always win.
+    """
+    if name in os.environ:
+        return str(os.environ[name])
+    if PROFILE == "PAPER" and paper is not None:
+        return str(paper)
+    if PROFILE == "EXPLORATORY" and exploratory is not None:
+        return str(exploratory)
+    return str(custom)
+
+
 # ======================  EXPOSED KNOBS  ======================
 
 # Smoothing: either a fixed Gaussian width in Ma (SMOOTH_MA > 0),
@@ -46,15 +72,21 @@ def _env_bool(name: str, default: str = "0") -> bool:
 SMOOTH_MA: float = _env_float("CDC_SMOOTH_MA", "0.0")
 SMOOTH_FRAC: float = _env_float("CDC_SMOOTH_FRAC", "0.01")
 
-# Whether to build separate ensemble peaks per discordant cluster.
-# For most real datasets you probably want False so the catalogue
-# matches the plotted global ensemble curve.
-USE_CLUSTER_CATALOGUE: bool = _env_bool("CDC_USE_CLUSTER_CATALOGUE", "0")
+# If 0, disable the conservative peak-merge stages so nearby peaks are preserved.
+MERGE_NEARBY_PEAKS: bool = _env_bool(
+    "CDC_MERGE_NEARBY_PEAKS",
+    _profile_default("CDC_MERGE_NEARBY_PEAKS", "1", paper="1", exploratory="0"),
+)
+
+# In no-merge mode, still collapse near-identical picks on the same flat crest.
+PLATEAU_DEDUPE: bool = _env_bool("CDC_PLATEAU_DEDUPE", "1")
+PLATEAU_DEDUPE_RADIUS_STEPS: float = _env_float("CDC_PLATEAU_DEDUPE_RADIUS_STEPS", "2.0")
+PLATEAU_DEDUPE_MIN_OVERLAP_FRAC: float = _env_float("CDC_PLATEAU_DEDUPE_MIN_OVERLAP_FRAC", "0.60")
 
 # Per-run peak detector gates (used inside build_ensemble_catalogue for per-run peaks)
 PER_RUN_PROM_FRAC: float = _env_float("CDC_PER_RUN_PROM_FRAC", "0.10")
 PER_RUN_MIN_DIST: int = _env_int("CDC_PER_RUN_MIN_DIST", "5")
-PER_RUN_MIN_WIDTH: int = _env_int("CDC_PER_RUN_MIN_WIDTH", "5")
+PER_RUN_MIN_WIDTH: int = _env_int("CDC_PER_RUN_MIN_WIDTH", "3")
 
 # Ensemble peak gates – “conservative” thresholds used in the paper
 FH_HEIGHT_FRAC: float = _env_float("CDC_FH_HEIGHT_FRAC", "0.50")   # keep peaks whose crest is ≥50% of the tallest one
@@ -62,10 +94,15 @@ FD_DIST_FRAC: float = _env_float("CDC_FD_DIST_FRAC", "0.10")       # min peak se
 FP_PROM_FRAC: float = _env_float("CDC_FP_PROM_FRAC", "0.10")       # min ensemble prominence as a fraction of Δ 0.05
 FW_WIN_FRAC: float = _env_float("CDC_FW_WIN_FRAC", "0.10")         # half-width of vote window as fraction of grid
 FR_RUN_REL: float = _env_float("CDC_FR_RUN_REL", "0.25")           # run-level relative height gate (fraction of run’s dynamic range)
-FS_SUPPORT: float = _env_float("CDC_FS_SUPPORT", "0.10")           # minimum support fraction across runs
+FS_SUPPORT: float = _env_float(
+    "CDC_FS_SUPPORT",
+    _profile_default("CDC_FS_SUPPORT", "0.10", paper="0.10", exploratory="0.08"),
+)           # minimum support fraction across runs
 RMIN_RUNS: int = _env_int("CDC_RMIN_RUNS", "5")                    # minimum number of runs contributing
 FV_VALLEY_FRAC: float = _env_float("CDC_FV_VALLEY_FRAC", "0.50")   # shallow-valley merge threshold
 ENS_DELTA_MIN: float = _env_float("CDC_ENS_DELTA_MIN", "0.05")     # min ensemble dynamic range to attempt peak picking
+MONO_DY_EPS_FRAC: float = _env_float("CDC_MONO_DY_EPS_FRAC", "0.03")
+MONO_MAX_TURNS: int = _env_int("CDC_MONO_MAX_TURNS", "0")
 
 # Reverse-discordance geometry tolerances (TW space)
 REV_TOL_Y: float = _env_float("CDC_REV_TOL_Y", "1e-5")   # vertical tolerance in 207Pb/206Pb

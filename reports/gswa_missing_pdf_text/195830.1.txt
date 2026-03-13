@@ -1,0 +1,191 @@
+195830.1.pdf                                                                                      Geochronology Record 1862
+
+
+
+
+                   195830: metamonzogranite, Mount Seabrook
+  (Moorarie Supersuite, Burringurrah Domain, Gascoyne Province, Capricorn Orogen)
+
+
+
+
+Location and sampling                                              Zircon morphology
+Robinson Range (SG 50-7), Moorarie (2446)                          Zircons isolated from this sample are colourless to dark
+                 MGA Zone 50, 573504E 7167051N                     brown, and anhedral to subhedral. The crystals are up to
+                                                                   120 µm long, and equant to elongate, with aspect ratios
+Sampled on 10 May 2011                                             up to 4:1. In backscattered electron (BSE) images, some
+                                                                   zircons exhibit concentric zoning, but most are internally
+This sample was collected from an outcrop in a creek on            homogeneous. BSE images of representative zircons are
+Trillbar Station, about 4.5 km south-southwest of Trillbar         shown in Figure 2.
+homestead, 1.5 km south-southeast of Mount Seabrook
+Talc Mine, and 1.3 km east of Mount Seabrook.
+                                                                   Analytical details
+Geological context                                                 This sample was analysed on 8 September 2012, using
+                                                                   SHRIMP-B. Six analyses of BR266 standard were obtained
+The unit sampled is a metamonzogranite assigned to the             during the session, of which five analyses indicated an
+1817–1773 Ma Moorarie Supersuite of the Burringurrah               external spot-to-spot (reproducibility) uncertainty of
+Domain (Occhipinti and Meyers, 1999; Sheppard et al.,              0.50% (1σ) and a 238U/206Pb* calibration uncertainty of
+2010). The 1945–1620 Ma Burringurrah Domain includes               0.25% (1σ). Isotopic mass fractionation of 207Pb/206Pb
+all igneous, metasedimentary and metamorphic rock                  ratios during the session was corrected by reference to
+units within the Gascoyne Province that are younger than           the OGC1 standard; measured ratios were increased
+the 2555–1945 Ma Glenburgh Terrane and not included                by 0.32%. Calibration uncertainties are included in the
+within, and mostly older than, the 1673–1455 Ma Edmund
+                                                                   errors of 238U/206Pb* ratios and dates listed in Table 1.
+Group. The Moorarie Supersuite is dominated by granitic
+                                                                   Common-Pb corrections were applied to all analyses
+rocks of granodioritic to monzogranitic composition, and
+                                                                   using contemporaneous isotopic compositions determined
+was intruded into the Gascoyne Province, the adjacent
+                                                                   according to the model of Stacey and Kramers (1975).
+Yarlarweelor Gneiss Complex, and the Ashburton Basin
+during the Capricorn Orogeny (Sheppard et al., 2010).
+The metamonzogranite at this locality is not foliated, and
+cross-cuts the main S1 fabric in psammitic schist, a sample        Results
+of which, collected about 0.6 km to the west-northwest,
+yielded a monazite age for metamorphism of 1991 ± 6 Ma             Eighteen analyses were obtained from 18 zircons. Results
+(GSWA 195828, Fielding et al., 2022). Locally the                  are listed in Table 1, and shown in a concordia diagram
+monzogranite contains a weak northwest-trending foliation          (Fig. 3).
+subparallel to F2 axial planes in the schist farther east,
+suggesting that the monzogranite intruded after D1 and
+prior to D2. The Archean dates obtained for zircons from
+                                                                   Interpretation
+this sample (see below) indicate that either the zircons are       The analyses are concordant to strongly discordant
+inherited from an Archean rock, the sample represents an           (Fig. 3). Four analyses are >5% discordant. The dates
+inclusion of Archean rock in Moorarie monzogranite, or             obtained from these four analyses (Group D, Table 1)
+the assignment of the unit is incorrect. Metamonzogranite          are unreliable, and are considered not to be geologically
+of the Moorarie Supersuite, sampled about 7.6 km to the            significant. The remaining 14 analyses can be divided into
+north-northeast, yielded an igneous crystallization age of         two groups, based on their 207Pb*/206Pb* ratios:
+1808 ± 6 Ma (GSWA 142851, Nelson, 1998).
+                                                                   Group X comprises 13 analyses (Table 1), which yield
+                                                                   207
+                                                                       Pb*/206Pb* dates of 3030–2653 Ma. The youngest 11
+Petrographic description                                           analyses yield a weighted mean 207Pb*/206Pb* date of
+                                                                   2663 ± 4 Ma (MSWD = 0.73).
+The sample is a weathered, leucocratic metamonzogranite
+(Fig. 1) that contains 5–10% muscovite and biotite.                Group Z comprises one analysis (Table 1) which yields
+The rock is mostly medium grained and equigranular,                207
+                                                                      Pb*/260Pb* date of 1140 ± 21 Ma (1σ).
+but is locally coarse grained to pegmatitic. A detailed
+petrographic description is not available for this sample.
+
+
+
+
+                                                               1
+195830.1.pdf                                                                                   Geochronology Record 1862
+
+
+
+
+               Figure 1.   Outcrop image for sample 195830: metamonzogranite, Mount Seabrook. The pen
+                           for scale marks the contact between metamonzogranite on the lower right of the
+                           image and psammitic schist on the upper left
+
+
+
+
+               Figure 2.   BSE images of representative zircons from sample 195830: metamonzogranite,
+                           Mount Seabrook. Bright circular areas are SHRIMP analysis sites
+
+
+
+
+                                                           2
+195830.1.pdf                                                                                                                                                           Geochronology Record 1862
+
+
+
+
+                                         Table 1. Ion microprobe analytical results for zircons from sample 195830: metamonzogranite, Mount Seabrook
+
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th      Th
+                                                  232
+                                                            ƒ204          U/206Pb
+                                                                        238
+                                                                                             Pb/206Pb
+                                                                                           207
+                                                                                                                   U/206Pb*
+                                                                                                                 238
+                                                                                                                                      Pb*/206Pb*
+                                                                                                                                    207                  238
+                                                                                                                                                            U/206Pb*     207
+                                                                                                                                                                            Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)    238
+                                                    U       (%)           ± 1σ                ± 1σ                 ± 1σ                ± 1σ            date (Ma) ±1σ    date (Ma) ±1σ    (%)
+      X         8      8.1       446     114      0.26      0.038    1.948    0.027    0.18033       0.00077   1.949    0.027    0.17999    0.00078    2670     30     2653      7        -0.9
+      X         17     17.1      267     170      0.64      0.429    2.014    0.015    0.18440       0.00067   2.023    0.015    0.18056    0.00078    2589     17     2658      7        2.4
+      X         13    13.1       144     43       0.30      0.299    2.022    0.019    0.18327       0.00146   2.028    0.020    0.18059    0.00154    2584     21     2658      14       2.6
+      X         18    18.1       363     141      0.39      0.029    1.952    0.021    0.18089       0.00061   1.952    0.021    0.18063    0.00061    2666     24     2659      6        -0.5
+      X         12    12.1       515     124      0.24     -0.018    1.941    0.030    0.18049       0.00109   1.940    0.030    0.18065    0.00109    2680     34     2659      10       -1.0
+      X         1      1.1       158     81       0.51      0.013    1.986    0.017    0.18107       0.00080   1.987    0.017    0.18095    0.00080    2628     19     2662      7         1.1
+      X         5      5.1       251     100      0.40      0.028    1.870    0.025    0.18162       0.00067   1.871    0.025    0.18137    0.00068    2761     31     2665      6        -3.8
+      X         7      7.1       233     132      0.56     -0.014    1.911    0.015    0.18125       0.00070   1.910    0.015    0.18138    0.00071    2714     18     2665      6        -2.0
+      X         10    10.1       363     59       0.16      0.007    1.972    0.020    0.18179       0.00173   1.972    0.020    0.18173    0.00173    2644     22     2669      16       0.7
+      X         6      6.1       235     80       0.34      0.009    1.929    0.035    0.18190       0.00071   1.929    0.035    0.18182    0.00071    2692     40     2670      6        -1.0
+      X         16    16.1       394     61       0.15      0.053    2.012    0.031    0.18255       0.00062   2.013    0.031    0.18208    0.00063    2600     33     2672      6        2.5
+      X         11     11.1      128     60       0.47     -0.027    1.804    0.033    0.21300       0.00102   1.804    0.033    0.21324    0.00102    2843     43     2930      8        2.8
+      X         2      2.1       143     70       0.49      0.006    1.637    0.014    0.22688       0.00088   1.638    0.014    0.22683    0.00088    3073     22     3030      6        -1.6
+
+
+      Z         4      4.1       232     235       1.01     0.109    5.033    0.040    0.07865       0.00073   5.038    0.040    0.07773    0.00082    1167      9      1140     21       -3.0
+
+
+      D         9      9.1       209     260      1.24      1.170    16.815   0.352    0.05516       0.00224   17.014   0.359    0.04588    0.00316    368       8       -8     166      2365
+      D         3      3.1        54     67       1.23      0.719    4.792    0.058    0.07878       0.00120   4.827    0.060    0.07275    0.00219    1214     14      1007     61       -21.3
+      D         15    15.1       315     180      0.57      0.214    2.173    0.017    0.18298       0.00113   2.177    0.017    0.18107    0.00117    2436     16     2663      11       8.3
+      D         14    14.1       280     69       0.25      0.254    2.095    0.018    0.18356       0.00134   2.100    0.018    0.18128    0.00140    2510     18     2665      13       5.6
+
+
+
+
+                                                                                                 3
+195830.1.pdf                                                                                                      Geochronology Record 1862
+
+
+
+
+           Figure 3.    U–Pb analytical data for sample 195830: metamonzogranite, Mount Seabrook. Red circles
+                        indicate Group X (xenocrystic zircons); crossed squares indicate Group D (discordance >5%).
+                        Two analyses in Group D and one in Group Z are not shown
+
+
+
+
+The dates of 3030–2653 Ma for the 13 analyses in                             Recommended reference for this
+Group X are interpreted as the ages of inherited zircons.
+The date of 2663 ± 4 Ma for 11 analyses in Group X
+                                                                             publication
+is interpreted as the age of the dominant inherited                          Fielding, IOH, Wingate, MTD, Fletcher, IR, Rasmussen, B, Zi, J-W and
+component. The date of 1140 ± 21 Ma (1σ) for the                                 Johnson, SP 2022, 195830: metamonzogranite, Mount Seabrook;
+single analysis in Group Z is interpreted as the age of a                        Geochronology Record 1862: Geological Survey of Western
+contaminant introduced during laboratory processing.                             Australia, 4p.
+
+                                                                             Data obtained:       8 September 2012
+
+References                                                                   Data released:       14 April 2022
+
+Fielding, IOH, Wingate, MTD, Fletcher, IR, Rasmussen, B, Zi, J-W and
+    Johnson, SP 2022a, 195828: psammitic schist, Mount Seabrook;
+    Geochronology Record 1861: Geological Survey of Western
+    Australia, 4p.
+Nelson, DR 1998, 142851: recrystallized monzogranite, Kerba Pool;
+   Geochronology Record 367: Geological Survey of Western Australia,
+   4p.
+Occhipinti, SA and Myers, JS 1999, Geology of the Moorarie 1:100 000
+   sheet: Geological Survey of Western Australia, 1:100 000 Geological
+   Series Explanatory Notes, 20p.
+Sheppard, S, Johnson, SP, Wingate, MTD, Kirkland, CL and Pirajno, F
+   2010, Explanatory Notes for the Gascoyne Province: Geological
+   Survey of Western Australia, 336p.
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+   isotope evolution by a two-stage model: Earth and Planetary Science
+   Letters, v. 26, p. 207–221.
+
+
+
+
+                                                                         4
+

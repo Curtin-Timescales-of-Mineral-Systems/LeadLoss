@@ -1,0 +1,230 @@
+226186.1.pdf                                                                                       Geochronology Record 1763
+
+
+
+
+                                  226186: sandstone, Nicolay 1
+                                   (Nambeet Formation, Canning Basin)
+
+
+
+
+Location and sampling                                              0.15 mm in size, and muscovite forms narrow laths up to
+                                                                   0.2 mm long. Green glauconite is up to 0.15 mm in size.
+Joanna Spring (SF 51-3), McTavish (3556)                           Carbonate within these layers occurs as isolated rhombs
+                  MGA Zone 51, 526953E 7825419N                    and in patches of probable cement. Rare collophane rod-
+Sampled on 18 February 2019                                        like features are probably fossil fragments. Carbonate-
+                                                                   rich sandstone layers contain less quartz (~30%) and
+This sample was collected from the 3496.0 – 3496.7 m               feldspar and more carbonate. Much of the carbonate that
+depth interval of drillcore Nicolay 1, from a petroleum well       encloses the detrital grains is featureless spar, although
+drilled in 2012 by New Standard Onshore Pty Ltd (New               there is a small amount of grains up to 0.3 mm in size,
+Standard Onshore, 2013). The drillhole is located on a             which have bioclastic textures and rare rods of carbonate
+north–south cleared line, about 52 km south of Battlement          or collophane that are probably fossil fragments. The
+Rocks, 30 km southeast of Turkey Place Hill, and 18.8 km           silty laminae contain 10–25% detrital quartz grains with
+west-northwest of McTavish Claypan.                                the remainder consisting of aligned white mica flakes,
+                                                                   detrital muscovite laths up to 0.25 mm long, and brown
+                                                                   clay. The siltstone layers lack carbonate. The sample
+                                                                   contains circular framboidal pyrite grains, up to 0.025 mm,
+Geological context                                                 mainly within the siltstone layers. The sandstone has
+The unit sampled is the Early Ordovician (485–470 Ma;              a mixed terrigenous and carbonate provenance with
+Cohen et al. 2020) Nambeet Formation of the Canning                carbonate mainly occurring in the sandstone layers that
+                                                                   also contain conspicuous fossil fragments. The more
+Basin (Haines, 2004). The unit is about 337 m thick in
+                                                                   quartz-rich sandstone layers are well sorted although
+Nicolay 1 and consists mainly of shale with interbedded
+                                                                   the grains are mainly angular and subangular and these
+limestone and sandstone (New Standard Onshore, 2013).
+                                                                   layers, which lack obvious matrix, are texturally mature.
+The Nambeet Formation is the lowermost Canning Basin
+                                                                   The presence of fossil fragments and glauconite indicate
+unit in Nicolay 1 and is conformably overlain by the               a marine depositional environment and lenticular
+Willara Formation (Haines, 2004; Zhan, 2019). Three                bedding is consistent with a relatively low-energy, tidal
+additional samples of Nambeet Formation sandstone                  marine setting. The sample has not been deformed or
+from Nicolay 1 yielded maximum depositional ages of                metamorphosed.
+589– 533 Ma (GSWA 226183, Wingate et al., 2021a;
+GSWA 226184, Wingate et al., 2021b; GSWA 226185,
+Wingate et al., 2021c). A Nambeet Formation sandstone
+sample from Samphire Marsh 1, drilled about 246 km                 Zircon morphology
+to the west-northwest, yielded detrital zircon ages of             Zircons isolated from this sample are mostly colourless
+2838– 506 Ma, and a conservative maximum depositional              to pale brown, anhedral to subhedral, and mainly strongly
+age of 519 ± 3 Ma (GSWA 135962, Wingate and Haines,                rounded. The crystals are up to 200 µm long, and equant to
+2009). Another Nambeet Formation sample from                       elongate, with aspect ratios up to 4:1. Some crystals have
+Barnicarndy 1, drilled about 185 km to the southwest,              pitted outer surfaces and, in cathodoluminescence (CL)
+yielded detrital zircon ages of 3274–590 Ma, and a                 images, concentric zoning truncated at grain boundaries,
+conservative maximum depositional age of 1007 ± 18 Ma              features consistent with sedimentary transport. A CL
+(GSWA 237998, Wingate et al., 2021d).                              image of representative zircons is shown in Figure 2.
+
+
+Petrographic description                                           Analytical details
+The sample is a fine-grained calcareous sandstone,                 This sample was analysed on 11 June 2020, using
+within which siltstone forms thin (<1.5 mm), wavy and              LA-ICP-MS instruments at the GeoHistory Facility in
+lenticular to anastomosing laminae. The sample includes            the John de Laeter Centre, Curtin University. Separated
+15–20% carbonate as recrystallized sparry calcite, which           zircons mounted in epoxy disks were ablated using a
+is unevenly distributed within the fine-grained sandstone,         Resonetics RESOlution M-50A-LR sampling system,
+and therefore probably cement. Carbonate-poor sandstone            incorporating a 193 nm Compex 102 excimer laser,
+layers contain >50% quartz, <5% feldspar, and minor                and ion signal intensities were measured using an
+muscovite, pyrite, glauconite, collophane, and zircon.             Agilent 8900s quadrupole ICP-MS. Samples were
+Quartz is angular and sub-angular, clear, and up to                ablated for 22 s at a 5 Hz repetition rate, using a
+0.15 mm in size. Feldspar grains are angular and up to             24 μm beam diameter and laser energy of 2.0 J/cm 2.
+
+
+                                                               1
+226186.1.pdf                                                                             Geochronology Record 1763
+
+
+
+
+               Figure 1.   Drillcore image of sample 226186: sandstone, Nicolay 1
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 226186:
+                           sandstone, Nicolay 1
+
+
+
+
+                                                           2
+226186.1.pdf                                                                                                                                                             Geochronology Record 1763
+
+
+
+
+                                         Table 1. LA-ICP-MS analytical results for zircons from sample 226186: sandstone, Nicolay 1
+
+
+               Group   Spot   Grain.     238
+                                            U       232
+                                                       Th       Th
+                                                              232           238
+                                                                                 U/206Pb              Pb/206Pb
+                                                                                                    207               238
+                                                                                                                            U/206Pb        207
+                                                                                                                                                 Pb/206Pb        Disc.
+                 ID     no.   spot     (ppm)       (ppm)        U
+                                                              238
+                                                                                 ± 1σ                  ± 1σ                 ± 1σ                  ± 1σ           (%)
+                Y       4       4        307         97        0.32     11.669       0.082       0.06170   0.00110   530              4   664               38    20.1
+
+
+                S       12     12        651        267        0.41    10.084        0.056       0.06060   0.00090   610              3   625               32    2.5
+                S       2       2        711        123        0.17     7.559        0.131       0.06200   0.00305   801          13      674           105      -18.8
+                S       23     23        124         86        0.70     7.278        0.053       0.07160   0.00165   830              6   975               47    14.8
+                S       19     19        388        227        0.59     7.220        0.039       0.07100   0.00105   836              4   957               30    12.7
+                S       18     18        210         89        0.42     6.859        0.049       0.06820   0.00120   877              6   875               36    -0.3
+                S       17     17        274        106        0.39     6.523        0.047       0.07900   0.00120   919              6   1172              30    21.6
+                S       8       8        606        105        0.17     6.046        0.029       0.07210   0.00095   987              4   989               27    0.2
+                S       1       1        364         52        0.14     5.999        0.034       0.07750   0.00110   994              5   1134              28    12.4
+                S       24     24        932         95        0.10     5.718        0.031       0.07542   0.00090   1039             5   1080              24    3.8
+                S       20     20        200         56        0.28     5.255        0.032       0.07630   0.00120   1123             6   1103              31    -1.8
+                S       11     11        282        130        0.46     5.216        0.030       0.07660   0.00110   1131             6   1111              29    -1.8
+                S       13     13        446        691        1.55     4.819        0.023       0.07940   0.00105   1215             5   1182              26    -2.8
+                S       9       9        271        130        0.48     4.252        0.023       0.09020   0.00120   1362             7   1430              25    4.8
+                S       15     15        370         71        0.19     3.730        0.019       0.09350   0.00115   1531             7   1498              23    -2.2
+                S       10     10        368         67        0.18     3.799        0.020       0.09690   0.00120   1506             7   1565              23    3.8
+                S       16     16        133         74        0.56     3.470        0.020       0.09730   0.00140   1633             9   1573              27    -3.8
+                S       7       7        1184       216        0.18     2.946        0.013       0.11910   0.00135   1884             7   1943              20    3.0
+
+
+                D       3       3       1043        1123       1.08     6.061        0.119       0.08903   0.00105   985          18      1405              23    29.9
+                D       22     22        726        126        0.17     5.942        0.051       0.07610   0.00100   1003             8   1098              26    8.7
+                D       14     14        222        120        0.54     4.988        0.029       0.07660   0.00120   1178             6   1111              31    -6.1
+                D       5       5        154        133        0.87     5.313        0.044       0.07900   0.00130   1112             8   1172              33    5.2
+                D       21     21        582        553        0.95     3.545        0.018       0.10890   0.00130   1602             7   1781              22    10.1
+                D       6       6        509        203        0.40     3.209        0.020       0.11570   0.00135   1749             9   1891              21     7.5
+
+
+
+
+                                                                                             3
+226186.1.pdf                                                                                        Geochronology Record 1763
+
+
+Zircon standard 91500 was used as the primary reference           to be geologically significant. The remaining 18 analyses
+material, and GJ1, OGC1 and Plešovice were included               can be divided into two groups, based on their 207Pb/206Pb
+as secondary standards. Additional analytical details             and 238U/206Pb* ratios.
+are provided in Fielding et al. (2021). All relevant
+uncertainties have been propagated into the ratios and            Group Y comprises one analysis (Table 1), which yields a
+dates reported in Table 1. Ages from analyses for which           207-corrected 238U/206Pb* date of 528 ± 4 Ma (1σ).
+238
+    U/206Pb ratios indicate dates <1000 Ma are based on
+207-corrected 238U/206Pb* ratios; those >1000 Ma are based        Group S comprises 17 analyses (Table 1), which yield
+on uncorrected 207Pb/206Pb ratios.
+                                                                  207
+                                                                     Pb/206Pb or 207-corrected 238U/206Pb* dates of 1943–609 Ma.
+                                                                  It is possible that all of the analyses are of unmodified
+                                                                  detrital zircons, in which case the date of 528 ± 4 Ma (1σ)
+Results                                                           for the single analysis in Group Y represents a maximum
+This sample yielded relatively few zircons, and                   depositional age for the sandstone. A more conservative
+24 analyses were obtained from 24 zircons. Results are            estimate of the maximum depositional age can be based
+listed in Table 1, and shown in a concordia diagrams              on the weighted mean 207-corrected 238U/206Pb* date of
+(Fig. 3) and probability density plots (Figs 4, 5).               828 ± 7 Ma (MSWD = 2.0) for the youngest coherent
+                                                                  group of three analyses in Group S.
+
+Interpretation                                                    The data for combined Groups Y and S indicate a
+                                                                  significant age component at c. 1093 Ma, based on
+The analyses are concordant to strongly discordant                contributions from approximately 3 analyses (Fig. 5).
+(Fig. 3). Five analyses >1000 Ma are >5% discordant,              This is interpreted as the age of the dominant zircon-
+and one analysis <1000 Ma indicates high common Pb                crystallizing rock in the detrital source region, or the age
+(f 207 >2%). The dates obtained from these six analyses           of a dominant detrital component within sediments that
+(Group D; Table 1) are unreliable, and are considered not         have been reworked into this rock.
+
+
+
+
+          Figure 3.   U–Pb analytical data, not corrected for common Pb, for zircons from sample 226186: sandstone,
+                      Nicolay 1. Blue square indicates Group Y (youngest detrital zircon); red squares indicate
+                      Group S (older detrital zircons); crossed squares indicate Group D (date >1000 Ma and
+                      discordance >5% or date <1000 Ma and ƒ207 >2%)
+
+
+
+
+                                                              4
+226186.1.pdf                                                                                                        Geochronology Record 1763
+
+
+
+
+               Figure 4.   Probability density diagram and histogram for sample 226186: sandstone, Nicolay 1. Thick
+                           curve, maxima values, and frequency histogram (bin width 25 Ma) only include accepted
+                           data (18 analyses of 18 zircons). Thin curve includes all data (24 analyses of 24 zircons)
+
+
+
+
+References                                                                    Wingate, MTD, Lu, Y and Dent, LM 2021c, 226185: sandstone,
+                                                                                Nicolay 1; Geochronology Record 1762: Geological Survey of
+Cohen, KM, Finney, SC, Gibbard, PL and Fan, J-X 2020, The ICS                   Western Australia, 8p.
+  International Chronostratigraphic Chart (v. 2020/03 update):
+                                                                              Wingate, MTD, Lu, Y, Fielding, IOH, Normore, LS and Haines, PW
+  Episodes, v. 36 (2013), p. 199–204, <https://stratigraphy.org/chart>.
+                                                                                2021d, 237998: quartz sandstone, Barnicarndy 1; Geochronology
+Haines, PW 2004, Depositional facies and regional correlations of the           Record 1743: Geological Survey of Western Australia, 8p.
+   Ordovician Goldwyer and Nita Formations, Canning Basin, Western
+                                                                              Zhan, Y 2019, A seismic interpretation of the Broome Platform, Willara
+   Australia, with implications for petroleum exploration: Geological
+                                                                                 Sub-basin and Munro Arch of the Canning Basin, Western Australia:
+   Survey of Western Australia, Record 2004/7, 45p.
+                                                                                 Geological Survey of Western Australia, Report 193, 43p.
+New Standard Onshore 2013, Nicolay-1, Well Completion Report (Basic
+  Data): Geological Survey of Western Australia, 859p. (unpublished).
+Wingate, MTD and Haines, PW 2009, 135962: sandstone, Samphire                 Recommended reference for this
+  Marsh 1; Geochronology Record 777: Geological Survey of Western             publication
+  Australia, 5p.
+                                                                              Wingate, MTD, Lu, Y and Dent, LM 2021, 226186: sandstone,
+Wingate, MTD, Lu, Y and Dent, LM 2021a, 226183: sandstone,
+                                                                                Nicolay 1; Geochronology Record 1763: Geological Survey of
+  Nicolay 1; Geochronology Record 1760: Geological Survey of
+                                                                                Western Australia, 5p.
+  Western Australia, 7p.
+Wingate, MTD, Lu, Y and Dent, LM 2021b, 226184: sandstone, Nicolay 1;         Data obtained:       11 June 2020
+  Geochronology Record 1761: Geological Survey of Western
+  Australia, 8p.                                                              Data released:       14 May 2021
+
+
+
+
+                                                                          5
+

@@ -1,0 +1,188 @@
+242931.1.pdf                                                                                          Geochronology Record 1898
+
+
+
+
+                   242931: volcaniclastic siltstone, Mount Berry
+          (Duck Creek Dolomite, Wyloo Group, Ashburton Basin, Capricorn Orogen)
+
+
+
+
+Location and sampling                                              brown iron oxide minerals. Bedding is planar and regular
+                                                                   at thin-section scale and individual beds range from
+Wyloo (SF 50-10), Farquhar (2253)                                  1 to 5 mm thick and most have diffuse but clear boundaries.
+                   MGA Zone 50, 450198E 7513975N                   Bedding is defined mainly by differences in the amount
+                                                                   of overprinting brown clay or iron oxide minerals. Where
+Sampled on 2 August 2021                                           this overprinting is incomplete, the texture consists of
+This sample was collected from outcrop on Mount Stuart             brown, more oxidized, narrow, wavy lenses up to 5 mm
+Station, about 23 km northeast of Billeroo Bore, 8.6 km            long within more pale clay minerals. A single 4.5 mm-wide
+northwest of Quarry Hill, and 4.7 km east of Mount Berry.          brown layer at the edge of the thin section has a faintly
+                                                                   lenticular texture, which primarily reflects variation in the
+                                                                   proportion of iron oxide to clay minerals and sericite, and
+                                                                   may reflect original depositional features, such as flattened
+Geological context                                                 shards. Very fine-grained sericite occurs within the clay as
+The unit sampled is the 2008–1799 Ma Duck Creek                    bedding-parallel, narrow wavy folia up to 1 mm long, and
+Dolomite of the Wyloo Group in the Ashburton Basin                 as much less well-aligned individual laths up to 0.05 mm
+(Thorne and Johnson, 2020a). The sample was collected              long. Quartz forms transparent, angular grains up to 0.2 mm
+from a 15 km-long, fault-bounded ridge of dolomite that,           in size, mostly within discontinuous fine laminae associated
+until recently, was correlated with the 2420–2208 Ma Turee         with the brown layer described above. Opaque minerals,
+Creek Group (Martin, 2020; Martin et. al., 2022). However,         probably pyrite or magnetite, are equant (some are cubic)
+certain field characteristics, specifically the dominant           and occur mostly within the quartz-bearing laminae, where
+stromatolite Forms and the presence of a distinctive               they are up to 0.03 mm in diameter, although smaller grains
+ironstone marker bed, suggest that it correlates with the          up to 0.01 mm are sparsely disseminated throughout the
+Duck Creek Dolomite of the Wyloo Group (HJ Allen,                  sample. Parallel veins up to 0.1 mm wide are orthogonal
+written comm., 24 May 2022). The Duck Creek Dolomite               to bedding and composed of microcrystalline quartz,
+is about 1 km thick in the type area, and consists mainly          overprinted by trace fine-grained carbonate minerals.
+of thin- to very thick-bedded dolostone, locally with minor        A volcanic provenance is inferred from the angular quartz
+volcaniclastic beds, such as the present sample (Fig. 1).          grains and the lenticular, shard-like texture. The siltstone is
+The Duck Creek Dolomite conformably overlies the Mount             not obviously deformed or metamorphosed.
+McGrath Formation, except around the western Wyloo
+Anticline, where it unconformably overlies the Fortescue
+and Hamersley Groups, and is conformably overlain by the           Zircon morphology
+Ashburton Formation or the June Hill Volcanics. The age
+of the entire Wyloo Group is poorly constrained between            Zircons isolated from this sample are mainly colourless
+the ages of c. 2008 Ma for northwest-trending dykes of             and subhedral to euhedral. The crystals are up to 250 µm
+the Panhandle Dolerite that predate the Mount McGrath              long, and equant to elongate, with aspect ratios up to 4:1.
+Formation (Müller et al., 2005), and 1799–1793 Ma for              In cathodoluminescence (CL) images, all zircons exhibit
+the June Hill Volcanics (Evans et al., 2003; Wingate et al.,       concentric zoning, and some show sector zoning. A CL
+2019; Thorne and Johnson, 2020b). This sample was                  image of all zircons is shown in Figure 2.
+collected to determine the age of deposition and to resolve
+the uncertainty in stratigraphic assignment.
+                                                                   Analytical details
+Petrographic description                                           This sample was analysed on 24–25 February 2022, using
+                                                                   SHRIMP-B. Fifteen analyses of the M257 standard were
+The sample is a thinly bedded, volcaniclastic siltstone            obtained during the session, of which 13 analyses indicated
+(Fig. 1), consisting of about 90–92% matrix, 7–10%                 an external spot-to-spot (reproducibility) uncertainty of
+sericite, 1% quartz, and trace opaque and carbonate                0.50% (1σ) and a 238U/206Pb* calibration uncertainty of
+minerals. The matrix is composed of cryptocrystalline              0.17% (1σ). Calibration uncertainties are included in the
+to microcrystalline clay minerals, probably kaolinite or           errors of 238U/206Pb* ratios and dates listed in Table 1.
+dickite, which are almost colourless to brown in colour            Common-Pb corrections were applied to all analyses
+and exhibit very low birefringence. The colour variation           using contemporaneous isotopic compositions determined
+is interpreted to be the result of partial overprinting by         according to the model of Stacey and Kramers (1975).
+
+
+
+                                                               1
+242931.1.pdf                                                                                    Geochronology Record 1898
+
+
+
+
+               Figure 1.   Outcrop image for sample 242931: volcaniclastic siltstone, Mount Berry
+
+
+
+
+               Figure 2.   Cathodoluminescence image of all zircons from sample 242931: volcaniclastic
+                           siltstone, Mount Berry. Numbered circles indicate the approximate locations of
+                           analysis sites
+
+
+
+
+                                                            2
+242931.1.pdf                                                                                                                                                               Geochronology Record 1898
+
+
+
+
+                                        Table 1. Ion microprobe analytical results for zircons from sample 242931: volcaniclastic siltstone, Mount Berry
+
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th       Th
+                                                   232
+                                                             ƒ204        238
+                                                                            U/206Pb             Pb/206Pb
+                                                                                              207
+                                                                                                                      U/206Pb*
+                                                                                                                    238                 207
+                                                                                                                                           Pb*/206Pb*        238
+                                                                                                                                                                U/206Pb*    207
+                                                                                                                                                                               Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)     238
+                                                     U       (%)            ± 1σ                 ± 1σ                 ± 1σ                  ± 1σ           date (Ma) ±1σ   date (Ma) ±1σ    (%)
+       I        16    16.1        72     63        0.87      0.195     2.919    0.039     0.11408       0.00130   2.924    0.039     0.11238     0.00155   1896     22     1838     25       -3.1
+       I        19    19.1       100     143       1.43      0.059     3.013    0.034     0.11318       0.00100   3.015    0.034     0.11266     0.00106   1847     18     1843     17       -0.2
+       I        4      4.1       279     220       0.79      0.205     2.997    0.026     0.11457       0.00067   3.003    0.026     0.11277     0.00081   1853     14     1845     13       -0.4
+       I        12    12.1       157     98        0.62      0.449     2.929    0.029     0.11694       0.00089   2.943    0.029     0.11301     0.00126   1886     16     1848     20       -2.0
+       I        14    14.1        96     72        0.75      0.168     3.076    0.035     0.11454       0.00107   3.082    0.036     0.11307     0.00126   1812     18     1849     20       2.0
+       I        11     11.1      109     95        0.87      0.195     2.942    0.033     0.11484       0.00106   2.948    0.033     0.11314     0.00127   1883     19     1850     20       -1.8
+       I        7      7.1        97     82        0.84      0.037     3.080    0.036     0.11364       0.00114   3.081    0.036     0.11332     0.00119   1812     19     1853     19       2.2
+       I        2      2.1        91     122       1.34      0.316     3.005    0.065     0.11657       0.00117   3.015    0.065     0.11381     0.00153   1847     35     1861     24       0.8
+       I        20    20.1       157     123       0.78     -0.023     2.979    0.030     0.11420       0.00089   2.979    0.030     0.11440     0.00091   1866     16     1870     14       0.2
+       I        6      6.1       240     144       0.60      0.041     2.968    0.026     0.11488       0.00069   2.969    0.026     0.11452     0.00072   1871     14     1872     11       0.0
+       I        13    13.1       175     143       0.81      0.019     2.928    0.030     0.11509       0.00082   2.929    0.030     0.11493     0.00084   1894     17     1879     13       -0.8
+       I        15    15.1       194     176       0.91      0.035     3.046    0.028     0.11531       0.00079   3.047    0.028     0.11500     0.00082   1830     15     1880     13       2.7
+       I        10    10.1       146     166       1.14      0.255     3.145    0.032     0.11731       0.00091   3.153    0.032     0.11508     0.00113   1776     16     1881     18       5.6
+       I        1      1.1       137     159       1.16      0.106     3.041    0.032     0.11615       0.00097   3.044    0.032     0.11522     0.00107   1831     17     1883     17       2.8
+       I        17     17.1      123     113       0.92     -0.161     2.973    0.046     0.11392       0.00096   2.969    0.046     0.11533     0.00112   1872     25     1885     17       0.7
+       I        3      3.1       204     301       1.47      0.051     2.995    0.028     0.11594       0.00077   2.997    0.028     0.11550     0.00081   1856     15     1888     13       1.7
+       I        9      9.1       165     159       0.96     -0.134     2.973    0.029     0.11466       0.00083   2.969    0.029     0.11583     0.00094   1871     16     1893     15       1.1
+       I        8      8.1        81     118       1.46      -0.116    3.002    0.037     0.11489       0.00115   2.999    0.037     0.11590     0.00129   1855     20     1894     20       2.0
+       I        18    18.1       228     177       0.78      0.000     2.991    0.027     0.11620       0.00074   2.991    0.027     0.11620     0.00074   1859     15     1899     11       2.1
+
+
+      D         5      5.1       162     177       1.09      0.482     3.477    0.034     0.11870       0.00096   3.494    0.034     0.11449     0.00137   1622     14     1872     22       13.3
+
+
+
+
+                                                                                                    3
+242931.1.pdf                                                                                                           Geochronology Record 1898
+
+
+
+
+            Figure 3.    U–Pb analytical data for zircons from sample 242931: volcaniclastic siltstone, Mount Berry.
+                         Yellow squares indicate Group I (magmatic zircons); crossed square indicates Group D
+                         (discordance >6%)
+
+
+
+
+Results                                                                       Martin, DMcB, Allen, HJ and Blay, OA 2022, Stratigraphic and structural
+                                                                                revisions on the Wyloo and Yarraloola 1:250 000 map sheets:
+Twenty analyses were obtained from 20 zircons. Results are                      Geological Survey of Western Australia, Record 2022/4, p. 5–7.
+listed in Table 1, and shown in a concordia diagram (Fig. 3).
+                                                                              Müller, SG, Krapež, B, Barley, ME and Fletcher, IR 2005, Giant iron-
+                                                                                ore deposits of the Hamersley province related to the breakup of
+                                                                                Paleoproterozoic Australia: new insights from in situ SHRIMP dating
+Interpretation                                                                  of baddeleyite from mafic intrusions: Geology, v. 33, no. 7, p. 577–580.
+The analyses are concordant to moderately discordant                          Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead isotope
+(Fig. 3). One analysis is >6% discordant. The date obtained                      evolution by a two-stage model: Earth and Planetary Science Letters,
+from this analysis (Group D; Table 1) is unreliable,                             v. 26, p. 207–221.
+and considered not to be geologically significant. The                        Thorne, AM and Johnson, SP 2020a, Duck Creek Dolomite
+remaining 19 analyses form a single group, based on their                       (P_-WYd-kd): Geological Survey of Western Australia, WA
+207
+    Pb*/206Pb* ratios.                                                          Geology Online, Explanatory Notes extract, viewed 17 May 2022,
+                                                                                <www.dmp.wa.gov.au/ens>.
+Group I comprises 19 analyses (Table 1), which yield                          Thorne, AM and Johnson, SP 2020b, June Hill Volcanics
+a weighted mean 207Pb*/ 206Pb* date of 1873 ± 9 Ma                              (P_-WYj-b): Geological Survey of Western Australia, WA
+(MSWD = 1.5).                                                                   Geology Online, Explanatory Notes extract, viewed 17 May 2022,
+                                                                                <www.dmp.wa.gov.au/ens>.
+The date of 1873 ± 9 Ma for the 19 analyses in Group I
+is interpreted as the igneous crystallization age of the                      Wingate, MTD, Lu, Y, Fielding, IOH and Johnson, SP 2019, 219580: felsic
+                                                                                 volcanic rock, Catho Well; Geochronology Record 1630: Geological
+dominant volcanic component.
+                                                                                 Survey of Western Australia, 4p.
+
+
+References                                                                    Re­commended reference for this
+Evans, DAD, Sircombe, KN, Wingate, MTD, Doyle, M, McCarthy, M,                publication
+   Pidgeon, RT and Van Niekerk, HS 2003, Revised geochronology
+                                                                              Wingate, MTD, Fielding, IOH, Lu, Y, Martin, DMcB and Allen, HJ 2022,
+   of magmatism in the western Capricorn Orogen at 1805–1785 Ma:
+                                                                                242931: volcaniclastic siltstone, Mount Berry; Geochronology Record
+   Diachroneity of the Pilbara–Yilgarn collision: Australian Journal of
+                                                                                1898: Geological Survey of Western Australia, 4p.
+   Earth Sciences, v. 50, p. 853–864.
+Martin, DMcB 2020, Turee Creek Group (P_-TK-s): Geological Survey             Data obtained:        25 February 2022
+  of Western Australia, WA Geology Online, Explanatory Notes extract,
+  viewed 18 May 2022, <www.dmp.wa.gov.au/ens>.                                Data released:        3 June 2022
+
+
+                                                                          4
+

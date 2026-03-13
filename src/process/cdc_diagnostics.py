@@ -29,13 +29,27 @@ from process.cdc_config import (
     RUN_FIELDS,
     RUNLOG,
 )
-from process.cdc_population import concordant_ages_ma
+from process.cdc_tw import age_ma_from_pb207pb206, age_ma_from_u238pb206
 from process.cdc_utils import safe_prefix
 
 try:
     import resource  # Unix only
 except ImportError:  # pragma: no cover
     resource = None
+
+
+def _spot_age_proxy_ma(spot) -> float:
+    """Stable age proxy (Ma) from TW coordinates for one spot."""
+    t = age_ma_from_pb207pb206(spot.pbPbValue)
+    if np.isfinite(t):
+        return float(t)
+    t2 = age_ma_from_u238pb206(spot.uPbValue)
+    return float(t2) if np.isfinite(t2) else float("nan")
+
+
+def concordant_ages_ma(spots):
+    """Approximate concordant ages (Ma) used for diagnostics exports."""
+    return np.asarray([_spot_age_proxy_ma(s) for s in spots], float)
 
 
 def ensure_output_dirs() -> None:
@@ -241,35 +255,8 @@ def export_legacy_ks(
     S_raw = 1.0 - D_raw
     S_pen = 1.0 - D_pen
 
-    use_pen = bool(getattr(settings, "penaliseInvalidAges", False))
-    tag = "pen" if use_pen else "raw"
-
     KS_EXPORT_ROOT.mkdir(parents=True, exist_ok=True)
 
-    # ------------------------------------------------------------
-    # Choose which age is treated as the "optimal rim" for UI CDF export:
-    #   - Prefer UI median-of-run-optima if provided
-    #   - Otherwise fall back to the curve optimum (legacy behaviour)
-    # ------------------------------------------------------------
-    if ui_opt_years is not None and np.isfinite(ui_opt_years):
-        rim_opt_ma = float(ui_opt_years) / 1e6
-        rim_opt_int = int(round(rim_opt_ma))
-    else:
-        D_for_opt = D_pen if use_pen else D_raw
-        D_for_opt = np.where(np.isfinite(D_for_opt), D_for_opt, np.inf)
-        i_opt = int(np.nanargmin(D_for_opt))
-        rim_opt_ma = float(ages_ma[i_opt])
-        rim_opt_int = int(round(rim_opt_ma))
-
-    # 1D curve export
-    good_path = KS_EXPORT_ROOT / f"KS_goodness_{tag}.csv"
-    with good_path.open("w", newline="") as fh:
-        w = csv.writer(fh)
-        w.writerow(["age_Ma", "S_raw", "S_pen", "D_raw", "D_pen", "n_runs"])
-        for a, sr, spv, dr, dp in zip(ages_ma, S_raw, S_pen, D_raw, D_pen):
-            w.writerow([f"{a:.6f}", f"{sr:.6f}", f"{spv:.6f}", f"{dr:.6f}", f"{dp:.6f}", n_runs])
-
-    # Summary export (so UI optimum/CI is reproducible from exports)
     def _ma_or_blank(x):
         if x is None:
             return ""
@@ -281,65 +268,105 @@ def export_legacy_ks(
             return ""
         return f"{(x / 1e6):.6f}"
 
-    summ_path = KS_EXPORT_ROOT / f"KS_optimum_summary_{tag}.csv"
-    with summ_path.open("w", newline="") as fh:
-        w = csv.writer(fh)
-        w.writerow(["opt_ui_Ma", "low95_ui_Ma", "high95_ui_Ma", "opt_surface_Ma", "n_runs"])
-        w.writerow(
-            [
-                _ma_or_blank(ui_opt_years),
-                _ma_or_blank(ui_low95_years),
-                _ma_or_blank(ui_high95_years),
-                _ma_or_blank(legacy_opt_years),
-                n_runs,
-            ]
-        )
+    def _surface_optimum_years(d_curve: np.ndarray) -> float:
+        d_curve = np.where(np.isfinite(d_curve), d_curve, np.inf)
+        return float(ages_y[int(np.nanargmin(d_curve))])
 
-    # Per-run optima export (lets you rebuild median/CI exactly)
+    def _run_optima_years(which: str) -> np.ndarray:
+        vals = []
+        for r in runs:
+            if which == "pen":
+                vals.append(float(getattr(r, "optimal_pb_loss_age", np.nan)))
+                continue
+            d_by_age = np.array([r.statistics_by_pb_loss_age[a].test_statistics[0] for a in ages_y], float)
+            d_by_age = np.where(np.isfinite(d_by_age), d_by_age, np.inf)
+            vals.append(float(ages_y[int(np.nanargmin(d_by_age))]))
+        return np.asarray(vals, float)
+
+    run_optima_by_tag = {
+        "raw": _run_optima_years("raw"),
+        "pen": _run_optima_years("pen"),
+    }
+
+    # Preserve caller-provided optima for the active channel when available.
+    active_tag = "pen" if bool(getattr(settings, "penaliseInvalidAges", False)) else "raw"
     if run_optima_years is not None:
+        run_optima_by_tag[active_tag] = np.asarray(run_optima_years, float)
+
+    conc_ages = concordant_ages_ma(conc_spots)
+    conc_ages = conc_ages[np.isfinite(conc_ages)]
+    conc_ages.sort()
+
+    for tag, d_curve in (("raw", D_raw), ("pen", D_pen)):
+        opt_years = run_optima_by_tag[tag]
+        opt_years = opt_years[np.isfinite(opt_years)]
+        if opt_years.size:
+            ui_opt = float(np.median(opt_years))
+            ui_low = float(np.quantile(opt_years, 0.025))
+            ui_high = float(np.quantile(opt_years, 0.975))
+        else:
+            ui_opt = ui_low = ui_high = float("nan")
+
+        rim_opt_ma = float(ui_opt) / 1e6 if np.isfinite(ui_opt) else float(_surface_optimum_years(d_curve) / 1e6)
+        rim_opt_int = int(round(rim_opt_ma))
+        surface_opt = _surface_optimum_years(d_curve)
+
+        good_path = KS_EXPORT_ROOT / f"KS_goodness_{tag}.csv"
+        with good_path.open("w", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(["age_Ma", "S_raw", "S_pen", "D_raw", "D_pen", "n_runs"])
+            for a, sr, spv, dr, dp in zip(ages_ma, S_raw, S_pen, D_raw, D_pen):
+                w.writerow([f"{a:.6f}", f"{sr:.6f}", f"{spv:.6f}", f"{dr:.6f}", f"{dp:.6f}", n_runs])
+
+        summ_path = KS_EXPORT_ROOT / f"KS_optimum_summary_{tag}.csv"
+        with summ_path.open("w", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(["opt_ui_Ma", "low95_ui_Ma", "high95_ui_Ma", "opt_surface_Ma", "n_runs"])
+            w.writerow(
+                [
+                    _ma_or_blank(ui_opt),
+                    _ma_or_blank(ui_low),
+                    _ma_or_blank(ui_high),
+                    _ma_or_blank(surface_opt),
+                    n_runs,
+                ]
+            )
+
         opt_path = KS_EXPORT_ROOT / f"KS_run_optima_{tag}.csv"
         with opt_path.open("w", newline="") as fh:
             w = csv.writer(fh)
             w.writerow(["run", "opt_age_Ma"])
-            vals = np.asarray(run_optima_years, float) / 1e6
-            for i, t in enumerate(vals):
+            for i, t in enumerate(opt_years):
                 if np.isfinite(t):
-                    w.writerow([i, f"{t:.6f}"])
+                    w.writerow([i, f"{(float(t) / 1e6):.6f}"])
 
-    # Per-sample folder
-    subdir = KS_EXPORT_ROOT / f"KS_failure_{tag}"
-    subdir.mkdir(parents=True, exist_ok=True)
+        subdir = KS_EXPORT_ROOT / f"KS_failure_{tag}"
+        subdir.mkdir(parents=True, exist_ok=True)
 
-    # TW coordinates
-    with (subdir / "concordant.csv").open("w", newline="") as fh:
-        w = csv.writer(fh)
-        w.writerow(["uPb", "pbPb"])
-        for s in conc_spots:
-            w.writerow([float(s.uPbValue), float(s.pbPbValue)])
-
-    with (subdir / "discordant.csv").open("w", newline="") as fh:
-        w = csv.writer(fh)
-        w.writerow(["uPb", "pbPb"])
-        for s in disc_spots:
-            w.writerow([float(s.uPbValue), float(s.pbPbValue)])
-
-    # Concordant ages (for ECDF)
-    conc_ages = concordant_ages_ma(conc_spots)
-    conc_ages = conc_ages[np.isfinite(conc_ages)]
-    conc_ages.sort()
-    with (subdir / "cdf_concordant.csv").open("w", newline="") as fh:
-        w = csv.writer(fh)
-        w.writerow(["# age_Ma"])
-        for t in conc_ages:
-            w.writerow([f"{t:.6f}"])
-
-    # UI age CDFs at 300, chosen optimum (file name rounded), 1800
-    for rim in (300, rim_opt_int, 1800):
-        rim_for_calc = float(rim_opt_ma) if rim == rim_opt_int else float(rim)
-        ui_ma = ks_ui_ages_for_rim_Ma(disc_spots, rim_for_calc)
-        header = f"# age_Ma_UI_rim{rim_opt_ma:.3f}" if rim == rim_opt_int else f"# age_Ma_UI_rim{rim}"
-        with (subdir / f"cdf_UI_{rim}.csv").open("w", newline="") as fh:
+        with (subdir / "concordant.csv").open("w", newline="") as fh:
             w = csv.writer(fh)
-            w.writerow([header])
-            for t in ui_ma:
+            w.writerow(["uPb", "pbPb"])
+            for s in conc_spots:
+                w.writerow([float(s.uPbValue), float(s.pbPbValue)])
+
+        with (subdir / "discordant.csv").open("w", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(["uPb", "pbPb"])
+            for s in disc_spots:
+                w.writerow([float(s.uPbValue), float(s.pbPbValue)])
+
+        with (subdir / "cdf_concordant.csv").open("w", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(["# age_Ma"])
+            for t in conc_ages:
                 w.writerow([f"{t:.6f}"])
+
+        for rim in (300, rim_opt_int, 1800):
+            rim_for_calc = float(rim_opt_ma) if rim == rim_opt_int else float(rim)
+            ui_ma = ks_ui_ages_for_rim_Ma(disc_spots, rim_for_calc)
+            header = f"# age_Ma_UI_rim{rim_opt_ma:.3f}" if rim == rim_opt_int else f"# age_Ma_UI_rim{rim}"
+            with (subdir / f"cdf_UI_{rim}.csv").open("w", newline="") as fh:
+                w = csv.writer(fh)
+                w.writerow([header])
+                for t in ui_ma:
+                    w.writerow([f"{t:.6f}"])

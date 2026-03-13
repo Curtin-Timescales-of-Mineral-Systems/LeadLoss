@@ -1,0 +1,224 @@
+242652.1.pdf                                                                                         Geochronology Record 1807
+
+
+
+
+               242652: felsic metavolcanic rock, Bowgarder Hills
+                                      (Youanmi Terrane, Yilgarn Craton)
+
+
+
+
+Location and sampling                                              and smaller grains of pyrite and chalcopyrite. Prehnite
+                                                                   occurs in veins up to 0.1 mm wide. The sample has been
+Perenjori (SH 50-6), Perenjori (2139)                              metamorphosed to a hornblende hornfels, characterized
+                   MGA Zone 50, 432328E 6765598N                   by a finely granoblastic texture and an assemblage of
+                                                                   actinolitic hornblende and biotite. Epidote, chlorite,
+Sampled on 4 May 2019                                              carbonate and at least some quartz are lower-temperature
+This sample was collected from outcrop adjacent to a               secondary minerals. The rock lacks volcanic textures and
+power line access track on the west side of the Bowgarder          may represent a siliceous tuffaceous rock rather than a
+Hills, about 13.5 km west of Weelhamby Lake, 10.7 km               coherent rhyolite.
+east-southeast of Koolanooka mine, and 4.5 km south of
+Mungada Road.
+                                                                   Zircon morphology
+                                                                   Zircons isolated from this sample are colourless to dark
+Geological context                                                 brown or opaque, and subhedral to euhedral. The crystals
+                                                                   are up to 200 µm long, and equant to slightly elongate,
+The unit sampled is a felsic metavolcanic rock within the          with aspect ratios up to 3:1. In cathodoluminescence (CL)
+Koolanooka greenstone belt, which consists mainly of               images, concentric zoning is ubiquitous, although about
+greenschist to amphibolite facies volcanic, sedimentary,           half of the zircons luminesce brightly whereas the others
+and ultramafic to felsic intrusive rocks, and banded               are dark. A CL image of representative zircons is shown
+iron-formation (Baxter et al., 1983; Baxter and Lipple,            in Figure 2.
+1985; Watkins, 1990). A metarhyolite collected in the
+southern Koolanooka greenstone belt, about 15.9 km to
+the south-southeast, yielded an igneous crystallization
+age of 3002 ± 4 Ma (GSWA 242672, Wingate et al.,
+                                                                   Analytical details
+2021). A metamonzogranite collected about 19.8 km to               This sample was analysed during three analytical sessions,
+the northeast yielded an igneous crystallization age of            on 20–21 and 26–27 March and 14–15 May 2020, using
+2946 ± 4 Ma (GSWA 219311, Wingate et al., 2020).                   SHRIMP-B. Analyses 1.1 to 12.1 (spot numbers 1–12)
+                                                                   were obtained during the first session, together with 12
+                                                                   analyses of the M257 standard, of which 11 analyses
+Petrographic description                                           indicated an external spot-to-spot (reproducibility)
+                                                                   uncertainty of 1.20% (1σ) and a 238U/206Pb* calibration
+The sample is an altered, fine-grained, felsic metavolcanic        uncertainty of 0.42% (1σ). Analyses 13.1 to 24.1 (spot
+rock (Fig. 1), consisting of about 75% sericite- and               numbers 13–24) were obtained during the second
+epidote-altered microcrystalline material, 5% larger quartz        session, together with 11 analyses of the M257 standard,
+grains, 5–7% actinolitic hornblende, 5–7% epidote, 3%              of which eight analyses indicated an external spot-to-
+biotite, 3% chlorite, 2–3% carbonate minerals, and trace           spot (reproducibility) uncertainty of 2.33% (1σ) and
+sulfide minerals, prehnite and zircon. The microcrystalline        a 238U/ 206Pb* calibration uncertainty of 0.99% (1σ).
+material is a quartz-rich granoblastic aggregate of mainly         Isotopic mass fractionation of 207Pb/206Pb ratios during the
+transparent grains with an average size of <0.025 mm.              second session was corrected by reference to the OGC1
+Extensive sericite and epidote alteration suggests that            standard; measured ratios were decreased by 0.44%.
+feldspar is present, but is either altered or not twinned.         Analyses 24.2 to 30.1 (spot numbers 25–36) were obtained
+Larger quartz grains, up to 0.3 mm in size, are rounded or         during the third session, together with 10 analyses of
+irregular, and disseminated in aggregates with secondary           the M257 standard which indicated an external spot-to-
+minerals. Although they may be primary in origin, they             spot (reproducibility) uncertainty of 0.50% (1σ) and a
+do not appear to be typical volcanic phenocrysts. The              238
+                                                                      U/206Pb* calibration uncertainty of 0.20% (1σ). Isotopic
+remaining minerals are secondary, and either metamorphic           mass fractionation of 207Pb/206Pb ratios during the third
+or low-temperature alteration products. Blue–green                 session was corrected by reference to the OGC1 standard;
+actinolitic hornblende is anhedral to subhedral, and up            measured ratios were decreased by 0.54%. Calibration
+to 0.3 mm in size. Pale brown biotite is anhedral, up to           uncertainties are included in the errors of 238U/206Pb* ratios
+0.25 mm in size. Chlorite has partially replaced both              and dates listed in Table 1. Common-Pb corrections were
+biotite and hornblende. Epidote is finely disseminated             applied to all analyses using contemporaneous isotopic
+throughout the microcrystalline material. Sulfide minerals         compositions determined according to the model of Stacey
+include anhedral, irregular pyrrhotite up to 0.1 mm in size,       and Kramers (1975).
+
+
+                                                               1
+242652.1.pdf                                                                               Geochronology Record 1807
+
+
+
+
+               Figure 1.   Hand specimen image of sample 242652: felsic metavolcanic rock, Bowgarder
+                           Hills
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 242652:
+                           felsic metavolcanic rock, Bowgarder Hills. Numbered circles indicate the
+                           approximate locations of analysis sites
+
+
+
+
+                                                         2
+242652.1.pdf                                                                                                                                                               Geochronology Record 1807
+
+
+                                        Table 1. Ion microprobe analytical results for zircons from sample 242652: felsic metavolcanic rock, Bowgarder Hills
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th      Th
+                                                  232
+                                                            ƒ204           U/206Pb
+                                                                         238                 207
+                                                                                                   Pb/206Pb         238
+                                                                                                                          U/206Pb*       207
+                                                                                                                                            Pb*/206Pb*       238
+                                                                                                                                                                U/206Pb*    207
+                                                                                                                                                                               Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)       U
+                                                  238
+                                                            (%)            ± 1σ                     ± 1σ                  ± 1σ               ± 1σ          date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      I         32    13.2       133     36        0.27     0.038     1.772     0.019    0.21622        0.00148   1.773        0.019   0.21588   0.00131       2883   25   2950     10       2.3
+      I         26    25.1       179     84        0.47     0.027     1.761     0.017    0.21638        0.00086   1.762        0.017   0.21614   0.00168       2898   22   2952     13       1.8
+      I         36    30.1       173     66        0.38     0.029     1.793     0.018    0.21643        0.00085   1.794        0.018   0.21617   0.00120       2856   23   2952     9        3.3
+      I         19    19.1       147     56        0.38     0.080     1.707     0.046    0.21695        0.00155   1.709        0.046   0.21624   0.00158       2970   67   2953     12       -0.6
+      I         8      8.1       179     76        0.43     0.050     1.773     0.033    0.21692        0.00098   1.774        0.033   0.21648   0.00100       2882   44   2955     7        2.5
+      I         6      6.1       137     39        0.29     0.061     1.771     0.028    0.21725        0.00108   1.772        0.028   0.21671   0.00110       2885   38   2956     8        2.4
+      I         13    13.1       195     100       0.52     0.014     1.804     0.049    0.21716        0.00149   1.805        0.049   0.21703   0.00149       2843   64   2959     11       3.9
+      I         7      7.1       542     396       0.73     0.042     1.785     0.025    0.21744        0.00055   1.785        0.025   0.21707   0.00056       2867   33   2959     4        3.1
+      I         3      3.1       104     49        0.47     -0.055    1.814     0.040    0.21726        0.00132   1.813        0.040   0.21775   0.00135       2832   51   2964     10       4.5
+      I         27    26.1       181     80        0.44     0.030     1.705     0.017    0.21811        0.00128   1.705        0.017   0.21784   0.00122       2975   24   2965     9        -0.3
+      I         11     11.1      192     123       0.64     0.036     1.725     0.026    0.21837        0.00093   1.725        0.026   0.21805   0.00095       2947   37   2966     7        0.6
+      I         10    10.1       199     107       0.54     0.017     1.701     0.026    0.21844        0.00090   1.701        0.026   0.21829   0.00091       2980   37   2968     7        -0.4
+      I         5      5.1       208     101       0.49     0.032     1.775     0.027    0.21862        0.00088   1.776        0.027   0.21833   0.00089       2880   35   2968     7        3.0
+      I         9      9.1       168     81        0.48     0.050     1.760     0.027    0.21887        0.00099   1.760        0.027   0.21842   0.00101       2900   37   2969     7        2.3
+
+
+      X         20    20.1       404     191       0.47     0.040     1.798     0.050    0.21992        0.00123   1.799        0.050   0.21956   0.00124       2850   66   2977     9        4.3
+      X         28    18.2       327     146       0.44     0.018     1.709     0.014    0.22037        0.00092   1.709        0.014   0.22021   0.00105       2970   20   2982     8        0.4
+      X         33     27.1      276     115       0.42     0.064     1.739     0.015    0.22132        0.00111   1.740        0.015   0.22075   0.00108       2927   21   2986     8        2.0
+      X         25    24.2       546     328       0.60     0.047     1.699     0.013    0.22119        0.00109   1.700        0.013   0.22077   0.00090       2983   19   2986     7        0.1
+      X         22    22.1       324     242       0.75     0.007     1.682     0.050    0.22095        0.00123   1.682        0.050   0.22089   0.00123       3007   73   2987     9        -0.7
+      X         34    28.1       703     567       0.81      0.011    1.726     0.012    0.22140        0.00104   1.726        0.012   0.22130   0.00085       2946   17   2990     6        1.5
+      X         29     17.2      483     354       0.73     0.020     1.735     0.013    0.22148        0.00083   1.735        0.013   0.22130   0.00091       2934   18   2990     7        1.9
+      X         21    21.1       593     378       0.64     -0.012    1.715     0.046    0.22132        0.00112   1.715        0.046   0.22143   0.00112       2962   67   2991     8        1.0
+      X         15    15.1       583     336       0.58     -0.015    1.803     0.052    0.22156        0.00116   1.803        0.052   0.22169   0.00116       2845   69   2993     8        4.9
+      X         31    15.2       601     401       0.67     -0.012    1.762     0.013    0.22174        0.00116   1.762        0.013   0.22184   0.00089       2898   17   2994     6        3.2
+      X         14    14.1       559     371       0.66     0.004     1.687     0.055    0.22224        0.00185   1.687        0.055   0.22221   0.00185       3001   80   2997     13       -0.1
+      X         4      4.1       284     199       0.70     0.013     1.765     0.026    0.22237        0.00080   1.765        0.026   0.22226   0.00081       2893   35   2997     6        3.5
+      X         23    23.1       385     273       0.71     -0.018    1.646     0.043    0.22210        0.00121   1.645        0.043   0.22226   0.00121       3061   66   2997     9        -2.1
+      X         17     17.1      586     315       0.54     0.017     1.714     0.045    0.22248        0.00114   1.715        0.045   0.22232   0.00114       2962   64   2998     8        1.2
+      X         12    12.1       320     254       0.79     0.032     1.724     0.025    0.22274        0.00074   1.725        0.025   0.22246   0.00075       2948   35   2999     5        1.7
+      X         24    24.1       349     125       0.36     0.031     1.658     0.048    0.22279        0.00121   1.658        0.048   0.22252   0.00122       3042   73   2999     9        -1.4
+      X         2      2.1       627     419       0.67     0.041     1.780     0.024    0.22334        0.00056   1.780        0.024   0.22297   0.00056       2874   33   3002     4        4.3
+
+
+      P         1      1.1        64     26        0.40     0.051     1.688     0.031    0.21540        0.00155   1.689        0.031   0.21494   0.00159       2998   45   2943     12       -1.9
+
+
+      D         35    29.1       118     46        0.39     0.144     1.854     0.020    0.21980        0.00085   1.857        0.020   0.21853   0.00138       2778   25   2970     10       6.5
+      D         30    16.2       194     102       0.53     0.094     1.805     0.017    0.22424        0.00090   1.807        0.017   0.22342   0.00181       2840   22   3005     13       5.5
+      D         18    18.1       556     288       0.52     -0.009    2.388     0.066    0.22546        0.00133   2.387        0.066   0.22554   0.00134       2255   54   3021     10       25.3
+      D         16    16.1       377     191       0.51      0.115    3.596     0.101    0.23135        0.00263   3.600        0.101   0.23033   0.00273       1580   40   3054     19       48.3
+
+
+
+                                                                                                    3
+242652.1.pdf                                                                                             Geochronology Record 1807
+
+
+
+
+          Figure 3.   U–Pb analytical data for sample 242652: felsic metavolcanic rock, Bowgarder Hills. Yellow
+                      squares indicate Group I (magmatic zircons); red circles indicate Group X (xenocrystic zircons);
+                      black square indicates Group P (radiogenic-Pb loss); crossed squares indicate Group D
+                      (discordance >5%). Two strongly discordant analyses in Group D are not shown
+
+
+
+
+Results                                                            and indicates low concentrations of U (64 ppm) and Th
+                                                                   (26 ppm).
+Thirty-six analyses were obtained from 30 zircons. Results
+are listed in Table 1, and shown in a concordia diagram            The date of 2961 ± 4 Ma for the 14 analyses in Group
+(Fig. 3).                                                          I is interpreted as the igneous crystallization age of the
+                                                                   volcanic rock. The date of 2994 ± 3 Ma for the 17 analyses
+                                                                   in Group X is interpreted as the age of an inherited
+Interpretation                                                     component. The date of 2943 ± 12 Ma (1σ) for the single
+                                                                   analysis in Group P is interpreted to reflect minor ancient
+The analyses are concordant to strongly discordant
+                                                                   loss of radiogenic Pb.
+(Fig. 3). Four analyses are >5% discordant. The dates
+obtained from these four analyses (Group D; Table 1)
+are unreliable, and considered not to be geologically
+significant. The remaining 32 analyses can be divided into         References
+three groups, based on their 207Pb*/206Pb* ratios, U and Th        Baxter, JL, Lipple, SL, Playford, PE, Low, GH and Lowry, DC 1983,
+concentrations, and appearance in CL images.                          Perenjori, WA Sheet SH 50-6: Geological Survey of Western
+                                                                      Australia, 1:250 000 Geological Series.
+Group I comprises 14 analyses of 13 zircons (Table 1),
+which yield a weighted mean 207 Pb*/ 206 Pb* date                  Baxter, JL and Lipple, SL 1985, Perenjori, WA Sheet SH 50-6:
+of 2961 ± 4 Ma (MSWD = 0.68). These analyses                         Geological Survey of Western Australia, 1:250 000 Geological Series
+were located in zircons that are bright in CL images,                Explanatory Notes, 37p.
+and indicate mainly moderate concentrations of U                   Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+(104– 542 ppm, median 179 ppm) and Th (36–396 ppm,                    isotope evolution by a two-stage model: Earth and Planetary Science
+median 81 ppm).                                                       Letters, v. 26, p. 207–221.
+                                                                   Watkins, KP 1990, Murchison Province, in Geology and Mineral
+Group X comprises 17 analyses of 14 zircons (Table 1),               Resources of Western Australia: Geological Survey of Western
+which yield a weighted mean 207Pb*/ 206Pb* date of                   Australia, Memoir 3, p. 32–60.
+2994 ± 3 Ma (MSWD = 0.96). These analyses were
+                                                                   Wingate, MTD, Fielding, IOH, Lu, Y and Ivanic, T 2021, 242672: felsic
+located in zircons that are dark in CL images, and indicate          metavolcanic rock, Solomon Road; Geochronology Record 1800:
+mainly high concentrations of U (276–703 ppm, median                 Geological Survey of Western Australia, 4p.
+483 ppm) and Th (115–567 ppm, median 315 ppm).
+                                                                   Wingate, MTD, Lu, Y and Zibra, I 2020, 219311: metamonzogranite,
+Group P comprises one analysis (Table 1), which yields               North Paradise Well; Geochronology Record 1680: Geological
+a 207Pb*/206Pb* date of 2943 ± 12 Ma (1σ). This analysis             Survey of Western Australia, 4p.
+was located in a zircon that is bright in the CL image,
+
+
+
+                                                               4
+242652.1.pdf                                                                Geochronology Record 1807
+
+
+Recommended reference for this
+publication
+Wingate, MTD, Fielding, IOH, Lu, Y and Ivanic, T 2021, 242652: felsic
+  metavolcanic rock, Bowgarder Hills; Geochronology Record 1807:
+  Geological Survey of Western Australia, 5p.
+
+Data obtained:       15 May 2020
+Data released:       21 October 2021
+
+
+
+
+                                                                        5
+

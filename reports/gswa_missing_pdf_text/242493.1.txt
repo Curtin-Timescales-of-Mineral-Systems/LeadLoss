@@ -1,0 +1,161 @@
+                                   GSWA Geochronology Record
+                                           www.dmirs.wa.gov.au/geochron
+                                      Department of Mines, Industry Regulation and Safety
+
+242493.1.pdf                                                                                 Geochronology Record 1935
+
+                    242493.1: metagranodiorite dyke, Reserve Well
+                              (Tuckanarra Suite; Youanmi Terrane, Yilgarn Craton)
+                                SS Romano, MDT Wingate, Y LU, IOH Fielding and TJ Ivanic
+
+
+Location and sampling
+MURGOO SG50-14, MURGOO 2143                                                        Zone 50, MGA 441558E 7003242N
+Warox Site TJIMUR190001                                                               Sampled on 3 September 2019
+This sample was collected near the western edge of a 200 m-wide outcrop east of the Beringarra – Pindar Road, about 5.4
+km east-northeast of Mount Nicolay, 4.6 km west of Little Well, and 1.6 km south-southeast of Reserve Well.
+
+Geological context
+The unit sampled is a 0.5 m-wide, foliated metagranodiorite dyke (Fig.1) assigned to the Tuckanarra Suite (Zibra, 2019:
+ENS report Tuckanarra Suite, viewed 24 May 2023). The 2697–2657 Ma Tuckanarra Suite consists of strongly foliated
+and locally magmatically layered rocks, with compositions ranging from granodiorite to monzogranite. Most Tuckanarra
+Suite rocks consist of coarse-grained, K-feldspar-phyric, biotite metamonzogranite and equigranular monzogranite. Minor
+components, which typically form dykes or small intrusions, include quartz diorite, tonalite, granodiorite and muscovite-
+bearing leucogranite (Zibra, 2019: ENS report Tuckanarra Suite, viewed 24 May 2023). The dyke at this locality crosscuts
+granitic gneiss, assigned to the Annean Supersuite, that yielded an igneous crystallization age of 2741 ± 4 Ma (GSWA
+242492, Romano et al. 2023).
+
+
+
+
+                       Figure 1.    Outcrop image for sample 242493: metagranodiorite dyke,
+                                    Reserve Well
+
+Petrographic description
+This sample is a fine- to medium-grained metagranodiorite (Fig. 2), which consists of about 45% plagioclase, 30% quartz,
+15–18% K-feldspar, 5% biotite, 2% magnetite, <1% allanite and accessory apatite, pyrite, hematite and zircon. Plagioclase
+is mainly anhedral, equant, up to 3 mm in size, and altered to sericite and muscovite. Quartz is anhedral, elongate,
+fractured, up to 4 mm long, and exhibits weak undulose extinction and lobate grain boundaries. K-feldspar is anhedral,
+equant, microperthitic, up to 0.7 mm in size, and exhibits microcline twinning. Brown biotite forms subhedral laths up to 1
+mm long that are partially replaced by chlorite and define an undulating foliation. Magnetite is subhedral, pitted, and up to
+0.7 mm in diameter. Subhedral pyrite is up to 0.4 mm in size and rimmed with hematite. Allanite is anhedral to subhedral,
+equant, metamict, and up to 0.5 mm in size. Euhedral apatite is equant to tabular and up to 0.2 mm long. The sample has
+                                                              1
+been deformed at moderate metamorphic grade and exhibits a foliation defined by aligned biotite and elongate quartz.
+Quartz and feldspars display well-developed polygonal texture indicative of partial recovery.
+
+
+
+
+                       Figure 2.    Hand specimen image of sample 242493: metagranodiorite
+                                    dyke, Reserve Well
+
+Zircon morphology
+Zircons isolated from this sample are pale brown to dark brown or violet, subhedral to euhedral, and variably rounded. The
+crystals are up to 450 µm long, and equant to elongate, with aspect ratios up to 6:1. In cathodoluminescence (CL) images,
+concentric zoning is ubiquitous, and many crystals contain embayed cores. A CL image of representative zircons is shown
+in Figure 3.
+
+Analytical details
+This sample was analysed on 28–29 October 2021, using SHRIMP-B. Eleven analyses of the M257 standard were obtained
+during the session, of which nine analyses indicated an external spot-to-spot (reproducibility) uncertainty of 0.70% (1s) and
+a 238U/206Pb* calibration uncertainty of 0.28% (1s). Isotopic mass fractionation of 207Pb/206Pb ratios during the first
+session was corrected by reference to the OGC1 standard; measured ratios were increased by 0.22%. Calibration
+uncertainties are included in the errors of 238U/206Pb* ratios and dates listed in Table 1 (provided in the Links section).
+Common-Pb corrections were applied to all analyses using contemporaneous isotopic compositions determined according
+to the model of Stacey and Kramers (1975).
+
+Results
+Eighteen analyses were obtained from 18 zircons. Results are listed in Table 1and shown in a concordia diagram (Fig. 4).
+
+Interpretation
+The analyses are concordant to moderately discordant (Fig. 4), and form a single group, based on their 207Pb*/206Pb*
+ratios.
+
+Group I comprises 18 analyses (Table 1), which yield a weighted mean 207Pb*/206Pb* date of 2687 ± 4 Ma (MSWD =
+0.64).
+The date of 2687 ± 4 Ma for the 18 analyses in Group I is interpreted as the age of igneous crystallization.
+
+
+
+
+                                                              2
+Figure 3.   Cathodoluminescence image of representative zircons from sample 242493: metagranodiorite
+            dyke, Reserve Well. Numbered circles indicate the approximate locations of analysis sites
+
+
+
+
+                                                          3
+Figure 4.    U–Pb analytical data for zircons from sample 242493: metagranodiorite dyke, Reserve Well. Yellow
+             squares indicate Group I (magmatic zircons)
+
+Links
+Table 1: Ion microprobe analytical results for zircons from sample 242493: metagranodiorite dyke, Reserve Well:
+242493.1.Table1.xls
+SHRIMP spot images: 242493_spots.pdf
+Introduction to geochronology information : Intro_2023.pdf
+References
+Romano, SS, Wingate, MTD, Lu, Y.: Fielding, I. O. H. and Ivanic, TJ 2023, 242492: migmatitic gneiss, Reserve Well;
+     Geological Survey of Western Australia; Geochronology Record 1934: Geological Survey of Western Australia,
+     viewed www.dmirs.wa.gov.au/geochron.
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead isotope evolution by a two-stage model: Earth and
+     Planetary Science Letters, v. 26, p. 207–221.
+
+Recommended reference for this publication
+Romano, SS, Wingate, MDT, LU, Y, Fielding, IOH and Ivanic, TJ 2023, 242493.1: metagranodiorite dyke, Reserve Well;
+   Geochronology Record 1935: Geological Survey of Western Australia, WA Geology Online, Explanatory Notes
+   extract viewed 13 December 2023. <www.dmirs.wa.gov.au/geochron>
+
+ Data obtained: 28 October 2021
+ Date released: 30 November 2023
+
+This page was last modified on 6 December 2023.
+
+Grid references in this publication refer to the Geocentric Datum of Australia 2020 (GDA20). All locations are quoted to at least the
+nearest 100 m.
+Capitalized names in text refer to standard 1:100 000 map sheets, unless otherwise indicated.
+WAROX is GSWA’s field observation and sample database. WAROX site IDs have the format ‘ABCXXXnnnnnnSS’, where ABC =
+geologist username, XXX = project or map code, nnnnnn = 6-digit site number, and SS = optional alphabetic suffix (maximum 2
+characters).
+
+                                                                  4
+Isotope and element analyses are routinely conducted using the GeoHistory laser ablation ICP-MS and Sensitive High-Resolution
+Ion Microprobe (SHRIMP) facilities at the John de Laeter Centre (JdLC), Curtin University, with the financial support of the
+Australian Research Council and AuScope National Collaborative Research Infrastructure Strategy (NCRIS), and the Microscopy
+Australia laser ablation ICP-MS facility at the Centre for Microscopy, Characterisation & Analysis (CMCA), The University of
+Western Australia (UWA). The TESCAN Integrated Mineral Analyser (TIMA) instrument was funded by a grant from the Australian
+Research Council (LE140100150) and is operated by the JdLC with the support of the Geological Survey of Western Australia, UWA
+and Murdoch University. Mineral analyses are routinely obtained using the electron probe microanalyser (EPMA) facilities at the
+CMCA at UWA, at Adelaide Microscopy at the University of Adelaide and the Central Science Laboratory at the University of
+Tasmania.
+Digital data related to WA Geology Online, including geochronology and digital geology, are available online at the Department’s
+Data and Software Centre and may be viewed in map context at GeoVIEW.WA. For further information about this Geochronology
+Record, please contact geochronology@dmirs.wa.gov.au and quote the geochronology record and/or the sample number.
+Further details of geoscience products are available from:
+Information Centre
+Department of Mines, Industry Regulation and Safety
+100 Plain Street
+EAST PERTH, WA 6004
+Telephone: +61 8 9222 3459 | Facsimile: +61 8 9222 3444
+www.dmirs.wa.gov.au /GSWApublications
+Acknowledgment of Country
+The Government of Western Australia acknowledges Aboriginal people as the traditional custodians throughout Western Australia
+and their enduring connection to the land, waterways and community. We pay our respects to Elders past and present.
+Disclaimer
+This product uses information from various sources. The Department of Mines, Industry Regulation and Safety (DMIRS) and the
+State cannot guarantee the accuracy, currency or completeness of the information. Neither the department nor the State of Western
+Australia nor any employee or agent of the department shall be responsible or liable for any loss, damage or injury arising from the
+use of or reliance on any information, data or advice (including incomplete, out of date, incorrect, inaccurate or misleading
+information, data or advice) expressed or implied in, or coming from, this publication or incorporated into it by reference, by any
+person whosoever.
+
+                   © State of Western Australia (Department of Mines, Industry Regulation and Safety) 2023
+With the exception of the Western Australian Coat of Arms and other logos, and where otherwise noted, these data are provided
+under a Creative Commons Attribution 4.0 International License. (https://creativecommons.org/licenses/by/4.0/legalcode)
+
+
+
+
+                                                                  5
+

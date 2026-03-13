@@ -1,0 +1,361 @@
+248205.1.pdf                                                                                       Geochronology Record 1899
+
+
+
+
+                   248205: siliciclastic schist, Julimar prospect
+                                   (South West Terrane, Yilgarn Craton)
+
+
+
+
+Location and sampling                                             biotite, chlorite and white mica, 40–45% quartz, 3%
+                                                                  epidote, 1–2% magnetite and titanite, <1% pyrite, and
+Perth (SH 50-14), Wooroloo (2134)                                 trace zircon. The schistosity is defined by anastomosing
+                   MGA Zone 50, 424600E 6513271N                  phyllosilicate layers up to 1 mm wide, some of which
+                                                                  coalesce into wider mica-rich zones and/or wrap around
+Sampled on 30 September 2020                                      quartz-rich lenses. Biotite forms subhedral laths up to
+This sample was collected from the 382.50 – 384.24 m              0.2 mm long, and is partially replaced by pale green,
+depth interval of diamond drillcore JD018, drilled in 2020        massive to fibrous chlorite. White mica within micaceous
+by Chalice Mining Ltd at their Julimar PGE–Ni–Cu–Co–              layers occurs as well-formed laths about 0.1 mm long,
+Au project (Chalice Mining Ltd, 2022). The drillhole              some parallel to the foliation and some at various angles,
+is located about 13.2 km southeast of the southern end            including crosscutting chlorite and occurring as lenses
+of Lake Chittering, 1.8 km south of Julimar Road, and             parallel to the axes of later kinks. The peak metamorphic
+1.4 km east of Keating Road.                                      assemblage has retrogressed from biotite to chlorite and
+                                                                  muscovite. Some quartz lenses are composed entirely of
+                                                                  recrystallized polycrystalline quartz, although many also
+                                                                  contain significant mica (mostly white mica) and retain
+Geological context                                                a granular texture that suggests they represent boudins
+The unit sampled is a siliciclastic schist within the South       of originally continuous fine sandy layers within a
+West Terrane of the Yilgarn Craton (Quentin de Gromard            predominantly pelitic rock. White mica within these layers
+et al., 2021). The schist represents metasedimentary rocks        forms fine-grained, non-aligned sericite masses between
+in the hanging wall of the Julimar complex, which is being        quartz grains. Quartz grains are equant, strained, and
+explored for PGE–Ni–Cu–Co–Au mineralization (Chalice              average 0.1 mm in size, with slightly serrated boundaries
+Mining Ltd, 2022). The Julimar complex is a 26 km-long            with adjacent micas and rare, smoothly curved original
+layered mafic intrusion, which is almost entirely under           detrital boundaries. Polycrystalline quartz lenses include
+cover and coincident with north- to northeast-trending            strained and subgrained quartz up to 4 mm long, but are
+magnetic features. A pegmatitic leucogabbro from                  composed mainly of smaller recrystallized grains with
+the Gonneville intrusion, a component of the Julimar              finely serrated mutual boundaries. Some polycrystalline
+complex, about 0.8 km to the south-southeast of the               lenses may be relics of early, folded quartz veins. Epidote
+present sample, yielded an igneous crystallization age            porphyroblasts are subhedral, up to 0.3 mm in size, and
+of 2668 ± 4 Ma (GSWA 203747, Wingate et al., 2021a).              wrapped by the micaceous foliation. Narrow lenses of
+A sample of granodiorite that cross-cuts serpentinized            relict magnetite are up to 0.3 mm long, fringed by titanite,
+ultramafic rocks of the Gonneville intrusion about 1.1 km         and aligned with the foliation. Pyrite is subhedral to
+to the south-southeast yielded an igneous crystallization         euhedral, forms short seams and grains up to 0.4 mm in
+age of 2663 ± 8 Ma and contained xenocrystic zircons              size, and appears to overprint the foliation. The protolith
+dated at c. 3276 and 3206 Ma (GSWA 248207, Wingate                was probably a thinly bedded sedimentary rock, composed
+et al., 2021c). A U–Pb zircon age of 2664 ± 6 Ma for the          of alternating pelitic and psammitic layers, that has been
+Coates Siding gabbro, about 20–30 km to the southeast,            deformed and metamorphosed under greenschist facies
+was reported in a conference abstract (Wilde and Pidgeon,         (biotite zone) conditions.
+2006). Re–Os model ages obtained for a sample of
+pentlandite–pyrrhotite–chalcopyrite from the Gonneville
+intrusion suggested that alteration or recrystallization          Zircon morphology
+of ore minerals was younger than c. 2356 Ma (GSWA                 Zircons isolated from this sample are colourless to dark
+248203, Wingate et al., 2021b). The present sample was            brown, anhedral to euhedral, and variably rounded. The
+collected to characterize further the geological setting of       crystals are up to 250 µm long, and equant to elongate,
+the Julimar complex.                                              with aspect ratios up to 5:1. Some crystals have pitted
+                                                                  outer surfaces and, in cathodoluminescence (CL)
+                                                                  images, concentric or planar zoning is truncated at grain
+Petrographic description                                          boundaries, features consistent with sedimentary transport.
+                                                                  A CL image of representative zircons is shown in Figure 2.
+The sample is a strongly foliated, fine-grained mica–
+epidote schist (Fig. 1), consisting of about 50–55%
+
+
+
+
+                                                              1
+248205.1.pdf                                                                                      Geochronology Record 1899
+
+
+
+
+               Figure 1.   Drillcore image of sample 248205: siliciclastic schist, Julimar prospect
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 248205:
+                           siliciclastic schist, Julimar prospect. Numbered circles indicate the approximate
+                           locations of analysis sites
+
+
+
+
+                                                             2
+248205.1.pdf                                                                                                                                                                   Geochronology Record 1899
+
+
+
+
+                                           Table 1. Ion microprobe analytical results for zircons from sample 248205: siliciclastic schist, Julimar prospect
+
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th       Th
+                                                   232
+                                                             ƒ204         238
+                                                                             U/206Pb           207
+                                                                                                  Pb/206Pb           238
+                                                                                                                        U/206Pb*             Pb*/206Pb*
+                                                                                                                                           207                   238
+                                                                                                                                                                    U/206Pb*    207
+                                                                                                                                                                                   Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)        U
+                                                   238
+                                                             (%)             ± 1σ                  ± 1σ                 ± 1σ                  ± 1σ             date (Ma) ±1σ   date (Ma) ±1σ    (%)
+       Y        59    59.1       610     818        1.34     0.000      2.031     0.018    0.17666       0.00051   2.031      0.018    0.17666     0.00051     2581     20     2622     5        1.6
+
+
+       S        3      3.1       304     250        0.82     0.040      2.006     0.018    0.18026       0.00076   2.007      0.018    0.17990     0.00078     2607     20     2652     7        1.7
+       S        70    70.1       388     398        1.03     0.023      1.947     0.019    0.18049       0.00066   1.947      0.019    0.18028     0.00067     2672     22     2656     6        -0.6
+       S        39    39.1       407     429        1.05     -0.013     2.014     0.017    0.18070       0.00069   2.014      0.017    0.18082     0.00070     2599     19     2660     6        2.3
+       S        63    63.1       190     122        0.64     0.022      1.973    0.022     0.18109       0.00091   1.974     0.022     0.18089     0.00092     2642     24     2661     8        0.7
+       S        29    29.1       348     306        0.88     0.036      2.002     0.018    0.18122       0.00074   2.002      0.018    0.18090     0.00075     2611     19     2661     7        1.9
+       S        28    28.1       242     255        1.05      0.011     1.971    0.031     0.18105       0.00088   1.971     0.031     0.18096     0.00088     2645     35     2662     8        0.6
+       S        58    58.1       362     297        0.82      0.013     1.985     0.019    0.18108       0.00069   1.985      0.019    0.18097     0.00069     2630     21     2662     6        1.2
+       S        34    34.1       221     226        1.02     0.058      1.979    0.020     0.18160       0.00093   1.980     0.020     0.18108     0.00096     2636     22     2663     9        1.0
+       S        5      5.1       269     233        0.87     -0.027     1.949     0.018    0.18095       0.00081   1.948      0.018    0.18119     0.00083     2671     21     2664     8        -0.3
+       S        78    78.1       375     326        0.87     -0.006     2.010     0.019    0.18122       0.00066   2.010      0.019    0.18127     0.00066     2603     21     2665     6        2.3
+       S        17     17.1      366     418        1.14     0.020      1.973     0.017    0.18151       0.00071   1.973      0.017    0.18133     0.00071     2643     19     2665     7        0.8
+       S        51    51.1       316     324        1.02     0.063      1.943    0.020     0.18194       0.00077   1.945     0.020     0.18137     0.00079     2675     23     2665     7        -0.4
+       S        20    20.1       245     244        1.00     -0.010     1.977     0.019    0.18127       0.00087   1.977      0.019    0.18136     0.00087     2639     21     2665     8        1.0
+       S        8      8.1       369     365        0.99     0.007      1.964     0.017    0.18143       0.00070   1.964      0.017    0.18137     0.00070     2653     19     2666     6        0.5
+       S        49    49.1       389     376        0.97     0.000      1.940     0.019    0.18141       0.00067   1.940      0.019    0.18141     0.00067     2680     22     2666     6        -0.5
+       S        54    54.1       178     187        1.05     0.027      1.948    0.023     0.18173       0.00100   1.948     0.023     0.18149      0.00101    2671     26     2667     9        -0.2
+       S        19    19.1       438     453        1.03     0.023      1.969     0.017    0.18170       0.00066   1.970      0.017    0.18149     0.00067     2647     19     2667     6        0.7
+       S        41    41.1       340     310        0.91     -0.025     1.955     0.019    0.18129       0.00068   1.954      0.019    0.18151     0.00069     2664     22     2667     6        0.1
+       S        6      6.1       314     350        1.11     0.000      1.984     0.018    0.18151       0.00074   1.984      0.018    0.18151     0.00074     2631     20     2667     7        1.3
+       S        77     77.1      506     607        1.20     0.000      1.982     0.018    0.18159       0.00056   1.982      0.018    0.18159     0.00056     2633     20     2667     5        1.3
+       S        35    35.1       204     120        0.59     0.000      1.995    0.021     0.18167       0.00096   1.995     0.021     0.18167     0.00096     2619     23     2668     9        1.8
+       S        52    52.1       339     193        0.57     0.030      1.911     0.019    0.18199       0.00130   1.911      0.019    0.18172     0.00131     2713     23     2669     12       -1.7
+       S        1      1.1       156     87         0.56     0.062      1.955    0.022     0.18229       0.00107   1.957     0.022     0.18174      0.00111    2661     25     2669     10       0.3
+       S        33    33.1       312     192        0.61     0.041      2.001     0.018    0.18211       0.00078   2.002      0.018    0.18174     0.00080     2612     20     2669     7        2.1
+       S        76    76.1       489     382        0.78     0.004      1.996     0.019    0.18181       0.00058   1.996      0.019    0.18177     0.00058     2618     20     2669     5        1.9
+       S        30    30.1       490     516        1.05     -0.010     1.943     0.016    0.18172       0.00062   1.943      0.016    0.18181     0.00063     2677     18     2670     6        -0.3
+       S        42    42.1       420     430        1.02     0.043      2.005     0.019    0.18234       0.00060   2.006      0.019    0.18195     0.00061     2608     21     2671     6        2.4
+
+
+
+
+                                                                                                     3
+248205.1.pdf                                                                                                                                                  Geochronology Record 1899
+
+
+
+
+                                                                                 Table 1. continued
+
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th     Th
+                                                 232
+                                                         ƒ204        U/206Pb
+                                                                   238
+                                                                                       Pb/206Pb
+                                                                                     207
+                                                                                                             U/206Pb*
+                                                                                                           238              207
+                                                                                                                               Pb*/206Pb*       238
+                                                                                                                                                   U/206Pb*    207
+                                                                                                                                                                  Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)      U
+                                                 238
+                                                         (%)         ± 1σ               ± 1σ                 ± 1σ               ± 1σ          date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      S         12    12.1       273     278      1.02   0.000   1.983   0.019   0.18202       0.00082   1.983    0.019   0.18202   0.00082   2633     21     2671     7        1.5
+      S         2      2.1       350     342      0.98   0.007   1.952   0.017   0.18212       0.00072   1.953    0.017   0.18206   0.00072   2666     20     2672     7        0.2
+      S         25    25.1       284     322      1.14   0.046   1.976   0.019   0.18250       0.00083   1.977    0.019   0.18209   0.00085   2639     21     2672     8        1.3
+      S         47     47.1      237     271      1.15   0.036   2.003   0.021   0.18246       0.00082   2.003    0.021   0.18214   0.00083   2610     23     2673     8        2.3
+      S         75    75.1       434     461      1.06   0.005   2.007   0.019   0.18219       0.00059   2.007    0.019   0.18215   0.00059   2606     20     2673     5        2.5
+      S         32    32.1       400     405      1.01   0.000   1.967   0.017   0.18219       0.00067   1.967    0.017   0.18219   0.00067   2650     19     2673     6        0.9
+      S         10    10.1       343     292      0.85   0.014   1.975   0.017   0.18234       0.00073   1.975    0.017   0.18222   0.00074   2641     19     2673     7        1.2
+      S         66    66.1       394     391      0.99   0.005   2.008   0.019   0.18234       0.00064   2.008    0.019   0.18229   0.00064   2605     21     2674     6        2.6
+      S         27     27.1      349     317      0.91   0.015   2.008   0.018   0.18246       0.00074   2.009    0.018   0.18233   0.00075   2605     19     2674     7        2.6
+      S         65    65.1       410     407      0.99   0.000   1.975   0.019   0.18236       0.00064   1.975    0.019   0.18236   0.00064   2642     21     2675     6        1.2
+      S         43    43.1       394     343      0.87   0.011   1.989   0.019   0.18247       0.00065   1.989    0.019   0.18237   0.00065   2625     21     2675     6        1.8
+      S         23    23.1       299     250      0.83   0.032   1.989   0.018   0.18269       0.00133   1.989    0.018   0.18241   0.00134   2626     20     2675     12       1.8
+      S         60    60.1       229     127      0.56   0.055   1.937   0.034   0.18304       0.00090   1.938    0.034   0.18255   0.00093   2682     38     2676     8        -0.2
+      S         79    79.1       424     440      1.04   0.026   1.960   0.019   0.18288       0.00063   1.960    0.019   0.18265   0.00064   2657     21     2677     6        0.7
+      S         7      7.1       415     297      0.71   0.000   1.979   0.017   0.18274       0.00067   1.979    0.017   0.18274   0.00067   2636     19     2678     6        1.6
+      S         9      9.1       291     291      1.00   0.000   1.974   0.018   0.18277       0.00080   1.974    0.018   0.18277   0.00080   2642     20     2678     7        1.4
+      S         13    13.1       267     255      0.95   0.000   1.988   0.019   0.18300       0.00136   1.988    0.019   0.18300   0.00136   2627     21     2680     12       2.0
+      S         67     67.1      199     191      0.96   0.000   1.929   0.023   0.18305       0.00203   1.929    0.023   0.18305   0.00203   2693     27     2681     18       -0.5
+      S         14    14.1       205     126      0.62   0.040   1.681   0.017   0.22824       0.00242   1.682    0.017   0.22789   0.00243   3008     25     3037     17       0.9
+      S         74    74.1       149     115      0.77   0.023   1.677   0.020   0.22818       0.00112   1.678    0.020   0.22797   0.00113   3014     29     3038     8        0.8
+      S         40    40.1       393     308      0.78   0.035   1.683   0.015   0.24396       0.00080   1.684    0.015   0.24365   0.00080   3005     21     3144     5        4.4
+      S         46    46.1       296     288      0.98   0.037   1.685   0.017   0.24450       0.00081   1.686    0.017   0.24417   0.00082   3003     24     3147     5        4.6
+      S         24    24.1       136     103      0.76   0.044   1.625   0.019   0.24494       0.00133   1.626    0.020   0.24455   0.00135   3090     30     3150     9        1.9
+      S         73    73.1       113     101      0.89   0.000   1.591   0.032   0.24662       0.00135   1.591    0.032   0.24662   0.00135   3144     50     3163     9        0.6
+      S         22    22.1       325     81       0.25   0.046   1.598   0.014   0.24748       0.00085   1.598    0.014   0.24708   0.00086   3133     23     3166     6        1.1
+      S         57     57.1      344     322      0.94   0.014   1.619   0.016   0.24721       0.00077   1.620    0.016   0.24709   0.00077   3100     25     3166     5        2.1
+      S         38    38.1       151     167      1.11   0.013   1.606   0.019   0.24733       0.00126   1.606    0.019   0.24722   0.00127   3120     29     3167     8        1.5
+      S         15    15.1       194     70       0.36   0.000   1.569   0.017   0.24793       0.00109   1.569    0.017   0.24793   0.00109   3178     28     3172     7        -0.2
+
+
+
+
+                                                                                           4
+248205.1.pdf                                                                                                                                                   Geochronology Record 1899
+
+
+
+
+                                                                                  Table 1. continued
+
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th     Th
+                                                 232
+                                                         ƒ204         U/206Pb
+                                                                    238
+                                                                                        Pb/206Pb
+                                                                                      207
+                                                                                                              U/206Pb*
+                                                                                                            238              207
+                                                                                                                                Pb*/206Pb*       238
+                                                                                                                                                    U/206Pb*    207
+                                                                                                                                                                   Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)      U
+                                                 238
+                                                         (%)          ± 1σ               ± 1σ                 ± 1σ               ± 1σ          date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      S         61    61.1        74     88       1.19   -0.022   1.633   0.024   0.24777       0.00168   1.632    0.024   0.24796   0.00169   3080     36     3172     11       2.9
+      S         80    80.1       262     185      0.71   0.000    1.561   0.016   0.25767       0.00094   1.561    0.016   0.25767   0.00094   3191     27     3233     6        1.3
+      S         48    48.1       196     90       0.46   0.027    1.542   0.017   0.26102       0.00111   1.542    0.017   0.26079   0.00112   3222     29     3252     7        0.9
+      S         36    36.1       205     152      0.74   0.034    1.582   0.016   0.26130       0.00108   1.583    0.016   0.26100   0.00109   3157     26     3253     7        3.0
+      S         53    53.1       310     228      0.73   0.005    1.548   0.016   0.26133       0.00084   1.548    0.016   0.26129   0.00084   3212     26     3255     5        1.3
+      S         68    68.1       201     88       0.44   0.044    1.562   0.017   0.26288       0.00101   1.563    0.017   0.26249   0.00102   3188     28     3262     6        2.3
+      S         45    45.1       226     145      0.64   0.059    1.596   0.017   0.26460       0.00092   1.596    0.017   0.26409   0.00093   3135     26     3271     6        4.2
+      S         55    55.1       114     89       0.78   0.062    1.565   0.020   0.26550       0.00131   1.566    0.020   0.26496   0.00134   3183     32     3277     8        2.9
+      S         72    72.1       169     93       0.55   0.034    1.552   0.017   0.26565       0.00179   1.552    0.017   0.26536   0.00180   3205     29     3279     11       2.2
+      S         50    50.1       333     182      0.55   0.024    1.472   0.015   0.26562       0.00084   1.473    0.015   0.26540   0.00085   3341     27     3279     5        -1.9
+      S         4      4.1        82     28       0.35   0.081    1.558   0.022   0.26733       0.00168   1.559    0.022   0.26663   0.00172   3195     36     3286     10       2.8
+      S         11     11.1      100     70       0.70   -0.051   1.476   0.020   0.27036       0.00156   1.475    0.020   0.27080   0.00158   3336     35     3311     9        -0.8
+      S         26    26.1       198     133      0.67   -0.017   1.524   0.016   0.27111       0.00114   1.524    0.016   0.27126   0.00114   3252     27     3313     7        1.9
+      S         64    64.1       249     207      0.83   -0.006   1.482   0.016   0.27189       0.00097   1.482    0.016   0.27194   0.00097   3324     28     3317     6        -0.2
+      S         44    44.1        96     65       0.68   0.045    1.580   0.021   0.27254       0.00149   1.580    0.021   0.27215   0.00151   3160     34     3318     9        4.8
+      S         21    21.1       315     43       0.14   -0.027   1.515   0.014   0.27255       0.00090   1.514    0.014   0.27279   0.00091   3269     24     3322     5        1.6
+      S         69    69.1       155     53       0.34   0.010    1.512   0.018   0.27442       0.00122   1.512    0.018   0.27433   0.00122   3272     31     3331     7        1.8
+      S         16    16.1       302     147      0.49   0.023    1.484   0.014   0.27519       0.00094   1.484    0.014   0.27499   0.00094   3321     24     3335     5        0.4
+      S         18    18.1       100     37       0.37   -0.034   1.507   0.020   0.27728       0.00161   1.507    0.020   0.27758   0.00162   3282     34     3349     9        2.0
+      S         71    71.1        88     41       0.47   0.030    1.497   0.020   0.27902       0.00153   1.497    0.020   0.27876   0.00154   3298     36     3356     9        1.7
+      S         62    62.1       153     69       0.45   0.063    1.469   0.017   0.27972       0.00119   1.470    0.017   0.27918   0.00121   3345     31     3358     7        0.4
+      S         37     37.1       91     31       0.34   0.019    1.459   0.021   0.28563       0.00174   1.459    0.021   0.28547   0.00175   3365     38     3393     10       0.8
+      S         31    31.1       183     105      0.57   0.060    1.330   0.014   0.34434       0.00131   1.331    0.014   0.34385   0.00132   3613     30     3680     6        1.8
+
+
+      D         56    56.1       528     701      1.33   0.017    2.263   0.021   0.17050       0.00053   2.264    0.021   0.17035   0.00054   2359     18     2561     5         7.9
+
+
+
+
+                                                                                            5
+248205.1.pdf                                                                                         Geochronology Record 1899
+
+
+
+
+          Figure 3.    U–Pb analytical data for sample 248205: siliciclastic schist, Julimar prospect. Blue square
+                       indicates Group Y (youngest detrital zircon); red squares indicate Group S (older detrital
+                       zircons); crossed square indicates Group D (discordance >5%)
+
+
+
+
+           Figure 4.   Expanded view of U–Pb analytical data for sample 248205: siliciclastic schist, Julimar prospect.
+                       Symbols as in Figure 3
+
+
+
+
+                                                               6
+248205.1.pdf                                                                                       Geochronology Record 1899
+
+
+Analytical details                                                 Interpretation
+This sample was analysed on 19–20 and 25–26 November               The analyses are concordant to moderately discordant
+2021, using SHRIMP-B. Analyses 1.1 to 40.1 (spot                   (Fig. 3). One analysis is >5% discordant. The date
+numbers 1–40) were obtained during the first session,              obtained from this analysis (Group D; Table 1) is
+together with 10 analyses of the M257 standard, which              unreliable, and considered not to be geologically
+indicated an external spot-to-spot (reproducibility)               significant. The remaining 79 analyses can be divided into
+uncertainty of 0.50% (1σ) and a 238U/206Pb* calibration            two groups, based on their 207Pb*/206Pb* ratios.
+uncertainty of 0.21% (1σ). Isotopic mass fractionation
+of 207Pb/206Pb ratios during the first session was corrected       Group Y comprises one analysis (Table 1), which yields a
+by reference to the OGC1 standard; measured ratios
+                                                                   207
+                                                                       Pb*/206Pb* date of 2622 ± 5 Ma (1σ).
+were decreased by 0.04%. Analyses 41.1 to 80.1 (spot
+numbers 41–80) were obtained during the second                     Group S comprises 78 analyses (Table 1), which yield
+session, together with 17 analyses of the M257 standard,
+                                                                   207
+                                                                       Pb*/206Pb* dates of 3680–2652 Ma.
+of which 14 analyses indicated an external spot-to-                It is possible that all of the analyses are of unmodified
+spot (reproducibility) uncertainty of 0.70% (1σ) and               detrital zircons, in which case the date of 2622 ± 5 Ma
+a 238U/ 206Pb* calibration uncertainty of 0.25% (1σ).              (1σ) for the single analysis in Group Y represents a
+Calibration uncertainties are included in the errors of            maximum depositional age for the sandstone. However,
+238
+    U/206Pb* ratios and dates listed in Table 1. Common-           the high U and Th content of this zircon suggests the
+Pb corrections were applied to all analyses using                  date could instead reflect loss of radiogenic Pb. A more
+contemporaneous isotopic compositions determined                   conservative estimate of the maximum depositional age
+according to the model of Stacey and Kramers (1975).               can be based on the weighted mean date of 2669 ± 2 Ma
+                                                                   (MSWD = 0.75) for the youngest 45 analyses in Group S.
+
+Results                                                            The data for combined Groups Y and S indicate significant
+                                                                   age components at c. 3356, 3318, 3276, 3254, 3166, 3146,
+Eighty analyses were obtained from 80 zircons. Results are         and 2669 Ma, based on contributions from approximately
+listed in Table 1, and shown in concordia diagrams (Figs 3         3, 5, 5, 4, 6, 3, and 43 analyses, respectively (Fig. 5).
+and 4) and a probability density plot (Fig. 5).                    These are interpreted as the ages of zircon-crystallizing
+                                                                   rocks in the detrital source region(s), or as the ages of
+                                                                   detrital components within sediments that have been
+                                                                   reworked into this rock.
+
+
+
+
+          Figure 5.   Probability density diagram and histogram for sample 248205: siliciclastic schist, Julimar
+                      prospect. Thick curve, maxima values, and blue histogram (bin width 25 Ma) include only data
+                      with discordance <5% (79 analyses of 79 zircons). Thin curve includes all data (80 analyses of
+                      80 zircons)
+
+
+
+
+                                                               7
+248205.1.pdf                                                                                                      Geochronology Record 1899
+
+
+References                                                                   Recommended reference for this
+Chalice Mining Ltd 2022, Diggers and Dealers Mining Forum                    publication
+  Presentation, 2 August 2022, viewd 5 October 2022, <www.
+                                                                             Wingate, MTD, Fielding, IOH, Lu, Y and Ivanic, TJ 2022, 248205:
+  chalicemining.com/sites/default/files/asx-announcements/61102971.
+                                                                               siliciclastic schist, Julimar prospect; Geochronology Record 1899:
+  pdf.>
+                                                                               Geological Survey of Western Australia, 8p.
+Quentin de Gromard, R, Ivanic, TJ and Zibra, I 2021, Pre-Mesozoic
+  interpreted bedrock geology of the southwest Yilgarn, Geological           Data obtained:       26 November 2021
+  Survey of Western Australia, digital data layer.
+                                                                             Data released:       10 October 2022
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+   isotope evolution by a two-stage model: Earth and Planetary Science
+   Letters, v. 26, p. 207–221.
+Wilde, SA and Pidgeon, RT 2006, Nature and timing of Late Archaean
+   arc magmatism along the western margin of the Yilgarn Craton:
+   Goldschmidt Conference Abstracts 2006, p. A701.
+Wingate, MTD, Fielding, IOH, Lu, Y and Ivanic, TJ 2021a, 203747:
+  pegmatitic leucogabbro, Julimar prospect; Geochronology Record
+  1784: Geological Survey of Western Australia, 5p.
+Wingate, MTD, Fielding, IOH, Lu, Y and Ivanic, TJ 2021b, 248203:
+  sulfide ore, Julimar prospect; Geochronology Record 1796:
+  Geological Survey of Western Australia, 2p.
+Wingate, MTD, Fielding, IOH, Lu, Y and Ivanic, TJ 2021c, 248207:
+  granodiorite, Julimar prospect; Geochronology Record 1797:
+  Geological Survey of Western Australia, 5p.
+
+
+
+
+                                                                         8
+

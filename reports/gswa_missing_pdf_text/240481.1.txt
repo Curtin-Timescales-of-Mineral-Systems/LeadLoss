@@ -1,0 +1,196 @@
+240481.1.pdf                                                                                          Geochronology Record 1859
+
+
+
+
+               240481: porphyritic metadacite, Aphrodite prospect
+ (Black Flag Group, Kalgoorlie Terrane, Eastern Goldfields Superterrane, Yilgarn Craton)
+
+
+
+
+Location and sampling                                               to sericite and trace carbonate. The biotite-replaced
+                                                                    phenocrysts are up to 2 mm in size and many exhibit a
+Kalgoorlie (SH 51-9), Bardoc (3137)                                 rhombic shape typical of amphibole, indicating that most
+                  MGA Zone 51, 328991E 6659758N                     were originally hornblende. A small proportion are tabular,
+                                                                    up to 2 mm long, and exhibit a lamellar texture, suggesting
+Sampled on 8 August 2019                                            they may have been biotite phenocrysts. The replacement
+This sample was collected from the 420.20 – 422.83 m                biotite is pale tan to orange/brown and occurs as decussate
+depth interval of drillcore 18APD012, drilled in 2018 by            aggregates of poorly defined anhedral laths, mostly less
+Bardoc Gold Limited at their Aphrodite prospect. The                than 0.3 mm long. Biotite in the replaced phenocrysts is
+drillhole is located on Mount Vetters Station, about 5.0 km         slightly altered to chlorite and these aggregates also include
+east of the Goldfields Highway, 3.9 km west of Upper                minor carbonate and sulfide minerals and trace titanite
+Scotia Dam, and 1.7 km north of Middle Scotia Dam.                  up to 0.1 mm in size. Sulfide minerals consist of highly
+                                                                    irregular grains up to 0.5 mm in size of pyrite, less abundant
+                                                                    pyrrhotite, and trace chalcopyrite, all mainly occurring
+                                                                    within the biotite-replaced phenocrysts. Apatite is euhedral
+Geological context                                                  and bladed and up to 0.3 mm in size. Anhedral pink titanite
+The unit sampled is a metadacite of the 2692–2655                   is up to 0.2 mm in size. The rock is not obviously deformed
+Ma Black Flag Group of the Kalgoorlie Terrane (Witt,                and the decussate texture of the biotite that has replaced
+1994; Smithies et al., 2018; Hall et al., 2019). The Black          original hornblende or biotite phenocrysts may reflect
+Flag Group consists mainly of felsic metavolcaniclastic             contact metamorphism at biotite grade.
+and metasedimentary rocks with subordinate felsic and
+mafic volcanic rocks. The Black Flag Group overlies
+the 2753– 2680 Ma Kalgoorlie Group, is unconformably                Zircon morphology
+overlain by the 2664–2640 Ma Merougil Formation (Hall
+et al., 2019), and in part is intruded by the c. 2680 Ma            Zircons isolated from this sample are colourless and mainly
+Golden Mile Dolerite (Rasmussen et al., 2009). The sample           euhedral. The crystals are up to 150 µm long, and elongate,
+is from the lower part of the Black Flag Group, in the              with aspect ratios up to 4:1. In cathodoluminescence (CL)
+eastern limb of the Goongarrie – Mount Pleasant Anticline           images, concentric zoning is ubiquitous. A CL image of all
+near the contact with the underlying Victorious Basalt of           zircons is shown in Figure 2.
+the Vetters Subgroup of the Kalgoorlie Group (Witt, 1994).
+The metadacite is underlain by a 3 m-thick unit of black
+shale that conformably overlies the plagioclase-phyric              Analytical details
+Victorious Basalt. The sample was collected to verify its
+assignment to the Black Flag Group. A granodiorite about            This sample was analysed on 25–26 February 2021, using
+15.8 km to the southeast yielded an igneous crystallization         SHRIMP-B. Twelve analyses of the M257 standard were
+age of 2657 ± 5 Ma (GSWA 93901, Nelson, 1995). An                   obtained during the session, of which 11 analyses indicated
+igneous crystallization age of 2661 ± 3 Ma was reported for         an external spot-to-spot (reproducibility) uncertainty of
+a granophyric dolerite dyke, sampled about 16.1 km to the           0.50% (1σ) and a 238U/206Pb* calibration uncertainty of
+south-southeast (GSWA 142858, Nelson, 1998).                        0.18% (1σ). Isotopic mass fractionation of 207Pb/206Pb
+                                                                    ratios during the session was corrected by reference
+                                                                    to the OGC1 standard; measured ratios were increased
+Petrographic description                                            by 0.22%. Calibration uncertainties are included in the
+                                                                    errors of 238U/206Pb* ratios and dates listed in Table 1.
+The sample is a medium-grained, plagioclase-phyric                  Common-Pb corrections were applied to all analyses
+metadacite (Fig. 1), consisting of about 50–55%                     using contemporaneous isotopic compositions determined
+groundmass, 30% plagioclase, 15% biotite-replaced                   according to the model of Stacey and Kramers (1975).
+phenocrysts, 1–2% sulfide minerals, and accessory apatite,
+titanite and zircon. The groundmass is massive but preserves
+a finely micropoikilitic texture that indicates it was              Results
+originally glassy. It is composed of microcrystalline, poorly
+defined laths of abundant probable albite and less abundant         Twenty-two analyses were obtained from 22 zircons.
+interstitial quartz. Plagioclase phenocrysts (andesine,             Results are listed in Table 1, and shown in concordia
+An34–38) are subhedral to euhedral, equant to tabular, up to        diagrams (Figs 3, 4).
+2.5 mm in size, randomly oriented, and variably altered
+
+                                                                1
+240481.1.pdf                                                                                    Geochronology Record 1859
+
+
+
+
+               Figure 1.   Drillcore image for sample 240481: porphyritic metadacite, Aphrodite prospect
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 240481:
+                           porphyritic metadacite, Aphrodite prospect. Numbered circles indicate the
+                           approximate locations of analysis sites
+
+
+
+
+                                                           2
+240481.1.pdf                                                                                                                                                                     Geochronology Record 1859
+
+
+
+
+                                         Table 1. Ion microprobe analytical results for zircons from sample 240481: porphyritic metadacite, Aphrodite prospect
+
+
+    Group      Spot   Grain.     238
+                                     U      232
+                                               Th        Th
+                                                       232
+                                                                 ƒ204        238
+                                                                                   U/206Pb          Pb/206Pb
+                                                                                                  207
+                                                                                                                          U/206Pb*
+                                                                                                                        238                207
+                                                                                                                                              Pb*/206Pb*           238
+                                                                                                                                                                      U/206Pb*    207
+                                                                                                                                                                                     Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)       (ppm)      238
+                                                         U       (%)               ± 1σ              ± 1σ                 ± 1σ                 ± 1σ              date (Ma) ±1σ   date (Ma) ±1σ    (%)
+       I        20    20.1        85         47        0.55      0.292     2.061       0.026   0.18474      0.00142   2.067    0.026    0.18213     0.00161      2543     26     2672     15       4.8
+       I        5      5.1       362        359        0.99      0.035     2.007       0.016   0.18290      0.00082   2.008    0.016    0.18259     0.00083      2605     18     2677     8        2.7
+       I        1      1.1       198        165        0.83      0.033     1.980       0.025   0.18291      0.00185   1.981    0.025    0.18262     0.00185      2635     27     2677     17       1.6
+       I        21    21.1       355        257        0.73      0.040     1.982       0.016   0.18304      0.00086   1.983    0.016    0.18268     0.00087      2633     18     2677     8        1.7
+       I        9      9.1       175        155        0.89      0.086     2.007       0.019   0.18367      0.00102   2.009    0.019    0.18290     0.00105      2604     20     2679     10       2.8
+       I        6      6.1       290        305        1.05      0.076     1.991       0.016   0.18391      0.00085   1.992    0.016    0.18323     0.00087      2622     18     2682     8        2.2
+       I        16    16.1       269        276        1.02      0.128     1.971       0.018   0.18458      0.00096   1.974    0.018    0.18343     0.00101      2642     20     2684     9        1.6
+       I        18    18.1       271        291        1.07      0.014     2.011       0.017   0.18419      0.00139   2.011    0.017    0.18406     0.00139      2602     19     2690     12       3.3
+       I        3      3.1       352        350        0.99      0.010     1.920       0.015   0.18427      0.00079   1.920    0.015    0.18418     0.00079      2702     18     2691     7        -0.4
+       I        22    22.1       450        475        1.05      -0.012    1.922       0.015   0.18439      0.00120   1.921    0.015    0.18450     0.00120      2701     18     2694     11       -0.3
+       I        14    14.1       258        242        0.94      0.028     2.050       0.017   0.18475      0.00088   2.051    0.017    0.18451     0.00089      2561     18     2694     8        4.9
+       I        7      7.1       266        242        0.91      0.028     1.974       0.017   0.18478      0.00088   1.975    0.017    0.18453     0.00089      2641     19     2694     8        2.0
+       I        12    12.1       236        244        1.03     -0.023     1.970       0.017   0.18437      0.00091   1.969    0.017    0.18458     0.00092      2647     19     2694     8        1.8
+       I        17     17.1      452        542        1.20      0.045     1.969       0.022   0.18504      0.00079   1.970    0.022    0.18464     0.00080      2647     24     2695     7        1.8
+       I        10    10.1       252        196        0.78      0.066     1.933       0.017   0.18554      0.00093   1.934    0.017    0.18494     0.00095      2687     20     2698     8        0.4
+       I        19    19.1       304        300        0.99      0.019     2.012       0.017   0.18531      0.00085   2.012    0.017    0.18515     0.00085      2601     18     2700     8        3.7
+       I        2      2.1       238        287        1.21      0.039     2.011       0.018   0.18561      0.00101   2.012    0.018    0.18525     0.00102      2601     19     2700     9        3.7
+       I        15    15.1       197        147        0.75      0.045     1.940       0.019   0.18571      0.00104   1.940    0.019    0.18530     0.00106      2680     22     2701     9        0.8
+
+
+       X        11     11.1      555        892        1.61      0.012     1.820       0.014   0.18951      0.00075   1.820    0.014    0.18940     0.00075      2823     18     2737     7        -3.2
+
+
+      D         8      8.1       916        799        0.87      0.053     2.684       0.029   0.14820      0.00087   2.686    0.029    0.14773     0.00088      2040     19     2320     10       12.0
+      D         4      4.1       267        432        1.61      0.000     2.459       0.022   0.15298      0.00084   2.459    0.022    0.15298     0.00084      2200     17     2380     9         7.5
+      D         13    13.1       362        338        0.93      0.014     2.189       0.017   0.17627      0.00076   2.190    0.017    0.17615     0.00076      2425     16     2617     7         7.3
+
+
+
+
+                                                                                                        3
+240481.1.pdf                                                                                         Geochronology Record 1859
+
+
+
+
+          Figure 3.   U–Pb analytical data for sample 240481: porphyritic metadacite, Aphrodite prospect. Yellow
+                      squares indicate Group I (magmatic zircons); red circle indicates Group X (xenocrystic zircon);
+                      crossed squares indicate Group D (discordance >5%)
+
+
+
+
+          Figure 4.   Expanded view of U–Pb analytical data for sample 240481: porphyritic metadacite, Aphrodite
+                      prospect. The dashed line indicates a regression through data in Group I. Symbols as in Figure 3
+
+
+
+
+                                                               4
+240481.1.pdf                                                                                                           Geochronology Record 1859
+
+
+Interpretation                                                                 Nelson, DR 1998, 142858: granophyric dolerite, Mount Vetters;
+                                                                                  Geochronology Record 373: Geological Survey of Western Australia, 5p.
+The analyses are concordant to moderately discordant                           Rasmussen, B, Mueller, AG and Fletcher, IR 2009, Zirconolite and
+(Fig. 3). Three analyses are >5% discordant. The dates                            xenotime U-Pb age constraints on the emplacement of the Golden
+obtained from these three analyses (Group D; Table 1)                             Mile Dolerite sill and gold mineralization at the Mt Charlotte mine,
+are unreliable, and are considered not to be geologically                         Eastern Goldfields Province, Yilgarn Craton, Western Australia:
+significant. The remaining 19 analyses can be divided into                        Contributions to Mineralogy and Petrology, v. 157, p. 559–572.
+two groups, based on their 207Pb*/206Pb* ratios.                               Smithies, RH, Lu, Y, Kirkland, CL, Cassidy, KF, Champion, DC,
+                                                                                 Sapkota, J, De Paoli, M and Burley, L 2018, A new look at
+Group I comprises 18 analyses (Table 1), which yield                             lamprophyres and sanukitoids, and their relationship to the Black Flag
+a discordia with intercepts at 2694 ± 8 and c. 400 Ma                            Group and gold prospectivity: Geological Survey of Western Australia,
+(MSWD = 0.96).                                                                   Record 2018/15, 23p.
+                                                                               Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+Group X comprises one analysis (Table 1), which yields a
+                                                                                  isotope evolution by a two-stage model: Earth and Planetary Science
+207
+    Pb*/206Pb* date of 2737 ± 7 Ma (1σ).                                          Letters, v. 26, p. 207–221.
+The date of 2694 ± 8 Ma for the 18 analyses in Group I is                      Witt, W 1994, Geology of the Bardoc 1:100,000 Sheet: Geological
+interpreted as the age of igneous crystallization. The date                       Survey of Western Australia, 1:100 000 Geological Series Explanatory
+of 2737 ± 7 Ma (1σ) for the single analysis in Group X is                         Notes, 50p.
+interpreted as the age of an inherited zircon.
+                                                                               Re­commended reference for this
+References                                                                     publication
+Hall, CE, Wyche, NL and Sapkota, J (partial report), Black Flag Group          Wingate, MTD, Lu, Y, Fielding, IOH and De Paoli, M 2022, 240481:
+   (A-BF-xf-s): Geological Survey of Western Australia, WA Geology               porphyritic metadacite, Aphrodite prospect; Geochronology Record
+   Online, Explanatory Notes extract, viewed 05 January 2022,                    1859: Geological Survey of Western Australia, 5p.
+   <www.dmp.wa.gov.au/ens>.
+                                                                               Data obtained:        26 February 2021
+Nelson, DR 1995, 93901: granodiorite, Scotia - Split Rock; Geochronology
+   Record 73: Geological Survey of Western Australia, 4p.                      Data released:        29 April 2022
+
+
+
+
+                                                                           5
+

@@ -99,7 +99,8 @@ class AsyncTask(QThread):
             return
 
         if output[0] is SignalType.ERRORED:
-            self.pyqtSignals.processingErrored.emit(output[1:])
+            error = output[1] if len(output) > 1 else RuntimeError("Unknown processing error")
+            self.pyqtSignals.processingErrored.emit(error)
             self.running = False
             return
 

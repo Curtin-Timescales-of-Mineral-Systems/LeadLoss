@@ -1,0 +1,191 @@
+225947.1.pdf                                                                                        Geochronology Record 1816
+
+
+
+
+        225947: altered volcaniclastic rock, Silvergrass prospect
+         (Pyradie Formation, Fortescue Group, Fortescue Basin, Capricorn Orogen)
+
+
+
+
+Location and sampling                                              network of quartz veins up to 1 mm wide, some containing
+                                                                   minor carbonate minerals. Large areas of the thin section
+Mount Bruce (SF 50-11), McRae (2453)                               consist almost entirely of massive, fine-grained colourless
+                 MGA Zone 50, 587738E 7535155N                     clinozoisite, which forms a mosaic of anhedral, mainly
+                                                                   equant grains up to 0.1 mm in size. Secondary quartz
+Sampled on 13 February 2017                                        forms isolated small grains within the clinozoisite mosaic
+This sample was collected from the 1230.5 – 1230.65 m              but mainly forms aggregates of <0.1 mm anhedral grains
+depth interval of drillcore DD85SGS1, drilled in 1985              in the quartz-replaced narrow laminae. Dispersed titanite
+by CRA Exploration Pty Ltd at their Silvergrass prospect           grains, probably after original magnetite, make up <1%
+(Meakins, 1988). The drillhole is located on Hamersley             of the sample. Within the fine-grained clinozoisite is
+Station, about 5.3 km north-northwest of Four Corners              a 10 mm-wide band that contains dispersed, equant to
+Bore, 4.7 km east-southeast of Kangeenareena Well, and             elongate grain shapes of unknown origin composed of
+1.9 km east of Cattle Well.                                        clinozoisite with minor carbonate and quartz. The sample
+                                                                   contains rare disseminated chalcopyrite grains up to
+                                                                   0.05 mm in size. The rock is not obviously deformed
+                                                                   or metamorphosed, although its origin is masked by the
+Geological context                                                 intense alteration.
+The unit sampled is the 2730–2716 Ma Pyradie Formation
+of sequence 4 of the Fortescue Group in the South Pilbara
+Sub-basin (Thorne and Trendall, 2001; Howard, 2021b).              Zircon morphology
+The formation in general is up to 1.2 km thick (365 m in
+drillcore DD85SGS1), and consists mainly of basalt flows           Zircons isolated from this sample are colourless to dark
+and pillow lavas, tuffaceous and volcaniclastic rocks,             brown and anhedral to euhedral. The crystals are up to
+hyaloclastite, minor komatiite and chert. In this drillcore,       150 µm long, and equant to elongate, with aspect ratios up
+the Pyradie Formation is dominated by tuffaceous and               to 5:1. In cathodoluminescence (CL) images, concentric
+volcaniclastic rocks, siliciclastic sedimentary rocks              zoning is ubiquitous. A few strongly rounded zircons
+and there are only minor basalt flows and pillow lavas             exhibit concentric zoning truncated at grain margins,
+(Meakins, 1988). The Pyradie Formation conformably                 consistent with abrasion during sedimentary transport. A
+overlies the 2745–2730 Ma Boongal Formation and is                 CL image of representative zircons is shown in Figure 2.
+conformably overlain by the 2718–2715 Ma Bunjinah
+Formation (Thorne and Trendall, 2001; Howard, 2021a,b).
+A dolerite sill intruded into Hardey Formation at Coppin           Analytical details
+Pool, about 73 km to the south-southeast, yielded an
+igneous crystallization age of 2716 ± 5 Ma (GSWA                   This sample was analysed on 23–24 October 2020, using
+228400, Wingate et al., 2020), and is correlated with the          SHRIMP-B. Eleven analyses of the M257 standard
+Pyradie Formation based on distinctive geochemistry                were obtained during the session, of which 10 analyses
+(Howard, in prep.).                                                indicated an external spot-to-spot (reproducibility)
+                                                                   uncertainty of 0.50% (1σ) and a 238U/206Pb* calibration
+                                                                   uncertainty of 0.21% (1σ). Calibration uncertainties are
+                                                                   included in the errors of 238U/206Pb* ratios and dates listed
+Petrographic description                                           in Table 1. Common-Pb corrections were applied to all
+                                                                   analyses using contemporaneous isotopic compositions
+The sample is interpreted as a very fine-grained
+                                                                   determined according to the model of Stacey and Kramers
+volcaniclastic rock based on visual examination of
+                                                                   (1975).
+drillcore (Fig. 1). Microscopic examination indicates the
+sample is very highly altered to clinozoisite and quartz,
+and does not exhibit primary mineralogy or diagnostic
+relict textures. A subtle planar lamination is defined by          Results
+a series of parallel, discontinuous layers up to 1 mm
+                                                                   Seventeen analyses were obtained from 17 zircons. Results
+wide of secondary quartz and by higher concentrations
+                                                                   are listed in Table 1, and shown in a concordia diagram
+of fine-grained titanite, probably after original very fine-
+                                                                   (Fig. 3).
+grained oxide minerals. The laminations are crosscut by a
+
+
+
+
+                                                               1
+225947.1.pdf                                                                                     Geochronology Record 1816
+
+
+
+
+               Figure 1.   Drillcore image for sample 225947: altered volcaniclastic rock, Silvergrass
+                           prospect
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 225947:
+                           altered volcaniclastic rock, Silvergrass prospect. Numbered circles indicate the
+                           approximate locations of analysis sites
+
+
+
+
+                                                            2
+225947.1.pdf                                                                                                                                                                       Geochronology Record 1816
+
+
+
+
+                                        Table 1. Ion microprobe analytical results for zircons from sample 225947: altered volcaniclastic rock, Silvergrass prospect
+
+    Group      Spot   Grain.     238
+                                    U        232
+                                                 Th       Th
+                                                        232
+                                                                  ƒ204           U/206Pb
+                                                                               238
+                                                                                                      Pb/206Pb
+                                                                                                    207
+                                                                                                                            U/206Pb*
+                                                                                                                          238
+                                                                                                                                                 Pb*/206Pb*
+                                                                                                                                               207                   238
+                                                                                                                                                                        U/206Pb*    207
+                                                                                                                                                                                       Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)        (ppm)         U
+                                                        238
+                                                                  (%)            ± 1σ                  ± 1σ                 ± 1σ                  ± 1σ             date (Ma) ±1σ   date (Ma) ±1σ    (%)
+       I        1      1.1        69          33         0.48     0.410     1.930     0.034     0.18858       0.00198   1.938     0.034    0.18492     0.00237     2682       39   2698     21       0.6
+       I        4      4.1       131          96         0.73     -0.052    1.969     0.026     0.18539       0.00230   1.968     0.026    0.18585     0.00233     2648       29   2706     21       2.1
+       I        3      3.1        68          33         0.49     0.053     1.938     0.035     0.18698       0.00201   1.939     0.035    0.18651     0.00207     2681       40   2712     18       1.1
+       I        5      5.1       101          60         0.60     -0.033    1.949     0.029     0.18649       0.00159   1.948     0.029    0.18678     0.00162     2671       33   2714     14       1.6
+       I        15    15.1       147          87         0.59     -0.055    1.948     0.026     0.18662       0.00146   1.947     0.026    0.18710     0.00150     2673       30   2717     13       1.6
+       I        9      9.1       108          58         0.53     0.000     1.882     0.028     0.18792       0.00161   1.882     0.028    0.18792     0.00161         2748   34   2724     14       -0.9
+       I        8      8.1       167         141         0.84     0.020     1.907     0.023     0.18813       0.00126   1.908     0.023    0.18795     0.00127     2717       27   2724     11       0.3
+       I        11     11.1      120          72         0.60     -0.025    1.960     0.026     0.18784       0.00139   1.959     0.026    0.18806     0.00141     2658       29   2725     12       2.5
+       I        10    10.1       128          68         0.54     0.081     1.989     0.027     0.18890       0.00147   1.991     0.027    0.18817     0.00153     2624       30   2726     13       3.8
+       I        13    13.1       104          63         0.60     0.142     1.935     0.029     0.18980       0.00167   1.938     0.029    0.18854     0.00179     2683       34   2729     16       1.7
+       I        7      7.1       166         121         0.73     0.042     1.949     0.024     0.18908       0.00128   1.950     0.024    0.18871     0.00131     2669       27   2731     11       2.3
+       I        14    14.1        80          41         0.51     0.093     1.888     0.033     0.19044       0.00192   1.890     0.033    0.18962     0.00201     2738       39   2739     17       0.0
+       I        6      6.1       107          68         0.63     -0.136    1.890     0.028     0.18858       0.00163   1.887     0.028    0.18979     0.00174         2741   33   2740     15       0.0
+       I        16    16.1        86          41         0.48     -0.044    1.864     0.031     0.18994       0.00186   1.864     0.031    0.19034     0.00190     2769       38   2745     16       -0.9
+       I        12    12.1       112          64         0.57     -0.314    1.909     0.049     0.18797       0.00157   1.903     0.049    0.19077     0.00179     2723       57   2749     15       0.9
+
+
+      D         2      2.1      1367         543         0.40     0.004     3.299     0.025     0.11311       0.00041   3.299     0.025    0.11308     0.00041     1707       12   1849     7         7.7
+      D         17     17.1      168          113        0.67     0.053     2.133     0.028     0.18208       0.00139   2.134     0.028    0.18160     0.00144     2478       27   2668     13        7.1
+
+
+
+
+                                                                                                          3
+225947.1.pdf                                                                                                       Geochronology Record 1816
+
+
+
+
+            Figure 3.    U–Pb analytical data for zircons from sample 225947: altered volcaniclastic rock, Silvergrass
+                         prospect. Yellow squares indicate Group I (magmatic zircons); crossed square indicates Group D
+                         (discordance >5%). One analysis in Group D is not shown
+
+
+
+
+Interpretation                                                               Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+                                                                                isotope evolution by a two-stage model: Earth and Planetary Science
+The analyses are concordant to moderately discordant                            Letters, v. 26, p. 207–221.
+(Fig. 3). Two analyses are >5% discordant. The dates                         Thorne, AM and Trendall, AF 2001, Geology of the Fortescue Group,
+obtained from these two analyses (Group D; Table 1)                             Pilbara Craton, Western Australia: Geological Survey of Western
+are unreliable, and are considered not to be geologically                       Australia, Bulletin 144, 249p.
+significant. The remaining 15 analyses form a single                         Wingate, MTD, Lu, Y, Howard, HM and Martin, DMcB 2021, 228400:
+group, based on their 207Pb*/206Pb* ratios.                                    leucogabbro, Coppin Pool; Geochronology Record 1729: Geological
+                                                                               Survey of Western Australia, 5p.
+Group I comprises 15 analyses (Table 1), which yield
+a weighted mean 207Pb*/206Pb* date of 2727 ± 7 Ma
+(MSWD = 0.70).                                                               Recommended reference for this
+The date of 2727 ± 7 Ma for the 15 analyses in Group I                       publication
+is interpreted as the igneous crystallization age of the                     Wingate, MTD, Fielding, IOH, Lu, Y and Howard, HM 2021, 225947:
+volcanic rock.                                                                 altered volcaniclastic rock, Silvergrass prospect; Geochronology
+                                                                               Record 1816: Geological Survey of Western Australia, 4p.
+
+References                                                                   Data obtained:       24 October 2020
+
+Howard, HM (partial report) 2021a, Bunjinah Formation (A-FOu- bbo):
+                                                                             Data released:       12 November 2021
+  Geological Survey of Western Australia, WA Geology Online,
+  Explanatory Notes extract, viewed 03 September 2021,
+  <www.dmp.wa.gov.au/ens>.
+Howard, HM (partial report) 2021b, Pyradie Formation (A-FOp- bs):
+  Geological Survey of Western Australia, WA Geology Online,
+  Explanatory Notes extract, viewed 03 September 2021,
+  <www.dmp.wa.gov.au/ens>.
+Meakins, AL 1988, Final report on exploration completed within
+  exploration licences EL 47/226–230 (Silvergrass 1–5) and exploration
+  licence applications ELA 47/241–242 (Silvergrass 6–7), Mt. Bruce
+  1:250 000, Western Australia. Mineral Exploration Report, 136p.
+  (unpublished).
+
+
+
+
+                                                                         4
+

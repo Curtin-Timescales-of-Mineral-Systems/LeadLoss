@@ -1,0 +1,194 @@
+230507.1.pdf                                                                                       Geochronology Record 1886
+
+
+
+
+                       230507: metadacite, Junior Hill prospect
+                  (Little Peters Formation, Gindalbie Group, Kalgoorlie Terrane,
+                          Eastern Goldfields Superterrane, Yilgarn Craton)
+
+
+
+Location and sampling                                             phenocrysts and occur as finer grains in irregular
+                                                                  aggregates and disseminated throughout the groundmass.
+Leonora (SH 51-1), Weebo (3141)                                   Sericite forms folia in the groundmass that parallel folia
+                   MGA Zone 51, 310325E 6865442N                  of iron oxide minerals. Plagioclase forms subhedral
+                                                                  to euhedral, tabular phenocrysts up to 8 mm long that
+Sampled on 12 July 2018                                           are albitized and fractured. Some elongate plagioclase
+This sample was collected from the 229.58 – 230.79 m              phenocrysts are moderately well aligned. Quartz
+depth interval of drillcore JHDD00014, drilled in 2008 by         phenocrysts are mostly anhedral, up to 1 mm in diameter,
+St Barbara Limited at their Junior Hill prospect (Mukherji,       round to strongly embayed, and exhibit weak to moderate
+2009). The drillhole is located on Weebo Station and              undulose extinction. Less abundant secondary quartz forms
+northwest of the Teutonic mining centre, about 7.2 km west-       fibrous grains, together with carbonate, filling fractures
+southwest of Garden Well, 6.8 northwest of Junior Hill, and       within plagioclase phenocrysts. Disseminated subhedral
+4.3 km northeast of Clifford Bore.                                to euhedral pyrite is up to 0.5 mm in size. Pseudomorphed
+                                                                  ferromagnesian phenocrysts were probably biotite, and
+                                                                  are replaced by chlorite, carbonate and fine iron oxide
+                                                                  minerals. The best-preserved grains are tabular, up to 2 mm
+Geological context                                                long, retain a lamellar texture, and most are aligned, and a
+The unit sampled is a metadacite (Fig. 1) assigned to the         few are kinked. The sample has been deformed, probably at
+Little Peters Formation of the 2694–2676 Ma Gindalbie             low metamorphic grade (lower greenschist facies), and has
+Group (Wyche et al., 2016, and references within).                a weak to moderate anastomosing foliation, best defined
+The Little Peters Formation consists mainly of felsic             by phenocryst alignment and sericite–iron oxide folia in
+metavolcanic and metavolcaniclastic rocks interbedded             the groundmass.
+with metasandstone and shale (Stewart, 2004; Sapkota
+and De Paoli, 2016). The formation overlies the Kents
+Bore Basalt and is tectonically juxtaposed against mafic          Zircon morphology
+and ultramafic rocks of the Marshall Pool Subgroup and
+metasedimentary rocks of the Mount Leonora Formation              Zircons isolated from this sample are colourless to dark
+(Wyche et al., 2016). The present sample was collected            brown or opaque, and subhedral to euhedral. The crystals are
+to determine the age of fragmental metarhyolite above             up to 250 µm long, and mainly elongate, with aspect ratios
+black shale. A metarhyolite from about 336 m depth in             up to 5:1. Concentric zoning is ubiquitous, many zircons
+this drillcore yielded an igneous crystallization age of          contain high-U, metamict zones, and some appear to contain
+2660 ± 6 Ma (GSWA 230514, Wingate et al., 2022).                  older cores. A CL image of representative zircons is shown
+Zircons from a felsic igneous rock about 5.7 km to the            in Figure 2.
+east-southeast in drillcore JHDD00009 yielded a SHRIMP
+U–Pb date of 2692 ± 7 Ma (sample LNN009794, Mukherji,
+2009). A porphyritic metadacite of the underlying                 Analytical details
+Teutonic Bore Formation, sampled about 13.7 km to
+the south-southeast, yielded an igneous crystallization           This sample was analysed on 11–12 June 2020, using
+age of 2692 ± 4 Ma (GSWA 112159, Nelson, 1995).                   SHRIMP-B. Nine analyses of the M257 standard were
+Pidgeon and Wilde (1990) reported an isotope dilution             obtained during the session, of which six indicated an
+thermal ionization mass spectrometric (IDTIMS) U–Pb               external spot-to-spot (reproducibility) uncertainty of
+upper intercept age of 2688 ± 4 Ma for multigrain zircon          0.50% (1σ) and a 238U/206Pb* calibration uncertainty of
+fractions from an outcrop sample of Teutonic Bore                 0.20% (1σ). Isotopic mass fractionation of 207Pb/206Pb
+Formation rhyolite about 10.5 km to the southeast.                ratios during the session was corrected by reference to
+                                                                  the OGC1 standard; measured ratios were decreased
+                                                                  by 0.22%. Calibration uncertainties are included in the
+Petrographic description                                          errors of 238U/206Pb* ratios and dates listed in Table 1.
+                                                                  Common-Pb corrections were applied to all analyses
+The sample is an altered, coarse-grained, plagioclase-            using contemporaneous isotopic compositions determined
+phyric metadacite (Fig. 1), consisting of about 65–70%            according to the model of Stacey and Kramers (1975).
+groundmass, 25–30% plagioclase phenocrysts, 4–5%
+pseudomorphed ferromagnesian phenocrysts, <1%
+quartz phenocrysts, <1% pyrite, and accessory zircon.             Results
+The groundmass is a microcrystalline quartzofeldspathic
+aggregate on which is superimposed a phyllic alteration           Fifteen analyses were obtained from 15 zircons. Results
+assemblage of carbonate–sericite–quartz–pyrite. Carbonate         are listed in Table 1, and shown in a concordia diagram
+minerals are abundant and form elongate grains up to              (Fig. 3).
+1 mm long that link fragments of fractured plagioclase
+
+
+                                                              1
+230507.1.pdf                                                                                    Geochronology Record 1886
+
+
+
+
+               Figure 1.   Drillcore image of sample 230507: metadacite, Junior Hill prospect
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 230507:
+                           metadacite, Junior Hill prospect. Numbered circles indicate the approximate
+                           locations of analysis sites
+
+
+
+
+                                                           2
+230507.1.pdf                                                                                                                                                              Geochronology Record 1886
+
+
+
+
+                                          Table 1. Ion microprobe analytical results for zircons from sample 230507: metadacite, Junior Hill prospect
+
+
+     Group     Spot   Grain.     238
+                                    U    232
+                                            Th       Th
+                                                   232
+                                                             ƒ204          U/206Pb
+                                                                         238                 207
+                                                                                                Pb/206Pb             U/206Pb*
+                                                                                                                   238
+                                                                                                                                          Pb*/206Pb*
+                                                                                                                                        207                 238
+                                                                                                                                                               U/206Pb*     207
+                                                                                                                                                                               Pb*/206Pb*   Disc.
+       ID       no.   spot     (ppm)    (ppm)     238
+                                                     U       (%)           ± 1σ                  ± 1σ                ± 1σ                  ± 1σ           date (Ma) ±1σ    date (Ma) ±1σ    (%)
+        I       8      8.1       462     439       0.95     0.036      1.989    0.016    0.17931       0.00064   1.989     0.016    0.17898     0.00065   2625     17      2643     6        0.7
+        I       3      3.1       417     96        0.23      0.126    2.063     0.017    0.18022       0.00068   2.066     0.017    0.17910     0.00072   2545     17      2645     7        3.8
+        I       9      9.1       436     85        0.20     0.027     2.045     0.016    0.17970       0.00093   2.046     0.016    0.17946     0.00093   2566     17      2648     9        3.1
+        I       15    15.1       130      9        0.07     0.091     2.044     0.022    0.18027       0.00105   2.046     0.022    0.17947     0.00110   2566     23      2648     10       3.1
+        I       4      4.1       418     79        0.19     -0.004    2.002     0.016     0.18018      0.00068   2.002     0.016    0.18022     0.00068   2612     18      2655     6        1.6
+        I       5      5.1       258      4        0.02     -0.014     1.987    0.018    0.18078       0.00082   1.987     0.018    0.18090     0.00082   2628     20      2661     8        1.2
+
+
+        P       11     11.1      546     106       0.19      0.074    2.201     0.017    0.16568       0.00061   2.203     0.017    0.16502     0.00063   2413     16      2508     6        3.8
+        P       7      7.1       582     144       0.25     0.077     2.184     0.017    0.16776       0.00064   2.185     0.017    0.16707     0.00065   2429     16      2529     7        3.9
+        P       14    14.1       409     32        0.08     0.067     2.157     0.017    0.16943       0.00066   2.159     0.017    0.16883     0.00067   2454     16      2546     7        3.6
+        P       2      2.1       644     244       0.38     0.041     2.141     0.018    0.17001       0.00388   2.142     0.018    0.16965     0.00388   2470     17      2554     38       3.3
+        P       10    10.1       476     59        0.12     0.028     2.063     0.016     0.17074      0.00421   2.064     0.016    0.17048     0.00421   2547     17      2562     41       0.6
+
+
+        X       13    13.1       243     128       0.53     0.061      1.963    0.018    0.18472       0.00079   1.964     0.018    0.18418     0.00081   2653     20      2691     7        1.4
+        X       1      1.1        76     30        0.40      0.133     1.873    0.025    0.19087       0.00137   1.876     0.025    0.18968     0.00146   2755     31      2739     13       -0.6
+
+
+        D       6      6.1       428     115       0.27      0.128    2.190     0.018    0.17598       0.00100   2.193     0.018    0.17485     0.00103   2422     17      2605     10        7.0
+        D       12    12.1       423     196       0.46     0.029     2.324     0.019    0.16758       0.00070   2.325     0.019    0.16732     0.00071   2307     16      2531     7        8.9
+
+
+
+
+                                                                                                   3
+230507.1.pdf                                                                                                            Geochronology Record 1886
+
+
+
+
+            Figure 3.     U–Pb analytical data for sample 230507: metadacite, Junior Hill prospect. Yellow squares indicate
+                          Group I (magmatic zircons); red circles indicate Group X (xenocrystic zircon cores); black squares
+                          indicate Group P (radiogenic-Pb loss); crossed squares indicate Group D (discordance >5%)
+
+
+
+
+Interpretation                                                                 Nelson, DR 1995, 112159: porphyritic dacite, Royal Arthur; Geochronology
+                                                                                  Record 488: Geological Survey of Western Australia, 5p.
+The analyses are concordant to moderately discordant                           Pidgeon, RT and Wilde, SA 1990, The distribution of 3.0 Ga and 2.7
+(Fig. 3). Two analyses are >5% discordant. The dates                              Ga volcanic episodes in the Yilgarn Craton of Western Australia:
+obtained from these two analyses (Group D; Table 1)                               Precambrian Research, v. 48, p. 309–325.
+are unreliable, and considered not to be geologically                          Sapkota, J and De Paoli, MC 2016, Little Peters Formation (A-GIl-f):
+significant. The remaining 13 analyses can be divided into                        Geological Survey of Western Australia, WA Geology Online, Explanatory
+three groups, based on their 207Pb*/206Pb* ratios and their                       Notes extract, viewed 04 April 2022, <www.dmp.wa.gov.au/ens>.
+positions within the crystals.
+                                                                               Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead isotope
+Group I comprises six analyses (Table 1), which yield                             evolution by a two-stage model: Earth and Planetary Science Letters,
+                                                                                  v. 26, p. 207–221.
+a weighted mean 207Pb*/ 206Pb* date of 2650 ± 6 Ma
+(MSWD = 0.45).                                                                 Stewart, AJ 2004, Leonora, Western Australia: Geological Survey of
+                                                                                  Western Australia, 1:250 000 Geological Series Explanatory Notes, 46p.
+Group X comprises two analyses of zircon cores (Table 1),                      Wingate, MTD, Fielding, IOH, Lu, Y and Sapkota, J 2022, 230514:
+which yield 207Pb*/206Pb* dates (1σ) of 2739 ± 13 and                            metarhyolite, Junior Hill prospect; Geochronology Record 838:
+2691 ± 7 Ma.                                                                     Geological Survey of Western Australia, 4p.
+
+Group P comprises five analyses (Table 1), which yield a                       Wyche, NL, Wyche, S and Sapkota, J 2016, Gindalbie Group (A-GI-xf-b):
+                                                                                 Geological Survey of Western Australia, WA Geology Online, Explanatory
+207
+    Pb*/206Pb* dates of 2562–2508 Ma.
+                                                                                 Notes extract, viewed 04 April 2022, <www.dmp.wa.gov.au/ens>.
+The date of 2650 ± 6 Ma for the six analyses in Group I is
+interpreted as the igneous crystallization age of the dacite.
+The dates (1σ) of 2739 ± 13 and 2691 ± 7 Ma for the two                        Re­commended reference for this
+analyses of zircon cores in Group X are interpreted as the                     publication
+ages of inherited zircons. The dates of 2562–2508 Ma for
+                                                                               Wingate, MTD, Fielding, IOH, Lu, Y and Sapkota, J 2022, 230507:
+the five analyses in Group P are interpreted to reflect loss
+                                                                                 metadacite, Junior Hill prospect; Geochronology Record 1886:
+of radiogenic Pb.                                                                Geological Survey of Western Australia, 4p.
+
+                                                                               Data obtained:        12 June 2020
+References
+                                                                               Data released:        20 May 2022
+Mukherji, A 2009, St Barbara Ltd, Leonora Project, Annual report for the
+  period 1 April 2008 – 31 March 2009: Mineral Exploration Report
+  A82836 (unpublished), 29p.
+
+
+                                                                           4
+

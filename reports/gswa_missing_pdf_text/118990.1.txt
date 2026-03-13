@@ -1,0 +1,175 @@
+ 118990.1.pdf - Geochronology dataset 435
+
+
+
+         11                                                                                  re
+
+
+Location and sampli
+
+        (SG 50-12)
+GLENGARRY                                                         M G Zone 50,69 480E, 7088 170N
+
+
+Sampled on 30 May 1996
+
+The sample was taken from the southern side of a small creek bed about 2.5 km east-northeast of
+Referendum Bore.
+
+
+
+Tectonic unitlrelations
+
+The sample is of a fine-grained, banded dark grey silicified horizon that has associated thin white
+friable layers. The shale is interbedded with basaltic lavas near the stratigraphic base of the ICillara
+Formation of the Yerrida Group, and may in part have had a volcaniclastic origin.
+
+
+
+Petrographic
+
+This sample is a dark grey, finely laminated, chert-like rock that is cross-cut by finely banded and
+crustiform, 2 to 4 mm wide veins that parallel the sedimentary lamination. In thin section, laminae
+are defined by small variations in grain size and by discontinuous concentrations of 0.05-0.1 mm
+angular grains of detrital quartz and feldspar (3-5 vol.%). Ovoid, framboid-like aggregates of a
+finer grained, translucent mineral, up to 0.1 mm in diameter (5-7 vol.%), are probably Ti-oxides.
+Matrix minerals cannot be resolved under the microscope because the average grain size of the
+rock is less than 2.5 mm. Veins consist chiefly of a decussate intergrowth of subhedral albite laths,
+lesser quartz and minor green biotite that average about 0.5 mm in size. Crude crustiforrn banding
+is defined by subtle variations in the grain size of vein minerals. Vein margins with the host rock
+are gradational and marked by a progressive increase in grain size into the vein.
+
+
+
+Zirc
+
+Most of the zircons extracted fro              le are generally well-rounded and the surfaces of the
+grains extensively pitted, consis               trital origin. A wide range of sizes, from less than
+             o more than 350 x 10              ~ o ~ h o l o g i efrom
+                                                                   s , clear and structureless to strongly
+
+
+
+                                                  122
+zoned grains, are represented. Grain 1 is a 50 x 60 pm, irregular, light brown-yellow, structureless
+fragment whereas grain 13 is a 60 x 70 pm, structureless yellow in
+
+
+
+Analytical details
+
+This sample was analysed on 12 October 1996. The counter deadtime was 32 ns. Eight analyses of
+the CZ3 standard indicated a Pb*/Ucalibration error of 1.87 (10%). Common-Pb corrections were
+made assuming Broken Hill common-Pb isotopic compositions for all unknown analyses with the
+exception of analyses 12.1 and 14.1, for which isotopic compositions determined using the method
+of Cumming and Richards (1975) were assumed.
+
+
+
+Results
+
+Fifteen analyses were obtained from 15 zircons. Results are given in Table 28 and shown on a
+concordia plot in Figure 30.
+
+
+           0.35
+
+                                                                            Analyses 2.1,4.1 & 8.1
+           0.30
+
+
+
+           0.25
+
+                                                                      alyses of 4 zircons
+                                                                   1295 +32 Ma (95% confidence)
+ 206 pb o'20
+
+ 238   u
+           0.15
+
+
+
+           0.10
+
+
+
+           0.05                                                   (5 older analyses not shown)
+                       Analyses 1.1 & 13.1
+
+
+           0.00
+               0.0    0.5       1.o          1.5   2.0      2.5       3.0       3.5      4.0         4.5   5.0
+                                                     207   pb/ 235 U
+
+
+       Figure 30. Concordia plot for sample 118990: silicified laminated shale, Referendum Bore
+
+
+
+
+                                                    123
+                       Ta                     robe a n a l ~ t i ~ l                    18990: silicified laminated shale, Referen
+
+      Gmin     U        Th     Pb    f2M%     207Pb/?06Pb    f lo      206Pb/?38U   flo      207Pb/?3sU   f lo        %         206Pb/?38U   flo       207Pb/?06Pb   flo
+      .spot   (ppm)   (ppm)   (mm)                                                                                concordance      Age                    Age
+                                                                                                                                             ~~
+
+
+
+
+        1.1     82      61      5     2.298    0.05796      0.00750      0.0460     0.0006      0.367     0.048       55            290            4       528       286
+        2.1    250      99      83    0.301    0.10789      0.00078      0.3161     0.0033      4.702     0.063      100          1770            16     1764         13
+*--     3.1    177      81     117    0.073    0.21870      0.00084      0.5732     0.0062     17.284     0.205       98          2 921           25     2 971         6
+$2      4.1    120      93      43    0.348    0.10880      0.00118      0.3074     0.0034      4.61 1    0.075       97          1728            17     1779         20
+        5.1    228     564     227    0.158    0.26300      0.00078      0.6318     0.0067     22.910     0.259       97          3 157           26     3 265         5
+        6.1    604    9431     189    9.214    0.14316      0.00226      0.2049     0.0021      4.045     0.081       53          1 202           11     2 266        27
+        7.1    176     105     117    0.244    0.21095      0.00088      0.5574     0.0060     16.213     0.194       98          2 856           25     2 913        I
+        8.1    102     131      42    0.426    0.11148      0.00139      0.3188     0.0036      4.901     0.087       98          1784            17     1824         23
+        9.1    210     166     116    0.755    0.21735      0.00107      0.4699     0.0050     14.081     0.173       84          2 483           22     2 961         8
+       10.1    348     398      97    0.242    0.08493      0.00067      0.2285     0.0024      2.676     0.037      101          1327            12     1314         15
+       11.1    435      60      95    0.202    0.08354      0.00062      0.2244     0.0023      2.584     0.035      102          1 305           12     1282         15
+       12.1    446     703      87    1.613    0.08320      0.00120      0.1865     0.0019      2.139     0.040       87          1102            10     1274         28
+       13.1    37 1    436      21    0.755    0.05019      0.00213      0.0456     0.0005      0.316     0.014      141            287            3       204        98
+       14.1    595    2389      72   12.243    0.08589      0.00442      0.0688     0.0008      0.815     0.044       32            429            5     1336        100
+       15.1    216     125      94    0.227    0.13632      0.00082      0.3889     0.0041      7.310     0.093       97          2 118           19     2 181        10
+Interpretation
+
+Analyses 1.1 and 13.1 are concordant and have a pooled 2wPb/238Uage of 283 k 2 Ma. Four
+additional analyses (10.1, 11.1, 12.1 and 14.1) displaying varying degrees of discordance, have
+207Pb/206Pb ratios corresponding to an age of 1295 is 32 Ma (chi-squared = 1.47). The zircons of
+both these groups may have been derived from the thin albite-quartz-biotite veins identified in this
+sample. Alternatively, they may be contaminants incorporated into the sample either in the field or
+during sample processing. A further three concordant analyses (2.1,4.1 and 8.1) have 207Pb/2wPb
+ratios corresponding to an age of 1779 is 70 Ma (chi-squared = 2.04). The high chi-squared value
+of this population suggests that these zircons may have been derived from multiple igneous
+sources, or have been metamorphically (or hydrothermally) disturbed. Analysis 2.1 has a
+207Pb/206Pb age of 1764 is 13 Ma ( 1CY error) and provides a maximum age for deposition of the
+sedimentary precursor to the shale. The remaining analyses indicated ages between c. 2180 and
+3262 Ma.
+
+
+
+
+           STRATIGRAPHIC REFERENCE:
+
+           PIRAJNO, F., ADAMIDES, N. G., and FERDINANDO, D. D., 1998, Geology of the
+           Glengarry 1:100 000 sheet: Western Australia Geological Survey, 1:100 000 Geological
+           Series Explanatory Notes.
+
+
+
+
+ Recommended reference for this publication:
+
+ NELSON, D. R., 1997, 118990: silicified laminated shale, Referendum Bore; in Compilation of SHRIMP U–Pb zircon geochronology data,
+ 1996: Western Australia Geological Survey, Record 1997/2, p. 122–125.
+    OR
+ NELSON, D. R., 1997, 118990: silicified laminated shale, Referendum Bore; Geochronology dataset 435; in Compilation of geochronology
+ data, June 2006 update: Western Australia Geological Survey.
+
+ Data obtained: 12/10/1996; Data released: 21/08/1997
+
+
+                                                             125
+

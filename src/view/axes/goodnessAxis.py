@@ -9,7 +9,7 @@ class GoodnessAxis:
     x: Age (Ma), y: S = 1 - D or 1 - D* (0..1).
     Draws the curve, peak markers at their y on the curve, and shaded CI windows.
     """
-    def __init__(self, ax, *, title: str = "Goodness"):
+    def __init__(self, ax, *, title: str = "Goodness (S = 1 - D*)"):
         self.ax = ax
         self.ax.set_title(title)
         self.ax.set_xlabel("Age (Ma)")

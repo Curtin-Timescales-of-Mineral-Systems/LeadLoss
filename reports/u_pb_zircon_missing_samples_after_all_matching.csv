@@ -1,0 +1,557 @@
+dataset,missing_sample_id,reason
+GA Geochronology,2005670080,No IMS point within tolerance
+GA Geochronology,2233,No IMS point within tolerance
+GA Geochronology,87010001,No IMS point within tolerance
+GA Geochronology,87010002,No IMS point within tolerance
+GA Geochronology,87010002A,No IMS point within tolerance
+GA Geochronology,87010008,No IMS point within tolerance
+GA Geochronology,87010009,No IMS point within tolerance
+GA Geochronology,87010010,No IMS point within tolerance
+GA Geochronology,MN26,No IMS point within tolerance
+GA Geochronology,MN38,No IMS point within tolerance
+GA Geochronology,MN45,No IMS point within tolerance
+GA Geochronology,W1,No IMS point within tolerance
+GA Geochronology,W116,No IMS point within tolerance
+GA Geochronology,W139,No IMS point within tolerance
+GA Geochronology,W140,No IMS point within tolerance
+GA Geochronology,W141,No IMS point within tolerance
+GA Geochronology,W165,No IMS point within tolerance
+GA Geochronology,W168,No IMS point within tolerance
+GA Geochronology,W193,No IMS point within tolerance
+GA Geochronology,W2,No IMS point within tolerance
+GA Geochronology,W50,No IMS point within tolerance
+GA Geochronology,W56,No IMS point within tolerance
+GA Geochronology,W58,No IMS point within tolerance
+GA Geochronology,W6,No IMS point within tolerance
+GA Geochronology,W7,No IMS point within tolerance
+GA Geochronology,W78,No IMS point within tolerance
+GA Geochronology,W8,No IMS point within tolerance
+GA Geochronology,W81,No IMS point within tolerance
+GA Geochronology,W83,No IMS point within tolerance
+GA Geochronology,W90,No IMS point within tolerance
+GA Geochronology,W98,No IMS point within tolerance
+GSWA Geochronology,112101,No IMS point within tolerance
+GSWA Geochronology,112112,No IMS point within tolerance
+GSWA Geochronology,112159,No IMS point within tolerance
+GSWA Geochronology,112170,No IMS point within tolerance
+GSWA Geochronology,118990,No IMS point within tolerance
+GSWA Geochronology,133384,No IMS point within tolerance
+GSWA Geochronology,142832,No IMS point within tolerance
+GSWA Geochronology,142933,No IMS point within tolerance
+GSWA Geochronology,142984,No IMS point within tolerance
+GSWA Geochronology,165365,No IMS point within tolerance
+GSWA Geochronology,168973,No IMS point within tolerance
+GSWA Geochronology,168983,No IMS point within tolerance
+GSWA Geochronology,171773,No IMS point within tolerance
+GSWA Geochronology,177915,No IMS point within tolerance
+GSWA Geochronology,177916,No IMS point within tolerance
+GSWA Geochronology,178010,No IMS point within tolerance
+GSWA Geochronology,178026,No IMS point within tolerance
+GSWA Geochronology,178037,No IMS point within tolerance
+GSWA Geochronology,178052,No IMS point within tolerance
+GSWA Geochronology,178054,No IMS point within tolerance
+GSWA Geochronology,178057,No IMS point within tolerance
+GSWA Geochronology,178058,No IMS point within tolerance
+GSWA Geochronology,178059,No IMS point within tolerance
+GSWA Geochronology,178060,No IMS point within tolerance
+GSWA Geochronology,178062,No IMS point within tolerance
+GSWA Geochronology,178064,No IMS point within tolerance
+GSWA Geochronology,178065,No IMS point within tolerance
+GSWA Geochronology,178066,No IMS point within tolerance
+GSWA Geochronology,178067,No IMS point within tolerance
+GSWA Geochronology,181127,No IMS point within tolerance
+GSWA Geochronology,185997,No IMS point within tolerance
+GSWA Geochronology,194754,No IMS point within tolerance
+GSWA Geochronology,195830,No IMS point within tolerance
+GSWA Geochronology,195833,No IMS point within tolerance
+GSWA Geochronology,201514,No IMS point within tolerance
+GSWA Geochronology,201536,No IMS point within tolerance
+GSWA Geochronology,203733,No IMS point within tolerance
+GSWA Geochronology,203735,No IMS point within tolerance
+GSWA Geochronology,203736,No IMS point within tolerance
+GSWA Geochronology,203738,No IMS point within tolerance
+GSWA Geochronology,203739,No IMS point within tolerance
+GSWA Geochronology,203740,No IMS point within tolerance
+GSWA Geochronology,203748,No IMS point within tolerance
+GSWA Geochronology,209650,No IMS point within tolerance
+GSWA Geochronology,209651,No IMS point within tolerance
+GSWA Geochronology,210217,No IMS point within tolerance
+GSWA Geochronology,211111,No IMS point within tolerance
+GSWA Geochronology,211118,No IMS point within tolerance
+GSWA Geochronology,211120,No IMS point within tolerance
+GSWA Geochronology,212791,No IMS point within tolerance
+GSWA Geochronology,214138,No IMS point within tolerance
+GSWA Geochronology,214139,No IMS point within tolerance
+GSWA Geochronology,214315,No IMS point within tolerance
+GSWA Geochronology,215316,No IMS point within tolerance
+GSWA Geochronology,220109,No IMS point within tolerance
+GSWA Geochronology,220110,No IMS point within tolerance
+GSWA Geochronology,222651,No IMS point within tolerance
+GSWA Geochronology,222712,No IMS point within tolerance
+GSWA Geochronology,222720,No IMS point within tolerance
+GSWA Geochronology,222724,No IMS point within tolerance
+GSWA Geochronology,225756,No IMS point within tolerance
+GSWA Geochronology,225757,No IMS point within tolerance
+GSWA Geochronology,225758,No IMS point within tolerance
+GSWA Geochronology,225760,No IMS point within tolerance
+GSWA Geochronology,225797,No IMS point within tolerance
+GSWA Geochronology,225819,No IMS point within tolerance
+GSWA Geochronology,225947,No IMS point within tolerance
+GSWA Geochronology,226183,No IMS point within tolerance
+GSWA Geochronology,226184,No IMS point within tolerance
+GSWA Geochronology,226185,No IMS point within tolerance
+GSWA Geochronology,226186,No IMS point within tolerance
+GSWA Geochronology,227224,No IMS point within tolerance
+GSWA Geochronology,227268,No IMS point within tolerance
+GSWA Geochronology,228446,No IMS point within tolerance
+GSWA Geochronology,229285,No IMS point within tolerance
+GSWA Geochronology,229320,No IMS point within tolerance
+GSWA Geochronology,229748,No IMS point within tolerance
+GSWA Geochronology,229828,No IMS point within tolerance
+GSWA Geochronology,230507,No IMS point within tolerance
+GSWA Geochronology,230514,No IMS point within tolerance
+GSWA Geochronology,231142,No IMS point within tolerance
+GSWA Geochronology,231258,No IMS point within tolerance
+GSWA Geochronology,231273,No IMS point within tolerance
+GSWA Geochronology,232522,No IMS point within tolerance
+GSWA Geochronology,235129,No IMS point within tolerance
+GSWA Geochronology,235199,No IMS point within tolerance
+GSWA Geochronology,236002,No IMS point within tolerance
+GSWA Geochronology,236191,No IMS point within tolerance
+GSWA Geochronology,238531,No IMS point within tolerance
+GSWA Geochronology,239798,No IMS point within tolerance
+GSWA Geochronology,240118,No IMS point within tolerance
+GSWA Geochronology,240481,No IMS point within tolerance
+GSWA Geochronology,242405,No IMS point within tolerance
+GSWA Geochronology,242407,No IMS point within tolerance
+GSWA Geochronology,242435,No IMS point within tolerance
+GSWA Geochronology,242439,No IMS point within tolerance
+GSWA Geochronology,242442,No IMS point within tolerance
+GSWA Geochronology,242455,No IMS point within tolerance
+GSWA Geochronology,242490,No IMS point within tolerance
+GSWA Geochronology,242491,No IMS point within tolerance
+GSWA Geochronology,242492,No IMS point within tolerance
+GSWA Geochronology,242493,No IMS point within tolerance
+GSWA Geochronology,242497,No IMS point within tolerance
+GSWA Geochronology,242498,No IMS point within tolerance
+GSWA Geochronology,242634,No IMS point within tolerance
+GSWA Geochronology,242652,No IMS point within tolerance
+GSWA Geochronology,242672,No IMS point within tolerance
+GSWA Geochronology,242683,No IMS point within tolerance
+GSWA Geochronology,242695,No IMS point within tolerance
+GSWA Geochronology,242908,No IMS point within tolerance
+GSWA Geochronology,242931,No IMS point within tolerance
+GSWA Geochronology,245105,No IMS point within tolerance
+GSWA Geochronology,245115,No IMS point within tolerance
+GSWA Geochronology,245122,No IMS point within tolerance
+GSWA Geochronology,245127,No IMS point within tolerance
+GSWA Geochronology,248205,No IMS point within tolerance
+GSWA Geochronology,248284,No IMS point within tolerance
+GSWA Geochronology,249438,No IMS point within tolerance
+McNaughton Legacy SHRIMP,#57 SKARN,No IMS point within tolerance
+McNaughton Legacy SHRIMP,113982,No IMS point within tolerance
+McNaughton Legacy SHRIMP,144329,No IMS point within tolerance
+McNaughton Legacy SHRIMP,1443292,No IMS point within tolerance
+McNaughton Legacy SHRIMP,173/40-41,No IMS point within tolerance
+McNaughton Legacy SHRIMP,17580N,No IMS point within tolerance
+McNaughton Legacy SHRIMP,17580N 1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,17580N 2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,17580N MAG III,No IMS point within tolerance
+McNaughton Legacy SHRIMP,19A-785,No IMS point within tolerance
+McNaughton Legacy SHRIMP,236,No IMS point within tolerance
+McNaughton Legacy SHRIMP,239,No IMS point within tolerance
+McNaughton Legacy SHRIMP,294826/6,No IMS point within tolerance
+McNaughton Legacy SHRIMP,32A-1377,No IMS point within tolerance
+McNaughton Legacy SHRIMP,32A-588,No IMS point within tolerance
+McNaughton Legacy SHRIMP,32A-588.8,No IMS point within tolerance
+McNaughton Legacy SHRIMP,32A-603,No IMS point within tolerance
+McNaughton Legacy SHRIMP,32A-603.7,No IMS point within tolerance
+McNaughton Legacy SHRIMP,396390,No IMS point within tolerance
+McNaughton Legacy SHRIMP,396391,No IMS point within tolerance
+McNaughton Legacy SHRIMP,396392,No IMS point within tolerance
+McNaughton Legacy SHRIMP,396393,No IMS point within tolerance
+McNaughton Legacy SHRIMP,396394,No IMS point within tolerance
+McNaughton Legacy SHRIMP,396395,No IMS point within tolerance
+McNaughton Legacy SHRIMP,396396,No IMS point within tolerance
+McNaughton Legacy SHRIMP,396397,No IMS point within tolerance
+McNaughton Legacy SHRIMP,397587C,No IMS point within tolerance
+McNaughton Legacy SHRIMP,397587Z,No IMS point within tolerance
+McNaughton Legacy SHRIMP,3CBS,No IMS point within tolerance
+McNaughton Legacy SHRIMP,429121Z COARSE,No IMS point within tolerance
+McNaughton Legacy SHRIMP,429121Z FINE,No IMS point within tolerance
+McNaughton Legacy SHRIMP,495588Z,No IMS point within tolerance
+McNaughton Legacy SHRIMP,60109986,No IMS point within tolerance
+McNaughton Legacy SHRIMP,60925,No IMS point within tolerance
+McNaughton Legacy SHRIMP,65024000,No IMS point within tolerance
+McNaughton Legacy SHRIMP,70650,No IMS point within tolerance
+McNaughton Legacy SHRIMP,70727,No IMS point within tolerance
+McNaughton Legacy SHRIMP,72263,No IMS point within tolerance
+McNaughton Legacy SHRIMP,78,No IMS point within tolerance
+McNaughton Legacy SHRIMP,79/16,No IMS point within tolerance
+McNaughton Legacy SHRIMP,8400-5/60-65,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9305/010,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9306/026,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9306/032,No IMS point within tolerance
+McNaughton Legacy SHRIMP,94003,No IMS point within tolerance
+McNaughton Legacy SHRIMP,95YQ-GF,No IMS point within tolerance
+McNaughton Legacy SHRIMP,95YQ-NW,No IMS point within tolerance
+McNaughton Legacy SHRIMP,95YQ100,No IMS point within tolerance
+McNaughton Legacy SHRIMP,95YQ104,No IMS point within tolerance
+McNaughton Legacy SHRIMP,95YQ120,No IMS point within tolerance
+McNaughton Legacy SHRIMP,95YQ87,No IMS point within tolerance
+McNaughton Legacy SHRIMP,97-71-A,No IMS point within tolerance
+McNaughton Legacy SHRIMP,97-71-I,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 7038G,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 7069A,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 7069B,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 7150,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 7152,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 7153,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9023,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9044,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9090,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9102B,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9125,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9126,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9201,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9202,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9209,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9212,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9223,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9237,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9245,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9248,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9249,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9796 9256B,No IMS point within tolerance
+McNaughton Legacy SHRIMP,98/9 25E,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9896 7001A,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9896 7102E,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9996 4016C,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9996 4100,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9996 7049A,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9996 7055,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9996 7082C,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9996 9049,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9996 9066,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9996 9093B,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9996 9096,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9996 9142,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9996 9164A,No IMS point within tolerance
+McNaughton Legacy SHRIMP,9996-4003,No IMS point within tolerance
+McNaughton Legacy SHRIMP,A1 PGM,No IMS point within tolerance
+McNaughton Legacy SHRIMP,A12F,No IMS point within tolerance
+McNaughton Legacy SHRIMP,A195-1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,A1PGM,No IMS point within tolerance
+McNaughton Legacy SHRIMP,A224-1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,AFA 901,No IMS point within tolerance
+McNaughton Legacy SHRIMP,AGC 834,No IMS point within tolerance
+McNaughton Legacy SHRIMP,AGC 845,No IMS point within tolerance
+McNaughton Legacy SHRIMP,AGC 847,No IMS point within tolerance
+McNaughton Legacy SHRIMP,AGC 849,No IMS point within tolerance
+McNaughton Legacy SHRIMP,AGC848,No IMS point within tolerance
+McNaughton Legacy SHRIMP,AMY,No IMS point within tolerance
+McNaughton Legacy SHRIMP,ANORT,No IMS point within tolerance
+McNaughton Legacy SHRIMP,ANORT.,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B 137,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38A-1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38A-2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38A-3,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38A-4,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38A-5,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38B-6,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38B-7,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38B-8,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38C-10,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38C-11,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38C-12,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38C-13,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38C-9,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38D-14,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38D-15,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38D-16,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38D-17,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B38D-18,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41A-21,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41A-22,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41A-23,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41A-24,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41A-25,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41B-26,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41B-27,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41B-28,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41B-29,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41B-30,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41B-31,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41B-32,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41B-33,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41C-34,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41C-35,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41C-36,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41C-37,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41C-38,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41C-39,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41C-40,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41D-41,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41D-42,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41D-43,No IMS point within tolerance
+McNaughton Legacy SHRIMP,B41D-44,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BF-1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BM01,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BODD-1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BODD-2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BODD-3,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BODD-4,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BODD-5,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BODD-7,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BODD-8,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BOOB,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BOOLALOO GR.,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BP-1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BP-1 II,No IMS point within tolerance
+McNaughton Legacy SHRIMP,"BP-1 MAG III, DIODH",No IMS point within tolerance
+McNaughton Legacy SHRIMP,"BP-1 NONMAG, DIODH",No IMS point within tolerance
+McNaughton Legacy SHRIMP,BR-2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BR-3,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BR02-7,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BR03-20,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BR03-3,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BR03-31,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BR05-15,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BR05-27,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BWRCD 2145,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BWRCD 2726B,No IMS point within tolerance
+McNaughton Legacy SHRIMP,BWRCD 618 378.7,No IMS point within tolerance
+McNaughton Legacy SHRIMP,CALOOLI,No IMS point within tolerance
+McNaughton Legacy SHRIMP,CARB,No IMS point within tolerance
+McNaughton Legacy SHRIMP,CD319 716 SMB,No IMS point within tolerance
+McNaughton Legacy SHRIMP,CHD-319,No IMS point within tolerance
+McNaughton Legacy SHRIMP,CHD383,No IMS point within tolerance
+McNaughton Legacy SHRIMP,CSB1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,CU HILLS,No IMS point within tolerance
+McNaughton Legacy SHRIMP,D2158538,No IMS point within tolerance
+McNaughton Legacy SHRIMP,DI-1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,DL1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,DL2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,DL3,No IMS point within tolerance
+McNaughton Legacy SHRIMP,DL4,No IMS point within tolerance
+McNaughton Legacy SHRIMP,DUF SPIN,No IMS point within tolerance
+McNaughton Legacy SHRIMP,DYKE 2 240/4,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E178,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E179,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E203,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E214,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E225,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E227,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E229,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E233,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E265,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E313,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E314,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E319,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E320,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E321,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E322,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E324,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E325,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E337,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E349,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E350,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E353,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E356,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E357,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E374,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E375,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E385,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E387,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E392,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E396,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E400,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E401,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E410,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E412,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E416,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E47,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E525,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E7,No IMS point within tolerance
+McNaughton Legacy SHRIMP,E74/E75,No IMS point within tolerance
+McNaughton Legacy SHRIMP,EMD-10,No IMS point within tolerance
+McNaughton Legacy SHRIMP,EMD-2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,EMD-2 LEACHED,No IMS point within tolerance
+McNaughton Legacy SHRIMP,ENGD5: 133.6-137.5,No IMS point within tolerance
+McNaughton Legacy SHRIMP,EQ65,No IMS point within tolerance
+McNaughton Legacy SHRIMP,FB-01 COARSER,No IMS point within tolerance
+McNaughton Legacy SHRIMP,FB-01 FINER,No IMS point within tolerance
+McNaughton Legacy SHRIMP,FB-03,No IMS point within tolerance
+McNaughton Legacy SHRIMP,FB-04,No IMS point within tolerance
+McNaughton Legacy SHRIMP,FB-10 COARSER,No IMS point within tolerance
+McNaughton Legacy SHRIMP,FB-10 FINER,No IMS point within tolerance
+McNaughton Legacy SHRIMP,FB-12,No IMS point within tolerance
+McNaughton Legacy SHRIMP,FL11 PYRITE,No IMS point within tolerance
+McNaughton Legacy SHRIMP,FL11 ZR NO INCLUSIONS,No IMS point within tolerance
+McNaughton Legacy SHRIMP,FL11 ZR WITH INCLUSIONS,No IMS point within tolerance
+McNaughton Legacy SHRIMP,FORTRESS HILL,No IMS point within tolerance
+McNaughton Legacy SHRIMP,GC588,No IMS point within tolerance
+McNaughton Legacy SHRIMP,GCPIT627,No IMS point within tolerance
+McNaughton Legacy SHRIMP,GG-1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,GG-2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,GMPO,No IMS point within tolerance
+McNaughton Legacy SHRIMP,GNE,No IMS point within tolerance
+McNaughton Legacy SHRIMP,GOBBO'S,No IMS point within tolerance
+McNaughton Legacy SHRIMP,GWALIA SLATE,No IMS point within tolerance
+McNaughton Legacy SHRIMP,HB08-5,No IMS point within tolerance
+McNaughton Legacy SHRIMP,HB08-6,No IMS point within tolerance
+McNaughton Legacy SHRIMP,HB08-8A,No IMS point within tolerance
+McNaughton Legacy SHRIMP,HB08-8A (NM),No IMS point within tolerance
+McNaughton Legacy SHRIMP,HM-18,No IMS point within tolerance
+McNaughton Legacy SHRIMP,HORSE 01,No IMS point within tolerance
+McNaughton Legacy SHRIMP,J2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,J3,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JBS17,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JBS33,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JBS35,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JBS44,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JG01,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JG02,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JG03,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JH-54,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JHT-1A,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JHT-1B,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JRDC 8044,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JS20,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JS25,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JS44,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JUNDEE,No IMS point within tolerance
+McNaughton Legacy SHRIMP,JUPITER,No IMS point within tolerance
+McNaughton Legacy SHRIMP,K1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,K4,No IMS point within tolerance
+McNaughton Legacy SHRIMP,KI/80,No IMS point within tolerance
+McNaughton Legacy SHRIMP,KI/84,No IMS point within tolerance
+McNaughton Legacy SHRIMP,KND 133: 153-156,No IMS point within tolerance
+McNaughton Legacy SHRIMP,KND 174: 164.1-165,No IMS point within tolerance
+McNaughton Legacy SHRIMP,KU-1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,KU-2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,KU-3,No IMS point within tolerance
+McNaughton Legacy SHRIMP,KU-5,No IMS point within tolerance
+McNaughton Legacy SHRIMP,KWA-1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,KWAD11,No IMS point within tolerance
+McNaughton Legacy SHRIMP,L465958,No IMS point within tolerance
+McNaughton Legacy SHRIMP,LEUCOGRANITE,No IMS point within tolerance
+McNaughton Legacy SHRIMP,M95-028A,No IMS point within tolerance
+McNaughton Legacy SHRIMP,M95-028B,No IMS point within tolerance
+McNaughton Legacy SHRIMP,M95-556A,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MANGANESE GROUP,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MB,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MD 10,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MD 12,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MD 3,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MD 4,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MD 9,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MD3,No IMS point within tolerance
+McNaughton Legacy SHRIMP,METQTZ1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MGS-1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MOND,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MQ,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MTM 1A,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MTM 1B,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MTM 7,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MTM 8B,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MTM 9,No IMS point within tolerance
+McNaughton Legacy SHRIMP,MW-2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,N3162,No IMS point within tolerance
+McNaughton Legacy SHRIMP,N4259,No IMS point within tolerance
+McNaughton Legacy SHRIMP,N4436,No IMS point within tolerance
+McNaughton Legacy SHRIMP,N4450,No IMS point within tolerance
+McNaughton Legacy SHRIMP,NG-1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,NIM-1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,ORC-6-21,No IMS point within tolerance
+McNaughton Legacy SHRIMP,P1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,P2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,P3,No IMS point within tolerance
+McNaughton Legacy SHRIMP,PAR-12 HANDPICKED#,No IMS point within tolerance
+McNaughton Legacy SHRIMP,PAR-12 WT,No IMS point within tolerance
+McNaughton Legacy SHRIMP,PD-2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,PIT 633 W. WALL,No IMS point within tolerance
+McNaughton Legacy SHRIMP,QFP1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,R1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,R2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,RADIO HILL,No IMS point within tolerance
+McNaughton Legacy SHRIMP,RM1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,RR018,No IMS point within tolerance
+McNaughton Legacy SHRIMP,S437,No IMS point within tolerance
+McNaughton Legacy SHRIMP,SB390,No IMS point within tolerance
+McNaughton Legacy SHRIMP,SD-6,No IMS point within tolerance
+McNaughton Legacy SHRIMP,SDA,No IMS point within tolerance
+McNaughton Legacy SHRIMP,SDD 303,No IMS point within tolerance
+McNaughton Legacy SHRIMP,SHD 13 104-106.5,No IMS point within tolerance
+McNaughton Legacy SHRIMP,SHD 13 115.8,No IMS point within tolerance
+McNaughton Legacy SHRIMP,SHD 13 309.5-312,No IMS point within tolerance
+McNaughton Legacy SHRIMP,SHD 13 386.6-389,No IMS point within tolerance
+McNaughton Legacy SHRIMP,SHD-9,No IMS point within tolerance
+McNaughton Legacy SHRIMP,SR-01,No IMS point within tolerance
+McNaughton Legacy SHRIMP,SSD-6,No IMS point within tolerance
+McNaughton Legacy SHRIMP,STEER R III,No IMS point within tolerance
+McNaughton Legacy SHRIMP,STEERE R. PICKED,No IMS point within tolerance
+McNaughton Legacy SHRIMP,STEERE R. RANDOM,No IMS point within tolerance
+McNaughton Legacy SHRIMP,STEERE R.II,No IMS point within tolerance
+McNaughton Legacy SHRIMP,TH26,No IMS point within tolerance
+McNaughton Legacy SHRIMP,TM01 (MD22),No IMS point within tolerance
+McNaughton Legacy SHRIMP,TM01 (MD23),No IMS point within tolerance
+McNaughton Legacy SHRIMP,TM02 (MD20),No IMS point within tolerance
+McNaughton Legacy SHRIMP,TM02 (MD21),No IMS point within tolerance
+McNaughton Legacy SHRIMP,TPD 305 360.5-361.5M,No IMS point within tolerance
+McNaughton Legacy SHRIMP,TPD 305 362-363M,No IMS point within tolerance
+McNaughton Legacy SHRIMP,TR-01,No IMS point within tolerance
+McNaughton Legacy SHRIMP,TR-02,No IMS point within tolerance
+McNaughton Legacy SHRIMP,TRE 022,No IMS point within tolerance
+McNaughton Legacy SHRIMP,TRE 026,No IMS point within tolerance
+McNaughton Legacy SHRIMP,TRE 029,No IMS point within tolerance
+McNaughton Legacy SHRIMP,TRE 032,No IMS point within tolerance
+McNaughton Legacy SHRIMP,TRE 036,No IMS point within tolerance
+McNaughton Legacy SHRIMP,TUQZ3,No IMS point within tolerance
+McNaughton Legacy SHRIMP,U514/1A,No IMS point within tolerance
+McNaughton Legacy SHRIMP,U911/1A,No IMS point within tolerance
+McNaughton Legacy SHRIMP,U919/1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,U920/1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,U922/1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,U928/1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,U929/1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,U930/1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,U931/1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,U933/1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,U938/1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,U955/1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,U961/1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,VOM 432634,No IMS point within tolerance
+McNaughton Legacy SHRIMP,VOM 95 061B,No IMS point within tolerance
+McNaughton Legacy SHRIMP,VOM 95 327,No IMS point within tolerance
+McNaughton Legacy SHRIMP,VOM 95-031,No IMS point within tolerance
+McNaughton Legacy SHRIMP,VOM 95-061A,No IMS point within tolerance
+McNaughton Legacy SHRIMP,VOM 95-078,No IMS point within tolerance
+McNaughton Legacy SHRIMP,W127,No IMS point within tolerance
+McNaughton Legacy SHRIMP,W17,No IMS point within tolerance
+McNaughton Legacy SHRIMP,W172,No IMS point within tolerance
+McNaughton Legacy SHRIMP,W69,No IMS point within tolerance
+McNaughton Legacy SHRIMP,WB 107P,No IMS point within tolerance
+McNaughton Legacy SHRIMP,WG 300 MRL,No IMS point within tolerance
+McNaughton Legacy SHRIMP,WG 50 NON-MAG,No IMS point within tolerance
+McNaughton Legacy SHRIMP,WG-GN,No IMS point within tolerance
+McNaughton Legacy SHRIMP,WR012,No IMS point within tolerance
+McNaughton Legacy SHRIMP,WW 108,No IMS point within tolerance
+McNaughton Legacy SHRIMP,WW12,No IMS point within tolerance
+McNaughton Legacy SHRIMP,XTC,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YILGANGIE,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ1,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ10,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ11,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ13,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ14,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ17,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ18,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ19,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ2,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ21,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ22,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ3,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ38,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ6,No IMS point within tolerance
+McNaughton Legacy SHRIMP,YQ7,No IMS point within tolerance

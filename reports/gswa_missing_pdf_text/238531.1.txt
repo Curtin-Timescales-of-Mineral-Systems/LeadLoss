@@ -1,0 +1,182 @@
+238531.1.pdf                                                                                        Geochronology Record 1804
+
+
+
+
+                     238531: metamonzogranite, Scotties Bore
+         (Big Bell Suite, Austin Downs Supersuite, Youanmi Terrane, Yilgarn Craton)
+
+
+
+
+Location and sampling                                              to subhedral, equant to slightly tabular, up to 5 mm
+                                                                   in size, and variably sericitized. K-feldspar is finely
+Cue (SG 50-15), Dalgaranga (2342)                                  microperthitic, and forms subhedral, tabular crystals
+                   MGA Zone 50, 513733E 6933814N                   up to 6 mm long, and anhedral grains up to 0.5 mm
+                                                                   long in polygonal aggregates with fine-grained quartz
+Sampled on 13 October 2017                                         and plagioclase. Some larger K-feldspar grains contain
+This sample was collected from outcrop on the east side            inclusions of other minerals, many exhibit microcline
+of a track, about 10.1 km east-southeast of Buongnoo Hill,         twinning, and some are bordered by minor myrmekite.
+3.4 km south of Scotties Bore, and 0.7 km north of the             Quartz is irregular, anhedral, up to 4 mm in diameter,
+Mount Farmer Road.                                                 finely fractured, and exhibits weak undulose extinction.
+                                                                   Biotite forms mainly subhedral laths up to 1.5 mm long,
+                                                                   many in decussate aggregates, and is partially altered to
+                                                                   chlorite. Muscovite forms subhedral, randomly oriented
+Geological context                                                 laths up to 0.3 mm long, and anhedral magnetite up
+The unit sampled is a gneissic metamonzogranite of                 to 0.7 mm in size is partly replaced by hematite along
+the Big Bell Suite of the Austin Downs Supersuite                  fractures. Apatite is subhedral and up to 0.3 mm long.
+(Van Kranendonk et al., 2013; Zibra, 2019). The                    Undulose extinction and fine fracturing in quartz suggests
+2732– 2686 Ma Big Bell Suite consists mainly of                    the sample may have been deformed and partially
+porphyritic and equigranular monzogranite and                      recovered, probably at moderate metamorphic grade.
+subordinate granodiorite and tonalite, together with their
+deformed and metamorphosed equivalents. The Big Bell
+Suite discordantly intruded mafic to felsic igneous and            Zircon morphology
+metasedimentary rocks of the Norie, Polelle and Glen               Zircons isolated from this sample are pale brown to dark
+Groups, as well as metagranitic and gabbroic rocks                 brown or opaque, and mainly subhedral. The crystals are
+of the Annean Supersuite, and is intruded by granitic              up to 350 µm long, and elongate, with aspect ratios up
+rocks of the Tuckanarra and Jungar Suites, and the Bald            to 8:1. In cathodoluminescence (CL) images, concentric
+Rock Supersuite (Van Kranendonk et al., 2013; Zibra,               zoning is ubiquitous, most crystals are dominated by
+2019). Most Big Bell Suite granitic rocks exhibit a                high-U, metamict domains, and some appear to contain
+well-developed, north- to northeast-trending magmatic              older cores. A CL image of representative zircons is shown
+foliation, subparallel to the regional granite–greenstone          in Figure 2.
+fabric (Zibra, 2019). At this locality, the metamonzogranite
+displays a north-trending gneissic fabric, and is crosscut
+by metre-scale monzogranite dykes. A monzogranite
+collected about 41 km to the east-southeast yielded an
+                                                                   Analytical details
+igneous crystallization age of 2702 ± 4 Ma (GSWA                   This sample was analysed on 20–21 and 26 September
+155503, Wingate et al., 2014b), and is crosscut by a               2019, using SHRIMP-B. Analyses 1.1 to 8.1 (spot numbers
+granitic dyke dated at 2686 ± 4 Ma (GSWA 155502,                   1–8) were obtained during the first session, together with
+Wingate et al., 2014a). A porphyritic monzogranite                 six analyses of the M257 standard, of which five analyses
+collected about 51 km to the southeast yielded an igneous          indicated an external spot-to-spot (reproducibility)
+crystallization age of 2701 ± 2 Ma (GSWA 203717,                   uncertainty of 0.59% (1σ) and a 238U/206Pb* calibration
+Wingate et al., 2019b), and is intruded by the 2692 ± 2 Ma         uncertainty of 0.35% (1σ). Isotopic mass fractionation
+Boogardie Orbicular Granite (GSWA 203716, Wingate                  of 207Pb/206Pb ratios during the first session was corrected
+et al., 2019a; GSWA 203721, Wingate et al., 2019c;                 by reference to the OGC1 standard; measured ratios were
+Wingate, 2020).                                                    decreased by 0.71%. Analyses 9.1 to 11.1 (spot numbers
+                                                                   9–11) were obtained during the second session, together
+                                                                   with four analyses of the M257 standard, which indicated
+Petrographic description                                           an external spot-to-spot (reproducibility) uncertainty of
+                                                                   0.50% (1σ) and a 238U/206Pb* calibration uncertainty of
+The sample is a medium-grained, equigranular                       0.67% (1σ). Calibration uncertainties are included in the
+metamonzogranite (Fig. 1), consisting of about 40%                 errors of 238U/206Pb* ratios and dates listed in Table 1.
+plagioclase, 25–30% K-feldspar, 25–30% quartz, 5%                  Common-Pb corrections were applied to all analyses
+biotite, 2% myrmekite, <1% magnetite, and accessory                using contemporaneous isotopic compositions determined
+muscovite, apatite and zircon. Plagioclase is anhedral             according to the model of Stacey and Kramers (1975).
+
+
+                                                               1
+238531.1.pdf                                                                                Geochronology Record 1804
+
+
+
+
+               Figure 1.   Hand specimen image of sample 238531: metamonzogranite, Scotties Bore
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 238531:
+                           metamonzogranite, Scotties Bore. Numbered circles indicate the approximate
+                           locations of analysis sites
+
+
+
+
+                                                          2
+238531.1.pdf                                                                                                                                                                Geochronology Record 1804
+
+
+
+
+                                               Table 1. Ion microprobe analytical results for zircons from sample 238531: metamonzogranite, Scotties Bore
+
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th         Th
+                                                     232
+                                                               ƒ204          U/206Pb
+                                                                           238
+                                                                                                 Pb/206Pb
+                                                                                               207
+                                                                                                                       U/206Pb*
+                                                                                                                     238
+                                                                                                                                           Pb*/206Pb*
+                                                                                                                                         207                  238
+                                                                                                                                                                 U/206Pb*    207
+                                                                                                                                                                                Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)          U
+                                                     238
+                                                               (%)           ± 1σ                 ± 1σ                 ± 1σ                 ± 1σ            date (Ma) ±1σ   date (Ma) ±1σ    (%)
+       I        10    10.1        56     22           0.39     0.589     1.938    0.038    0.18978       0.00381   1.950    0.038     0.18453    0.00418    2669     44     2694     37       0.9
+       I        9      9.1       602     77           0.13     0.131     1.938    0.020    0.18582       0.00062   1.941    0.020     0.18465    0.00066    2679     24     2695     6        0.6
+       I        6      6.1       440     95           0.22     0.123     1.957    0.016    0.18653       0.00050   1.959    0.016     0.18544    0.00055    2659     19     2702     5        1.6
+       I        3      3.1       182     101          0.55     0.100     1.882    0.018    0.18720       0.00076   1.884    0.018     0.18632    0.00080    2745     22     2710     7        -1.3
+       I        2      2.1       120     73           0.61     0.089     1.888    0.020    0.18731       0.00092   1.889    0.020     0.18652    0.00096    2738     25     2712     9        -1.0
+       I        8      8.1       349     185          0.53     0.047     1.967    0.021    0.18710       0.00057   1.968    0.021     0.18669    0.00058    2649     24     2713     5        2.4
+       I        7      7.1       104     96           0.92     0.070     1.945    0.031    0.18737       0.00103   1.947    0.031     0.18676    0.00107    2672     35     2714     9        1.5
+       I        5      5.1       590     514          0.87     0.082     1.915    0.015    0.18785       0.00043   1.917    0.015     0.18712    0.00046    2707     18     2717     4        0.4
+
+
+      X         11     11.1      206     180          0.87     0.310     1.918    0.036    0.19201       0.00109   1.923    0.036     0.18924    0.00125    2699     43     2736     11       1.3
+      X         1      1.1       148     101          0.68     0.089     1.758    0.018    0.20411       0.00084   1.760    0.018     0.20333    0.00087    2901     24     2853     7        -1.7
+      X         4      4.1       160     108          0.67     0.031     1.761    0.018    0.20546       0.00130   1.761    0.018     0.20519    0.00131    2899     24     2868     10       -1.1
+
+
+
+
+                                                                                                     3
+238531.1.pdf                                                                                                             Geochronology Record 1804
+
+
+
+
+             Figure 3.     U–Pb analytical data for sample 238531: metamonzogranite, Scotties Bore. Yellow squares
+                           indicate Group I (magmatic zircons); red circles indicate Group X (xenocrystic zircons)
+
+
+
+
+Results                                                                            Wingate, MTD 2020, Geochronology of the Boogardie Orbicular
+                                                                                     Granite: The Australian Geologist, no. 195, p. 24–26.
+Eleven analyses were obtained from 11 zircons. Results                             Wingate, MTD, Fielding, IOH and Lu, Y 2019a, 203716: monzogranite,
+are listed in Table 1, and shown in a concordia diagram                              Boogardie quarry; Geochronology Record 1627: Geological Survey
+(Fig. 3).                                                                            of Western Australia, 4p.
+                                                                                   Wingate, MTD, Fielding, IOH and Lu, Y 2019b, 203717: porphyritic
+                                                                                     monzogranite, Boogardie quarry; Geochronology Record 1628:
+Interpretation                                                                       Geological Survey of Western Australia, 4p.
+The analyses are concordant to slightly discordant (Fig. 3),                       Wingate, MTD, Fielding, IOH and Lu, Y 2019c, 203721: monzogranite,
+and can be divided into two groups, based on their                                   Boogardie quarry; Geochronology Record 1629: Geological Survey
+207
+   Pb*/206Pb* ratios and their locations within the crystals.                        of Western Australia, 4p.
+                                                                                   Wingate, MTD, Kirkland, CL and Zibra, I 2014a, 155502: monzogranite
+Group I comprises eight analyses (Table 1), which yield                               dyke, Mundra Well; Geochronology Record 1146: Geological Survey
+a weighted mean 207Pb*/206Pb* date of 2709 ± 7 Ma                                     of Western Australia, 4p.
+(MSWD = 1.8).
+                                                                                   Wingate, MTD, Kirkland, CL and Zibra, I 2014b, 155503: biotite
+Group X comprises three analyses of zircon cores                                     monzogranite, Mundra Well; Geochronology Record 1147:
+                                                                                     Geological Survey of Western Australia, 4p.
+( Ta b l e 1 ) , w h i c h y i e l d 2 0 7 P b * / 2 0 6 P b * d a t e s o f
+2868– 2736 Ma.                                                                     Zibra, I 2019, Big Bell Suite (A-SDB-mg): Geological Survey of Western
+                                                                                      Australia, WA Geology Online, Explanatory Notes extract, viewed
+The date of 2709 ± 7 Ma for the eight analyses in Group                               2 August 2021, <www.dmp.wa.gov.au/ens>.
+I is interpreted as the igneous crystallization age of
+the monzogranite. The dates of 2868–2736 Ma for the
+three analyses in Group X are interpreted as the ages of                           Recommended reference for this
+inherited zircons.                                                                 publication
+                                                                                   Wingate, MTD, Fielding, IOH, Lu, Y and Zibra, I 2021, 238531:
+                                                                                     metamonzogranite, Scotties Bore; Geochronology Record 1804:
+References                                                                           Geological Survey of Western Australia, 4p.
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+                                                                                   Data obtained:       26 September 2019
+   isotope evolution by a two-stage model: Earth and Planetary Science
+   Letters, v. 26, p. 207–221.                                                     Data released:       21 October 2021
+Van Kranendonk, MJ, Ivanic, TJ, Wingate, MTD, Kirkland, CL and
+   Wyche, S 2013, Long-lived, autochthonous development of the
+   Archean Murchison Domain, and implications for Yilgarn Craton
+   tectonics: Precambrian Research, v. 229, p. 49–92.
+
+
+                                                                               4
+

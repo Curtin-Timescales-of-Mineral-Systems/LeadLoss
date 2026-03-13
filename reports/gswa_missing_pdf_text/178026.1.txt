@@ -1,0 +1,237 @@
+178026.1.pdf - Geochronology dataset 535
+
+           178026: muscovite–biotite syenogranite, Russell Well
+
+
+  Location and sampling                                               is present as primary ﬂakes, up to 2 mm in length, and
+                                                                      aggregates of largely decussate smaller ﬂakes, especially
+  EDMUND (SF 50-14), MANGAROON (2050)                                 in the mica-rich band that contains most of the muscovite
+                     MGA Zone 50, 364600E 7360610N                    in the thin section. Muscovite is mostly schistose and
+                                                                      oriented parallel to the micaceous band, with ﬂakes up
+  Sampled on 3 October 2002                                           to 3 mm long, transecting and post-dating biotite in the
+  The sample was taken from the northeastern edge of a                same layer. There is also less strongly oriented muscovite
+  20 m-long, easterly trending low pavement, 1 km east of             in this layer, particularly where it is intergrown with
+  Russell Well.                                                       earlier decussate biotite, and the schistosity is not entirely
+                                                                      planar, with the possibility of an S–C fabric in places. A
+                                                                      15 mm-diameter patch of tourmaline in the centre of one
+                                                                      of the biotite-free areas suggests a pegmatoidal aspect to
+  Tectonic unit/relations                                             the those areas. Plagioclase is albitized and shows weak
+  The sample is a pale-grey, coarse-grained, heterogeneous,           or moderate development of sericite and epidote in a
+  pegmatitic muscovite–biotite syenogranite that belongs              saussuritic alteration pattern. The exsolved plagioclase
+  to the 1680–1620 Ma Durlacher Supersuite (Sheppard                  is mostly fresh, and rarely altered, with ﬁbrous sericite
+  et al., 2004). The syenogranite is the youngest igneous             in some areas. Minor epidote has developed in some of
+  phase identiﬁed at the sampling site, and has intruded a            the biotite, and rare ﬂakes are altered to chlorite. In the
+  biotite–muscovite granodiorite that is rich in inclusions           muscovite and biotite lenses there is some replacement
+  of augen gneiss and was dated at 1677 ± 5 Ma by Nelson              of biotite by granular epidote, with lamellae of leucoxene
+  (this compilation; GSWA 178027). At the sampling site,              or microcrystalline titanite parallel to the cleavage of
+  the syenogranite contains irregular layers that are richer in       the former biotite. There are muscovite and epidote
+  maﬁc minerals, mainly biotite. It was collected to constrain        aggregates in the biotite-free areas, but they are not as
+  the age of the Durlacher Supersuite. The data presented             abundant as in the biotite- and muscovite-rich band. Clear,
+  below indicate a maximum age of igneous crystallization             euhedral zircon crystals up to 70 µm long occur only in
+  of 1691 ± 9 Ma for the syenogranite, but it must be                 the biotite-rich band, with rare zoned crystals containing
+  younger than 1677 ± 5 Ma, the igneous crystallization age           epidote and metamict-altered ?allanite adjacent to this
+  of the granodiorite it intrudes.                                    band. The overall fabric suggests that the micaceous areas
+                                                                      contain schlieren of metasedimentary origin as well as
+                                                                      disseminated primary magmatic biotite. It is possible that
+  Petrographic description                                            any deformation of this sample was largely partitioned into
+                                                                      the micaceous areas; recrystallization of quartz implies
+  The sample consists principally of microcline (50 vol.%),           amphibolite facies deformation and metamorphism (or
+  quartz (25 vol.%), plagioclase (20 vol.%), muscovite                autometamorphism). The biotite–muscovite–epidote
+  (3 vol.%), and biotite (2 vol.%), with trace amounts                assemblages in the possible schlieren suggest lower
+  of accessory tourmaline, epidote, chlorite, and zircon.             amphibolite to greenschist facies conditions. There is
+  This is a heterogeneous muscovite–biotite syenogranite              also evidence low-temperature hydrothermal alteration to
+  with micaceous and mica-poor domains (?pegmatoidal),                saussuritic assemblages.
+  some of which contain segregations of tourmaline. The
+  micaceous domains are partly schistose and could be
+  schlieren of metasedimentary origin (probably upper
+  greenschist to lower amphibolite facies), with secondary
+                                                                      Zircon morphology
+  epidote and rare clear, euhedral zircons. Plagioclase is            The zircons isolated from this sample are pale yellowish-
+  weakly to moderately saussuritized, with minor epidote              brown or pinkish-brown, generally between 60 ×
+  and rare chlorite replacing biotite. This is a heterogeneous        100 µm and 100 × 280 µm in size, and euhedral, with
+  but mostly K-feldspar-rich granitoid with large domains             some rounded terminations, and slightly elongate. Most
+  with and without disseminated biotite. Biotite occurs               grains are structureless, but a minority has faint internal
+  mostly in a quartz-poor band 10 to 15 mm wide. The                  zonation and a few have structureless and fractured cores
+  bulk mineralogy indicates a two-mica syenogranite with              surrounded by zoned rims. Cathodoluminescence images
+  S-type afﬁnities. The plagioclase is present as anhedral and        of representative zircons are given in Figure 1.
+  subhedral grains up to 5 mm in length, and locally with a
+  partial mantle of albite exsolved from adjacent grains of
+  microcline. The microcline is mostly anhedral and partly            Analytical details
+  poikilitic, with grains from 2 to 8 mm in diameter. Albite
+  has been exsolved, mostly along grain-boundaries, where             This sample was analysed on 14 July 2003. The counter
+  “swapped rims” are common. Quartz typically forms                   deadtime during the analysis session was 24 ns. Eight
+  weakly deformed larger grains, up to 4 mm long, but areas           analyses of the CZ3 standard obtained during the analysis
+  containing ﬁne-grained recrystallized grains are present,           session indicated a Pb*/U calibration uncertainty of
+  with grains mostly less than 0.4 mm in diameter. Biotite            1.40% (1σ). Common-Pb corrections were applied
+
+                                                                  1
+D. R. Nelson, 2005
+
+
+
+
+   3.1                                         4.1                               6.1
+
+
+
+
+                                                                                                  7.1
+
+                            (a)                                                         (b)
+
+
+
+
+                                                                                 10.1
+
+
+   9.1
+                                                8.1                                                     11.1
+
+
+
+
+                            (c)                                                         (d)
+
+
+
+                        15.1
+
+                                         14.1                                                               19.1
+
+
+
+
+                     13.1
+                                                                 21.1
+                                                                                         20.1
+                            (e)                                                         (f)
+Figure 1.   Cathodoluminescence images of representative zircons from sample 178026: muscovite–biotite syenogranite,
+            Russell Well
+
+
+
+
+                                                          2
+                                     Table 1. Ion microprobe analytical results for zircons from sample 178026: muscovite–biotite syenogranite, Russell Well
+
+
+
+    Grain     U       Th      Pb    ƒ206%     207Pb/ 206Pb       ±1σ        208Pb/ 206Pb        ±1σ      206Pb/ 238U       ±1σ      207Pb/ 235U      ±1σ            %        207Pb/ 206Pb   ±1σ
+    .spot   (ppm)   (ppm)   (ppm)                                                                                                                              concordance       Age
+
+    1.1     220      156      78    0.127        0.11044        0.00079        0.20850        0.00163       0.3107         0.0044        4.731        0.079         97           1 807      13
+    2.1     495      125     162    0.053        0.10967        0.00046        0.07336        0.00063       0.3215         0.0045        4.861        0.074        100           1 794       8
+    3.1     401      123     133    0.054        0.10946        0.00052        0.08930        0.00078       0.3207         0.0045        4.841        0.075        100           1 790       9
+    4.1     445      122     147    0.135        0.11019        0.00052        0.07871        0.00080       0.3212         0.0045        4.879        0.075        100           1 802       9
+    5.1     313      123     104    0.524        0.10948        0.00083        0.11480        0.00163       0.3086         0.0044        4.659        0.079         97           1 791      14
+    6.1     165      106      60    0.294        0.10917        0.00105        0.18405        0.00220       0.3208         0.0046        4.829        0.088        100           1 786      18
+    7.1     178       93      61    0.183        0.10896        0.00093        0.15172        0.00181       0.3134         0.0045        4.709        0.083         99           1 782      16
+    8.1     402       82     123    0.107        0.10501        0.00053        0.06012        0.00077       0.3037         0.0043        4.397        0.069        100           1 714       9
+    9.1     348      140     117    0.061        0.11175        0.00058        0.12124        0.00095       0.3153         0.0045        4.858        0.076         97           1 828       9
+    10.1    477       35     138    0.082        0.10369        0.00051        0.02076        0.00064       0.2980         0.0042        4.261        0.066         99           1 691       9
+
+
+
+
+3
+    11.1    258       78      86    0.072        0.11057        0.00073        0.08748        0.00120       0.3208         0.0046        4.891        0.081         99           1 809      12
+    12.1    695      170     234    2.080        0.10808        0.00091        0.07055        0.00195       0.3082         0.0044        4.594        0.080         98           1 767      15
+    12.2    132      176      56    0.247        0.11005        0.00108        0.38493        0.00284       0.3265         0.0047        4.955        0.092        101           1 800      18
+    13.1    296      150     102    0.232        0.10942        0.00069        0.14478        0.00130       0.3164         0.0045        4.774        0.078         99           1 790      11
+    14.1    205       79      69    0.298        0.10929        0.00088        0.11215        0.00162       0.3151         0.0045        4.748        0.082         99           1 788      15
+    15.1    238       51      77    0.171        0.10997        0.00076        0.06313        0.00121       0.3172         0.0045        4.809        0.080         99           1 799      13
+    16.1    116       79      42    0.025        0.11049        0.00098        0.20149        0.00197       0.3193         0.0046        4.865        0.087         99           1 808      16
+    17.1    206       92      70    0.138        0.10935        0.00083        0.13127        0.00155       0.3163         0.0045        4.769        0.081         99           1 789      14
+    18.1    127       60      44    0.359        0.10864        0.00121        0.13114        0.00238       0.3185         0.0046        4.771        0.092        100           1 777      20
+    19.1    162       50      53    0.246        0.10857        0.00100        0.08892        0.00183       0.3164         0.0045        4.736        0.085        100           1 776      17
+    20.1    197       83      66    0.130        0.11080        0.00081        0.11972        0.00141       0.3153         0.0045        4.817        0.081         97           1 813      13
+    21.1    293      206     105    0.079        0.11058        0.00063        0.20517        0.00127       0.3148         0.0045        4.800        0.077         98           1 809      10
+    22.1    118       96      44    0.365        0.10960        0.00125        0.23293        0.00275       0.3208         0.0047        4.847        0.095        100           1 793      21
+    23.1    153       93      55    0.237        0.10971        0.00098        0.17876        0.00199       0.3213         0.0046        4.861        0.087        100           1 795      16
+    24.1    157      106      57    0.138        0.11166        0.00093        0.20001        0.00189       0.3183         0.0046        4.901        0.086         98           1 827      15
+                                                                                                                                                                                                  Geochronology data obtained in 2003
+D. R. Nelson, 2005
+
+          0.34
+
+
+
+
+                                                               22 analyses of 21 zircons
+                                                                                                      1800
+                                                               1796 ± 6 Ma (95% confidence)
+          0.32
+
+
+
+                                                                        1750
+Pb/238U
+
+
+
+
+                                                                                                       Analysis 9.1
+                                                Analysis 8.1
+206
+
+
+
+
+                                             1700
+
+          0.30
+
+
+                                         Analysis 10.1
+                    1650
+
+
+
+
+                                                                                                                                    178026
+
+          0.28
+              4.0                 4.2                    4.4                 4.6                4.8                   5.0                    5.2
+                                                                       207         235
+                                                                             Pb/ U
+
+                           Figure 2. Concordia plot for sample 178026: muscovite–biotite syenogranite, Russell Well
+
+
+
+
+assuming Broken Hill common-Pb isotopic compositions                         sample are xenocrysts. Analysis 10.1 was obtained on
+for all analyses, with the exception of analysis 12.1, for                   a 30 × 100 µm, clear, structureless grain. The date of
+which isotopic compositions determined using the method                      1691 ± 9 Ma (±1σ uncertainty) indicated by the 207Pb/206Pb
+of Cumming and Richards (1975) were assumed.                                 ratio of concordant analysis 10.1 is therefore interpreted
+                                                                             as the maximum age for igneous crystallization of the
+                                                                             syenogranite.
+Results
+Twenty-five analyses were obtained from 24 zircons.
+Results are given in Table 1 and shown on a concordia                        Recommended reference for this publication:
+                                                                             Geochronologist:       D. R. Nelson
+plot in Figure 2.                                                            Data obtained:
+                                                                             NELSON,                2003 muscovite-biotite syenogranite,
+                                                                                      D. R., 2005, 178026:
+                                                                             Data released:
+                                                                             Russell                2005dataset 535; in Compilation of
+                                                                                     Well; Geochronology
+                                                                             geochronology data, June 2006 update: Western Australia
+Interpretation                                                               Geological Survey.
+
+The analyses are concordant to slightly discordant, with                     Data obtained: 14/07/2003; Data released: 30/06/2005
+the discordance pattern consistent with a recent episode
+of radiogenic-Pb loss. Twenty-two concordant analyses
+of 21 zircons have 207Pb/206Pb ratios deﬁning a single
+population and indicating a weighted mean 207Pb/206Pb date
+of 1796 ± 6 Ma (chi-squared = 0.86). Concordant analyses
+8.1 and 10.1 indicate signiﬁcantly younger 207Pb/206Pb
+dates, whereas discordant analysis 9.1 indicates a slightly
+older 207Pb/206Pb date, than the main population.
+    The distribution of analyses along the concordia curve
+indicates that most, if not all, of the zircons within this
+
+
+                                                                       4
+

@@ -1,0 +1,236 @@
+178057.1.pdf - Geochronology dataset 584
+
+                   178057: biotite monzogranite, Kurrajong Well
+
+
+  Location and sampling                                              Zircon morphology
+  SANDSTONE (SG 50-16), LAKE MASON (2842)                            The zircons isolated from this sample are typically
+                     MGA Zone 50, 750960E 6911380N                   colourless, pale yellow, dark brown and black, euhedral
+                                                                     and slightly elongate, and between 50 × 80 µm
+  Sampled on 30 October 2002                                         and 160 × 80 µm in size. A majority of grains have
+                                                                     faint internal zonation, whereas the remainder are
+  The sample was collected from the edge of a low rocky              internally structureless. Many grains have a speckled
+  pavement, 150 m southeast of the Sandstone–Wiluna Road             appearance in transmitted light, and many are metamict.
+  and 7 km southwest of Kurrajong Well.                              Cathodoluminescence images of representative zircons are
+                                                                     given in Figure 1.
+  Tectonic unit/relations
+  The sample is a pale-grey, medium- and even-grained,               Analytical details
+  massive biotite monzogranite from the Southern                     This sample was analysed on 13 and 17 April 2003. The
+  Cross Granite–Greenstone Terrane, Yilgarn Craton                   counter deadtime during both analysis sessions was 24 ns.
+  (Wyche, 2004). It was collected to determine the age of            During the ﬁrst analysis sesssion, ten analyses of the CZ3
+  monzogranite away from major shear zones.                          standard indicated a Pb*/U calibration uncertainty of
+                                                                     1.63% (1σ). Analyses 1.1 to 13.1 were obtained during
+                                                                     the first analysis session. During the second analysis
+  Petrographic description                                           session, ﬁve analyses of the CZ3 standard indicated a
+  The principal minerals are plagioclase (35–40                      Pb*/U calibration uncertainty of 1.74% (1σ). Common-Pb
+  vol.%), K-feldspar (35 vol.%), quartz (25 vol.%),                  corrections were applied assuming Broken Hill common-
+  biotite (2–3 vol.%), and opaque oxide (1 vol.%), with              Pb isotopic compositions for all analyses, with the
+  trace amounts of accessory apatite, chlorite, epidote,             exception of analyses 1.1, 3.1, 9.1, 18.1, 20.1, and 25.1, for
+  stilpnomelane, sericite, clinozoisite, allanite, and zircon.       which isotopic compositions determined using the method
+  Anhedral to subhedral plagioclase from 0.4 to 3 mm                 of Cumming and Richards (1975) were assumed.
+  in grain size could be andesine–oligoclase. Anhedral
+  microcline is also abundant, having a similar grain size to
+  the plagioclase, but the quartz occurs as partly poikilitic        Results
+  interstitial grains up to 4 mm long. Biotite, from 0.2 to          Twenty-five analyses were obtained from 25 zircons.
+  2 mm in grain size, is mostly aligned and there is some            Results are given in Table 1 and shown on a concordia
+  suggestion of an S–C fabric. However, as the other                 plot in Figure 2.
+  minerals show no evidence of deformation, this could be
+  a primary magmatic foliation. Disseminated grains and
+  lenses of opaque oxide are up to 0.8 mm long, and there is         Interpretation
+  also disseminated apatite and altered allanite. Some of the
+  smaller zircons, less than 70 µm in length, are clouded and        The analyses are concordant to slightly discordant, with
+  fractured, but others, from 40 to 100 µm in diameter, are          the discordance pattern consistent with ancient and recent
+  clear and partly zoned. Coarse-grained poikilitic muscovite        episodes of radiogenic-Pb loss. On the basis of their
+  seen in some of the plagioclase could have a deuteric or           207
+                                                                        Pb/206Pb ratios, many analyses can be assigned to one
+  low-temperature metamorphic origin, with chlorite,                 of three groups. Nine concordant to slightly discordant
+  epidote or both replacing biotite. Rare ?ferristilpnomelane        analyses of nine zircons (2.1, 4.1, 11.1, 12.1, 14.1, 17.1,
+  suggests low greenschist-facies metamorphism. Irregular            19.1, 22.1, 24.1), assigned to Group 1, have 207Pb/206Pb
+  patches of sericite and clouded clinozoisite indicate weak         ratios defining a single population and indicating a
+  to moderate, low-temperature hydrothermal, saussurite-             weighted mean 207Pb/206Pb date of 2648 ± 6 Ma (chi-
+  like alteration. Narrow carbonate-filled fractures are             squared = 1.50). Six concordant to slightly discordant
+  a few micrometres wide. The fabric in this sample is               analyses of six zircons (6.1, 8.1, 9.1, 21.1, 23.1, 25.1)
+  essentially unmetamorphosed and undeformed, with some              have 207 Pb/ 206 Pb ratios defining a single population
+  low-temperature alteration producing chlorite–epidote–             and indicating a weighted mean 207 Pb/ 206 Pb date of
+  stilpnomelane assemblages under low greenschist-facies             2708 ± 9 Ma (chi-squared = 1.29). Concordant to slightly
+  conditions, and weak to moderate saussuritization                  discordant analyses 5.1, 15.1, and 20.1, assigned
+  of plagioclase.                                                    to Group 3, have 207Pb/206Pb ratios defining a single
+
+
+
+
+                                                                 1
+D. R. Nelson, 2005
+
+
+                                 2.1
+                                                                                                          12.1
+
+
+
+
+                                                                   4.1
+
+
+                           (a)                                                             (b)
+
+
+
+                                                                                          18.1
+
+
+
+
+   11.1
+
+
+
+                           (c)                                                             (d)
+
+
+
+
+                                                                                                                 22.1
+
+
+
+  21.1
+
+
+
+
+                           (e)                                                             (f)
+Figure 1.   Cathodoluminescence images of representative zircons from sample 178057: biotite monzogranite, Kurrajong
+            Well
+
+
+
+
+                                                           2
+                                       Table 1. Ion microprobe analytical results for zircons from sample 178057: biotite monzogranite, Kurrajong Well
+
+
+
+    Grain     U       Th      Pb    ƒ206%    207Pb/ 206Pb       ±1σ        208Pb/ 206Pb       ±1σ     206Pb/ 238U        ±1σ      207Pb/ 235U      ±1σ          %        207Pb/ 206Pb   ±1σ
+    .spot   (ppm)   (ppm)   (ppm)                                                                                                                          concordance       Age
+
+    1.1     398      272     286    0.318       0.22653       0.00049         0.18530       0.00074       0.5851        0.0096       18.275        0.308        98           3 028       3
+    2.1     161      231     111    0.097       0.18038       0.00067         0.39365       0.00144       0.5060        0.0084       12.584        0.219        99           2 656       6
+    3.1     990       64      99    0.804       0.06806       0.00058         0.02446       0.00123       0.1028        0.0017        0.965        0.019        72             870      18
+    4.1      43       13      23    0.154       0.18167       0.00153         0.08401       0.00253       0.4930        0.0085       12.349        0.248        97           2 668      14
+    5.1      89       81      57    0.207       0.18902       0.00103         0.25787       0.00193       0.5127        0.0086       13.361        0.244        98           2 734       9
+    6.1      32       23      19    0.259       0.18373       0.00182         0.20246       0.00334       0.5070        0.0089       12.844        0.273        98           2 687      16
+
+
+
+
+3
+    7.1     127      115      99    0.112       0.23971       0.00083         0.24582       0.00128       0.6042        0.0100       19.968        0.347        98           3 118       6
+    8.1      58       21      34    0.180       0.18817       0.00126         0.10086       0.00195       0.5244        0.0089       13.606        0.258       100           2 726      11
+    9.1     156      145     101    0.795       0.18526       0.00088         0.25270       0.00173       0.5096        0.0085       13.018        0.232        98           2 701       8
+    10.1    366      624     299    0.277       0.20893       0.00048         0.46986       0.00106       0.5602        0.0092       16.139        0.272        99           2 897       4
+    11.1     62       86      42    0.387       0.17794       0.00130         0.37528       0.00284       0.5046        0.0085       12.380        0.238       100           2 634      12
+    12.1     76       56      46    0.287       0.18084       0.00110         0.20439       0.00197       0.5044        0.0085       12.578        0.233        99           2 661      10
+    13.1    105       42      82    0.178       0.26460       0.00093         0.10394       0.00115       0.6572        0.0110       23.977        0.420        99           3 274       6
+    14.1    142      343     117    0.233       0.18008       0.00082         0.66940       0.00232       0.5134        0.0091       12.747        0.239       101           2 654       8
+    15.1    108      101      71    0.104       0.18852       0.00078         0.25407       0.00135       0.5240        0.0093       13.621        0.255       100           2 729       7
+    16.1    121       43      73    0.022       0.19189       0.00076         0.09849       0.00099       0.5410        0.0096       14.313        0.266       101           2 758       7
+    17.1    315      736     251    0.423       0.17998       0.00053         0.64500       0.00144       0.5025        0.0088       12.471        0.226        99           2 653       5
+    18.1    344      172     205    1.022       0.17705       0.00063         0.15285       0.00120       0.5040        0.0088       12.303        0.225       100           2 625       6
+    19.1    192      138     118    0.539       0.17965       0.00069         0.19901       0.00127       0.5076        0.0089       12.573        0.232       100           2 650       6
+    20.1    246      125     156    1.061       0.18891       0.00072         0.15287       0.00136       0.5300        0.0093       13.806        0.254       100           2 733       6
+    21.1     90       98      60    0.265       0.18596       0.00099         0.29523       0.00195       0.5226        0.0093       13.399        0.257       100           2 707       9
+    22.1    228      110     134    0.031       0.17941       0.00051         0.13070       0.00067       0.5194        0.0091       12.848        0.233       102           2 647       5
+    23.1    141       74      87    0.270       0.18700       0.00072         0.14898       0.00112       0.5330        0.0094       13.743        0.254       101           2 716       6
+    24.1    455      268     256    0.018       0.17864       0.00036         0.15834       0.00049       0.4892        0.0085       12.049        0.215        97           2 640       3
+    25.1    446      128     250    0.367       0.18591       0.00044         0.08546       0.00066       0.5060        0.0088       12.971        0.233        98           2 706       4
+                                                                                                                                                                                              Geochronology data obtained in 2003
+D. R. Nelson, 2005
+
+          0.70
+
+
+
+                                                                                                                                                      3300
+
+
+                                                                                                                                                      Analysis 13.1
+          0.65
+                                                                                                                                          3200
+
+
+
+                                                                                                                3100
+
+                                                                                                                           Analysis 7.1
+          0.60
+                                                                                        3000
+                        Group 2: 6 analyses of 6 zircons                                               Analysis 1.1
+Pb/238U
+
+
+
+
+                        2708 ± 9 Ma (95% confidence)
+                                                                     2900
+206
+
+
+
+
+                                                                             Analysis 10.1
+                                               Analysis 16.1
+          0.55
+                                                           2800
+                   Analysis 18.1
+
+                                                  Group 3: Analyses 5.1, 15.1 & 20.1
+                                                  2732 ± 18 Ma (95% confidence)
+
+          0.50             2600
+                                       Group 1: 9 analyses of 9 zircons
+                                       2648 ± 6 Ma (95% confidence)
+                 2500
+
+                                                                          (Discordant analysis 3.1 not plotted)
+                                                                                                                                                              178057
+
+          0.45
+              10                12                 14                16                     18                        20                  22     24                    26
+                                                                                      207        235
+                                                                                            Pb/ U
+
+                                   Figure 2. Concordia plot for sample 178057: biotite monzogranite, Kurrajong Well
+
+
+
+
+population and indicating a weighted mean 207Pb/206Pb                                        this interpretation is correct, then the 207Pb/206Pb date of
+date of 2732 ± 18 Ma (chi-squared = 0.07). Concordant                                        2625 ± 6 Ma (±1σ uncertainty) indicated by concordant
+analysis 18.1 indicates a slightly younger 207Pb/206Pb date,                                 analysis 18.1 provides a maximum age for igneous
+whereas the remaining analyses indicate significantly                                        crystallization of the monzogranite.
+older 207Pb/206Pb dates than those of Group 1 and cannot
+be grouped.
+                                                                                             Recommended reference for this publication:
+     The date of 2648 ± 6 Ma indicated by the weighted                                       Geochronologist:        D. R. Nelson
+mean 207Pb/206Pb ratio of nine concordant to slightly                                        Data  obtained:
+                                                                                             NELSON,                 2003 biotite monzogranite, Kurrajong
+                                                                                                       D. R., 2005, 178057:
+discordant analyses of Group 1 is tentatively interpreted as                                 Data  released:
+                                                                                             Well; Geochronology     2005584; in Compilation of
+                                                                                                                  dataset
+the age of igneous crystallization of the monzogranite. If                                   geochronology data, June 2006 update: Western Australia
+this interpretation is correct, then discordant analysis 18.1                                Geological Survey.
+is interpreted to be of a site that has undergone radiogenic-
+                                                                                             Data obtained: 17/04/2003; Data released: 30/06/2005
+Pb loss during an ancient disturbance event, whereas the
+remaining older analyses, including those of Groups 2 and
+3, are interpreted to be of xenocryst zircons. An alternative
+(and less favoured) interpretation is that the analyses
+of Group 1 were also obtained on xenocryst zircons. If
+
+
+
+
+                                                                                        4
+

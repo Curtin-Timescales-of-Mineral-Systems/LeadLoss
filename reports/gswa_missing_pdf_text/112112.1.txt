@@ -1,0 +1,182 @@
+112112.1.pdf - Geochronology dataset 510
+
+
+
+             112112: K-feldspar volcanic rock, Jump Up Dam
+
+        Location and sampling
+
+        EDJUDINA (SH 51-6)                                  AMG Zone 51, 412300E 6710100N
+        Sampled on 13 November 1991
+
+        Sampling locality is about 2 km southeast of Jump Up Dam.
+
+
+
+        Tectonic unit/relations
+
+        This sample is of a felsic volcanic unit within the Kurnalpi Domain of the Kurnalpi
+        Terrane. The sample is a fine- to medium grained, banded, quartzofeldspathic rock,
+        possibly a felsic volcanic unit, from a 20 m-thick horizon interleaved with tholeiitic
+        basalt.
+
+
+
+        Petrographic description
+
+        This is a carbonated porphyritic rhyodacite with a remarkably large amount of
+        K-feldspar. The apparent proportion of K-feldspar is probably enhanced by
+        saussuritization and carbonatization of plagioclase, and the dismemberment of
+        plagioclase during late-magmatic flow. Phenocrysts of all three major minerals —
+        quartz, plagioclase, and K-feldspar — are abundant. Opaques, now mainly leucoxene,
+        are abundant. Chlorite with low birefringence, but apparently in part prograde, is a
+        common accessory. Zircon was not found in a brief traverse of the thin section. A flow
+        structure is very strong throughout the sample, but is probably late magmatic rather
+        than metamorphic because all three major phenocryst minerals are still represented in
+        the phenocryst assemblage. If deformation occurred in the solid state, differential
+        fragmentation could be expected to have left one of the phases poorly represented. In
+        particular, quartz seems to have survived with little disruption. The presence of a few
+        subhedral quartz grains suggests that the rock crystallized as a porphyry and is not a
+        sheared granite. GSWA Petrology Report Number 1596.
+
+
+
+        Zircon morphology
+
+        Most zircons are 75–400 µm long, colourless to dark brown, euhedral, weakly to
+        strongly zoned, and a few have rare inclusions.
+
+
+
+
+                                                   99
+Analytical details
+
+
+Heavy minerals were isolated from about 1 kg of sample using conventional heavy-
+liquid and magnetic techniques.
+
+
+    This sample was analysed on 16 and 17 March 1994. The counter deadtime was
+36 ns. Thirteen analyses of the CZ-3 standard were obtained. The Pb*/U calibration
+was stable with a calibration error of 2.22 (1σ%).
+
+
+
+Results
+
+
+Forty-three analyses were obtained from 40 zircons. Results are given in Table 27 and
+shown on a concordia plot in Figure 28.
+
+
+
+
+ Figure 28. Concordia plot for sample 112112: K-feldspar volcanic rock, Jump Up Dam
+
+
+
+
+                                       100
+Interpretation
+
+
+Measured 207Pb/206Pb ratios of 41 analyses on 38 zircons form a single population
+with a little excess scatter (chi-squared = 2.50), indicating an interpreted time of
+emplacement of the volcanic rock at 2684 ± 3 Ma. Analysis 14.1, which has a
+207Pb/206Pb age of 2730 ± 13 Ma, is interpreted to be of a xenocrystic zircon. Analysis
+
+11.1, with a lower 207Pb/206Pb age of 2558 ± 4 Ma, has a significantly higher U
+concentration and is interpreted to be of a disturbed zone of a zircon originally
+belonging to the main population.
+
+
+
+
+                                          101
+                         Table 27. Ion microprobe analytical results for sample 112112: K-feldspar volcanic rock, Jump Up Dam
+
+      Grain     U       Th      Pb    ƒ206%   207Pb/206Pb    ±1σ      208Pb/206Pb    ±1σ      206Pb/238U   ±1σ      207Pb/235U   ±1σ         %        207Pb/206Pb   ±1σ
+      .spot   (ppm)   (ppm)   (ppm)                                                                                                     concordance      Age
+
+       1.1     242     144     146    0.082    0.18234      0.00053    0.16070      0.00096     0.5199     0.0116     13.07      0.30      101          2 674        5
+       2.1      80      36      47    0.267    0.18366      0.00100    0.11524      0.00180     0.5234     0.0119     13.25      0.32      101          2 686        9
+       3.1      91      33      52    0.212    0.18233      0.00102    0.09768      0.00185     0.5131     0.0116     12.90      0.31      100          2 674        9
+       4.1     169      94     100    0.120    0.18295      0.00065    0.14844      0.00117     0.5123     0.0115     12.92      0.30      100          2 680        6
+       5.1     488     342     297    0.010    0.18454      0.00034    0.19168      0.00061     0.5137     0.0114     13.07      0.29       99          2 694        3
+       6.1     142      78      85    0.123    0.18301      0.00071    0.14956      0.00127     0.5224     0.0117     13.18      0.31      101          2 680        6
+       7.1     169      88      99    0.201    0.18343      0.00070    0.13866      0.00126     0.5129     0.0115     12.97      0.30       99          2 684        6
+       8.1     111      49      64    0.114    0.18307      0.00077    0.11854      0.00130     0.5115     0.0115     12.91      0.30       99          2 681        7
+       9.1      85      29      50    0.383    0.18109      0.00113    0.08937      0.00211     0.5343     0.0121     13.34      0.32      104          2 663       10
+      10.1     121      42      70    1.055    0.18447      0.00130    0.10353      0.00264     0.5053     0.0114     12.85      0.31       98          2 693       12
+      11.1     476     259     222    0.073    0.17002      0.00037    0.13733      0.00063     0.4133     0.0092      9.69      0.22       87          2 558        4
+      12.1     119      47      66    0.536    0.18434      0.00106    0.10024      0.00200     0.4946     0.0111     12.57      0.30       96          2 692        9
+102
+
+
+
+
+      13.1     114      60      69    0.766    0.18119      0.00109    0.14023      0.00222     0.5173     0.0117     12.92      0.31      101          2 664       10
+      14.1      78      29      45    0.695    0.18859      0.00152    0.10353      0.00301     0.5091     0.0116     13.24      0.33       97          2 730       13
+      15.1     127      58      73    0.356    0.18256      0.00085    0.12970      0.00159     0.5058     0.0114     12.73      0.30       99          2 676        8
+      16.1     231      91     132    1.232    0.18392      0.00089    0.11334      0.00182     0.4929     0.0110     12.50      0.29       96          2 689        8
+      17.1     102      32      55    0.213    0.18572      0.00092    0.08672      0.00155     0.4910     0.0111     12.57      0.30       95          2 705        8
+      18.1     154      59      89    1.283    0.18306      0.00111    0.09940      0.00227     0.5006     0.0112     12.64      0.30       98          2 681       10
+      19.1     106      47      62    1.049    0.18052      0.00135    0.11127      0.00276     0.5051     0.0114     12.57      0.31       99          2 658       12
+      20.1     110      37      63    0.157    0.18566      0.00095    0.09221      0.00164     0.5208     0.0118     13.33      0.32      100          2 704        8
+      21.1     105      37      61    0.264    0.18416      0.00111    0.09611      0.00206     0.5184     0.0117     13.16      0.32      100          2 691       10
+      22.1     119      58      66    1.454    0.18036      0.00145    0.10764      0.00304     0.4803     0.0108     11.94      0.30       95          2 656       13
+      23.1     126      47      73    0.232    0.18259      0.00090    0.10169      0.00161     0.5193     0.0117     13.08      0.31      101          2 677        8
+      24.1     137      70      82    0.275    0.18455      0.00087    0.13958      0.00160     0.5183     0.0117     13.19      0.31      100          2 694        8
+      25.1     115      43      67    0.455    0.18358      0.00100    0.09682      0.00185     0.5206     0.0118     13.18      0.31      101          2 686        9
+      26.1     186     104     111    0.470    0.18352      0.00081    0.15300      0.00159     0.5112     0.0115     12.93      0.30       99          2 685        7
+      27.1     141      65      83    0.240    0.18367      0.00083    0.12401      0.00148     0.5170     0.0116     13.09      0.31      100          2 686        7
+      28.1      85      35      50    0.373    0.18402      0.00115    0.11272      0.00212     0.5251     0.0119     13.32      0.32      101          2 689       10
+      29.1     177      91     104    0.307    0.18157      0.00073    0.13581      0.00135     0.5149     0.0116     12.89      0.30      100          2 667        7
+      30.1     221      87     129    0.183    0.18375      0.00059    0.10561      0.00097     0.5232     0.0117     13.26      0.30      101          2 687        5
+      31.1     147      53      79    0.607    0.18114      0.00097    0.10392      0.00187     0.4780     0.0107     11.94      0.28       95          2 663        9
+                                                                         Table 27. (continued)
+
+      Grain     U       Th      Pb    ƒ206%   207Pb/206Pb    ±1σ      208Pb/206Pb    ±1σ      206Pb/238U   ±1σ      207Pb/235U   ±1σ         %        207Pb/206Pb   ±1σ
+      .spot   (ppm)   (ppm)   (ppm)                                                                                                     concordance      Age
+
+
+      32.1     100     55      61     0.237    0.18230      0.00101    0.14924      0.00188     0.5313     0.0120     13.35      0.32      103          2 674       9
+      33.1     307    159     182     0.268    0.18314      0.00060    0.14185      0.00111     0.5149     0.0115     13.00      0.30      100          2 682       5
+      34.1     195     93     112     0.606    0.18022      0.00091    0.12666      0.00177     0.5017     0.0113     12.47      0.29       99          2 655       8
+       1.2     401    279     245     0.099    0.18418      0.00034    0.19002      0.00061     0.5138     0.0114     13.05      0.29       99          2 691       3
+       1.3     266    163     162     0.186    0.18401      0.00043    0.16752      0.00078     0.5201     0.0116     13.20      0.30      100          2 689       4
+      35.1     212     72     121     0.982    0.18126      0.00073    0.09182      0.00146     0.5029     0.0112     12.57      0.29       99          2 664       7
+      36.1      95     46      58     0.393    0.18364      0.00094    0.13454      0.00183     0.5300     0.0119     13.42      0.32      102          2 686       9
+      37.1     124     45      72     0.146    0.18380      0.00065    0.09627      0.00103     0.5279     0.0118     13.38      0.31      102          2 687       6
+      38.1     142     69      85     1.036    0.18424      0.00089    0.13133      0.00182     0.5105     0.0114     12.97      0.30       99          2 691       8
+      39.1     109     49      65     0.887    0.18375      0.00105    0.12657      0.00213     0.5164     0.0116     13.08      0.31      100          2 687       9
+      40.1      94     42      56     0.381    0.18545      0.00093    0.12373      0.00174     0.5174     0.0117     13.23      0.31       99          2 702       8
+       7.2     113     40      64     0.320    0.18223      0.00092    0.09235      0.00165     0.5070     0.0114     12.74      0.30       99          2 673       8
+103
+             STRATIGRAPHIC REFERENCE:
+
+             NELSON, D. R., 1997, Evolution of the Archaean granite–greenstone terranes of the
+             Eastern Goldfields, Western Australia: SHRIMP U–Pb zircon constraints: Precambrian
+             Research, v. 83, p. 57–81.
+
+             SWAGER, C. P., 1995, Geology of the greenstone terranes in the Kurnalpi–Edjudina
+             region, southeastern Yilgarn Craton: Western Australia Geological Survey, Report 47,
+             31p.
+
+             SWAGER, C. P., 1997, Tectono-stratigraphy of late Archaean greenstone terranes in the
+             southern Eastern Goldfields, Western Australia: Precambrian Research, v. 83, p. 11–42.
+
+
+
+
+Recommended reference for this publication:
+
+NELSON, D. R., 1995, 112112: K-feldspar volcanic rock, Jump Up Dam; in Compilation of SHRIMP U–Pb zircon geochronology data, 1994:
+Western Australia Geological Survey, Record 1995/3, p. 99–103.
+   OR
+NELSON, D. R., 1995, 112112: K-feldspar volcanic rock, Jump Up Dam; Geochronology dataset 510; in Compilation of geochronology data,
+June 2006 update: Western Australia Geological Survey.
+
+Data obtained: 17/03/1994; Data released: 27/07/1995
+

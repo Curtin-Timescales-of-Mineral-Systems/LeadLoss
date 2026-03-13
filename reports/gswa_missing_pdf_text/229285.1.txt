@@ -1,0 +1,195 @@
+                                   GSWA Geochronology Record
+                                           www.dmirs.wa.gov.au/geochron
+                                     Department of Mines, Industry Regulation and Safety
+
+229285.1.pdf                                                                                 Geochronology Record 1911
+
+                  229285.1: actinolite–biotite schist, Mount Rupert
+                       (Southern Cross Supergroup; Youanmi Terrane, Yilgarn Craton)
+                               SS Romano, Y Lu, IOH Fielding, MTD Wingate and TJ Ivanic
+
+
+Location and sampling
+MOORA SH50-10, WONGAN 2236                                                           Zone 50, MGA 465084E 6596128N
+Warox Site TJISWT000004                                                                    Sampled on 24 August 2020
+This sample was collected from the 239.15 – 240.60 m depth interval of diamond drillcore MRRC0024, drilled by Red
+River Resources Ltd at their Wongan Hills project. The drillhole is located about 11.5 km west of the Northam Pithara
+Road, 6.6 km south-southwest of Little Wongan Hill, and 1.2 km north of Mount Rupert.
+
+Geological context
+The unit sampled is an amphibole–biotite schist from the Wongan Hill greenstone belt, Southern Cross Supergroup in the
+Youanmi Terrane of the Yilgarn Craton (Quentin de Gromard et al., 2021; Ivanic et al., 2022). The Southern Cross
+Supergroup consists of metamorphosed basalt, andesite–dacite–rhyolite, and variable proportions of sedimentary rocks
+exposed in several belts along a northwest-trending, 750 km-long corridor from Ravensthorpe in the south to the Weld
+Range in the north within the Youanmi Terrane (Ivanic et al., 2022). This supergroup contain six formations, i.e. the
+Wongan, Madoonga, Gossan Hill, Mount Gibson, Honman, and Annabelle Volcanics Formations, which are unconformably
+overlain by the c. 2.8 Ga Norie and Polelle Groups of the Murchison Supergroup (Van Kranendonk et al., 2013; Ivanic et
+al., 2022). This sample yielded a maximum depositional age of 3006 ± 6 Ma (see below), which suggests a stratigraphic
+position at the bottom of the Southern Cross Supergroup. A metamonzogranitic dyke sampled about 16.9 km to the south
+yielded an igneous crystallization age of 2670 ± 7 Ma with 3219–2785 Ma for inherited zircon cores (GSWA 205933,
+Wingate et al 2018). Pidgeon et al. (1990) reported an age of 3010 ± 7 Ma for crystallization of a porphyritic felsic rock
+within the Wongan Hills belt. These authors also reported an age of 2651 ± 4 Ma for post-tectonic porphyritic granite east
+of the belt, and age components of c. 3.0 and 2.8 Ga for zircons within granitic gneiss south of the belt.
+
+
+
+
+                       Figure 1.    Drillcore image of sample 229285: actinolite–biotite schist,
+                                    Mount Rupert
+
+Petrographic description
+The sample is a foliated and compositionally layered, actinolite–biotite schist, consisting of about 45–50% quartz, 35%
+actinolite, 15% biotite, 3% magnetite, <1% sulfides and accessory plagioclase, apatite and zircon. Compositional layering is
+                                                              1
+defined by biotite-rich layers up to 7 mm wide with average quartz grain size of ~0.25 mm, and biotite-poor domains with
+smaller quartz grains (~0.1 mm). Quartz occurs as xenoblastic and elongate grains up to 0.5 mm in length. Amphibole is
+colourless to pale green, subhedral, and elongate to 2 mm in length. Subhedral brown biotite (<1 mm) is strongly aligned
+within the foliation. Magnetite occurs as elongated or equant, subhedral grains to 0.2 mm long. Sulfides, dominated by
+chalcopyrite and traces of pyrite and pyrrhotite, form clusters (<0.3 mm) or rare lenses (<1 mm) that are aligned parallel to
+the foliation. Apatite occurs as bladed euhedral laths (0.15 mm). Metamorphic grade is amphibolite facies and the protolith
+is considered to be a thinly bedded Fe–Mg-rich sedimentary rock.
+
+Zircon morphology
+Zircons isolated from this sample are colourless to pale brown, anhedral to subhedral, and variably rounded. The crystals
+are up to 300 µm long with aspect ratios up to 3:1. In cathodoluminescence (CL) images, concentric or planar zoning is
+ubiquitous, and few grains show discordant or metamict cores. A CL image of zircons is shown in Figure 2.
+
+
+
+
+Figure 2.   Cathodoluminescence image of representative zircons from sample 229285: amphibole–biotite schist,
+            Mount Rupert. Numbered circles indicate the approximate locations of analysis sites
+
+Analytical details
+This sample was analysed on 22–23 October 2021, using SHRIMP-B. Eight analyses of the M257 standard were obtained
+during the session, of which seven analyses indicated an external spot-to-spot (reproducibility) uncertainty of 0.50% (1σ)
+and a 238U/206Pb* calibration uncertainty of 0.27% (1σ). Calibration uncertainties are included in the errors of
+238U/206Pb* ratios and dates listed in Table 1 (provided in the Links section). Common-Pb corrections were applied to all
+analyses using contemporaneous isotopic compositions determined according to the model of Stacey and Kramers (1975).
+
+Results
+Twenty-seven analyses were obtained from 26 zircons. Results are listed in Table 1 and shown in a concordia diagram (Fig.
+3) and a probability density plot (Fig. 4).
+
+                                                              2
+Interpretation
+The analyses are concordant to moderately discordant (Fig. 3). One analysis is >5% discordant. The date obtained from this
+analysis (Group D; Table 1) is unreliable and considered not to be geologically significant. The remaining 26 analyses can
+be divided into three groups, based on their 207Pb*/206Pb* ratios.
+
+Group Y comprises one analysis (Table 1), which yields a 207Pb*/206Pb date of 2998 ± 18 Ma (1σ).
+
+Group S comprises 23 analyses of 23 zircons (Table 1), which yield 207Pb*/206Pb dates of 3295–2999 Ma.
+
+Group Z comprises two analyses of two zircons (Table 1), which yield 207Pb*/206Pb dates of 2635–2587 Ma.
+It is possible that all of the analyses in Groups Y and S are of unmodified detrital zircons, in which case the date of 2998 ±
+18 Ma (1σ) for the single analysis in Group Y represents a maximum depositional age for the sedimentary protolith. A more
+conservative estimate of the maximum depositional age can be based on the weighted mean 207Pb*/206Pb date of 3006 ± 6
+Ma (MSWD = 1.2) for the youngest eight analyses in Groups Y and S.
+The data for combined Groups Y and S indicate significant age components at c. 3035 and 3005 Ma, based on
+contributions from approximately 15 and eight analyses, respectively (Fig. 4). These are interpreted as the ages of zircon-
+crystallizing rocks in the detrital source region(s), or as the ages of detrital components within sediments that have been
+reworked into this rock.
+The dates of 2635–2587 Ma for the two analyses in Group Z are interpreted to indicate processing contaminants because
+they are similar in age and Th/U ratios to those from the other sample (GSWA 248284, Fielding et al., 2022) in the same
+mount.
+
+
+
+
+Figure 3.   U–Pb analytical data for zircons from sample 229285: actinolite–biotite schist, Mount Rupert. Blue
+            square indicates Group Y (youngest detrital zircon); red squares indicate Group S (older detrital
+            zircons); crossed square indicates Group D (discordance >5%). Two analyses in Group Z are not shown
+
+
+
+
+                                                              3
+Figure 4.   Probability density diagram and histogram for sample 229285: actinolite–biotite schist, Mount Rupert.
+            Thick curve, maxima values, and blue histogram (bin width 25 Ma) include only data with discordance
+            <5% (24 analyses of 24 zircons). Thin curve includes all data except for those contaminants in Group Z
+            (25 analyses of 24 zircons)
+
+
+
+
+Links
+Table 1. Ion microprobe analytical results for zircons from sample 229285: actinolite–biotite schist, Mount Rupert:
+229285.1.Table1.xls
+SHRIMP spot images: 229285_spots.pdf
+Introduction to geochronology information, 2023: Intro_2023.pdf
+References
+Fielding, IOH, Wingate, MTD, Ivanic, TJ and Fisher, CM 2022, 248284.1: metamonzogranite, Merino prospect;
+     Geochronology Record 1879: Geological Survey of Western Australia, 4p., <www.dmirs.wa.gov.au/geochron>. View
+     Reference online
+Ivanic, TJ, Wingate, MTD, Lowrey, JR and Lu, Y 2022, Formation of the Yilgarn protocraton by rift-related magmatism
+     from 3.01 to 2.92 Ga: Geological Survey of Western Australia, Report 232, 34p.
+Pidgeon, RT, Wilde, SA, Compston, W and Shield, MW 1990, Archaean evolution of the Wongan Hills greenstone belt,
+     Yilgarn Craton, Western Australia: Australian Journal of Earth Sciences, v. 37, p. 279–292.
+Quentin de Gromard, R, Ivanic, TJ and Zibra, I 2021, Pre-Mesozoic interpreted bedrock geology of the southwest Yilgarn,
+     2021, in Accelerated Geoscience Program extended abstracts: Geological Survey of Western Australia, Record
+     2021/4, p. 122–144.
+Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead isotope evolution by a two-stage model: Earth and
+     Planetary Science Letters, v. 26, p. 207–221.
+Van Kranendonk, MJ, Ivanic, TJ, Wingate, MTD, Kirkland, CL and Wyche, S 2013, Long-lived, autochthonous
+     development of the Archean Murchison Domain, and implications for Yilgarn Craton tectonics: Precambrian Research,
+     v. 229, p. 49–92.
+Wingate, MTD, Outhwaite, MD and Lu, Y 2018, 205933: metamonzogranite dyke, Ninan prospect; Geochronology
+     Record 1458: Geological Survey of Western Australia, 4p., <www.dmirs.wa.gov.au/geochron>. View Reference
+     online
+                                                             4
+Recommended reference for this publication
+Romano, SS, Lu, Y, Fielding, IOH, Wingate, MTD and Ivanic, TJ 2023, 229285.1: actinolite–biotite schist, Mount Rupert;
+   Geochronology Record 1911: Geological Survey of Western Australia, WA Geology Online, Explanatory Notes
+   extract viewed 11 October 2023. <www.dmirs.wa.gov.au/geochron>
+
+ Data obtained: 23 October 2022
+ Date released: 31 October 2023
+
+This page was last modified on 11 October 2023.
+
+Grid references in this publication refer to the Geocentric Datum of Australia 2020 (GDA20). All locations are quoted to at least the
+nearest 100 m.
+Capitalized names in text refer to standard 1:100 000 map sheets, unless otherwise indicated.
+WAROX is GSWA’s field observation and sample database. WAROX site IDs have the format ‘ABCXXXnnnnnnSS’, where ABC =
+geologist username, XXX = project or map code, nnnnnn = 6-digit site number, and SS = optional alphabetic suffix (maximum 2
+characters).
+Isotope and element analyses are routinely conducted using the GeoHistory laser ablation ICP-MS and Sensitive High-Resolution
+Ion Microprobe (SHRIMP) facilities at the John de Laeter Centre (JdLC), Curtin University, with the financial support of the
+Australian Research Council and AuScope National Collaborative Research Infrastructure Strategy (NCRIS), and the Microscopy
+Australia laser ablation ICP-MS facility at the Centre for Microscopy, Characterisation & Analysis (CMCA), The University of
+Western Australia (UWA). The TESCAN Integrated Mineral Analyser (TIMA) instrument was funded by a grant from the Australian
+Research Council (LE140100150) and is operated by the JdLC with the support of the Geological Survey of Western Australia, UWA
+and Murdoch University. Mineral analyses are routinely obtained using the electron probe microanalyser (EPMA) facilities at the
+CMCA at UWA, at Adelaide Microscopy at the University of Adelaide and the Central Science Laboratory at the University of
+Tasmania.
+Digital data related to WA Geology Online, including geochronology and digital geology, are available online at the Department’s
+Data and Software Centre and may be viewed in map context at GeoVIEW.WA. For further information about this Geochronology
+Record, please contact geochronology@dmirs.wa.gov.au and quote the geochronology record and/or the sample number.
+Further details of geoscience products are available from:
+Information Centre
+Department of Mines, Industry Regulation and Safety
+100 Plain Street
+EAST PERTH, WA 6004
+Telephone: +61 8 9222 3459 | Facsimile: +61 8 9222 3444
+www.dmirs.wa.gov.au /GSWApublications
+Acknowledgment of Country
+The Government of Western Australia acknowledges Aboriginal people as the traditional custodians throughout Western Australia
+and their enduring connection to the land, waterways and community. We pay our respects to Elders past and present.
+Disclaimer
+This product uses information from various sources. The Department of Mines, Industry Regulation and Safety (DMIRS) and the
+State cannot guarantee the accuracy, currency or completeness of the information. Neither the department nor the State of Western
+Australia nor any employee or agent of the department shall be responsible or liable for any loss, damage or injury arising from the
+use of or reliance on any information, data or advice (including incomplete, out of date, incorrect, inaccurate or misleading
+information, data or advice) expressed or implied in, or coming from, this publication or incorporated into it by reference, by any
+person whosoever.
+
+                   © State of Western Australia (Department of Mines, Industry Regulation and Safety) 2023
+With the exception of the Western Australian Coat of Arms and other logos, and where otherwise noted, these data are provided
+under a Creative Commons Attribution 4.0 International License. (https://creativecommons.org/licenses/by/4.0/legalcode)
+
+
+
+
+                                                                  5
+

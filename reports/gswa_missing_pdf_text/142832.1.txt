@@ -1,0 +1,175 @@
+142832.1.pdf - Geochronology dataset 391
+
+
+         142832: metamorphosed intermediate rock, Whundo
+
+Location and sampling
+YARRALOOLA (SF 50–6)                                                    116°55'23"E 21°06'42"S
+Sampled on 23 September 1996
+The sample was taken from the north side of a ridge leading up to a prominent hill topped with a
+cairn, about 700 m from the base of the Whundo Group and about 3.6 km south of Whundo.
+
+Tectonic unit/relations
+This sample is from a 5–10 m thick, metamorphosed, felsic to intermediate unit within a
+metabasaltic sequence located less than 700 m from the base of the Nallana Formation of the
+Whundo Group. The sequence has a bedding-parallel foliation.
+
+Petrographic description
+The principal minerals present in this sample are sericite, quartz and chlorite, with accessory
+opaques, leucoxene, biotite, apatite, and epidote. This rock is completely altered to sericite,
+chlorite and quartz and this has obscured much of the original texture. Rectangular masses of
+sericite embedded in generally fine-grained quartz mosaic, sericite, and fine foliated clots of
+chlorite–leucoxene, suggest the rock probably contained abundant plagioclase laths, interstitial
+quartz, plagioclase, and mafic minerals. The presence of leucoxene in the chlorite flakes indicates
+these have replaced titaniferous mafic precursors such as biotite or amphibole, but no obvious
+definitive pseudomorph outlines are present. Brown pleochroism in many of these chlorite flakes
+may be indicative of relict biotite. Sparse larger clots of chlorite–leucoxene with rare epidote and
+swathed with randomly orientated prismatic carbonate–quartz pseudomorphs, show strong
+preferred elongation parallel to the finer groundmass chlorite foliation and may represent former
+aggregates of biotite and amphibole or biotite and plagioclase. A few larger prismatic carbonate–
+quartz pseudomorphs ≤2 mm long and containing abundant precursor cleavage-orientated
+leucoxene and chlorite, resemble altered prismatic amphibole. A few subhedral to anhedral
+opaques and rounded apatite granules are disseminated throughout the rock. This sample is
+tentatively interpreted to be of an altered, amphibolitized intermediate rock of volcanic origin. The
+rock has been metamorphosed, possibly to at least biotite grade of greenschist facies
+metamorphism, but strong sericite–chlorite alteration has obliterated critical detail. No zircon was
+recognized, but there are a few pleochroic radio-haloes around minute unidentified inclusions in
+chlorite flakes.
+
+Zircon morphology
+The zircons isolated from this sample are commonly yellow-brown to dark brown or black. A wide
+range in shapes are represented and many grains are fractured, but most are euhedral in shape and
+between 20 × 40 µm and 60 × 100 µm in size. Most grains display strong internal igneous
+zonation.
+
+
+
+                                                 66
+Analytical details
+This sample was analysed on 4 and 8 November 1999. The counter deadtime during both analysis
+sessions was 32 ns. During the first session, two analyses of the CZ3 standard were obtained and a
+Pb*/U calibration error of 1.0 (1σ%) was applied. Analyses 1.1 to 6.1 were obtained during the first
+session. During the second session, eleven analyses of the CZ3 standard indicated a Pb*/U
+calibration error of 2.33 (1σ%). Common-Pb corrections were applied assuming Broken Hill
+common-Pb isotopic compositions for all analyses, with the exception of analyses 9.1, 14.1, 17.1
+and 19.1, for which isotopic compositions determined using the method of Cumming and Richards
+(1975) were assumed.
+
+Results
+Twenty-three analyses were obtained from 19 zircons. Results are given in Table 15 and shown on
+a concordia plot in Figure 17.
+
+Interpretation
+Most analyses are concordant or slightly to highly discordant, with the discordance pattern
+consistent with several episodes of radiogenic-Pb redistribution. On the basis of their 207Pb/206Pb
+ratios, many analyses may be assigned to one of 3 groups. Nine concordant and discordant
+
+
+          0.65
+                                                         Group 2: analyses 2.1, 11.1 & 17.1
+                                                         2972 ± 7 Ma (95% confidence)
+
+          0.60                               Group 3: analyses 5.1, 12.1 & 3.2
+                                                                                                       3000
+                                             2988 ± 10 Ma (95% confidence)
+                                                                                          2900
+
+          0.55                                                           2800
+
+                                                       2700
+Pb/238U
+
+
+
+
+          0.50                              2600      Analysis 9.1
+                                                                           Analysis 3.1
+
+                                                                                Analysis 13.1
+                                2500
+206
+
+
+
+
+                     2400                           Analysis 19.1
+          0.45
+                                               Analysis 16.1
+                                                                                Group 1: 9 analyses of 9 zircons
+                      Analysis 3.2                                              3012 ± 4 Ma (95% confidence)
+                                              Analysis 1.2
+          0.40
+                            Analysis 14.1
+
+
+                                                                                                                   142832
+
+          0.35
+                 8            10               12                   14                    16             18                 20
+                                                             207     235
+                                                               Pb/ U
+           Figure 17. Concordia plot for sample 142832: metamorphosed intermediate rock, Whundo
+
+                                                              67
+                     Table 15. Ion microprobe analytical results for sample 142832: metamorphosed intermediate rock, Whundo
+
+     Grain     U       Th      Pb    ƒ206%   207Pb/206Pb    ±1σ      208Pb/206Pb    ±1σ      206Pb/238U   ±1σ      207Pb/235U   ±1σ          %      207Pb/206Pb   ±1σ
+     .spot   (ppm)   (ppm)   (ppm)                                                                                                      concordance     Age
+
+      1.1     365     172     238    0.450     0.22428     0.00104     0.12214     0.00158     0.5552     0.0061    17.169      0.215         95        3012       7
+      2.1     768     237     484    0.121     0.21876     0.00061     0.08178     0.00064     0.5612     0.0059    16.928      0.190         97        2972       5
+      3.1     739     248     450    0.233     0.20732     0.00069     0.08324     0.00087     0.5444     0.0058    15.561      0.178         97        2885       5
+      4.1     443     143     304    0.942     0.22463     0.00114     0.08608     0.00190     0.5902     0.0065    18.281      0.232         99        3014       8
+      5.1     894     465     590    0.101     0.22061     0.00060     0.12951     0.00072     0.5657     0.0059    17.208      0.192         97        2985       4
+      6.1     468     207     325    0.250     0.22660     0.00088     0.11180     0.00118     0.5988     0.0065    18.708      0.226        100        3028       6
+      7.1     389     170     273    0.138     0.22495     0.00056     0.11751     0.00065     0.6048     0.0142    18.759      0.448        101        3016       4
+      8.1     449     109     292    0.241     0.22378     0.00055     0.06587     0.00068     0.5820     0.0136    17.959      0.428         98        3008       4
+      9.1     734     661     481    0.410     0.20121     0.00042     0.24144     0.00077     0.5220     0.0122    14.480      0.343         95        2836       3
+68
+
+
+
+
+     10.1     535     249     365    0.064     0.22441     0.00046     0.12286     0.00051     0.5875     0.0137    18.179      0.432         99        3013       3
+     11.1     957     837     689    0.041     0.21875     0.00033     0.22813     0.00046     0.5773     0.0135    17.413      0.411         99        2972       2
+     12.1     524     148     318    0.007     0.22094     0.00045     0.07726     0.00037     0.5433     0.0127    16.550      0.393         94        2988       3
+     13.1     744     249     481    0.024     0.22265     0.00038     0.08640     0.00033     0.5731     0.0134    17.592      0.416         97        3000       3
+     14.1    1113     484     507    0.912     0.17213     0.00047     0.10782     0.00093     0.4019     0.0094     9.539      0.227         84        2578       5
+     15.1     374     155     253    0.195     0.22435     0.00058     0.11135     0.00074     0.5839     0.0137    18.061      0.432         98        3012       4
+     16.1     463     125     219    0.048     0.19144     0.00048     0.08276     0.00050     0.4322     0.0101    11.407      0.272         84        2755       4
+     17.1     774     294     509    0.240     0.21897     0.00040     0.09673     0.00052     0.5764     0.0135    17.401      0.412         99        2973       3
+      1.2     703     397     345    0.192     0.20007     0.00046     0.14350     0.00065     0.4219     0.0099    11.640      0.276         80        2827       4
+     18.1     468     197     310    0.099     0.22371     0.00049     0.11205     0.00057     0.5746     0.0134    17.724      0.421         97        3008       4
+     19.1     904     415     477    0.302     0.19015     0.00039     0.12627     0.00060     0.4610     0.0108    12.086      0.286         89        2743       3
+      6.2     508     214     342    0.092     0.22371     0.00049     0.10838     0.00053     0.5861     0.0137    18.080      0.430         99        3008       4
+      3.2    1355     552     657    0.182     0.17510     0.00028     0.08814     0.00038     0.4437     0.0104    10.711      0.253         91        2607       3
+     13.2     317     111     203    0.092     0.22156     0.00062     0.09084     0.00067     0.5639     0.0132    17.227      0.413         96        2992       5
+   analyses of 8 zircons (1.1, 4.1, 6.1, 6.2, 7.1, 8.1, 10.1, 15.1, 18.1), assigned to Group 1, have
+   207
+       Pb/206Pb ratios defining a single population and indicating a weighted mean date of 3012 ± 4 Ma
+   (chi-squared = 1.38). Three concordant and discordant analyses of 3 zircons (2.1, 11.1 and 17.1),
+   assigned to Group 2, have 207Pb/206Pb ratios defining a single population and indicating a weighted
+   mean date of 2972 ± 7 Ma (chi-squared = 0.07). Three concordant and discordant analyses of 3
+   zircons (5.1, 12.1 and 13.2), assigned to Group 3, have 207Pb/206Pb ratios defining a single
+   population and indicating a weighted mean date of 2988 ± 10 Ma (chi-squared = 0.49). Discordant
+   analyses 1.2, 3.1, 3.2, 9.1, 13.1, 14.1, 16.1 and 19.1 cannot be assigned to any of these groups.
+      The date of 3012 ± 4 Ma indicated by the nine analyses of Group 1 is interpreted as the time of
+   igneous crystallization of the rock. The remaining analyses are interpreted to be of sites that have
+   lost some proportion of their accumulated radiogenic Pb during several or more disturbance events.
+
+
+
+
+Recommended reference for this publication:
+
+NELSON, D. R., 2000, 142832: metamorphosed intermediate rock, Whundo; in Compilation of geochronology data, 1999: Western Australia
+Geological Survey, Record 2000/2, p. 66–69.
+   OR
+NELSON, D. R., 2000, 142832: metamorphosed intermediate rock, Whundo; Geochronology dataset 391; in Compilation of geochronology
+data, June 2006 update: Western Australia Geological Survey.
+
+Data obtained: 08/11/1999; Data released: 30/06/2000
+
+
+                                                                 69
+

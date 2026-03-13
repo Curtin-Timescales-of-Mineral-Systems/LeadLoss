@@ -1,0 +1,176 @@
+227224.1.pdf                                                                                       Geochronology Record 1803
+
+
+
+
+                   227224: metagranodiorite, Edamurta Range
+                    (Yilgarn Craton granites, Youanmi Terrane, Yilgarn Craton)
+
+
+
+
+Location and sampling                                             up to 0.15 mm long. The granodiorite lacks a tectonic
+                                                                  foliation but displays evidence of deformation and minor
+Yalgoo (SH 50-2), Mellenbye (2140)                                recrystallization at relatively low-grade metamorphic
+                   MGA Zone 50, 446991E 6838657N                  conditions.
+Sampled on 7 May 2019
+This sample was collected from an outcrop southwest of a          Zircon morphology
+track on the west side of the Edamurta Range, about 6.3 km        Zircons isolated from this sample are colourless to dark
+east-northeast of Armstrong Well, 5.8 km west of Edamurta         brown and mainly subhedral to euhedral. The crystals are
+Well, and 4.9 km south-southeast of Ederga Well.                  up to 300 µm long, and elongate, with aspect ratios up
+                                                                  to 9:1. In cathodoluminescence (CL) images, concentric
+                                                                  zoning is ubiquitous, some crystals are dominated by
+Geological context                                                high-U metamict zones, and a few crystals appear to
+                                                                  contain older cores. A CL image of representative zircons
+The unit sampled is a metagranodiorite within the Edamurta        is shown in Figure 2.
+greenstone belt, on the northwestern margin of the Yalgoo
+Dome (Clos et al., 2018; Zibra et al., 2018). A felsic
+metavolcaniclastic rock, sampled about 4.7 km to the north,
+yielded a U–Pb zircon date of 2941 ± 3 Ma, interpreted
+                                                                  Analytical details
+as the as the igneous crystallization age of the dominant         This sample was analysed on 31 July – 1 August 2020,
+zircon-bearing volcanic component (GSWA 207670,                   using SHRIMP-B. Eleven analyses of the M257 standard
+Wingate et al., 2019). Metagranitic rocks of the Bunnawarra       were obtained during the session, of which nine analyses
+Suite of the Thundelarra Supersuite in the Yalgoo Dome are        indicated an external spot-to-spot (reproducibility)
+similar in age, including 2925 ± 5 Ma tonalite gneiss about       uncertainty of 0.50% (1σ) and a 238U/206Pb* calibration
+25 km to the east (GSWA 155843, Lu et al., 2020), and             uncertainty of 0.19% (1σ). Calibration uncertainties are
+2960 ± 10 Ma migmatitic metatonalite gneiss about 25 km           included in the errors of 238U/206Pb* ratios and dates listed
+to the southeast (GSWA 207689, Lu et al., 2017).                  in Table 1. Common-Pb corrections were applied to all
+                                                                  analyses using contemporaneous isotopic compositions
+                                                                  determined according to the model of Stacey and Kramers
+Petrographic description                                          (1975).
+
+The sample is an equigranular, medium-grained
+metagranodiorite (Fig. 1), consisting of about 50%                Results
+plagioclase, 30% quartz, 10–12% K-feldspar, 7–8%
+biotite, <1% magnetite, and trace tourmaline, apatite and         Eighteen analyses were obtained from 18 zircons. Results
+zircon. Plagioclase (An34, andesine) is subhedral, equant         are listed in Table 1, and shown in a concordia diagram
+to tabular, up to 2.5 mm long, and weakly to moderately           (Fig. 3).
+sericitized. Quartz is anhedral, moderately strained, up
+to 2.5 mm in diameter, and occurs in part in partially
+recrystallized, monomineralic aggregates up to 6 mm in            Interpretation
+size. K-feldspar is anhedral, microperthitic, up to 2 mm          The analyses are concordant to moderately discordant
+long, and shows incipient microcline twinning. Brown–             (Fig. 3), and can be divided into two groups, based on their
+green biotite forms anhedral grains up to 1.5 mm long and         207
+                                                                     Pb*/206Pb* ratios and their U and Th concentrations.
+also occurs in aggregates of finely recrystallized grains.
+Some biotite has been replaced by chlorite. Subhedral,            Group I comprises 17 analyses (Table 1), which yield
+mainly equant magnetite grains are up to 0.7 mm in size,          a weighted mean 207Pb*/206Pb* date of 2941 ± 3 Ma
+and some are partly replaced by hematite or goethite. The         (MSWD = 0.86). These analyses indicate mainly moderate
+thin section contains a single elongate anhedral grain of         concentrations of U (94–385 ppm, median 196 ppm) and
+tourmaline that is 0.6 mm long and shows pink–brown               Th (37–233 ppm, median 119 ppm).
+to dark green pleochroism. Euhedral bladed apatite is
+
+
+
+
+                                                              1
+227224.1.pdf                                                                                 Geochronology Record 1803
+
+
+
+
+               Figure 1.   Hand specimen image of sample 227224: metagranodiorite, Edamurta Range
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 227224:
+                           metagranodiorite, Edamurta Range. Numbered circles indicate the approximate
+                           locations of analysis sites
+
+
+
+
+                                                          2
+227224.1.pdf                                                                                                                                                             Geochronology Record 1803
+
+
+
+
+                                           Table 1. Ion microprobe analytical results for zircons from sample 227224: metagranodiorite, Edamurta Range
+
+
+    Group      Spot   Grain.     238
+                                    U    232
+                                            Th      Th
+                                                  232
+                                                            ƒ204          U/206Pb
+                                                                        238
+                                                                                              Pb/206Pb
+                                                                                            207
+                                                                                                                    U/206Pb*
+                                                                                                                  238
+                                                                                                                                       Pb*/206Pb*
+                                                                                                                                     207                   238
+                                                                                                                                                              U/206Pb*    207
+                                                                                                                                                                             Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)    (ppm)       U
+                                                  238
+                                                            (%)           ± 1σ                 ± 1σ                 ± 1σ                ± 1σ             date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      I         16    16.1       163     100       0.62     -0.033    1.749    0.018    0.21278       0.00101   1.748    0.018    0.21307    0.00102     2916     24     2929     8        0.4
+      I         11     11.1      215     149       0.69     0.031     1.745    0.016    0.21376       0.00086   1.746    0.016    0.21348    0.00087     2919     22     2932     7        0.4
+      I         5      5.1        96     37        0.39     0.146     1.775    0.022    0.21482       0.00131   1.777    0.022    0.21352    0.00139     2878     29     2932     11       1.9
+      I         3      3.1       185     133       0.72     0.027     1.752    0.017    0.21391       0.00150   1.753    0.017    0.21368    0.00151     2910     23     2934     11       0.8
+      I         1      1.1       134     49        0.37     0.000     1.770    0.019    0.21389       0.00110   1.770    0.019    0.21389    0.00110     2888     25     2935     8        1.6
+      I         17     17.1      335     167       0.50     0.149     1.890    0.016    0.21541       0.00075   1.893    0.016    0.21408    0.00079     2734     19     2937     6        6.9
+      I         4      4.1       217     90        0.41     0.097     1.784    0.016    0.21495       0.00084   1.786    0.016    0.21409    0.00088     2866     21     2937     7        2.4
+      I         6      6.1       136     57        0.42     0.024     1.779    0.019    0.21487       0.00105   1.779    0.019    0.21466    0.00106     2876     25     2941     8        2.2
+      I         14    14.1       216     83        0.38     0.008     1.775    0.017    0.21476       0.00088   1.775    0.017    0.21469    0.00088     2880     22     2941     7        2.1
+      I         12    12.1       318     189       0.59     0.000     1.772    0.015    0.21471       0.00075   1.772    0.015    0.21471    0.00075     2885     20     2941     6        1.9
+      I         8      8.1       196     119       0.61     -0.034    1.762    0.017    0.21443       0.00090   1.762    0.017    0.21473    0.00091     2898     23     2942     7        1.5
+      I         18    18.1       119     153       1.29     0.288     1.904    0.022    0.21737       0.00120   1.910    0.022    0.21481    0.00134     2715     26     2942     10        7.7
+      I         7      7.1       260     132       0.51     0.000     1.764    0.016    0.21495       0.00080   1.764    0.016    0.21495    0.00080     2895     21     2943     6        1.6
+      I         15    15.1       334     233       0.70     0.092     1.788    0.015    0.21619       0.00075   1.790    0.015    0.21537    0.00077     2861     20     2946     6        2.9
+      I         9      9.1        94     57        0.61     -0.020    1.785    0.022    0.21542       0.00136   1.784    0.022    0.21559    0.00137     2868     29     2948     10       2.7
+      I         10    10.1       385     207       0.54     0.069     1.754    0.014    0.21669       0.00070   1.756    0.014    0.21607    0.00072     2906     19     2952     5        1.5
+      I         2      2.1       124     78        0.63     0.000     1.797    0.020    0.21610       0.00111   1.797    0.020    0.21610    0.00111     2852     25     2952     8        3.4
+
+
+      P         13    13.1       734     411       0.56     0.041     1.729    0.012    0.21288       0.00048   1.730    0.012    0.21252    0.00048     2941     17     2925     4        -0.6
+
+
+
+
+                                                                                                  3
+227224.1.pdf                                                                                                         Geochronology Record 1803
+
+
+
+
+            Figure 3.    U–Pb analytical data for sample 227224: metagranodiorite, Edamurta Range. Yellow squares
+                         indicate Group I (magmatic zircons); black square indicates Group P (radiogenic-Pb loss)
+
+
+
+
+Group P comprises one analysis (Table 1), which yields                         Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+a 207Pb*/206Pb* date of 2925 ± 4 Ma (1σ). This analysis                           isotope evolution by a two-stage model: Earth and Planetary Science
+indicates high concentrations of U (734 ppm) and Th                               Letters, v. 26, p. 207–221.
+(411 ppm).                                                                     Wingate, MTD, Lu, Y and Ivanic, TJ 2019, 207670: felsic
+                                                                                 metavolcaniclastic rock, Morawa–Yalgoo Road; Geochronology
+The date of 2941 ± 3 Ma for the 15 analyses in Group I                           Record 1578: Geological Survey of Western Australia, 4p.
+is interpreted as the magmatic crystallization age of the                      Zibra, I, Peternell, M, Schiller, M, Wingate, MTD, Lu, Y and Clos, F
+tonalite. The date of 2925 ± 4 Ma (1σ) for the single                             2018, Tectono-magmatic evolution of the Neoarchean Yalgoo dome
+analysis in Group P is interpreted to reflect minor ancient                       (Yilgarn Craton): diapirism in a pre-orogenic setting: Geological
+loss of radiogenic Pb.                                                            Survey of Western Australia, Report 176, 43p.
+
+
+
+References                                                                     Recommended reference for this
+                                                                               publication
+Clos, F, Weinberg, R and Zibra, I 2018, Building the Archean continental
+   crust: 300 Ma of felsic magmatism in the Yalgoo dome (Yilgarn               Wingate, MTD, Fielding, IOH, Lu, Y and Ivanic, TJ 2021, 227224:
+   Craton): Geological Survey of Western Australia, Report 186, 23p.             tonalite, Edamurta Range; Geochronology Record 1803: Geological
+Lu, Y, Wingate, MTD and Zibra, I 2020, 155843: tonalite gneiss,                  Survey of Western Australia, 4p.
+   Windagalcudga Well; Geochronology Record 1646: Geological
+   Survey of Western Australia, 4p.                                            Data obtained:       1 August 2020
+Lu, Y, Wingate, MTD, Kirkland, CL and Zibra, I 2017, 209689:                   Data released:       21 October 2021
+   metatonalite, Wooley Spring; Geochronology Record 1463:
+   Geological Survey of Western Australia, 4p.
+
+
+
+
+                                                                           4
+

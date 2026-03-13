@@ -163,11 +163,42 @@ class SampleOutputFigure(AbstractFigure):
         compact.sort(key=lambda d: d["age_ma"])
         return compact
 
+    def _display_rows_from_summedks(self):
+        """Rows used for figure markers/windows from the plotted summedKS payload."""
+        peaks = np.asarray(getattr(self.sample, "summedKS_peaks_Ma", None), float)
+        lows = np.asarray(getattr(self.sample, "summedKS_ci_low_Ma", None), float)
+        highs = np.asarray(getattr(self.sample, "summedKS_ci_high_Ma", None), float)
+
+        peaks = np.atleast_1d(peaks)
+        lows = np.atleast_1d(lows)
+        highs = np.atleast_1d(highs)
+
+        # Handle scalar/empty placeholders (e.g., np.array(nan))
+        if peaks.size == 1 and (not np.isfinite(peaks[0])):
+            return []
+
+        if peaks.size == 0:
+            return []
+
+        rows = []
+        for i, a in enumerate(peaks):
+            if not np.isfinite(a):
+                continue
+            lo = float(lows[i]) if i < lows.size and np.isfinite(lows[i]) else float(a)
+            hi = float(highs[i]) if i < highs.size and np.isfinite(highs[i]) else float(a)
+            if hi < lo:
+                lo, hi = hi, lo
+            rows.append(dict(age_ma=float(a), ci_low=lo, ci_high=hi, support=float("nan")))
+        return rows
+
     # ----------------- lifecycle / clearing -----------------
 
     def clearProcessingResults(self):
         self.processingComplete = False
         self.lastDrawTime = None
+        self._ens_ages_ma = None
+        self._ens_S_view = None
+        self._ens_label = None
         self.heatmapAxis.clearAll()
         self.goodnessAxis.clear()
 
@@ -187,13 +218,20 @@ class SampleOutputFigure(AbstractFigure):
         # Update catalogue + windows only; curve already pushed via _onSummedKS
         # Update catalogue + windows only if the toggle is ON; curve already came via _onSummedKS
         st = getattr(self.sample, "calculationSettings", None)
+        if st is not None and getattr(self.sample, "monteCarloRuns", None):
+            # Final optimal-age delivery can change the authoritative surface
+            # (e.g. clustered fallback to global_all), so refresh the heatmap
+            # from the final per-run cached columns now that processing is done.
+            self.heatmapAxis.plotRuns(self.sample.monteCarloRuns, st)
         if not getattr(st, "enable_ensemble_peak_picking", False):
             self.goodnessAxis.set_peak_catalogue([])
             self.goodnessAxis.set_windows([])
             self.canvas.draw_idle()
             return
 
-        rows = self._sanitise_catalogue(getattr(self.sample, "peak_catalogue", []) or [])
+        rows = self._display_rows_from_summedks()
+        if not rows:
+            rows = self._sanitise_catalogue(getattr(self.sample, "peak_catalogue", []) or [])
         if rows:
             self.goodnessAxis.set_peak_catalogue(rows)
             wins = [(float(r["ci_low"]), float(r["ci_high"])) for r in rows]
@@ -214,47 +252,8 @@ class SampleOutputFigure(AbstractFigure):
 
             self.lastDrawTime = now
 
-            # Heatmap always refreshed
+            # Heatmap refresh during processing. Curve/markers/windows are only
+            # updated from _onSummedKS to avoid preview-vs-final flicker/races.
             self.heatmapAxis.plotRuns(self.sample.monteCarloRuns, settings)
-
-            # If a processing-provided ensemble curve has already arrived, keep showing it.
-            if self._ens_ages_ma is not None and self._ens_S_view is not None:
-                rows = self._sanitise_catalogue(getattr(self.sample, "peak_catalogue", []) or [])
-                peaks = [float(r["age_ma"]) for r in rows] if rows else None
-                wins  = [(float(r["ci_low"]), float(r["ci_high"])) for r in rows] if rows else None
-
-                self.goodnessAxis.update_curve(self._ens_ages_ma, self._ens_S_view, peaks=peaks, windows=wins)
-                self.heatmapAxis.set_curve(self._ens_ages_ma, self._ens_S_view)
-                if peaks:
-                    self.heatmapAxis.set_peaks(peaks)
-            else:
-                # Live preview: unsmoothed median until the ensemble curve is emitted
-                runs = self.sample.monteCarloRuns
-                if runs:
-                    # Derive grid from the first run to avoid mismatches after UI edits
-                    try:
-                        ages_y = np.array(sorted(runs[0].statistics_by_pb_loss_age.keys()), float)
-                    except Exception:
-                        ages_y = np.asarray(settings.rimAges(), float)
-                    ages_ma = ages_y / 1e6
-                    S_mat = np.array(
-                        [[1.0 - run.statistics_by_pb_loss_age[a].score for a in ages_y] for run in runs],
-                        dtype=float
-                    )
-                    S_view = np.nanmedian(S_mat, axis=0)
-
-                    # Respect the toggle in preview too
-                    st = getattr(self.sample, "calculationSettings", None)
-                    if getattr(st, "enable_ensemble_peak_picking", False):
-                        rows = self._sanitise_catalogue(getattr(self.sample, "peak_catalogue", []) or [])
-                        peaks = [float(r["age_ma"]) for r in rows] if rows else None
-                        wins  = [(float(r["ci_low"]), float(r["ci_high"])) for r in rows] if rows else None
-                    else:
-                        peaks = None
-                        wins = None
-                    self.goodnessAxis.update_curve(ages_ma, S_view, peaks=peaks, windows=wins)
-                    self.heatmapAxis.set_curve(ages_ma, S_view)
-                    if peaks:
-                        self.heatmapAxis.set_peaks(peaks)
 
             self.canvas.draw_idle()

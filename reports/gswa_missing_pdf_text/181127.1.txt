@@ -1,0 +1,454 @@
+181127.pdf                                                                                           Geochronology dataset 682
+
+
+
+
+                        181127: quartz sandstone, Durba Hills
+
+
+
+Location and sampling                                              component, but there are also disseminated grains of
+                                                                   microcline, clasts of polycrystalline quartz, and rarer ﬁne-
+GUNANYA (SG 51-14), DURBA (3350)                                   grained lithic fragments comprising plagioclase, quartz,
+                   MGA Zone 51, 447465E 7377349N                   clay minerals, opaque oxide minerals, leucoxene, and
+                                                                   apatite in various proportions. Heavy minerals include
+Sampled on 25 September 2004                                       opaque oxide minerals, tourmaline, and rare zircon.
+                                                                   Interstitial clay minerals and hematite are abundant, with
+The sample was taken from the foot of the giant
+                                                                   voids in some areas, and hematite-poor clay minerals in
+foreset exposed at the northern tip of Durba Hills, with
+                                                                   others.
+preferential sampling of coarser grained sandstone to
+increase the proportion of possible heavy minerals. The               The lithic fragments appear to be clasts derived from
+locality is about 100 m southeast of the Canning Stock             maﬁc and felsic volcanic rocks, or possibly granophyric
+Route, and about 5 km northwest of the site of GSWA                rocks. Some of the polycrystalline quartz clasts are
+181126 (Wingate and Bodorkos, 2007). Durba Hills is                granular and/or microspherulitic, possibly indicating a
+about 390 km (direct) north-northeast of Wiluna, and               low-temperature hydrothermal origin.
+about 800 km (direct) southwest of Halls Creek.
+
+                                                                   Zircon morphology
+Tectonic unit/relations
+                                                                   The zircons isolated from this sample are anhedral to
+The unit sampled is a ﬁne-grained, red and cream-coloured          subhedral, and moderately rounded to subspherical.
+lithic arenite assigned to the McFadden Formation of the           Most are clear and colourless, although some are pale
+northwest Ofﬁcer Basin. The McFadden Formation is                  brown in colour. They are up to 500 µm long, with aspect
+dominantly an eolian deposit, with lesser ﬂuvial facies,           ratios up to 4:1. The external surfaces of most zircons are
+and is correlated (based on lithology and depositional             pitted, consistent with sedimentary transport. Concentric
+facies) with the Lungkarta Formation in the subsurface             growth zoning is common, and typically is truncated at
+of the Ofﬁcer Basin to the east and southeast (Grey et al.,        (abraded) grain boundaries. Many zircons show complex
+2005; Hocking et al., 2005). The McFadden Formation                internal structure, and a cathodoluminescence image of
+unconformably overlies the Late Neoproterozoic glacigene           representative zircons is shown in Figure 1.
+Boondawari Formation (Grey et al., 2005), and is
+disconformably overlain by the Durba Sandstone (GSWA
+181126; Wingate and Bodorkos, 2007). A minimum age                 Analytical details
+for the correlative Lungkarta Formation is provided by
+the overlying c. 510 Ma Table Hill Volcanics (Grey et al.,         This sample was analysed on 21–22 October 2005 (using
+2005).                                                             SHRIMP-A) and 24–25 October 2005 (using SHRIMP-
+                                                                   B). Analyses 1.1 to 11.2 (spot numbers 1–21 inclusive)
+    In GSWA drillhole Lancer 1, about 200 km to the east,          were obtained during the ﬁrst session, together with 11
+there is no marked unconformity between sandstones                 analyses of the CZ3 standard that indicated an external
+assigned to the Lungkarta and Durba Sandstones,                    spot-to-spot (reproducibility) uncertainty of 1.71% (1σ)
+suggesting their ages (and therefore the ages of the               and a 238U/206Pb* calibration uncertainty of 0.56% (1σ).
+McFadden and Durba Sandstones) may be similar (Haines              Analyses 20.1 to 55.1 (spot numbers 22–57 inclusive)
+et al., 2004; Grey et al., 2005).                                  were obtained during the second session, together with
+                                                                   18 analyses of the CZ3 standard that indicated an external
+                                                                   spot-to-spot (reproducibility) uncertainty of 1.37% (1σ)
+Petrographic description                                           and a 238U/206Pb* calibration uncertainty of 0.37% (1σ).
+                                                                   Calibration uncertainties are included in the errors of
+This is a coarse-grained sandstone that contains millimetre-       238
+                                                                      U/206Pb* ratios and ages quoted in Table 1.
+scale bedding laminations, with maximum grain sizes
+varying from 0.25 mm to 1 mm between layers. Well-                     Common-Pb corrections were applied to all analyses
+rounded single-crystal quartz grains are the main                  using contemporaneous isotopic compositions determined
+
+
+
+
+                                                               1
+181127.pdf                                                                                       Geochronology dataset 682
+
+
+
+
+                                                                              2.1
+                    5.1
+                                                                                          1.1
+
+
+
+
+                                                  3.1
+                            4.1
+                                  200 µm
+
+                Figure 1.   Cathodoluminescence image of representative zircons from sample 181127:
+                            quartz sandstone, Durba Hills. Numbered circles represent approximate
+                            positions of analysis sites
+
+
+
+
+by the method of Stacey and Kramers (1975). However,             sensitive to the choice of common-Pb correction method,
+the data were dispersed in 207Pb*/206Pb* when corrected          nor do they differ significantly from the uncorrected
+for common Pb using measured 204Pb (Fig. 2), and a               238
+                                                                    U/206Pb dates.
+negative correlation exists between the magnitude (ƒ204)
+of the common-Pb correction and the 207Pb*/206Pb* dates              Two analyses are characterized by high common-Pb
+(corrected for common Pb) in each of the analytical              contents (ƒ207 >1%) based on the 207-correction. The
+sessions (Fig. 3). This indicates that the common-Pb             dates obtained from these two analyses (Group D; Table 1)
+correction based on measured 204Pb is inaccurate for most        are imprecise or unreliable, and are not considered
+or all of the analyses, so an alternative correction was         geologically signiﬁcant. The remaining 55 analyses can
+employed for these data (see below).                             be divided into two groups, based on their 207-corrected
+                                                                 238
+                                                                    U/206Pb* ratios.
+                                                                     Group 1 comprises three analyses of three zircons
+Results                                                          (Table 1), which yielded a weighted mean 238U/206Pb* date
+Fifty-seven analyses were obtained from 55 zircons,              of 694 ± 13 Ma (MSWD = 0.57).
+with two grains (4 and 11) each analysed twice. Results             Group 2 comprises 52 analyses of 50 zircons (Table 1),
+are listed in Table 1, and shown in a concordia diagram          which yielded 238U/206Pb* dates of 1606–820 Ma.
+(Fig. 4) and a probability density diagram (Fig. 5).
+                                                                     It is possible that all analyses in Group 1 represent
+                                                                 unmodiﬁed detrital zircons, in which case the 238U/206Pb*
+Interpretation                                                   date of 689 ± 11 Ma (1σ) for analysis 45.1 represents a
+                                                                 maximum age for deposition of the sandstone. However,
+Most analyses are concordant or only slightly discordant,        the date of 694 ± 13 Ma for the three analyses in Group 1
+prior to correction for common Pb (Fig. 4). In view of the       represents a more robust estimate for the maximum
+inapplicability of the common-Pb correction method that          depositional age.
+uses measured 204Pb (Figs 2 and 3), the 207-correction
+(which assumes precise concordance of the true radiogenic            The 52 analyses in Group 2 indicate 238U/206Pb* dates
+238
+   U/206Pb* and 207Pb*/206Pb* dates for each analysis) was       that deﬁne signiﬁcant age components (based on three
+employed, and the resulting 238U/206Pb* data (Table 1)           or more data points) at c. 827, c. 869, and c. 1176 Ma,
+are considered to provide the best estimates of the ages         and a minor component at 1597 Ma (Fig. 5). These are
+of these zircons. Note that because most analyses are            interpreted as the ages of zircon-bearing rocks in the
+essentially concordant, the 238U/206Pb* dates are not very       detrital source region(s) of the quartz sandstone.
+
+
+                                                             2
+                                          Table 1. Ion microprobe analytical results for zircons from sample 181127: quartz sandstone, Durba Hills
+
+
+    Grp   Spot   Grain   238U    232Th   232Th      f207      238U/206Pb             207Pb/206Pb           238U/206Pb*           207Pb*/206Pb*       238U/206Pb*       207Pb*/206Pb*   Disc
+                                                                                                                                                                                              181127.pdf
+
+
+
+
+    no.    no.   .spot   (ppm)   (ppm)   /238U       (%)             ±1σ                 ±1σ                       ±1σ                 ±1σ           date (Ma) ±1σ     date (Ma) ±1σ   (%)
+
+     1    47     45.1     152      78    0.53     0.244      8.850 ± 0.148         0.06443 ± 0.00132       8.872 ± 0.152           –         –          689 ±     11      –       –      –
+     1    38     36.1     161      77    0.49     0.355      8.826 ± 0.147         0.06540 ± 0.00134       8.858 ± 0.152           –         –          690 ±     11      –       –      –
+     1    46     44.1     124     127    1.06     0.372      8.630 ± 0.150         0.06592 ± 0.00146       8.663 ± 0.155           –         –          704 ±     12      –       –      –
+
+     2    20      4.2     238     145    0.63     0.105      7.369    ±    0.139   0.06728   ±   0.00079   7.376    ±    0.144     –         –          820   ±   15      –       –      –
+     2    11     11.1     110      69    0.65     0.200      7.355    ±    0.148   0.06810   ±   0.00178   7.370    ±    0.154     –         –          820   ±   16      –       –      –
+     2    21     11.2     134      78    0.60     0.328      7.272    ±    0.146   0.06940   ±   0.00106   7.296    ±    0.151     –         –          828   ±   16      –       –      –
+     2     4      4.1     236     131    0.57     0.132      7.247    ±    0.137   0.06792   ±   0.00079   7.257    ±    0.141     –         –          832   ±   15      –       –      –
+     2    39     37.1     198     160    0.84     0.130      7.045    ±    0.113   0.06862   ±   0.00108   7.055    ±    0.117     –         –          855   ±   13      –       –      –
+     2    52     50.1     126     125    1.02     0.148      6.916    ±    0.119   0.06924   ±   0.00133   6.926    ±    0.123     –         –          869   ±   14      –       –      –
+     2    51     49.1     164      68    0.43     0.324      6.813    ±    0.112   0.07106   ±   0.00120   6.835    ±    0.117     –         –          880   ±   14      –       –      –
+     2    42     40.1      61      42    0.71     0.058      6.693    ±    0.135   0.06943   ±   0.00193   6.697    ±    0.141     –         –          897   ±   18      –       –      –
+     2    56     54.1     116     108    0.96     0.682      5.280    ±    0.093   0.08234   ±   0.00141   5.316    ±    0.098     –         –         1111   ±   19      –       –      –
+     2    13     13.1     132     167    1.31     0.720      5.166    ±    0.101   0.08357   ±   0.00103   5.204    ±    0.108     –         –         1133   ±   21      –       –      –
+     2    35     33.1     139     160    1.19     0.628      5.106    ±    0.087   0.08330   ±   0.00131   5.139    ±    0.093     –         –         1146   ±   19      –       –      –
+     2    57     55.1     261     239    0.95     0.097      5.101    ±    0.079   0.07905   ±   0.00091   5.106    ±    0.083     –         –         1153   ±   17      –       –      –
+     2    14     14.1      86      78    0.94     0.639      5.057    ±    0.102   0.08382   ±   0.00121   5.089    ±    0.109     –         –         1157   ±   23      –       –      –
+     2    25     23.1     190     129    0.70     0.266      5.071    ±    0.082   0.08067   ±   0.00106   5.084    ±    0.086     –         –         1158   ±   18      –       –      –
+     2    40     38.1      59      60    1.05     0.661      5.051    ±    0.101   0.08405   ±   0.00187   5.084    ±    0.108     –         –         1158   ±   22      –       –      –
+
+
+
+
+3
+     2    18     18.1     194     147    0.78     0.336      5.066    ±    0.097   0.08128   ±   0.00084   5.083    ±    0.102     –         –         1158   ±   21      –       –      –
+     2    24     22.1     117     154    1.36     0.726      5.043    ±    0.088   0.08461   ±   0.00138   5.080    ±    0.093     –         –         1158   ±   20      –       –      –
+     2    55     53.1      65      63    1.00     0.728      5.038    ±    0.100   0.08459   ±   0.00188   5.075    ±    0.107     –         –         1159   ±   22      –       –      –
+     2    31     29.1     224     121    0.56     0.360      5.032    ±    0.078   0.08176   ±   0.00091   5.050    ±    0.083     –         –         1165   ±   18      –       –      –
+     2    22     20.1     179     205    1.19     0.462      5.022    ±    0.082   0.08267   ±   0.00110   5.046    ±    0.087     –         –         1166   ±   18      –       –      –
+     2     7      7.1     133     120    0.94     0.248      5.025    ±    0.098   0.08089   ±   0.00156   5.038    ±    0.104     –         –         1167   ±   22      –       –      –
+     2    33     31.1     184     183    1.03     0.155      5.027    ±    0.082   0.08014   ±   0.00110   5.035    ±    0.086     –         –         1168   ±   18      –       –      –
+     2    23     21.1     103     151    1.52     0.474      5.004    ±    0.090   0.08289   ±   0.00146   5.028    ±    0.095     –         –         1169   ±   20      –       –      –
+     2    41     39.1     359     285    0.82     0.329      4.999    ±    0.075   0.08180   ±   0.00076   5.015    ±    0.079     –         –         1172   ±   17      –       –      –
+     2    27     25.1      96      94    1.00     0.372      4.982    ±    0.090   0.08226   ±   0.00150   5.001    ±    0.096     –         –         1175   ±   21      –       –      –
+     2     2      2.1      88      96    1.13    –0.042      4.997    ±    0.101   0.07882   ±   0.00111   4.995    ±    0.106     –         –         1177   ±   23      –       –      –
+     2    10     10.1     128     145    1.17     0.361      4.975    ±    0.099   0.08223   ±   0.00096   4.993    ±    0.105     –         –         1177   ±   23      –       –      –
+     2    28     26.1     256     411    1.66     0.163      4.980    ±    0.085   0.08061   ±   0.00092   4.988    ±    0.090     –         –         1178   ±   19      –       –      –
+     2    50     48.1     220     190    0.89     0.124      4.977    ±    0.090   0.08032   ±   0.00123   4.983    ±    0.095     –         –         1179   ±   21      –       –      –
+     2    54     52.1     104     106    1.05     0.224      4.970    ±    0.087   0.08118   ±   0.00138   4.981    ±    0.093     –         –         1179   ±   20      –       –      –
+     2    34     32.1      65      55    0.87     0.426      4.959    ±    0.099   0.08294   ±   0.00184   4.980    ±    0.105     –         –         1180   ±   23      –       –      –
+     2    17     17.1     131     135    1.06     0.080      4.968    ±    0.097   0.08004   ±   0.00095   4.972    ±    0.102     –         –         1181   ±   22      –       –      –
+     2    32     30.1      74      79    1.11     0.404      4.951    ±    0.096   0.08280   ±   0.00177   4.971    ±    0.102     –         –         1182   ±   22      –       –      –
+     2    19     19.1      86      70    0.85     0.230      4.956    ±    0.100   0.08135   ±   0.00116   4.967    ±    0.106     –         –         1182   ±   23      –       –      –
+     2    12     12.1     130     108    0.86     0.128      4.959    ±    0.097   0.08052   ±   0.00099   4.965    ±    0.103     –         –         1183   ±   22      –       –      –
+     2    53     51.1      84      86    1.06     0.306      4.948    ±    0.108   0.08200   ±   0.00156   4.963    ±    0.115     –         –         1183   ±   25      –       –      –
+     2     9      9.1     125     130    1.08     0.215      4.947    ±    0.097   0.08133   ±   0.00149   4.957    ±    0.102     –         –         1185   ±   22      –       –      –
+     2     8      8.1     102     126    1.28     0.303      4.936    ±    0.098   0.08213   ±   0.00111   4.951    ±    0.104     –         –         1186   ±   23      –       –      –
+     2    30     28.1     176     131    0.77     0.207      4.926    ±    0.080   0.08143   ±   0.00108   4.936    ±    0.085     –         –         1189   ±   19      –       –      –
+                                                                                                                                                                                              Geochronology dataset 682
+
+
+
+
+     2    37     35.1     179     139    0.80     0.009      4.935    ±    0.080   0.07976   ±   0.00106   4.936    ±    0.084     –         –         1189   ±   19      –       –      –
+                                                                                  Table 1. (continued)
+
+
+    Grp   Spot   Grain   238U    232Th   232Th     f207    238U/206Pb             207Pb/206Pb            238U/206Pb*           207Pb*/206Pb*   238U/206Pb*       207Pb*/206Pb*   Disc
+                                                                                                                                                                                        181127.pdf
+
+
+
+
+    no.    no.   .spot   (ppm)   (ppm)   /238U      (%)           ±1σ                 ±1σ                        ±1σ                ±1σ        date (Ma) ±1σ     date (Ma) ±1σ   (%)
+
+     2     6      6.1     162     129    0.82    –0.018   4.924    ±    0.095   0.07965   ±   0.00086    4.923    ±    0.100    –         –      1192   ±   22      –       –      –
+     2    29     27.1     106      84    0.82     0.274   4.899    ±    0.088   0.08220   ±   0.00146    4.912    ±    0.093    –         –      1194   ±   21      –       –      –
+     2    48     46.1     209     136    0.67     0.048   4.905    ±    0.080   0.08034   ±   0.00098    4.907    ±    0.084    –         –      1196   ±   19      –       –      –
+     2    36     34.1      93     125    1.39    –0.167   4.914    ±    0.089   0.07857   ±   0.00149    4.906    ±    0.095    –         –      1196   ±   21      –       –      –
+     2    15     15.1     165     190    1.19     0.099   4.901    ±    0.094   0.08079   ±   0.00093    4.906    ±    0.099    –         –      1196   ±   22      –       –      –
+     2     3      3.1      82      68    0.86    –0.039   4.888    ±    0.102   0.07980   ±   0.00117    4.886    ±    0.108    –         –      1200   ±   24      –       –      –
+     2    43     41.1      89      77    0.89     0.226   4.864    ±    0.108   0.08212   ±   0.00151    4.875    ±    0.114    –         –      1203   ±   26      –       –      –
+     2    44     42.1      65      59    0.94     0.220   4.850    ±    0.130   0.08220   ±   0.00175    4.861    ±    0.138    –         –      1206   ±   31      –       –      –
+     2     1      1.1      96      90    0.98     0.204   4.835    ±    0.096   0.08223   ±   0.00191    4.845    ±    0.103    –         –      1210   ±   23      –       –      –
+     2    49     47.1     265      90    0.35     0.162   4.623    ±    0.071   0.08400   ±   0.00083    4.631    ±    0.075    –         –      1260   ±   19      –       –      –
+     2    45     43.1      34      29    0.88     0.106   3.594    ±    0.081   0.09862   ±   0.00218    3.598    ±    0.090    –         –      1581   ±   35      –       –      –
+     2     5      5.1     111      94    0.87     0.142   3.529    ±    0.069   0.10028   ±   0.00107    3.534    ±    0.076    –         –      1606   ±   30      –       –      –
+
+    D     16     16.1      63      79    1.30     1.063   9.325 ± 0.243         0.06995 ± 0.00290        9.425 ± 0.253          –         –       650 ±     17      –       –      –
+    D     26     24.1     224     310    1.43     1.855   5.234 ± 0.083         0.09234 ± 0.00108        5.333 ± 0.089          –         –      1108 ±     17      –       –      –
+
+
+
+
+4
+                                                                                                                                                                                        Geochronology dataset 682
+181127.pdf                                                                                                             Geochronology dataset 682
+
+                        0.11
+
+                                                                                                              181127
+                                         1700                                                         57 analyses of 55 zircons
+                        0.10
+
+
+                                                1500
+                        0.09
+         Pb*
+
+
+
+
+                                                           1300
+         206
+
+
+
+
+                        0.08
+         Pb*/
+         207
+
+
+
+
+                        0.07                                             1000
+
+
+                                                                                                800
+
+                        0.06
+                                                                                                                             600
+
+
+
+                        0.05
+                               2                           4                 6                        8                    10
+                                                                                 238    206
+                                                                                   U/     Pb*
+
+         Figure 2.                 U–Pb analytical data for sample 181127: quartz sandstone, Durba Hills. All data are corrected
+                                   for common Pb using measured 204Pb, and exhibit signiﬁcant dispersion in 207Pb*/206Pb*
+
+
+
+
+                        1600                                                                                  181127
+                                                                                                      57 analyses of 55 zircons
+
+
+                        1400
+         Pb* age (Ma)
+
+
+
+
+                        1200
+         206
+
+
+
+
+                                                                                                                y = 1228.1 - 178.7x
+         Pb*/
+
+
+
+
+                        1000                                                                                         R = 0.82
+         207
+
+
+
+
+                        800
+
+
+
+                        600
+
+
+                                                       0                                        1                                     2
+                                                                                  f204 (%)
+
+         Figure 3.                 Correlation between ƒ204 and 207Pb*/206Pb* age (corrected for common Pb using measured
+                                     Pb) for sample 181127: quartz sandstone, Durba Hills. Yellow squares indicate data included
+                                   204
+
+                                   in the linear regression, and the equation of the best-ﬁt line is shown. R is Pearson’s correlation
+                                   coefﬁcient
+
+
+
+
+                                                                              5
+181127.pdf                                                                                                                    Geochronology dataset 682
+
+                                   0.11
+
+                                                                                                                     181127
+                                                    1700                                                     57 analyses of 55 zircons
+                                   0.10
+
+
+                                                           1500
+                                   0.09
+         Pb
+
+
+
+
+                                                                  1300
+         206
+
+
+
+
+                                   0.08
+         Pb/
+         207
+
+
+
+
+                                   0.07                                          1000
+
+
+                                                                                                       800
+
+                                   0.06
+                                                                                                                                   600
+
+
+
+                                   0.05
+                                          2                       4                  6                       8                   10
+                                                                                         238    206
+                                                                                           U/     Pb
+
+         Figure 4.                            U–Pb analytical data for sample 181127: quartz sandstone, Durba Hills. Data are not corrected
+                                              for common Pb. Blue squares indicate Group 1 (youngest detrital zircons); yellow squares
+                                              indicate Group 2 (older detrital zircons); crossed squares indicate ungrouped analyses (ƒ207
+                                              >1%)
+
+
+
+
+                                   25
+
+
+                                               181127
+                                                maxima
+                                   20             692
+                                                  827
+                                                  869
+                                                 1176
+             Histogram frequency
+
+
+
+
+                                                 1597
+                                   15
+
+
+
+
+                                   10
+
+
+
+
+                                   5
+
+
+
+
+                                   0
+                                   2000                                  1500                           1000                             500
+                                                                                    Age (Ma)
+
+                 Figure 5.                     Probability density diagram and histogram of 207-corrected 238U/206Pb* data from sample
+                                               181127: quartz sandstone, Durba Hills. Heavy curve, maxima values, and frequency
+                                               histogram (bin width 25 Ma) include only data with ƒ207 <1% (55 analyses of 53 zircons).
+                                               Light curve includes all data (57 analyses of 55 zircons)
+
+
+
+
+                                                                                      6
+181127.pdf                                                                                                           Geochronology dataset 682
+
+
+References                                                                     Recommended reference for this
+GREY, K., HOCKING, R. M., STEVENS, M. K., BAGAS, L.,                           publication
+  CARLSEN, G. M., IRIMIES, F., PIRAJNO, F., HAINES, P. W., and
+  APAK, S. N., 2005, Lithostratigraphic nomenclature of the Ofﬁcer
+                                                                               WINGATE, M. T. D., and BODORKOS, S., 2007, 181127: quartz
+  Basin and correlative parts of the Paterson Orogen, Western Australia:
+                                                                                 sandstone, Durba Hills; Geochronology dataset 682, in Compilation
+  Western Australia Geological Survey, Report 93, 89p.
+                                                                                 of geochronology data: Western Australia Geological Survey.
+HAINES, P. W., MORY, A. J., STEVENS, M. K., and GHORI,
+  K. A. R., 2004, GSWA Lancer 1 well completion report (basic data),
+  Ofﬁcer and Gunbarrel Basins, Western Australia: Western Australia
+  Geological Survey, Record 2004/10, 39p.                                      Data obtained:        22 October 2005
+                                                                               Data released:        30 June 2007
+HOCKING, R. M., GREY, K., SIMEONOVA, A., IASKY, R. P.,
+  and HAINES, P. W., 2005, Neoproterozoic-earliest Phanerozoic
+  deposition on the Ofﬁcer Basin, Western Australia: Central Australia
+  Basins Symposium (CABS), Petroleum and Mineral Potential, Alice
+  Springs, p. 30–31.
+STACEY, J. S., and KRAMERS, J. D., 1975, Approximation of terrestrial
+   lead isotope evolution by a two-stage model: Earth and Planetary
+   Science Letters, v. 26, p. 207–221.
+WILLIAMS, I. R., 1992, Geology of the Savory Basin, Western Australia:
+  Western Australia Geological Survey, Bulletin 141, 115p.
+WINGATE, M. T. D., and BODORKOS, S., 2007, 181126: quartz
+  sandstone, Durba Spring; Geochronology dataset 681, in Compilation
+  of geochronology data: Western Australia Geological Survey.
+
+
+
+
+                                                                           7
+

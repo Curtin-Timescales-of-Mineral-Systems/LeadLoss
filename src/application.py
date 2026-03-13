@@ -191,6 +191,8 @@ class LeadLossApplication:
         self.signals.processingFinished.emit()
 
     def onProcessingErrored(self, exception):
+        if isinstance(exception, (list, tuple)) and len(exception) > 0:
+            exception = exception[0]
         self.signals.taskComplete.emit(False, "Error whilst processing data")
         message = exception.__class__.__name__ + ": " + str(exception)
         QMessageBox.critical(None, "Error", "An error occurred during processing: \n\n" + message)

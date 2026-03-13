@@ -57,9 +57,15 @@ class LeadLossModel:
 
     def clearInputData(self):
         self.headers = []
+        self.samples = []
+        self.samplesByName = {}
         self.rows = []
         self.concordantRows = []
         self.discordantRows = []
+        self.dValuesByAge = {}
+        self.pValuesByAge = {}
+        self.reconstructedAges = {}
+        self.optimalAge = None
 
         self.signals.inputDataCleared.emit()
         
@@ -71,11 +77,23 @@ class LeadLossModel:
             try:
                 ages_ma = payload[0]
                 y_curve = payload[1]
+                peaks_age = payload[2] if len(payload) > 2 else []
+                peaks_ci = payload[3] if len(payload) > 3 else []
                 sample.summedKS_ages_Ma = np.asarray(ages_ma, dtype=float)
                 sample.summedKS_goodness = np.asarray(y_curve, dtype=float)
+                sample.summedKS_peaks_Ma = np.asarray(peaks_age, dtype=float)
+                if isinstance(peaks_ci, (list, tuple)) and len(peaks_ci):
+                    sample.summedKS_ci_low_Ma = np.asarray([float(lo) for lo, _ in peaks_ci], dtype=float)
+                    sample.summedKS_ci_high_Ma = np.asarray([float(hi) for _, hi in peaks_ci], dtype=float)
+                else:
+                    sample.summedKS_ci_low_Ma = np.asarray([], dtype=float)
+                    sample.summedKS_ci_high_Ma = np.asarray([], dtype=float)
             except Exception:
                 sample.summedKS_ages_Ma = None
                 sample.summedKS_goodness = None
+                sample.summedKS_peaks_Ma = None
+                sample.summedKS_ci_low_Ma = None
+                sample.summedKS_ci_high_Ma = None
 
             if sample.signals:
                 sample.signals.summedKS.emit(payload)
@@ -136,7 +154,9 @@ class LeadLossModel:
 
     def getNearestSampledAge(self, requestedAge):
         if not self.dValuesByAge:
-            return None, []
+            # Keep a stable 4-tuple shape for callers that unpack
+            # (age, d, p, reconstructed_ages).
+            return None, None, None, []
 
         if requestedAge is not None:
             actualAge = min(self.dValuesByAge, key=lambda a: abs(a-requestedAge))

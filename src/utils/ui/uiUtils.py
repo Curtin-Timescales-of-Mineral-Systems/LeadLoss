@@ -25,8 +25,16 @@ def retainSizeWhenHidden(widget):
 
 
 def clearChildren(layout):
-    for i in reversed(range(layout.count())):
-        layout.itemAt(i).widget().setParent(None)
+    if layout is None:
+        return
+    while layout.count() > 0:
+        item = layout.takeAt(0)
+        widget = item.widget()
+        child_layout = item.layout()
+        if widget is not None:
+            widget.setParent(None)
+        elif child_layout is not None:
+            clearChildren(child_layout)
 
 
 def getTextWidth(text):

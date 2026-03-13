@@ -1,0 +1,197 @@
+142984.1.pdf - Geochronology dataset 287
+
+
+       142984: pegmatite-banded, even-grained orthogneiss,
+                           Talga Well
+
+Location and sampling
+NULLAGINE (SF 51–5)                                                          120°01'50"E 21°11'06"S
+Sampled on 28 September 1998
+The sample was taken from a 1 m diameter block located adjacent to the north side of the Ripon
+Hills road and 3 km south-southwest of Talga Well.
+
+Tectonic unit/relations
+This sample is from a pegmatite-banded, grey even-grained gneiss of the Mount Edgar Granitoid
+Complex. Two obvious phases within the rock — the grey gneiss and white pegmatite phase —
+have been deformed to form a grey and white layered rock.
+
+Petrographic description
+The principal minerals present in this sample are plagioclase (55–60 vol.%), quartz (35 vol.%),
+biotite (5 vol.%), epidote (2–3 vol.%), allanite (trace), titanite (trace), sericite (trace), adularia
+(trace), carbonate (trace), epidote (trace), and zircon (trace). This is a foliated, fine-grained
+plagioclase-rich rock with K-feldspar highlighted on the stained offcut in veins, and as patches in
+and adjacent to plagioclase grains. It is an altered tonalite with accessory titanite and zircon and
+veins containing adularia, carbonate, quartz, and rare epidote. There are also veins that lack K-
+feldspar. The thin section shows abundant plagioclase as rounded, augen-like grains ≤2 mm in
+diameter and less abundant quartz, partly as grains ≤2 mm long and partly as a micromosaic of
+smaller recrystallized grains. A foliation is defined by chloritized fine-grained biotite, to 0.8 mm in
+grain size. Lenses of epidote ≤3 mm long are mostly elongated parallel to the foliation and locally
+enclose allanite grains. Rare titanite ≤1 mm in grain size encloses crystals of zircon ≤100 µm long.
+Some zircon also lies within quartz. Some of the plagioclase is dusted with sericite, more rarely
+with patches of adularia. Veins consist variably of adularia and/or carbonate and quartz and/or
+carbonate with minor epidote. The widest vein is 2 mm thick, with a zone of granular to prismatic
+quartz and minor carbonate, passing into a zone of carbonate with less abundant fine-grained
+quartz.
+
+Zircon morphology
+The zircons isolated from this sample are commonly pale green-brown, dark brown to black,
+euhedral with rounded terminations, elongate and between 50 × 90 µm and 250 × 400 µm in size.
+Most grains have remnant fine internal zonation but a minority are apparently structureless or have
+structureless cores surrounded by strongly zoned margins. Many are black and metamict. Fluid,
+mineral, and opaque inclusions are common.
+
+
+
+
+                                                  184
+Analytical details
+This sample was analysed on 16 and 22 August 1999. The counter deadtime during both sessions
+was 32 ns. During the first session, seven analyses of the CZ3 standard indicated a Pb*/U
+calibration error of 1.26 (1σ%). Analyses 1.1 to 21.1 were obtained during the first session. During
+the second session, nine analyses of the CZ3 standard indicated a Pb*/U calibration error of
+1.64 (1σ%). Common-Pb corrections were applied assuming Broken Hill common-Pb isotopic
+compositions for all analyses, with the exception of analysis 7.1, for which isotopic compositions
+determined using the method of Cumming and Richards (1975) were assumed.
+
+Results
+Twenty-five analyses were obtained from 25 zircons. Results are given in Table 46 and shown on a
+concordia plot in Figure 52.
+
+Interpretation
+Most analyses are concordant or slightly normal and reverse discordant, with the discordance
+pattern consistent with two or more episodes of radiogenic Pb loss, including a single recent
+
+          0.72
+
+
+                                                Group 1: 15 analyses of 15 zircons
+          0.70                                  3300 ± 4 Ma (95% confidence)                        Analysis 25.1
+
+
+
+          0.68
+                                                                                      3350
+
+                                           Analysis 5.1
+Pb/238U
+
+
+
+
+          0.66                           3250
+
+                                                                                             Analysis 6.1
+206
+
+
+
+
+                  3200
+          0.64
+
+                         Analysis 10.1
+
+          0.62
+
+
+                                                 Group 2: 6 analyses of 6 zircons
+                            Analysis 4.1
+                                                 3321 ± 6 Ma (95% confidence)
+          0.60
+
+
+                                                                                                                    142984
+
+          0.58
+                 22              23                 24                25             26                27                    28
+                                                                207     235
+                                                                   Pb/ U
+
+Figure 52. Concordia plot for sample 142984: pegmatite-banded, even-grained orthogneiss, Talga
+           Well
+
+
+
+
+                                                               185
+                Table 46. Ion microprobe analytical results for sample 142984: pegmatite-banded, even-grained orthogneiss, Talga Well
+
+      Grain     U       Th      Pb    ƒ206%   207Pb/206Pb    ±1σ      208Pb/206Pb    ±1σ      206Pb/238U   ±1σ      207Pb/235U   ±1σ          %        207Pb/206Pb   ±1σ
+      .spot   (ppm)   (ppm)   (ppm)                                                                                                      concordance      Age
+
+       1.1    267       55     199    0.254     0.26925     0.00078     0.05243     0.00081     0.6494     0.0085     24.110     0.331       98           3302        5
+       2.1    147       40     112    0.154     0.26924     0.00106     0.06864     0.00107     0.6585     0.0088     24.444     0.354       99           3302        6
+       3.1    219       80     171    0.095     0.27220     0.00085     0.09515     0.00083     0.6620     0.0087     24.847     0.345       99           3319        5
+       4.1    150       75     112    0.316     0.26955     0.00118     0.13598     0.00163     0.6125     0.0082     22.765     0.333       93           3303        7
+       5.1    240       80     185    0.103     0.26408     0.00080     0.08536     0.00075     0.6608     0.0087     24.062     0.334      100           3271        5
+       6.1    127       81     106    0.395     0.29078     0.00117     0.16852     0.00162     0.6552     0.0088     26.269     0.380       95           3422        6
+       7.1    255      109     207    0.869     0.27230     0.00087     0.11819     0.00140     0.6627     0.0086     24.882     0.343       99           3319        5
+       8.1    201       92     155    0.130     0.27148     0.00081     0.11769     0.00089     0.6434     0.0084     24.084     0.332       97           3315        5
+       9.1    185       74     146    0.235     0.26733     0.00085     0.10517     0.00099     0.6632     0.0087     24.443     0.339      100           3290        5
+186
+
+
+
+
+      10.1    622      136     447    0.036     0.25736     0.00046     0.05762     0.00033     0.6343     0.0081     22.507     0.295       98           3231        3
+      11.1    163       63     129    0.200     0.26798     0.00100     0.10114     0.00115     0.6660     0.0089     24.608     0.352      100           3294        6
+      12.1    143       51     109    0.172     0.26897     0.00106     0.09180     0.00115     0.6483     0.0087     24.042     0.348       98           3300        6
+      13.1    170       69     133    0.118     0.26884     0.00095     0.10710     0.00104     0.6592     0.0087     24.435     0.345       99           3299        6
+      14.1     81       19      61    0.349     0.27235     0.00153     0.06190     0.00193     0.6553     0.0092     24.606     0.389       98           3320        9
+      15.1    194       71     148    0.157     0.27294     0.00092     0.09539     0.00103     0.6473     0.0085     24.361     0.342       97           3323        5
+      16.1    230      119     184    0.114     0.26974     0.00081     0.13542     0.00089     0.6574     0.0086     24.448     0.338       99           3305        5
+      17.1    172       52     133    0.164     0.26850     0.00097     0.07714     0.00105     0.6670     0.0089     24.692     0.351      100           3297        6
+      18.1    157       49     122    0.144     0.26987     0.00102     0.08003     0.00107     0.6668     0.0089     24.813     0.357      100           3305        6
+      19.1    188       34     143    0.101     0.27329     0.00093     0.04989     0.00086     0.6668     0.0088     25.125     0.354       99           3325        5
+      20.1    271      117     211    0.346     0.26954     0.00080     0.11228     0.00101     0.6488     0.0085     24.112     0.331       98           3303        5
+      21.1    257      153     208    0.120     0.26865     0.00075     0.15639     0.00087     0.6570     0.0086     24.337     0.333       99           3298        4
+      22.1    161       71     129    0.254     0.26993     0.00111     0.11432     0.00135     0.6644     0.0114     24.726     0.448       99           3306        6
+      23.1    181       70     139    0.058     0.26650     0.00097     0.09797     0.00092     0.6522     0.0111     23.966     0.429       99           3286        6
+      24.1    171       69     131    0.042     0.27457     0.00103     0.09938     0.00089     0.6458     0.0112     24.449     0.444       96           3332        6
+      25.1    186       68     152    0.047     0.27538     0.00095     0.09224     0.00083     0.6964     0.0119     26.441     0.473      102           3337        5
+   radiogenic-Pb loss episode. On the basis of their 207Pb/206Pb ratios, most analyses may be assigned
+   to two groups. Fifteen concordant to slightly discordant analyses of 15 zircons (1.1, 2.1, 4.1, 9.1,
+   11.1, 12.1, 13.1, 14.1, 16.1, 17.1, 18.1, 20.1 and 21.1), assigned to Group 1, have 207Pb/206Pb ratios
+   defining a single population and indicating a weighted mean date of 3300 ± 4 Ma (chi-
+   squared = 1.34). Six concordant to slightly discordant analyses of 6 zircons (3.1, 7.1, 8.1, 15.1,
+   19.1 and 24.1), assigned to Group 2, have 207Pb/206Pb ratios defining a single population and
+   indicating a weighted mean date of 3321 ± 6 Ma (chi-squared = 1.14). Concordant analysis 5.1 and
+   discordant analysis 10.1 have lower 207Pb/206Pb ratios than members of these two groups, whereas
+   slightly reversely discordant analysis 25.1 and discordant analysis 6.1 have higher 207Pb/206Pb
+   ratios.
+        The date of 3321 ± 6 Ma indicated by the weighted mean 207Pb/206Pb ratio of the six analyses of
+   Group 2 is interpreted as the time of igneous crystallization of the grey, even-grained phase within
+   this sample, whereas the date of 3300 ± 4 Ma indicated by the weighted mean 207Pb/206Pb ratio of
+   the fifteen analyses of Group 1 is interpreted as the time of igneous crystallization of the pegmatite
+   phase. Analyses 5.1 and 10.1 indicated relatively high U and Th concentrations and the lower
+   207
+       Pb/206Pb ratios of these two analyses may indicate that these analysis sites have lost radiogenic
+   Pb during several disturbance events. Analyses 6.1 and 25.1 may be of xenocryst zircons.
+
+
+
+
+                 STRATIGRAPHIC REFERENCE:
+
+                 VAN KRANENDONK, M. J., HICKMAN, A. H., SMITHIES, R. H., and
+                 NELSON, D. R., 2002, Geology and tectonic evolution of the Archaean North
+                 Pilbara Terrain, Pilbara Craton, Western Australia: Economic Geology, v. 97,
+                 p. 695–732.
+
+
+
+
+Recommended reference for this publication:
+
+NELSON, D. R., 2000, 142984: pegmatite-banded, even-grained orthogneiss, Talga Well; in Compilation of geochronology data, 1999:
+Western Australia Geological Survey, Record 2000/2, p. 184–187.
+  OR
+NELSON, D. R., 2000, 142984: pegmatite-banded, even-grained orthogneiss, Talga Well; Geochronology dataset 287; in Compilation of
+geochronology data, June 2006 update: Western Australia Geological Survey.
+
+Data obtained: 22/08/1999; Data released: 30/06/2000
+
+
+
+                                                                 187
+

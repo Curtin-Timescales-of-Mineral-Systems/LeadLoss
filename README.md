@@ -41,24 +41,8 @@ Run the GUI:
 python src/application.py
 ```
 
-#### Common install issue: `soerp` / `ad`
-
-Some platforms fail to install `soerp` because its dependency `ad` requires **setuptools < 58**.
-
-If you see an error mentioning `ad`, `use_2to3`, or build isolation, use this more robust install sequence:
-
-```bash
-python -m venv .venv-app
-source .venv-app/bin/activate
-python -m pip install --upgrade pip
-
-# Required for `ad` (use_2to3): setuptools must be < 58
-python -m pip install "setuptools==57.5.0" wheel
-
-# Install `ad` first and disable build isolation, then install the app requirements
-python -m pip install --no-build-isolation "ad==1.3.2"
-python -m pip install --no-build-isolation -r requirements-app.txt
-```
+Note: `soerp` is now optional in source installs. If it is unavailable on your platform,
+the app falls back to deterministic math operations for the affected internals.
 
 ## Manuscript reproduction (2025 peak-picking)
 

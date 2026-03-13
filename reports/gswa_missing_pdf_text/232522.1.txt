@@ -1,0 +1,189 @@
+232522.1.pdf                                                                                        Geochronology Record 1817
+
+
+
+
+                232522: metamonzogranite, Balmoral prospect
+         (Maitland River Supersuite, Central Pilbara Tectonic Zone, Pilbara Craton)
+
+
+
+
+Location and sampling                                             Apatite forms euhedral, bladed grains up to 0.25 mm in
+                                                                  length. The sample contains a single 0.4 mm anhedral grain
+Yarraloola (SF 50-6), Pinderi Hills (2255)                        and rare smaller grains of orange–brown sphalerite. The
+                  MGA Zone 50, 480100E 7637370N                   larger sphalerite grain contains tiny chalcopyrite inclusions.
+                                                                  The metamonzogranite has undergone weak solid-state
+Sampled on 29 November 2018                                       deformation at low to moderate metamorphic grade.
+This sample was collected from the 667.62 – 669.35 m
+depth interval of drillcore 18ABAD01, drilled in 2018 by
+Artemis Resources Ltd at their Balmoral prospect (Van             Zircon morphology
+Alphen, 2018), with support from the WA Government
+Exploration Incentive Scheme (EIS). The drillhole is              Zircons isolated from this sample are colourless to dark
+located on Yalleen Station, about 19.5 km south of Zebra          brown and anhedral to euhedral. The crystals are up to
+Hill, 14.0 km north-northeast of Boolomba Pool, and               450 µm long, and elongate, with aspect ratios up to 8:1.
+5.0 km west of the Hamersley Iron (Rio Tinto) railway.            In cathodoluminescence (CL) images, concentric zoning
+                                                                  is ubiquitous, and some zircons appear to contain older
+                                                                  cores. A CL image of representative zircons is shown in
+                                                                  Figure 2.
+Geological context
+The unit sampled is a metamonzogranite of the Maitland
+River Supersuite (Hickman, 2021a). The 3006–2982 Ma               Analytical details
+Maitland River Supersuite forms a 50 km-wide belt of
+tonalite, granodiorite, and monzogranite intrusions that          This sample was analysed on 5–6 September 2019, using
+extends for about 250 km along the coastal plain of the           SHRIMP-B. Twelve analyses of the M257 standard
+northwest Pilbara region. Granitic rocks of the Maitland          obtained during the session indicated an external spot-
+River Supersuite intrude numerous older units, including          to-spot (reproducibility) uncertainty of 1.00% (1σ)
+the 3024–3007 Ma Orpheus Supersuite (Hickman, 2021b),             and a 238U/206Pb* calibration uncertainty of 0.33% (1σ).
+and are cross-cut by several younger units, including the         Calibration uncertainties are included in the errors of
+2955–2913 Ma Sisters Supersuite (Hickman, 2021c). A
+                                                                  238
+                                                                      U/206Pb* ratios and dates listed in Table 1. Common-
+porphyritic granodiorite of the Maitland River Supersuite,        Pb corrections were applied to all analyses using
+exposed as an inlier within lower Fortescue Group                 contemporaneous isotopic compositions determined
+rocks, about 48 km to the northeast, yielded an igneous           according to the model of Stacey and Kramers (1975).
+crystallization age of 3006 ± 12 Ma (GSWA 168932,
+Nelson, 2001).
+                                                                  Results
+                                                                  Twenty-two analyses were obtained from 18 zircons.
+Petrographic description                                          Results are listed in Table 1, and shown in a concordia
+                                                                  diagram (Fig. 3).
+The sample is an equigranular, medium-grained
+metamonzogranite (Fig. 1), consisting of about 40%
+plagioclase, 40% quartz, 15% K-feldspar, 4–5% biotite,
+1% muscovite and trace myrmekite, apatite, zircon and             Interpretation
+sphalerite. Plagioclase (An34, andesine) is anhedral to           The analyses are concordant to strongly discordant
+subhedral, equant to slightly tabular, up to 3 mm long, and       (Fig. 3). Six analyses are >5% discordant. The dates
+variably sericitized. Quartz is anhedral, irregular, up to        obtained from these six analyses (Group D; Table 1)
+5 mm in size, weakly to moderately strained, and exhibits         are unreliable, and are considered not to be geologically
+minor subgraining. K-feldspar is anhedral, irregular,             significant. The remaining 16 analyses can be divided into
+strained, up to 2.5 mm in size, and display incipient to          three groups, based on their 207Pb*/206Pb* ratios and their
+well-developed microcline twinning. Lobes of myrmekite,           positions within the crystals.
+mostly <0.3 mm in size, are developed at the margins
+between feldspars. Chlorite-altered biotite forms anhedral        Group I comprises 13 analyses of 10 zircons (Table 1),
+to subhedral laths up to 1 mm long, and muscovite forms           which yield a weighted mean 207Pb*/ 206Pb* date of
+subhedral laths up to 0.6 mm long, associated with biotite.       3004 ± 4 Ma (MSWD = 2.5).
+
+
+
+                                                              1
+232522.1.pdf                                                                                Geochronology Record 1817
+
+
+
+
+               Figure 1.   Drillcore image for sample 232522: metamonzogranite, Balmoral prospect
+
+
+
+
+               Figure 2.   Cathodoluminescence image of representative zircons from sample 232522:
+                           metamonzogranite, Balmoral prospect. Numbered circles indicate the
+                           approximate locations of analysis sites
+
+
+
+
+                                                          2
+232522.1.pdf                                                                                                                                                                 Geochronology Record 1817
+
+
+
+
+                                         Table 1. Ion microprobe analytical results for zircons from sample 232522: metamonzogranite, Balmoral prospect
+
+    Group      Spot   Grain.     238
+                                     U    232
+                                             Th       Th
+                                                    232
+                                                              ƒ204        238
+                                                                                U/206Pb        207
+                                                                                                     Pb/206Pb         238
+                                                                                                                            U/206Pb*       207
+                                                                                                                                              Pb*/206Pb*       238
+                                                                                                                                                                  U/206Pb*    207
+                                                                                                                                                                                 Pb*/206Pb*   Disc.
+      ID        no.   spot     (ppm)     (ppm)        U
+                                                    238
+                                                              (%)               ± 1σ                  ± 1σ                  ± 1σ               ± 1σ          date (Ma) ±1σ   date (Ma) ±1σ    (%)
+      I         11     5.2       363      57         0.16     0.020     1.721       0.020   0.22203       0.00054   1.721        0.020   0.22185   0.00054   2953     28     2994     4        1.4
+      I         16    13.1       295      97         0.33     0.050     1.773       0.021   0.22244       0.00060   1.774        0.021   0.22199   0.00061   2882     28     2995     4        3.8
+      I         13    10.2       361      69         0.19     0.016     1.774       0.021   0.22226       0.00057   1.774        0.021   0.22212   0.00057   2882     28     2996     4        3.8
+      I         21     17.2      415      83         0.20     0.003     1.775       0.020   0.22280       0.00052   1.775        0.020   0.22278   0.00052   2881     27     3001     4        4.0
+      I         9      8.1       288      365        1.27     0.000     1.711       0.020   0.22281       0.00063   1.711        0.020   0.22281   0.00063   2967     29     3001     5        1.1
+      I         3      3.1       306      34         0.11     0.017     1.718       0.020   0.22305       0.00058   1.718        0.020   0.22290   0.00059   2957     28     3002     4        1.5
+      I         20     17.1      139      68         0.49     0.043     1.774       0.023   0.22331       0.00094   1.774        0.023   0.22293   0.00096   2882     31     3002     7        4.0
+      I         1      1.1       408      161        0.40     0.032     1.778       0.021   0.22342       0.00054   1.779        0.021   0.22314   0.00055   2876     27     3004     4        4.2
+      I         12    10.1        94      78         0.83    -0.063     1.719       0.024   0.22289       0.00112   1.718        0.024   0.22344   0.00115   2958     33     3006     8        1.6
+      I         6      5.1       138      134        0.97     0.044     1.670       0.022   0.22399       0.00086   1.671        0.022   0.22360   0.00088   3024     32     3007     6        -0.6
+      I         19    16.1       383      109        0.28     0.003     1.725       0.020   0.22398       0.00056   1.725        0.020   0.22396   0.00056   2948     28     3009     4        2.0
+      I         14     11.1      341      134        0.39     0.006     1.730       0.020   0.22449       0.00055   1.730        0.020   0.22443   0.00055   2940     28     3013     4        2.4
+      I         15    12.1       506      265        0.52    -0.002     1.710       0.019   0.22450       0.00046   1.710        0.019   0.22451   0.00046   2969     28     3013     3        1.5
+
+
+      X         4      4.1       140      24         0.17     0.013     1.608       0.021   0.25995       0.00194   1.608        0.021   0.25984   0.00194   3117     33     3246     12       4.0
+
+
+      P         10     9.1        48      35         0.71     0.155     1.706       0.028   0.21953       0.00146   1.709        0.028   0.21815   0.00155   2970     39     2967     11       -0.1
+      P         5      4.2       419      102        0.24     0.000     1.802       0.023   0.22145       0.00053   1.802        0.023   0.22145   0.00053   2846     30     2991     4        4.9
+
+
+      D         17    14.1       740      174        0.23     0.052    2.324        0.042   0.19741       0.00287   2.325        0.042   0.19694   0.00288   2306     35     2801     24       17.7
+      D         8      7.1       686      188        0.27     0.007     1.880       0.021   0.21231       0.00063   1.880        0.021   0.21225   0.00063   2749     26     2923     5        5.9
+      D         18    15.1       534      418        0.78     0.047     1.840       0.021   0.21609       0.00044   1.841        0.021   0.21567   0.00045   2797     26     2949     3        5.2
+      D         7      6.1       312      238        0.76     0.018     1.962       0.041   0.21797       0.00108   1.963        0.041   0.21781   0.00108   2655     46     2965     8        10.5
+      D         22    18.1       236      239        1.02     0.102     1.828       0.030   0.21983       0.00065   1.830        0.030   0.21892   0.00067   2811     38     2973     5        5.4
+      D         2      2.1       359      190        0.53     0.010     1.836       0.021   0.22260       0.00058   1.836        0.021   0.22251   0.00059   2803     27     2999     4        6.5
+
+
+
+
+                                                                                                      3
+232522.1.pdf                                                                                                       Geochronology Record 1817
+
+
+
+
+            Figure 3.    U–Pb analytical data for zircons from sample 232522: metamonzogranite, Balmoral prospect.
+                         Yellow squares indicate Group I (magmatic zircons); red circle indicates Group X (xenocrystic
+                         zircon core); black squares indicate Group P (radiogenic-Pb loss); crossed squares indicate
+                         Group D (discordance >5%)
+
+
+
+
+Group X comprises one analysis of a zircon core (Table 1),                   Nelson, DR 2001, 168932: porphyritic granodiorite, Mardeburra Pool;
+which yields a 207Pb*/206Pb* date of 3246 ± 12 Ma (1σ).                         Geochronology Record 204: Geological Survey of Western Australia,
+                                                                                4p.
+Group P comprises two analyses of two zircons (Table 1),                     Stacey, JS and Kramers, JD 1975, Approximation of terrestrial lead
+which yield 207Pb*/206Pb* dates (1σ) of 2991 ± 4 and                            isotope evolution by a two-stage model: Earth and Planetary Science
+2967 ± 11 Ma.                                                                   Letters, v. 26, p. 207–221.
+                                                                             Van Alphen, M 2018, Report on Co-Funded Drilling of Diamond
+The date of 3004 ± 4 Ma for the 13 analyses in Group I
+                                                                                Drillhole 18ABAD01 at Balmoral, West Pilbara (R#17): Geological
+is interpreted as the igneous crystallization age of the                        Survey of Western Australia, Mineral Exploration Report A118065,
+monzogranite. The date of 3246 ± 12 Ma (1σ) for the                             v. 2, 16p. (unpublished).
+single analysis in Group X is interpreted as the age of an
+inherited zircon. The dates of 2991 and 2967 Ma for the
+two analyses in Group P are interpreted to reflect loss of                   Recommended reference for this
+radiogenic Pb.
+                                                                             publication
+                                                                             Wingate, MTD, Fielding, IOH, Lu, Y and Howard, HM 2021, 232522:
+References                                                                     metamonzogranite, Balmoral prospect; Geochronology Record 1817:
+                                                                               Geological Survey of Western Australia, 4p.
+Hickman, AH 2021a, Maitland River Supersuite (A-MR-g): Geological
+   Survey of Western Australia, WA Geology Online, Explanatory Notes         Data obtained:       6 September 2019
+   extract, viewed 06 September 2021, <www.dmp.wa.gov.au/ens>.
+                                                                             Data released:       12 November 2021
+Hickman, AH 2021b, Orpheus Supersuite (A-OP-xg-o): Geological
+   Survey of Western Australia, WA Geology Online, Explanatory Notes
+   extract, viewed 06 September 2021, <www.dmp.wa.gov.au/ens>.
+Hickman, AH 2021c, Sisters Supersuite (A-ST-xg-o): Geological Survey
+   of Western Australia, WA Geology Online, Explanatory Notes extract,
+   viewed 06 September 2021, <www.dmp.wa.gov.au/ens>.
+
+
+
+
+                                                                         4
+
