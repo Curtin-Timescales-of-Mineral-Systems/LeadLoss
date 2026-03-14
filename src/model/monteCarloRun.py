@@ -59,8 +59,7 @@ class MonteCarloRunPbLossAgeStatistics:
         self.number_of_ages = int(da.size)
         self.number_of_invalid_ages = int(da.size - len(self.valid_discordant_ages))
 
-        # If no valid discordants, force worst KS distance and non-significant p.
-        # Using p=0.0 avoids falsely inflating mean p-values with empty runs.
+        # Old behavior: if no valid discordants, force KS=(1.0, 0.0-equivalent)
         if len(self.valid_discordant_ages) == 0:
             ks_d, ks_p = 1.0, 0.0
         else:
@@ -88,6 +87,7 @@ class MonteCarloRunPbLossAgeStatistics:
 class MonteCarloRun:
     """
     One Monte Carlo realisation over the Pb-loss age grid.
+    Optional discordant clustering is carried by fixed labels for the whole sample.
     """
 
     def __init__(self,
@@ -97,6 +97,8 @@ class MonteCarloRun:
                  concordant_pbPb,
                  discordant_uPb,
                  discordant_pbPb,
+                 discordant_labels=None,
+                 discord_clusters=None,
                  settings=None):
 
         self.run_number   = run_number
@@ -114,6 +116,15 @@ class MonteCarloRun:
         self.con_p = self.concordant_pbPb
         self.dis_u = self.discordant_uPb
         self.dis_p = self.discordant_pbPb
+
+        if discordant_labels is None and discord_clusters is not None:
+            discordant_labels = discord_clusters
+
+        self.labels = None
+        if discordant_labels is not None:
+            lab = np.asarray(discordant_labels)
+            if lab.shape[0] == self.dis_u.shape[0]:
+                self.labels = lab.astype(int)
 
         # Cache concordant ages (YEARS) for this run
         self.concordant_ages = []
@@ -136,6 +147,7 @@ class MonteCarloRun:
         self.lead_loss_ages = []
 
         self._all_statistics_by_pb_loss_age = {}
+        self._stats_by_age_by_cluster = {}
 
         # --- per-run peak attributes (RAW & PEN) ---
         self.peaks_ma_raw = None
@@ -165,6 +177,27 @@ class MonteCarloRun:
         self._all_statistics_by_pb_loss_age[leadLossAge] = st_all
         self.statistics_by_pb_loss_age[leadLossAge] = st_all
         self._raw_statistics_by_pb_loss_age[leadLossAge] = st_all
+
+        if self.labels is None:
+            self._stats_by_age_by_cluster.setdefault(0, {})[float(leadLossAge)] = st_all
+            return
+
+        any_valid_cluster = False
+        for lab in np.unique(self.labels):
+            if int(lab) < 0:
+                continue
+            mask = (self.labels == lab)
+            if not np.any(mask):
+                continue
+            ages_k = all_ui[mask].tolist()
+            st_k = MonteCarloRunPbLossAgeStatistics(
+                self.concordant_ages, ages_k, dissimilarity_test, penalise_invalid_ages
+            )
+            self._stats_by_age_by_cluster.setdefault(int(lab), {})[float(leadLossAge)] = st_k
+            any_valid_cluster = True
+
+        if not any_valid_cluster:
+            self._stats_by_age_by_cluster.setdefault(0, {})[float(leadLossAge)] = st_all
 
     def calculateOptimalAge(self):
         """

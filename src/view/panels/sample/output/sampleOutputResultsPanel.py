@@ -209,6 +209,8 @@ class SampleOutputResultsPanel(QGroupBox):
             "not_retained_as_formal_candidate": "Visible hump not retained as separate candidate",
             "below_global_height_gate": "Below global height gate",
             "boundary_dominated_surface": "Boundary-dominated optima",
+            "boundary_dominated_cluster_surface": "Boundary-dominated cluster surface",
+            "no_reportable_cluster_peak": "No reportable cluster peak",
             "edge_degenerate_ci": "Edge-degenerate confidence interval",
             "wide_ci": "Confidence interval too broad",
         }

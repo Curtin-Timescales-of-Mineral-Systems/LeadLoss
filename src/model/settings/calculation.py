@@ -38,6 +38,10 @@ class LeadLossCalculationSettings:
         self.useSummedKS = False
         self.summedKSSmoothSigma = 1.0
 
+        # Optional discordant clustering
+        self.use_discordant_clustering = False
+        self.relabel_clusters_per_run = False
+
         # Conservative ensemble peak catalogue
         self.enable_ensemble_peak_picking = True
         self.conservative_abstain_on_monotonic = True

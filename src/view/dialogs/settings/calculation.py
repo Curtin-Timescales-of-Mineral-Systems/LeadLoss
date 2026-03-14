@@ -103,14 +103,19 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
     def _initPeakSettings(self):
         d = self.defaultSettings
-        box = QGroupBox("Peak extraction")
+        box = QGroupBox("Peak extraction & clustering")
         v = QVBoxLayout()
+
+        self.useClusteringCB = QCheckBox("Cluster discordant grains", self)
+        self.useClusteringCB.setChecked(bool(getattr(d, "use_discordant_clustering", False)))
+        self.useClusteringCB.stateChanged.connect(self._validate)
 
         # Ensemble multi-peak finder
         self.enableEnsembleCB = QCheckBox("Ensemble catalogue", self)
         self.enableEnsembleCB.setChecked(bool(getattr(d, "enable_ensemble_peak_picking", True)))
         self.enableEnsembleCB.stateChanged.connect(self._validate)
 
+        v.addWidget(self.useClusteringCB)
         v.addWidget(self.enableEnsembleCB)
         v.addStretch(1)
 
@@ -149,6 +154,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         s.penaliseInvalidAges = self.penaliseInvalidAgesCB.isChecked()
         s.monteCarloRuns      = self.monteCarloRunsInput.value()
 
+        s.use_discordant_clustering = self.useClusteringCB.isChecked()
         s.enable_ensemble_peak_picking = self.enableEnsembleCB.isChecked()
 
         # Fixed publication-safe defaults (hidden from GUI to reduce user burden)
