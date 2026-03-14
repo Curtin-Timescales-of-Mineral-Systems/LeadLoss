@@ -153,6 +153,6 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
         # Fixed publication-safe defaults (hidden from GUI to reduce user burden)
         s.conservative_abstain_on_monotonic = True
-        s.merge_nearby_peaks                = True
+        s.merge_nearby_peaks                = False
 
         return s

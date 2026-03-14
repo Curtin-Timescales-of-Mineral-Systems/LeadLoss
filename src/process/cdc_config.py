@@ -75,7 +75,7 @@ SMOOTH_FRAC: float = _env_float("CDC_SMOOTH_FRAC", "0.01")
 # If 0, disable the conservative peak-merge stages so nearby peaks are preserved.
 MERGE_NEARBY_PEAKS: bool = _env_bool(
     "CDC_MERGE_NEARBY_PEAKS",
-    _profile_default("CDC_MERGE_NEARBY_PEAKS", "1", paper="1", exploratory="0"),
+    _profile_default("CDC_MERGE_NEARBY_PEAKS", "0", paper="0", exploratory="0"),
 )
 
 # In no-merge mode, still collapse near-identical picks on the same flat crest.
@@ -84,12 +84,12 @@ PLATEAU_DEDUPE_RADIUS_STEPS: float = _env_float("CDC_PLATEAU_DEDUPE_RADIUS_STEPS
 PLATEAU_DEDUPE_MIN_OVERLAP_FRAC: float = _env_float("CDC_PLATEAU_DEDUPE_MIN_OVERLAP_FRAC", "0.60")
 
 # Per-run peak detector gates (used inside build_ensemble_catalogue for per-run peaks)
-PER_RUN_PROM_FRAC: float = _env_float("CDC_PER_RUN_PROM_FRAC", "0.10")
-PER_RUN_MIN_DIST: int = _env_int("CDC_PER_RUN_MIN_DIST", "5")
+PER_RUN_PROM_FRAC: float = _env_float("CDC_PER_RUN_PROM_FRAC", "0.06")
+PER_RUN_MIN_DIST: int = _env_int("CDC_PER_RUN_MIN_DIST", "3")
 PER_RUN_MIN_WIDTH: int = _env_int("CDC_PER_RUN_MIN_WIDTH", "3")
 
 # Ensemble peak gates – “conservative” thresholds used in the paper
-FH_HEIGHT_FRAC: float = _env_float("CDC_FH_HEIGHT_FRAC", "0.50")   # keep peaks whose crest is ≥50% of the tallest one
+FH_HEIGHT_FRAC: float = _env_float("CDC_FH_HEIGHT_FRAC", "0.00")   # disabled by default
 FD_DIST_FRAC: float = _env_float("CDC_FD_DIST_FRAC", "0.10")       # min peak separation in nodes (fraction of grid)
 FP_PROM_FRAC: float = _env_float("CDC_FP_PROM_FRAC", "0.10")       # min ensemble prominence as a fraction of Δ 0.05
 FW_WIN_FRAC: float = _env_float("CDC_FW_WIN_FRAC", "0.10")         # half-width of vote window as fraction of grid

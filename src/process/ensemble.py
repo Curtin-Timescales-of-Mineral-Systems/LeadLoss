@@ -15,7 +15,7 @@ peak_widths = _peak_widths
 
 _EPS = 1e-12
 
-ADAPT_FR = True
+ADAPT_FR = False
 
 # -------------------------- utilities ----------------------------------------
 def _step_from_grid(x: np.ndarray) -> float:
@@ -68,6 +68,53 @@ def _append_diagnostic_peak(
             reason=str(reason),
         )
     )
+
+
+def _basin_bounds_from_peaks(y: np.ndarray, peak_idx: int, sorted_peaks: np.ndarray) -> Tuple[int, int]:
+    y = np.asarray(y, float)
+    peaks = np.asarray(sorted_peaks, int)
+    n = y.size
+    if n == 0:
+        return 0, 0
+
+    pos = int(np.searchsorted(peaks, int(peak_idx)))
+    left_anchor = int(peaks[pos - 1]) if pos > 0 else 0
+    right_anchor = int(peaks[pos + 1]) if pos < (peaks.size - 1) else (n - 1)
+
+    if left_anchor >= int(peak_idx):
+        left = max(0, int(peak_idx) - 1)
+    else:
+        left = int(left_anchor + np.argmin(y[left_anchor:int(peak_idx) + 1]))
+
+    if right_anchor <= int(peak_idx):
+        right = min(n - 1, int(peak_idx) + 1)
+    else:
+        right = int(int(peak_idx) + np.argmin(y[int(peak_idx):right_anchor + 1]))
+
+    return max(0, left), min(n - 1, right)
+
+
+def _estimate_window_support(
+    lo_ma: float,
+    hi_ma: float,
+    per_run_peaks_list: List[np.ndarray],
+    optima_ma: Optional[np.ndarray],
+) -> Tuple[float, float]:
+    R = max(len(per_run_peaks_list), 1)
+    direct = 0
+    for pr in per_run_peaks_list:
+        arr = np.asarray(pr, float)
+        if arr.size and np.any((arr >= lo_ma) & (arr <= hi_ma)):
+            direct += 1
+
+    winner = np.nan
+    if optima_ma is not None:
+        opts = np.asarray(optima_ma, float)
+        opts = opts[np.isfinite(opts)]
+        if opts.size:
+            winner = float(np.mean((opts >= lo_ma) & (opts <= hi_ma)))
+
+    return float(direct) / float(R), float(winner)
 
 
 def _parabolic_refine(x: np.ndarray, y: np.ndarray, k: int) -> float:
@@ -269,57 +316,53 @@ def build_ensemble_catalogue(
 
     y = sign * S_med_s
 
-    # ---------------- Coarse curve: define the major humps -------------
-    # Strong smoothing to wash out shoulders
-    sigma_coarse = max(5.0, 0.03 * float(G))  # ≈6 nodes for G=200
-    S_med_coarse = gaussian_filter1d(S_med_s, sigma=sigma_coarse, mode="reflect")
-    y_coarse = sign * S_med_coarse
-
     prom_abs = max(float(f_p) * float(Delta), _EPS)
-
-    # First attempt: reasonably strict prominence
-    pk_major, _ = find_peaks(
-        y_coarse,
-        distance=max(1, int(0.10 * G)),   # major peaks must be well separated
-        prominence=prom_abs,
-    )
-
-    # If that finds nothing, relax once – but NEVER fall back to fine peaks
-    if pk_major.size == 0:
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message="some peaks have a prominence of 0")
+        warnings.filterwarnings("ignore", message="some peaks have a width of 0")
+        pk_visual, _ = find_peaks(y, distance=1)
+        if pk_visual.size:
+            prom_visual, _, _ = peak_prominences(y, pk_visual)
+            width_visual, _, _, _ = peak_widths(y, pk_visual, rel_height=0.5)
+        else:
+            prom_visual = np.array([], float)
+            width_visual = np.array([], float)
+    pk_major = np.array([], dtype=int)
+    major_rad = max(1, int(0.05 * G)) if merge_per_hump else 0
+    if merge_per_hump:
+        sigma_coarse = max(5.0, 0.03 * float(G))
+        S_med_coarse = gaussian_filter1d(S_med_s, sigma=sigma_coarse, mode="reflect")
+        y_coarse = sign * S_med_coarse
         pk_major, _ = find_peaks(
             y_coarse,
             distance=max(1, int(0.10 * G)),
-            prominence=prom_abs * 0.5,
+            prominence=prom_abs,
         )
-
-    if pk_major.size == 0:
-        pk_diag, _ = find_peaks(
-            y,
-            distance=1,
-            width=w_min_nodes,
-            prominence=max(prom_abs * 0.5, _EPS),
-        )
-        for idx in np.asarray(pk_diag, int):
-            _append_diagnostic_peak(
-                diagnostic_rows,
-                x,
-                S_med_s,
-                int(idx),
-                reason="coarse_surface_no_separate_mode",
+        if pk_major.size == 0:
+            pk_diag, _ = find_peaks(
+                y,
+                distance=1,
+                width=w_min_nodes,
+                prominence=max(prom_abs, _EPS),
             )
-        # No resolved interior hump on the coarse ensemble surface:
-        # abstain instead of forcing a boundary/global optimum pseudo-peak.
-        return []
+            for idx in np.asarray(pk_diag, int):
+                _append_diagnostic_peak(
+                    diagnostic_rows,
+                    x,
+                    S_med_s,
+                    int(idx),
+                    reason="coarse_surface_no_separate_mode",
+                )
+            return []
 
     # ---------------- Fine-scale candidate peaks ----------------------------
     family_nodes = max(1, int(np.ceil(f_d * G)))       # peak-family window (nodes)
-    vote_nodes   = max(1, int(np.ceil(f_w * G)))       # half-width of vote window
     edge_guard   = 0
 
     pk_fine, _ = find_peaks(y, distance=1, width=w_min_nodes, prominence=prom_abs)
 
     # If no interior fine peaks, fall back to using the coarse hump(s)
-    if pk_fine.size == 0:
+    if pk_fine.size == 0 and merge_per_hump:
         pk_fine = np.array(pk_major, dtype=int)
 
     if pk_fine.size == 0:
@@ -329,8 +372,6 @@ def build_ensemble_catalogue(
     if merge_per_hump:
         # --------- FORCE: at most one fine peak per coarse hump -----------------
         # window size within which a fine peak can represent a coarse hump
-        major_rad = max(1, int(0.05 * G))  # ~10 nodes for G=200 (~100 Ma on 1–2000[200])
-
         chosen_idx: List[int] = []
         for pM in pk_major:
             # indices in pk_fine that are close to this major crest
@@ -463,6 +504,19 @@ def build_ensemble_catalogue(
             if pk.size == 0:
                 return []
 
+    pk = np.asarray(np.sort(pk), int)
+    left_bounds = np.zeros(pk.size, dtype=int)
+    right_bounds = np.full(pk.size, G - 1, dtype=int)
+    for i in range(pk.size - 1):
+        lo = int(pk[i])
+        hi = int(pk[i + 1])
+        if hi <= lo + 1:
+            boundary = lo
+        else:
+            boundary = int(lo + np.argmin(y[lo:hi + 1]))
+        right_bounds[i] = boundary
+        left_bounds[i + 1] = boundary
+
     # ---------------- Per-run gates + voting as before ----------------------
     run_gate = np.empty((R, 2), float)
     for r in range(R):
@@ -495,21 +549,11 @@ def build_ensemble_catalogue(
         j_ref = int(j_ref_all[j_idx])
         age_ref = float(age_ref_all[j_idx])
 
-        a = max(1, int(j_c) - vote_nodes)
-        b = min(G - 2, int(j_c) + vote_nodes)
+        a = max(1, int(left_bounds[j_idx]))
+        b = min(G - 2, int(right_bounds[j_idx]))
         lo_ma_win, hi_ma_win = float(x[a]), float(x[b])
 
-        # adaptive f_r
-        if ADAPT_FR:
-            runs_with_cand_peaks = sum(
-                1 for pr in per_run_peaks_list
-                if (np.asarray(pr).size and
-                    ((np.asarray(pr) >= lo_ma_win) & (np.asarray(pr) <= hi_ma_win)).any())
-            )
-            min_voter_runs = max(int(r_min), int(max(1, round(0.05 * R))))
-            f_r_eff = float(f_r) if runs_with_cand_peaks >= min_voter_runs else min(float(f_r), 0.10)
-        else:
-            f_r_eff = float(f_r)
+        f_r_eff = float(f_r)
 
         votes: List[float] = []
         direct_votes: List[float] = []
@@ -601,12 +645,6 @@ def build_ensemble_catalogue(
             lo_ci, hi_ci = max(age_out - step, float(x[0])), min(age_out + step, float(x[-1]))
         if (hi_ci - lo_ci) < (0.75 * step):
             lo_ci, hi_ci = max(age_out - step, float(x[0])), min(age_out + step, float(x[-1]))
-
-        min_steps = 5.0
-        min_width = min_steps * step
-        if (hi_ci - lo_ci) < min_width:
-            lo_ci = max(age_out - 0.5 * min_width, float(x[0]))
-            hi_ci = min(age_out + 0.5 * min_width, float(x[-1]))
         if age_out < lo_ci:
             age_out = float(lo_ci)
         elif age_out > hi_ci:
@@ -620,6 +658,63 @@ def build_ensemble_catalogue(
             ci_high=float(hi_ci),
             support=float(support),
         ))
+
+    if diagnostic_rows is not None and pk_visual.size:
+        step = _step_from_grid(x)
+        rough = float(np.nanmedian(np.abs(np.diff(y)))) if y.size >= 3 else 0.0
+        diag_prom_thr = max(0.20 * prom_abs, 2.0 * rough, _EPS)
+        diag_width_thr = max(1.0, 0.35 * float(w_min_nodes))
+        accepted_ages = np.asarray([float(rr.get("age_ma", np.nan)) for rr in out], float)
+        existing_diag_ages = np.asarray([float(rr.get("age_ma", np.nan)) for rr in diagnostic_rows], float)
+        pk_fine_set = {int(v) for v in np.asarray(pk_fine, int)}
+        pk_final_set = {int(v) for v in np.asarray(pk, int)}
+
+        for idx, prom_v, width_v in zip(np.asarray(pk_visual, int), prom_visual, width_visual):
+            if not np.isfinite(prom_v) or not np.isfinite(width_v):
+                continue
+            if (prom_v < diag_prom_thr) or (width_v < diag_width_thr):
+                continue
+
+            j_ref = int(_crest_index(S_med_s, int(idx), half_win=2))
+            age = float(_parabolic_refine(x, S_med_s, j_ref))
+            tol = max(0.51 * step, 1e-6)
+            if accepted_ages.size and np.any(np.isfinite(accepted_ages) & (np.abs(accepted_ages - age) <= tol)):
+                continue
+            if existing_diag_ages.size and np.any(np.isfinite(existing_diag_ages) & (np.abs(existing_diag_ages - age) <= tol)):
+                continue
+
+            if int(idx) not in pk_fine_set:
+                reason = "below_ensemble_prominence" if prom_v < prom_abs else "too_narrow_on_ensemble_curve"
+            elif int(idx) not in pk_final_set:
+                if merge_shoulders and np.any(np.abs(np.asarray(pk, int) - int(idx)) < family_nodes):
+                    reason = "suppressed_nearby_weaker_peak"
+                elif merge_per_hump and pk_major.size and not np.any(np.abs(pk_major - int(idx)) <= major_rad):
+                    reason = "coarse_surface_no_separate_mode"
+                else:
+                    reason = "not_retained_as_formal_candidate"
+            else:
+                continue
+
+            lo_idx, hi_idx = _basin_bounds_from_peaks(y, int(idx), np.asarray(pk_visual, int))
+            lo_ma = float(x[lo_idx])
+            hi_ma = float(x[hi_idx])
+            direct_support, winner_support = _estimate_window_support(
+                lo_ma,
+                hi_ma,
+                per_run_peaks_list,
+                optima_ma,
+            )
+            _append_diagnostic_peak(
+                diagnostic_rows,
+                x,
+                S_med_s,
+                int(idx),
+                reason=reason,
+                direct_support=direct_support,
+                winner_support=winner_support,
+                ci_low=lo_ma,
+                ci_high=hi_ma,
+            )
 
     out.sort(key=lambda d: d["age_ma"])
 

@@ -178,6 +178,12 @@ class SampleOutputResultsPanel(QGroupBox):
 
         rows = getattr(self.sample, "peak_catalogue", []) or []
         if len(rows) > 0:
+            n_boundary = sum(1 for r in rows if isinstance(r, dict) and str(r.get("mode", "")) == "recent_boundary")
+            n_peaks = len(rows) - n_boundary
+            if n_boundary and n_peaks:
+                return f"Resolved ({n_peaks} peak{'s' if n_peaks != 1 else ''} + {n_boundary} boundary mode{'s' if n_boundary != 1 else ''})"
+            if n_boundary:
+                return f"Resolved ({n_boundary} boundary mode{'s' if n_boundary != 1 else ''})"
             return f"Resolved ({len(rows)} peak{'s' if len(rows) != 1 else ''})"
 
         reason = getattr(self.sample, "ensemble_abstain_reason", None)
@@ -198,6 +204,9 @@ class SampleOutputResultsPanel(QGroupBox):
             "low_support": "Below support threshold",
             "suppressed_nearby_weaker_peak": "Nearby weaker shoulder",
             "coarse_surface_no_separate_mode": "Visible shoulder on same broad mode",
+            "below_ensemble_prominence": "Below ensemble prominence threshold",
+            "too_narrow_on_ensemble_curve": "Too narrow on ensemble curve",
+            "not_retained_as_formal_candidate": "Visible hump not retained as separate candidate",
             "below_global_height_gate": "Below global height gate",
             "boundary_dominated_surface": "Boundary-dominated optima",
             "edge_degenerate_ci": "Edge-degenerate confidence interval",
@@ -280,6 +289,7 @@ class SampleOutputResultsPanel(QGroupBox):
                 hi  = float(r.get("ci_high", float("nan")))
                 dir_sup = float(r.get("direct_support", r.get("support", float("nan"))))
                 win_sup = float(r.get("winner_support", r.get("support", float("nan"))))
+                mode = str(r.get("mode", ""))
                 if dir_sup == dir_sup:  # not NaN
                     dir_sup = max(0.0, min(1.0, dir_sup))
                 if win_sup == win_sup:
@@ -288,8 +298,14 @@ class SampleOutputResultsPanel(QGroupBox):
                 continue  # skip malformed row safely
 
             self.catTable.setItem(i-1, 0, QTableWidgetItem(str(i)))
-            self.catTable.setItem(i-1, 1, QTableWidgetItem(f"{age:,.2f}"))
-            self.catTable.setItem(i-1, 2, QTableWidgetItem(f"{lo:,.2f} – {hi:,.2f}"))
+            if mode == "recent_boundary":
+                age_text = "Recent boundary mode"
+                ci_text = f"≤ {hi:,.2f}"
+            else:
+                age_text = f"{age:,.2f}"
+                ci_text = f"{lo:,.2f} – {hi:,.2f}"
+            self.catTable.setItem(i-1, 1, QTableWidgetItem(age_text))
+            self.catTable.setItem(i-1, 2, QTableWidgetItem(ci_text))
             self.catTable.setItem(i-1, 3, QTableWidgetItem("" if dir_sup != dir_sup else f"{100*dir_sup:.0f}%"))
             self.catTable.setItem(i-1, 4, QTableWidgetItem("" if win_sup != win_sup else f"{100*win_sup:.0f}%"))
 
@@ -303,6 +319,9 @@ class SampleOutputResultsPanel(QGroupBox):
         ensemble_enabled = bool(getattr(st, "enable_ensemble_peak_picking", True))
         reason = getattr(self.sample, "ensemble_abstain_reason", None)
         note_text = self._abstain_reason_text(reason) if (ensemble_enabled and not show) else ""
+        if show and any(isinstance(r, dict) and str(r.get("mode", "")) == "recent_boundary" for r in rows):
+            extra = "Recent boundary mode rows represent young lower-bound modes without an interior crest; the displayed interval is a one-sided upper bound."
+            note_text = f"{note_text}\n{extra}".strip() if note_text else extra
         self.catalogueNote.setText(note_text)
         self.catalogueNote.setVisible(bool(note_text))
         self.ensembleStatus.setText(self._ensemble_status_text())

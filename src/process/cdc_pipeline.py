@@ -13,7 +13,7 @@ from __future__ import annotations
 import platform
 import time
 from enum import Enum
-from typing import Dict, List
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -719,6 +719,10 @@ def _apply_boundary_dominance_guard(rows, optima_ma, ages_ma):
 
     out = []
     for r in rows:
+        if str(r.get("mode", "")) == "recent_boundary":
+            out.append(dict(r))
+            continue
+
         age = float(r.get("age_ma", np.nan))
         if not np.isfinite(age):
             continue
@@ -753,6 +757,89 @@ def _apply_boundary_dominance_guard(rows, optima_ma, ages_ma):
     if len(out) == 0:
         return [], "boundary_dominated_surface"
     return out, None
+
+
+def _recent_boundary_mode_row(
+    optima_ma: np.ndarray,
+    total_runs: int,
+    ages_ma: np.ndarray,
+) -> Optional[Dict]:
+    vals = np.asarray(optima_ma, float)
+    vals = vals[np.isfinite(vals)]
+    if vals.size == 0:
+        return None
+
+    ages_ma = np.asarray(ages_ma, float)
+    if ages_ma.size == 0:
+        return None
+
+    step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
+    if (not np.isfinite(step)) or step <= 0.0:
+        step = 5.0
+    young_edge = float(ages_ma[0])
+    edge_hits = vals <= (young_edge + step)
+    n_hits = int(np.count_nonzero(edge_hits))
+    min_support = max(float(FS_SUPPORT), float(RMIN_RUNS) / float(max(total_runs, 1)))
+    support = float(n_hits / float(max(total_runs, 1)))
+    if n_hits == 0 or support < min_support:
+        return None
+
+    upper = float(np.nanpercentile(vals, 97.5)) if vals.size >= 3 else float(young_edge + step)
+    upper = max(upper, float(young_edge + step))
+    return dict(
+        sample="",
+        peak_no=0,
+        age_ma=float(young_edge),
+        ci_low=float(young_edge),
+        ci_high=float(upper),
+        support=float(support),
+        direct_support=float(support),
+        winner_support=float(support),
+        mode="recent_boundary",
+        label="Recent boundary mode",
+    )
+
+
+def _inject_recent_boundary_mode(
+    rows: List[Dict],
+    optima_ma: np.ndarray,
+    total_runs: int,
+    ages_ma: np.ndarray,
+) -> Tuple[List[Dict], Optional[Dict]]:
+    if not rows:
+        return [], None
+
+    row_boundary = _recent_boundary_mode_row(optima_ma, total_runs, ages_ma)
+    if row_boundary is None:
+        return [dict(r) for r in rows], None
+
+    ages_ma = np.asarray(ages_ma, float)
+    step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
+    if (not np.isfinite(step)) or step <= 0.0:
+        step = 5.0
+    young_edge = float(ages_ma[0]) if ages_ma.size else 0.0
+    replace_limit = young_edge + (2.0 * step)
+
+    out: List[Dict] = []
+    inserted = False
+    for rr in rows:
+        mode = str(rr.get("mode", ""))
+        if mode == "recent_boundary":
+            if not inserted:
+                out.append(dict(row_boundary))
+                inserted = True
+            continue
+
+        age = float(rr.get("age_ma", np.nan))
+        if np.isfinite(age) and age <= replace_limit:
+            continue
+        out.append(dict(rr))
+
+    if not inserted:
+        out.insert(0, dict(row_boundary))
+
+    out.sort(key=lambda rr: (0 if str(rr.get("mode", "")) == "recent_boundary" else 1, float(rr.get("age_ma", np.nan))))
+    return out, dict(row_boundary)
 
 
 def _plateau_dedupe_rows(rows, ages_ma):
@@ -1177,9 +1264,7 @@ def _build_global_catalogue_rows(sample_name: str,
                                  pickable: bool,
                                  optima_ma: np.ndarray,
                                  diagnostic_rows: Optional[List[Dict]] = None):
-    """
-    Build strict global ensemble rows for one surface, with one relaxed-prom fallback.
-    """
+    """Build global ensemble rows for one surface."""
     if (not pickable) or (Smed.size == 0):
         return []
 
@@ -1196,21 +1281,6 @@ def _build_global_catalogue_rows(sample_name: str,
         merge_per_hump=merge_nearby, merge_shoulders=merge_nearby,
         diagnostic_rows=diag_rows,
     ) or []
-
-    if not rows:
-        diag_rows = []
-        rows = build_ensemble_catalogue(
-            sample_name, tier, ages_ma, S_runs,
-            orientation="max", smooth_frac=smf,
-            f_d=FD_DIST_FRAC, f_p=max(0.5 * FP_PROM_FRAC, 0.01),
-            f_v=FV_VALLEY_FRAC, f_w=FW_WIN_FRAC,
-            w_min_nodes=3, support_min=FS_SUPPORT, r_min=RMIN_RUNS, f_r=FR_RUN_REL,
-            per_run_prom_frac=PER_RUN_PROM_FRAC, per_run_min_dist=PER_RUN_MIN_DIST,
-            per_run_min_width=PER_RUN_MIN_WIDTH, per_run_require_full_prom=False,
-            pen_ok_mask=None, cand_curve=Smed, height_frac=FH_HEIGHT_FRAC, optima_ma=optima_ma,
-            merge_per_hump=merge_nearby, merge_shoulders=merge_nearby,
-            diagnostic_rows=diag_rows,
-        ) or []
 
     if diagnostic_rows is not None:
         diagnostic_rows.extend(dict(r) for r in diag_rows)
@@ -1229,7 +1299,7 @@ def _calculateOptimalAge(signals, sample, progress):
 
     merge_nearby = bool(getattr(settings, "merge_nearby_peaks", MERGE_NEARBY_PEAKS))
     abstain_on_monotonic = bool(getattr(settings, "conservative_abstain_on_monotonic", True))
-    support_filter_mode = "DIRECT"
+    support_filter_mode = "MAX"
     prefer_pen = bool(getattr(settings, "penaliseInvalidAges", False))
     primary_which = "pen" if prefer_pen else "raw"
 
@@ -1496,6 +1566,30 @@ def _calculateOptimalAge(signals, sample, progress):
         rows_pen = []
         sample.ensemble_abstain_reason = boundary_reason
 
+    # Surface-shape recent boundary modes are reported separately rather than
+    # being discarded or forced into a fake interior peak.
+    pre_boundary_mode_ui = [dict(r) for r in rows_for_ui]
+    rows_for_ui, boundary_row_ui = _inject_recent_boundary_mode(
+        rows_for_ui,
+        optima_ma_display,
+        len(runs),
+        ages_ma,
+    )
+    if boundary_row_ui is not None:
+        if view_which == "raw":
+            rows_raw = [dict(r) for r in rows_for_ui]
+        else:
+            rows_pen = [dict(r) for r in rows_for_ui]
+        sample.ensemble_abstain_reason = None
+        # Any near-edge numeric rows that were replaced should be transparent.
+        _capture_rejected_step(
+            pre_boundary_mode_ui,
+            rows_for_ui,
+            rejected_rows,
+            "boundary_dominated_surface",
+            ages_ma,
+        )
+
     # Ensure snapped age lies inside its CI (preserve width >= 1 step)
     if rows_for_ui:
         step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
@@ -1553,8 +1647,12 @@ def _calculateOptimalAge(signals, sample, progress):
         pre_width_ui = [dict(r) for r in rows_for_ui]
         filtered = []
         for r in rows_for_ui:
+            if str(r.get("mode", "")) == "recent_boundary":
+                filtered.append(r)
+                continue
             width = float(r["ci_high"] - r["ci_low"])
-            if width > MAX_CI_FRAC * total_span:
+            score = float(r.get("filter_support", r.get("support", 0.0)))
+            if width > MAX_CI_FRAC * total_span and score < max(support_floor, 0.25):
                 continue
             filtered.append(r)
         rows_for_ui = filtered
@@ -1671,6 +1769,8 @@ def _calculateOptimalAge(signals, sample, progress):
             direct_support=float(r.get("direct_support", sup)),
             winner_support=float(r.get("winner_support", sup)),
             selection=r.get("selection", "strict"),
+            mode=r.get("mode", ""),
+            label=r.get("label", ""),
         )
         for i, (r, (med, lo, hi, sup)) in enumerate(zip(rows_for_ui, catalogue_legacy))
     ]

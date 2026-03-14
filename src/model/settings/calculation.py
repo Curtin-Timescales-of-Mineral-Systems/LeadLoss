@@ -41,7 +41,7 @@ class LeadLossCalculationSettings:
         # Conservative ensemble peak catalogue
         self.enable_ensemble_peak_picking = True
         self.conservative_abstain_on_monotonic = True
-        self.merge_nearby_peaks = True
+        self.merge_nearby_peaks = False
 
     def rimAges(self):
         return np.linspace(start=self.minimumRimAge, stop=self.maximumRimAge, num=self.rimAgesSampled)

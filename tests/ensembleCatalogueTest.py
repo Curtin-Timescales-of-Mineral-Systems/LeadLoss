@@ -147,6 +147,53 @@ class EnsembleCatalogueTests(unittest.TestCase):
         self.assertGreater(float(diagnostics[0]["age_ma"]), 150.0)
         self.assertLess(float(diagnostics[0]["age_ma"]), 300.0)
 
+    def test_visible_subthreshold_hump_gets_diagnostic_reason(self):
+        ages = np.linspace(1.0, 2000.0, 200)
+        curve = (
+            0.43
+            + 0.04 * np.exp(-0.5 * ((ages - 180.0) / 45.0) ** 2)
+            + 0.18 * np.exp(-0.5 * ((ages - 920.0) / 130.0) ** 2)
+            - 0.00006 * (ages - 900.0)
+        )
+        runs = np.vstack([
+            curve + 0.003 * np.sin(ages / 80.0 + phase)
+            for phase in np.linspace(0.0, 1.2, 10)
+        ])
+        diagnostics = []
+
+        rows = build_ensemble_catalogue(
+            "diag2",
+            "A",
+            ages,
+            runs,
+            orientation="max",
+            smooth_frac=0.01,
+            f_d=0.10,
+            f_p=0.18,
+            f_v=0.50,
+            f_w=0.10,
+            support_min=0.10,
+            r_min=3,
+            f_r=0.25,
+            per_run_prom_frac=0.10,
+            per_run_min_dist=5,
+            per_run_min_width=3,
+            per_run_require_full_prom=False,
+            optima_ma=np.full(runs.shape[0], 920.0),
+            merge_per_hump=False,
+            merge_shoulders=False,
+            diagnostic_rows=diagnostics,
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertGreater(float(rows[0]["age_ma"]), 800.0)
+        self.assertLess(float(rows[0]["age_ma"]), 1050.0)
+        self.assertTrue(any(
+            (str(r["reason"]) == "below_ensemble_prominence")
+            and (120.0 < float(r["age_ma"]) < 260.0)
+            for r in diagnostics
+        ))
+
 
 if __name__ == "__main__":
     unittest.main()
