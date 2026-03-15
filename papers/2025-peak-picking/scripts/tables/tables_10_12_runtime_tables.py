@@ -355,9 +355,10 @@ def main(argv: Optional[list[str]] = None) -> None:
     ap = argparse.ArgumentParser(description="Generate manuscript Tables 10–12 (runtime tables).")
     ap.add_argument("--cdc-log", type=str, default=None, help="Path to CDC runtime log CSV (optional).")
     ap.add_argument("--dd-log", type=str, default=None, help="Path to DD runtime log CSV (optional).")
+    ap.add_argument("--out-subdir", type=str, default="tables", help="Output subdirectory under papers/2025-peak-picking/outputs/.")
     args = ap.parse_args(argv)
 
-    out_dir = Path(base.out_dir) / "tables"
+    out_dir = Path(base.out_dir) / args.out_subdir
     out_dir.mkdir(parents=True, exist_ok=True)
 
     default_cdc = Path(base.data_dir) / "derived" / "runtime_log_28Nov.csv"

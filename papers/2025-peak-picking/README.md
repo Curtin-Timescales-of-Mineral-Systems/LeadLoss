@@ -89,6 +89,44 @@ Notes:
 - `run_all.py` will extract required NPZ tarballs automatically if needed.
 - `outputs/` contains generated artefacts and can be deleted/regenerated.
 
+## Fresh clustering bundles
+
+Fresh clustering reruns are written into settings-named folders under:
+
+- `papers/2025-peak-picking/data/derived/clustering_*`
+
+Those bundles are separate from the legacy manuscript `data/derived/` folder on purpose, so they do not overwrite the originally submitted artefacts.
+
+To build a fresh clustering bundle, use:
+
+```bash
+python papers/2025-peak-picking/scripts/regenerate_cdc_clustering_bundle.py
+```
+
+To regenerate the CDC-derived benchmark figures/tables from one of those bundles into a separate output folder, use:
+
+```bash
+python papers/2025-peak-picking/scripts/run_clustering_bundle.py \
+  --derived-root papers/2025-peak-picking/data/derived/clustering_sigma1_1to2000_nodes100_mc100 \
+  --clean
+```
+
+Run that from the paper-generation Python environment, i.e. an interpreter with
+`papers/2025-peak-picking/requirements.txt` installed. The GUI app interpreter
+used for `src/application.py` is not necessarily the same environment.
+
+This writes to:
+
+- `papers/2025-peak-picking/outputs/clustering/<bundle_name>/tables/`
+- `papers/2025-peak-picking/outputs/clustering/<bundle_name>/figures/`
+
+Notes:
+
+- `run_clustering_bundle.py` regenerates the CDC-derived benchmark artefacts only.
+- It does not touch the legacy `outputs/tables/` or `outputs/figures/` folders unless you point it there explicitly.
+- It reuses the existing DD comparison directory (`data/derived/reimink_discordance_dating/`) for tables that still compare against DD.
+- The static synthetic illustration figures (Figs. 1–2) and the Gawler natural-example figure are not part of this clustering-bundle runner.
+
 ## Reproducing tables
 
 All table scripts write into:
