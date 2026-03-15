@@ -321,9 +321,9 @@ def _write_manifest(derived_dir: Path, report_dir: Path, args, input_paths: Iter
     (derived_dir / "README.md").write_text(
         "\n".join(
             [
-                "# Clustering CDC benchmark bundle",
+                "# Ensemble v2 anchor-clustered benchmark bundle",
                 "",
-                "This folder contains a fresh clustering-enabled rerun bundle.",
+                "This folder contains a fresh ensemble-v2 anchor-clustered rerun bundle.",
                 "",
                 "Locked settings:",
                 f"- Error ellipse: {int(args.ellipse_sigmas)} sigma",
@@ -383,7 +383,7 @@ def _export_clustering_diagnostics(mods, samples, derived_dir: Path) -> None:
 
 def _default_bundle_name(args) -> str:
     return (
-        f"clustering_sigma{int(args.ellipse_sigmas)}_"
+        f"ensemble_v2_anchor_clustered_sigma{int(args.ellipse_sigmas)}_"
         f"{int(args.min_age_ma)}to{int(args.max_age_ma)}_"
         f"nodes{int(args.grid_nodes)}_mc{int(args.mc_runs)}"
     )

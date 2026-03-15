@@ -89,11 +89,11 @@ Notes:
 - `run_all.py` will extract required NPZ tarballs automatically if needed.
 - `outputs/` contains generated artefacts and can be deleted/regenerated.
 
-## Fresh clustering bundles
+## Fresh Ensemble V2 Anchor-Clustered Bundles
 
-Fresh clustering reruns are written into settings-named folders under:
+Fresh anchor-clustered reruns are written into settings-named folders under:
 
-- `papers/2025-peak-picking/data/derived/clustering_*`
+- `papers/2025-peak-picking/data/derived/ensemble_v2_anchor_clustered_*`
 
 Those bundles are separate from the legacy manuscript `data/derived/` folder on purpose, so they do not overwrite the originally submitted artefacts.
 
@@ -107,7 +107,7 @@ To regenerate the CDC-derived benchmark figures/tables from one of those bundles
 
 ```bash
 python papers/2025-peak-picking/scripts/run_clustering_bundle.py \
-  --derived-root papers/2025-peak-picking/data/derived/clustering_sigma1_1to2000_nodes100_mc100 \
+  --derived-root papers/2025-peak-picking/data/derived/ensemble_v2_anchor_clustered_sigma1_1to2000_nodes100_mc100 \
   --clean
 ```
 
@@ -117,8 +117,8 @@ used for `src/application.py` is not necessarily the same environment.
 
 This writes to:
 
-- `papers/2025-peak-picking/outputs/clustering/<bundle_name>/tables/`
-- `papers/2025-peak-picking/outputs/clustering/<bundle_name>/figures/`
+- `papers/2025-peak-picking/outputs/ensemble_v2_anchor_clustered/<bundle_name>/tables/`
+- `papers/2025-peak-picking/outputs/ensemble_v2_anchor_clustered/<bundle_name>/figures/`
 
 Notes:
 

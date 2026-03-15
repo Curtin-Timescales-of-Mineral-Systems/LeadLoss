@@ -2,8 +2,9 @@
 """
 papers/2025-peak-picking/scripts/run_clustering_bundle.py
 
-Regenerate the CDC-derived manuscript figures/tables from a fresh clustering bundle
-without mixing them into the legacy manuscript output folders.
+Regenerate the CDC-derived manuscript figures/tables from a fresh
+ensemble-v2 anchor-clustered bundle without mixing them into the legacy
+manuscript output folders.
 """
 
 from __future__ import annotations
@@ -26,7 +27,9 @@ def repo_root_from_paper(paper_dir: Path) -> Path:
 
 def _latest_clustering_bundle(paper_dir: Path) -> Path | None:
     derived_root = paper_dir / "data" / "derived"
-    candidates = [p for p in derived_root.glob("clustering_*") if p.is_dir()]
+    candidates = [
+        p for p in derived_root.glob("ensemble_v2_anchor_clustered_*") if p.is_dir()
+    ]
     if not candidates:
         return None
     return max(candidates, key=lambda p: p.stat().st_mtime)
@@ -61,13 +64,13 @@ def main() -> int:
     default_bundle = _latest_clustering_bundle(paper_dir)
 
     ap = argparse.ArgumentParser(
-        description="Rebuild CDC-derived figures/tables from a fresh clustering bundle."
+        description="Rebuild CDC-derived figures/tables from a fresh ensemble-v2 anchor-clustered bundle."
     )
     ap.add_argument(
         "--derived-root",
         type=Path,
         default=default_bundle,
-        help="Clustering bundle root (default: most recent papers/2025-peak-picking/data/derived/clustering_* folder).",
+        help="Bundle root (default: most recent papers/2025-peak-picking/data/derived/ensemble_v2_anchor_clustered_* folder).",
     )
     ap.add_argument(
         "--rei-dir",
@@ -99,7 +102,7 @@ def main() -> int:
 
     if args.derived_root is None:
         raise SystemExit(
-            "No clustering bundle found automatically.\n"
+            "No anchor-clustered bundle found automatically.\n"
             "Pass --derived-root papers/2025-peak-picking/data/derived/<bundle_name>"
         )
 
@@ -122,7 +125,7 @@ def main() -> int:
         )
 
     bundle_name = derived_root.name
-    out_subdir = args.out_subdir or f"clustering/{bundle_name}"
+    out_subdir = args.out_subdir or f"ensemble_v2_anchor_clustered/{bundle_name}"
     out_root = paper_dir / "outputs" / out_subdir
     out_fig_dir = out_root / "figures"
     out_tables_subdir = f"{out_subdir}/tables"
