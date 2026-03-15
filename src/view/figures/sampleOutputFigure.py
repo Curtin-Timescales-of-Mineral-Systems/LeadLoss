@@ -29,7 +29,7 @@ class SampleOutputFigure(AbstractFigure):
 
         self._ens_ages_ma = None   # cached ensemble x from processing
         self._ens_S_view  = None   # cached ensemble curve from processing
-        self._ens_label   = None   # optional label "RAW"/"PEN" if you pass one later
+        self._ens_label   = None
 
         ax_hm.tick_params(labelbottom=False)
         ax_hm.set_xlabel("")
@@ -85,15 +85,11 @@ class SampleOutputFigure(AbstractFigure):
         ages_ma = np.asarray(ages_ma, float)
         S_view  = np.asarray(S_view,  float)
 
-        # basic guards
         if ages_ma.size == 0 or S_view.size == 0:
-            print("[UI] summedKS payload is empty:", ages_ma.size, S_view.size)
             return
         if ages_ma.size != S_view.size:
-            print("[UI] summedKS length mismatch: ages=", ages_ma.size, " S=", S_view.size)
             return
         if not np.isfinite(S_view).any():
-            print("[UI] summedKS S_view has no finite values")
             return
 
         # optional CI windows
@@ -111,11 +107,9 @@ class SampleOutputFigure(AbstractFigure):
         self._ens_S_view  = S_view
         self._ens_label   = None
 
-        # draw: windows → curve → peaks; keep heatmap in sync
         if wins:
             self.goodnessAxis.set_windows(wins)
 
-        # IMPORTANT: call update_curve to actually render the line
         self.goodnessAxis.update_curve(
             ages_ma, S_view,
             peaks=[float(p) for p in (peaks or [])] if peaks is not None else None,

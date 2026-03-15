@@ -197,8 +197,8 @@ def _processSample(signals, sample):
                                         sample.peak_catalogue = prev_catalogue
                                         raise
 
-        except Exception as _edge_guard_err:
-            print(f"[CDC] Edge-guard diagnostic failed for {sample.name}: {_edge_guard_err}")
+        except Exception:
+            pass
 
         return True, None
 

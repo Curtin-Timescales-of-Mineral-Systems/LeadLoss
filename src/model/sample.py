@@ -46,10 +46,9 @@ class Sample:
 
     @peak_catalogue.setter
     def peak_catalogue(self, val):
-        if not isinstance(val, list):
-            import traceback
-            print("[CDC] BAD peak_catalogue assignment:", type(val), repr(val))
-            traceback.print_stack(limit=6)
+        if isinstance(val, tuple):
+            val = list(val)
+        elif not isinstance(val, list):
             val = []
         self._peak_catalogue = val
 
