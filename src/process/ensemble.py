@@ -746,3 +746,283 @@ def build_ensemble_catalogue(
     for i, d in enumerate(out, 1):
         d["peak_no"] = i
     return out
+
+
+def build_cluster_catalogue_legacy(
+    sample_name: str,
+    tier: str,
+    age_grid: np.ndarray,
+    goodness_runs: np.ndarray,
+    *,
+    orientation: str = "max",
+    smooth_frac: float = 0.01,
+    f_d: float = 0.05,
+    f_p: float = 0.03,
+    f_v: float = 0.10,
+    f_w: float = 0.05,
+    w_min_nodes: int = 3,
+    support_min: float = 0.10,
+    r_min: int = 3,
+    f_r: float = 0.25,
+    per_run_prom_frac: float = 0.06,
+    per_run_min_dist: int = 3,
+    per_run_min_width: int = 3,
+    per_run_require_full_prom: bool = False,
+    delta_min: float = 0.0,
+    height_frac: float = 0.0,
+    optima_ma: Optional[np.ndarray] = None,
+    per_run_peaks_list: Optional[List[np.ndarray]] = None,
+    **_ignored: Any,
+) -> List[Dict]:
+    x = np.asarray(age_grid, float)
+    S = np.asarray(goodness_runs, float)
+    if S.ndim != 2 or S.shape[0] == 0 or S.shape[1] < 3:
+        return []
+
+    R, G = S.shape
+    sign = 1.0 if str(orientation).lower().startswith("max") else -1.0
+
+    S_med_s, Delta, _ = robust_ensemble_curve(S, smooth_frac=smooth_frac)
+    if S_med_s.size == 0:
+        return []
+    if delta_min > 0.0 and Delta < delta_min:
+        return []
+
+    y = sign * S_med_s
+    sigma_coarse = max(5.0, 0.03 * float(G))
+    S_med_coarse = gaussian_filter1d(S_med_s, sigma=sigma_coarse, mode="reflect")
+    y_coarse = sign * S_med_coarse
+    prom_abs = max(float(f_p) * float(Delta), _EPS)
+
+    pk_major, _ = find_peaks(
+        y_coarse,
+        distance=max(1, int(0.10 * G)),
+        prominence=prom_abs,
+    )
+    if pk_major.size == 0:
+        pk_major, _ = find_peaks(
+            y_coarse,
+            distance=max(1, int(0.10 * G)),
+            prominence=prom_abs * 0.5,
+        )
+    if pk_major.size == 0:
+        j0 = int(np.nanargmax(y))
+        if j0 <= 0 and G > 2:
+            j0 = 1
+        elif j0 >= G - 1 and G > 2:
+            j0 = G - 2
+        pk_major = np.array([j0], dtype=int)
+
+    family_nodes = max(1, int(np.ceil(f_d * G)))
+    vote_nodes = max(1, int(np.ceil(f_w * G)))
+    edge_guard = 0
+
+    pk_fine, _ = find_peaks(y, distance=1, width=w_min_nodes, prominence=prom_abs)
+    if pk_fine.size == 0:
+        pk_fine = np.array(pk_major, dtype=int)
+    if pk_fine.size == 0:
+        return []
+
+    major_rad = max(1, int(0.05 * G))
+    chosen_idx: List[int] = []
+    for pM in pk_major:
+        idx_in_win = np.where(np.abs(pk_fine - int(pM)) <= major_rad)[0]
+        if idx_in_win.size == 0:
+            continue
+        best_local = idx_in_win[np.argmax(y[pk_fine[idx_in_win]])]
+        chosen_idx.append(int(best_local))
+    if not chosen_idx:
+        return []
+
+    chosen_idx = sorted(set(chosen_idx))
+    pk = pk_fine[chosen_idx]
+    pk = pk[(pk >= edge_guard) & (pk <= G - 1 - edge_guard)]
+    if pk.size == 0:
+        return []
+
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message="some peaks have a prominence of 0")
+        prom, left_bases, right_bases = peak_prominences(y, pk)
+    valid_prom = np.isfinite(prom) & (prom > 0.0)
+    if not np.all(valid_prom):
+        pk = pk[valid_prom]
+        prom = prom[valid_prom]
+        left_bases = left_bases[valid_prom]
+        right_bases = right_bases[valid_prom]
+        if pk.size == 0:
+            return []
+    order = np.argsort(pk)
+    pk = pk[order]
+    prom = prom[order]
+    left_bases = left_bases[order]
+    right_bases = right_bases[order]
+
+    kept_idx_local: List[int] = []
+    i = 0
+    while i < pk.size:
+        winner = i
+        j = i + 1
+        while j < pk.size:
+            sep = pk[j] - pk[winner]
+            if sep >= family_nodes:
+                break
+            lo, hi = int(min(pk[winner], pk[j])), int(max(pk[winner], pk[j]))
+            valley = float(np.nanmin(y[lo:hi + 1]))
+            lower_crest = min(y[pk[winner]], y[pk[j]])
+            shallow = (lower_crest - valley) < f_v * min(prom[winner], prom[j])
+            if shallow:
+                if prom[j] > prom[winner] * (1.0 + 0.05):
+                    winner = j
+                elif (
+                    abs(prom[j] - prom[winner]) <= 0.05 * max(prom[j], prom[winner])
+                    and y[pk[j]] > y[pk[winner]]
+                ):
+                    winner = j
+                j += 1
+            else:
+                break
+        kept_idx_local.append(winner)
+        i = j
+
+    kept_idx_local = sorted(set(kept_idx_local))
+    pk = pk[kept_idx_local]
+    prom = prom[kept_idx_local]
+    left_bases = left_bases[kept_idx_local]
+    right_bases = right_bases[kept_idx_local]
+    if pk.size == 0:
+        return []
+
+    if height_frac > 0.0:
+        heights = y[pk]
+        h_max = float(np.nanmax(heights))
+        if np.isfinite(h_max) and h_max > 0.0:
+            thr = h_max * float(height_frac)
+            keep = heights >= thr
+            pk = pk[keep]
+            prom = prom[keep]
+            left_bases = left_bases[keep]
+            right_bases = right_bases[keep]
+            if pk.size == 0:
+                return []
+
+    run_gate = np.empty((R, 2), float)
+    for r in range(R):
+        y_r = sign * S[r]
+        p5, p95 = np.nanpercentile(y_r, [5, 95])
+        run_gate[r, 0] = float(p5)
+        run_gate[r, 1] = float(p95)
+
+    if per_run_peaks_list is None:
+        per_run_peaks_list = []
+        for r in range(R):
+            y_r = sign * S[r]
+            pr = per_run_peaks(
+                x,
+                y_r,
+                prom_frac=float(per_run_prom_frac),
+                min_dist=int(per_run_min_dist),
+                min_width_nodes=int(per_run_min_width),
+                require_full_prom=bool(per_run_require_full_prom),
+                fallback_global_max=False,
+            )
+            per_run_peaks_list.append(np.asarray(pr, float))
+
+    out: List[Dict] = []
+    optima_ma = np.asarray(optima_ma, float) if optima_ma is not None else None
+
+    for j_c in pk:
+        j_ref = _crest_index(S_med_s, int(j_c), half_win=2)
+        age_ref = float(_parabolic_refine(x, S_med_s, int(j_ref)))
+
+        a = max(1, int(j_c) - vote_nodes)
+        b = min(G - 2, int(j_c) + vote_nodes)
+        lo_ma_win, hi_ma_win = float(x[a]), float(x[b])
+
+        runs_with_cand_peaks = sum(
+            1
+            for pr in per_run_peaks_list
+            if (np.asarray(pr).size and ((np.asarray(pr) >= lo_ma_win) & (np.asarray(pr) <= hi_ma_win)).any())
+        )
+        min_voter_runs = max(int(r_min), int(max(1, round(0.05 * R))))
+        f_r_eff = float(f_r) if runs_with_cand_peaks >= min_voter_runs else min(float(f_r), 0.10)
+
+        votes: List[float] = []
+        optima_for_peak: List[float] = []
+
+        for r in range(R):
+            y_r = sign * S[r]
+            pr_list = per_run_peaks_list[r] if r < len(per_run_peaks_list) else None
+            pr_list = np.asarray(pr_list, float) if pr_list is not None else np.array([], float)
+            cand = pr_list[(pr_list >= lo_ma_win) & (pr_list <= hi_ma_win)]
+
+            if cand.size == 0:
+                j_abs = int(a + np.argmax(y_r[a:b + 1]))
+                p5, p95 = run_gate[r, 0], run_gate[r, 1]
+                thr = p5 + f_r_eff * max(p95 - p5, 0.0)
+                if y_r[j_abs] < thr:
+                    continue
+                age_vote = float(_parabolic_refine(x, S[r], j_abs))
+            else:
+                j_choices = [int(np.argmin(np.abs(x - p))) for p in cand]
+                heights_r = [float(y_r[jj]) for jj in j_choices]
+                j_abs = int(j_choices[int(np.argmax(heights_r))])
+                p5, p95 = run_gate[r, 0], run_gate[r, 1]
+                thr = p5 + f_r_eff * max(p95 - p5, 0.0)
+                if y_r[j_abs] < thr:
+                    continue
+                age_vote = float(_parabolic_refine(x, S[r], j_abs))
+
+            votes.append(age_vote)
+
+            if optima_ma is not None and 0 <= r < optima_ma.size:
+                opt_val = float(optima_ma[r])
+                if np.isfinite(opt_val) and (lo_ma_win <= opt_val <= hi_ma_win):
+                    optima_for_peak.append(opt_val)
+
+        support = len(votes) / float(R)
+        winner_support = float(len(optima_for_peak) / float(max(R, 1))) if optima_ma is not None else np.nan
+        if support < max(float(support_min), float(r_min) / float(max(R, 1))):
+            continue
+
+        step = float(x[1] - x[0])
+        if optima_ma is not None and len(optima_for_peak) >= 3:
+            lo_ci, hi_ci = np.nanpercentile(optima_for_peak, [2.5, 97.5])
+        elif len(votes) >= 3:
+            lo_ci, hi_ci = np.nanpercentile(votes, [2.5, 97.5])
+        else:
+            lo_ci, hi_ci = age_ref - step, age_ref + step
+
+        med_votes = float(np.median(votes)) if len(votes) >= 1 else age_ref
+        shift = age_ref - med_votes
+        lo_ci = float(lo_ci + shift)
+        hi_ci = float(hi_ci + shift)
+
+        lo_ci = max(lo_ci, float(x[0]))
+        hi_ci = min(hi_ci, float(x[-1]))
+        if (not np.isfinite(lo_ci)) or (not np.isfinite(hi_ci)) or (hi_ci <= lo_ci):
+            lo_ci, hi_ci = max(age_ref - step, float(x[0])), min(age_ref + step, float(x[-1]))
+        if (hi_ci - lo_ci) < (0.75 * step):
+            lo_ci, hi_ci = max(age_ref - step, float(x[0])), min(age_ref + step, float(x[-1]))
+
+        min_width = 5.0 * step
+        if (hi_ci - lo_ci) < min_width:
+            lo_ci = max(age_ref - 0.5 * min_width, float(x[0]))
+            hi_ci = min(age_ref + 0.5 * min_width, float(x[-1]))
+
+        out.append(
+            dict(
+                sample=sample_name,
+                peak_no=0,
+                age_ma=age_ref,
+                ci_low=float(lo_ci),
+                ci_high=float(hi_ci),
+                support=float(support),
+                direct_support=float(support),
+                winner_support=float(winner_support),
+            )
+        )
+
+    out.sort(key=lambda d: d["age_ma"])
+    for i, d in enumerate(out, 1):
+        d["peak_no"] = i
+    return out

@@ -513,12 +513,22 @@ def build_fixed_discordant_labels(concordant_spots, discordant_spots):
     n_disc = len(discordant_spots)
     n_assigned = int(np.sum(assigned_mask))
     assigned_frac = (float(n_assigned) / float(n_disc)) if n_disc else 0.0
+    anchor_rows = []
+    for anchor_id, anchor_age in enumerate(np.asarray(anchor_means, float)):
+        anchor_rows.append(
+            dict(
+                anchor_id=int(anchor_id),
+                age_ma=float(anchor_age),
+                n_concordant=int(np.sum(np.asarray(anchor_labels, int) == int(anchor_id))),
+            )
+        )
 
     summary = dict(
         accepted=False,
         reason=None,
         anchor_means_ma=np.asarray(anchor_means, float).tolist(),
         n_anchors=int(n_anchors),
+        anchors=anchor_rows,
         n_discordant=int(n_disc),
         n_assigned=int(n_assigned),
         n_ambiguous=int(n_disc - n_assigned),
@@ -564,10 +574,15 @@ def build_fixed_discordant_labels(concordant_spots, discordant_spots):
     )
 
     if accepted_labels is None:
+        summary["n_clustered_proxies"] = 0
+        summary["n_unclustered_valid_proxies"] = int(len(proxy_idx))
         summary["reason"] = "no_robust_proxy_split"
         return False, None, summary
 
     labels_full[proxy_idx] = accepted_labels
+    n_clustered = int(np.count_nonzero(np.asarray(accepted_labels, int) >= 0))
+    summary["n_clustered_proxies"] = n_clustered
+    summary["n_unclustered_valid_proxies"] = int(len(proxy_idx) - n_clustered)
     summary["accepted"] = True
     summary["clusters"] = cluster_rows
     summary["reason"] = "accepted"

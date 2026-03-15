@@ -24,7 +24,7 @@ from process.discordantClustering import (
     build_fixed_discordant_labels,
     stack_goodness_by_cluster,
 )
-from process.ensemble import robust_ensemble_curve, build_ensemble_catalogue
+from process.ensemble import robust_ensemble_curve, build_ensemble_catalogue, build_cluster_catalogue_legacy
 from process.cdc_config import (
     CATALOGUE_CSV_PEN,
     CATALOGUE_CSV_RAW,
@@ -53,6 +53,7 @@ from process.cdc_config import (
     SMOOTH_MA,
     SMOOTH_FRAC,
     TIMING_MODE,
+    USE_CLUSTER_CATALOGUE,
 )
 from process.cdc_diagnostics import (
     append_catalogue_rows as _append_catalogue_rows,
@@ -424,9 +425,10 @@ def _emit_summedKS(signals, sample, progress, ages_ma, y_curve, rows_for_ui):
       • sample.signals.summedKS (figure listens to this)
       • global signals.progress("summedKS", ...) (legacy bus)
     """
-    ui_peaks_age = [float(r["age_ma"]) for r in rows_for_ui]
-    ui_peaks_ci  = [[float(r["ci_low"]), float(r["ci_high"])] for r in rows_for_ui]
-    ui_support   = [float(r.get("support", float("nan"))) for r in rows_for_ui]
+    plot_rows = [dict(r) for r in rows_for_ui if str(r.get("mode", "")) != "recent_boundary"]
+    ui_peaks_age = [float(r["age_ma"]) for r in plot_rows]
+    ui_peaks_ci  = [[float(r["ci_low"]), float(r["ci_high"])] for r in plot_rows]
+    ui_support   = [float(r.get("support", float("nan"))) for r in plot_rows]
 
     sample.summedKS_peaks_Ma   = np.asarray(ui_peaks_age, float)
     sample.summedKS_ci_low_Ma  = np.asarray([lo for lo, _ in ui_peaks_ci], float)
@@ -809,12 +811,13 @@ def _recent_boundary_mode_row(
     young_edge = float(ages_ma[0])
     edge_hits = vals <= (young_edge + step)
     n_hits = int(np.count_nonzero(edge_hits))
-    min_support = max(float(FS_SUPPORT), float(RMIN_RUNS) / float(max(total_runs, 1)))
+    min_support = max(float(FS_SUPPORT), float(RMIN_RUNS) / float(max(total_runs, 1)), 0.40)
     support = float(n_hits / float(max(total_runs, 1)))
     if n_hits == 0 or support < min_support:
         return None
 
-    upper = float(np.nanpercentile(vals, 97.5)) if vals.size >= 3 else float(young_edge + step)
+    edge_vals = vals[edge_hits]
+    upper = float(np.nanpercentile(edge_vals, 97.5)) if edge_vals.size >= 3 else float(young_edge + step)
     upper = max(upper, float(young_edge + step))
     return dict(
         sample="",
@@ -849,6 +852,24 @@ def _inject_recent_boundary_mode(
         step = 5.0
     young_edge = float(ages_ma[0]) if ages_ma.size else 0.0
     replace_limit = young_edge + (2.0 * step)
+
+    interior_rows = [
+        dict(r)
+        for r in rows
+        if str(r.get("mode", "")) != "recent_boundary"
+        and np.isfinite(float(r.get("age_ma", np.nan)))
+        and float(r.get("age_ma", np.nan)) > replace_limit
+    ]
+    if interior_rows:
+        strongest_interior = max(
+            float(r.get("direct_support", r.get("support", 0.0)))
+            for r in interior_rows
+        )
+        boundary_support = float(
+            row_boundary.get("direct_support", row_boundary.get("support", 0.0))
+        )
+        if boundary_support + 1e-12 < strongest_interior:
+            return [dict(r) for r in rows], None
 
     out: List[Dict] = []
     inserted = False
@@ -1042,8 +1063,9 @@ def _single_crest_fallback_row(ages_ma, S_curve, optima_ma, min_support):
 
 def _snap_rows_to_curve(rows, ages_ma, S_view):
     """
-    Keep accepted catalogue rows unchanged for reporting, but snap plotted marker
-    ages to local crests of the final displayed curve.
+    Keep accepted catalogue rows unchanged for reporting. Only snap plotted
+    marker ages when the nearest displayed-curve crest is genuinely close to
+    the reported age; otherwise preserve the reported age/interval exactly.
     """
     if not rows:
         return []
@@ -1102,7 +1124,11 @@ def _snap_rows_to_curve(rows, ages_ma, S_view):
     lo_grid = float(np.nanmin(x[finite]))
     hi_grid = float(np.nanmax(x[finite]))
 
-    # Assign each displayed row to the nearest available displayed-curve crest.
+    # Assign each displayed row to the nearest available displayed-curve crest,
+    # but do not drag the marker a long way from the reported age just to land
+    # on a local maximum. That was producing misleading plots on clustered
+    # samples where the catalogue age and the plotted marker diverged by
+    # hundreds of Ma.
     order = np.argsort([float(dict(r).get("age_ma", np.nan)) for r in rows])
     snapped = [None] * len(rows)
     for ii in order:
@@ -1125,12 +1151,18 @@ def _snap_rows_to_curve(rows, ages_ma, S_view):
             idx_all = np.where(finite)[0]
             j = int(idx_all[np.argmin(np.abs(x[idx_all] - a0))])
 
-        a_new = float(x[j])
-        rr["age_ma"] = a_new
-
         width = hi_old - lo_old if (np.isfinite(lo_old) and np.isfinite(hi_old)) else np.nan
         if (not np.isfinite(width)) or (width <= 0.0):
             width = 2.0 * step
+        snap_tol = max(2.0 * step, 0.35 * width)
+
+        a_new = float(x[j])
+        if np.isfinite(a0) and abs(a_new - a0) <= snap_tol:
+            rr["age_ma"] = a_new
+        else:
+            a_new = a0 if np.isfinite(a0) else a_new
+            rr["age_ma"] = a_new
+
         lo_new = max(lo_grid, a_new - 0.5 * width)
         hi_new = min(hi_grid, a_new + 0.5 * width)
         if (hi_new - lo_new) < step:
@@ -1329,7 +1361,7 @@ def _calculateOptimalAge(signals, sample, progress):
 
     merge_nearby = bool(getattr(settings, "merge_nearby_peaks", MERGE_NEARBY_PEAKS))
     abstain_on_monotonic = bool(getattr(settings, "conservative_abstain_on_monotonic", True))
-    support_filter_mode = "MAX"
+    support_filter_mode = "DIRECT"
     prefer_pen = bool(getattr(settings, "penaliseInvalidAges", False))
     primary_which = "pen" if prefer_pen else "raw"
 
@@ -1475,6 +1507,8 @@ def _calculateOptimalAge(signals, sample, progress):
     cluster_reporting_accepted = False
     cluster_curve_raw: Dict[int, np.ndarray] = {}
     cluster_curve_pen: Dict[int, np.ndarray] = {}
+    cluster_diag_raw: Dict[int, Dict] = {}
+    cluster_diag_pen: Dict[int, Dict] = {}
     cluster_rejected_rows: List[Dict] = []
 
     def _cluster_optima_from_goodness(S_cluster: np.ndarray) -> np.ndarray:
@@ -1512,8 +1546,12 @@ def _calculateOptimalAge(signals, sample, progress):
         optima_ma=optima_ma_pen,
         diagnostic_rows=rejected_pen_stage,
     )
+    global_rows_raw = [dict(r) for r in rows_raw]
+    global_rows_pen = [dict(r) for r in rows_pen]
 
-    if use_dc and clustering_accepted:
+    S_by_cluster_raw = {}
+    S_by_cluster_pen = {}
+    if use_dc and clustering_accepted and USE_CLUSTER_CATALOGUE:
         rows_raw_cluster: List[Dict] = []
         rows_pen_cluster: List[Dict] = []
 
@@ -1552,6 +1590,23 @@ def _calculateOptimalAge(signals, sample, progress):
             if S_pen_k.size:
                 Smed_pen_k, Delta_pen_k, _ = robust_ensemble_curve(S_pen_k, smooth_frac=smf)
 
+            if Smed_raw_k.size:
+                j_raw = int(np.nanargmax(Smed_raw_k))
+                cluster_diag_raw[int(cid)] = dict(
+                    argmax_age=float(ages_ma[j_raw]),
+                    boundary=bool(j_raw <= 1 or j_raw >= (ages_ma.size - 2)),
+                    n_rows=0,
+                    n_runs=int(mask_runs.sum()),
+                )
+            if Smed_pen_k.size:
+                j_pen = int(np.nanargmax(Smed_pen_k))
+                cluster_diag_pen[int(cid)] = dict(
+                    argmax_age=float(ages_ma[j_pen]),
+                    boundary=bool(j_pen <= 1 or j_pen >= (ages_ma.size - 2)),
+                    n_rows=0,
+                    n_runs=int(mask_runs.sum()),
+                )
+
             raw_pickable_k = bool(
                 Smed_raw_k.size and (Delta_raw_k >= ENS_DELTA_MIN)
                 and ((not abstain_on_monotonic) or (not _is_effectively_monotonic(Smed_raw_k, Delta_raw_k)))
@@ -1566,38 +1621,64 @@ def _calculateOptimalAge(signals, sample, progress):
 
             if raw_pickable_k:
                 cluster_curve_raw[int(cid)] = np.asarray(Smed_raw_k, float)
-                rows_raw_k = _build_global_catalogue_rows(
+                rows_raw_k = build_cluster_catalogue_legacy(
                     sample.name,
                     _infer_tier(sample.name),
                     ages_ma,
                     S_raw_k,
-                    Smed_raw_k,
-                    smf=smf,
-                    merge_nearby=merge_nearby,
-                    pickable=True,
+                    orientation="max",
+                    smooth_frac=smf,
+                    f_d=FD_DIST_FRAC,
+                    f_p=FP_PROM_FRAC,
+                    f_v=FV_VALLEY_FRAC,
+                    f_w=FW_WIN_FRAC,
+                    w_min_nodes=3,
+                    support_min=FS_SUPPORT,
+                    r_min=RMIN_RUNS,
+                    f_r=FR_RUN_REL,
+                    per_run_prom_frac=PER_RUN_PROM_FRAC,
+                    per_run_min_dist=PER_RUN_MIN_DIST,
+                    per_run_min_width=PER_RUN_MIN_WIDTH,
+                    per_run_require_full_prom=False,
+                    height_frac=FH_HEIGHT_FRAC,
                     optima_ma=optima_ma_raw_k,
-                )
+                ) or []
             if not rows_raw_k:
-                row_boundary = _recent_boundary_mode_row(optima_ma_raw_k, len(runs), ages_ma)
+                row_boundary = None
+                if bool(cluster_diag_raw.get(int(cid), {}).get("boundary", False)):
+                    row_boundary = _recent_boundary_mode_row(optima_ma_raw_k, len(runs), ages_ma)
                 if row_boundary is not None:
                     row_boundary["cluster_id"] = int(cid)
                     rows_raw_k = [row_boundary]
 
             if pen_pickable_k:
                 cluster_curve_pen[int(cid)] = np.asarray(Smed_pen_k, float)
-                rows_pen_k = _build_global_catalogue_rows(
+                rows_pen_k = build_cluster_catalogue_legacy(
                     sample.name,
                     _infer_tier(sample.name),
                     ages_ma,
                     S_pen_k,
-                    Smed_pen_k,
-                    smf=smf,
-                    merge_nearby=merge_nearby,
-                    pickable=True,
+                    orientation="max",
+                    smooth_frac=smf,
+                    f_d=FD_DIST_FRAC,
+                    f_p=FP_PROM_FRAC,
+                    f_v=FV_VALLEY_FRAC,
+                    f_w=FW_WIN_FRAC,
+                    w_min_nodes=3,
+                    support_min=FS_SUPPORT,
+                    r_min=RMIN_RUNS,
+                    f_r=FR_RUN_REL,
+                    per_run_prom_frac=PER_RUN_PROM_FRAC,
+                    per_run_min_dist=PER_RUN_MIN_DIST,
+                    per_run_min_width=PER_RUN_MIN_WIDTH,
+                    per_run_require_full_prom=False,
+                    height_frac=FH_HEIGHT_FRAC,
                     optima_ma=optima_ma_pen_k,
-                )
+                ) or []
             if not rows_pen_k:
-                row_boundary = _recent_boundary_mode_row(optima_ma_pen_k, len(runs), ages_ma)
+                row_boundary = None
+                if bool(cluster_diag_pen.get(int(cid), {}).get("boundary", False)):
+                    row_boundary = _recent_boundary_mode_row(optima_ma_pen_k, len(runs), ages_ma)
                 if row_boundary is not None:
                     row_boundary["cluster_id"] = int(cid)
                     rows_pen_k = [row_boundary]
@@ -1609,9 +1690,12 @@ def _calculateOptimalAge(signals, sample, progress):
 
             if rows_raw_k:
                 rows_raw_cluster.extend(dict(r) for r in rows_raw_k)
+                if int(cid) in cluster_diag_raw:
+                    cluster_diag_raw[int(cid)]["n_rows"] = int(len(rows_raw_k))
             elif optima_ma_raw_k.size:
                 cluster_rejected_rows.append(
                     dict(
+                        cluster_id=int(cid),
                         age_ma=float(np.nanmedian(optima_ma_raw_k)),
                         direct_support=np.nan,
                         winner_support=np.nan,
@@ -1621,9 +1705,12 @@ def _calculateOptimalAge(signals, sample, progress):
 
             if rows_pen_k:
                 rows_pen_cluster.extend(dict(r) for r in rows_pen_k)
+                if int(cid) in cluster_diag_pen:
+                    cluster_diag_pen[int(cid)]["n_rows"] = int(len(rows_pen_k))
             elif optima_ma_pen_k.size:
                 cluster_rejected_rows.append(
                     dict(
+                        cluster_id=int(cid),
                         age_ma=float(np.nanmedian(optima_ma_pen_k)),
                         direct_support=np.nan,
                         winner_support=np.nan,
@@ -1631,12 +1718,124 @@ def _calculateOptimalAge(signals, sample, progress):
                     )
                 )
 
-        if rows_raw_cluster or rows_pen_cluster:
-            cluster_reporting_accepted = True
-            if rows_raw_cluster:
-                rows_raw = rows_raw_cluster
-            if rows_pen_cluster:
-                rows_pen = rows_pen_cluster
+    def _align_cluster_rows_to_global(cluster_rows, global_rows):
+        if not cluster_rows or not global_rows:
+            return []
+        step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
+        tol_ma = max(100.0, 8.0 * step)
+
+        aligned = [dict(r) for r in cluster_rows if str(r.get("mode", "")) == "recent_boundary"]
+        used_global = set()
+        ordered_cluster = sorted(
+            [dict(r) for r in cluster_rows if str(r.get("mode", "")) != "recent_boundary"],
+            key=lambda rr: (
+                -float(rr.get("support", 0.0)),
+                float(rr.get("ci_high", np.inf)) - float(rr.get("ci_low", -np.inf)),
+            ),
+        )
+        global_centers = np.asarray([float(r["age_ma"]) for r in global_rows], float)
+
+        for row in ordered_cluster:
+            age = float(row["age_ma"])
+            deltas = np.abs(global_centers - age)
+            idx = int(np.argmin(deltas))
+            if deltas[idx] > tol_ma or idx in used_global:
+                continue
+            used_global.add(idx)
+            aligned.append(row)
+
+        return sorted(aligned, key=lambda rr: float(rr["age_ma"]))
+
+    global_multipeaked = max(len(global_rows_raw), len(global_rows_pen)) >= 2
+    cluster_reporting_accepted = bool(
+        use_dc and clustering_accepted and USE_CLUSTER_CATALOGUE
+    )
+
+    if cluster_reporting_accepted and global_multipeaked:
+        rows_raw = _align_cluster_rows_to_global(rows_raw_cluster, global_rows_raw)
+        rows_pen = _align_cluster_rows_to_global(rows_pen_cluster, global_rows_pen)
+        if max(len(rows_raw), len(rows_pen)) < 2:
+            cluster_reporting_accepted = False
+            rows_raw = global_rows_raw
+            rows_pen = global_rows_pen
+            try:
+                sample.disc_cluster_summary = dict(sample.disc_cluster_summary or {})
+                sample.disc_cluster_summary["accepted"] = False
+                sample.disc_cluster_summary["reason"] = "rejected_by_global_surface"
+                sample.disc_cluster_summary["global_raw_peak_count"] = int(len(global_rows_raw))
+                sample.disc_cluster_summary["global_pen_peak_count"] = int(len(global_rows_pen))
+            except Exception:
+                pass
+    elif cluster_reporting_accepted:
+        rows_raw = rows_raw_cluster
+        rows_pen = rows_pen_cluster
+        ui_cluster_rows = rows_raw if ui_surface == "RAW" else rows_pen
+        interior_cluster_rows = [
+            dict(r) for r in ui_cluster_rows if str(r.get("mode", "")) != "recent_boundary"
+        ]
+        boundary_cluster_rows = [
+            dict(r) for r in ui_cluster_rows if str(r.get("mode", "")) == "recent_boundary"
+        ]
+        n_cluster_reportable = max(len(rows_raw), len(rows_pen))
+        if n_cluster_reportable == 0:
+            cluster_reporting_accepted = False
+            rows_raw = global_rows_raw
+            rows_pen = global_rows_pen
+            try:
+                sample.disc_cluster_summary = dict(sample.disc_cluster_summary or {})
+                sample.disc_cluster_summary["accepted"] = False
+                sample.disc_cluster_summary["reason"] = "no_reportable_cluster_peaks"
+                sample.disc_cluster_summary["global_raw_peak_count"] = int(len(global_rows_raw))
+                sample.disc_cluster_summary["global_pen_peak_count"] = int(len(global_rows_pen))
+            except Exception:
+                pass
+        elif len(interior_cluster_rows) == 0:
+            cluster_reporting_accepted = False
+            rows_raw = global_rows_raw
+            rows_pen = global_rows_pen
+            try:
+                sample.disc_cluster_summary = dict(sample.disc_cluster_summary or {})
+                sample.disc_cluster_summary["accepted"] = False
+                sample.disc_cluster_summary["reason"] = "boundary_only_cluster_without_global_support"
+                sample.disc_cluster_summary["global_raw_peak_count"] = int(len(global_rows_raw))
+                sample.disc_cluster_summary["global_pen_peak_count"] = int(len(global_rows_pen))
+            except Exception:
+                pass
+        elif len(interior_cluster_rows) > 1:
+            cluster_reporting_accepted = False
+            rows_raw = global_rows_raw
+            rows_pen = global_rows_pen
+            try:
+                sample.disc_cluster_summary = dict(sample.disc_cluster_summary or {})
+                sample.disc_cluster_summary["accepted"] = False
+                sample.disc_cluster_summary["reason"] = "cluster_multi_interior_without_global_support"
+                sample.disc_cluster_summary["global_raw_peak_count"] = int(len(global_rows_raw))
+                sample.disc_cluster_summary["global_pen_peak_count"] = int(len(global_rows_pen))
+                sample.disc_cluster_summary["n_cluster_boundary_modes"] = int(len(boundary_cluster_rows))
+            except Exception:
+                pass
+        elif n_cluster_reportable == 1:
+            try:
+                sample.disc_cluster_summary = dict(sample.disc_cluster_summary or {})
+                sample.disc_cluster_summary["reason"] = "partial_cluster_resolution"
+                sample.disc_cluster_summary["n_reportable_cluster_peaks"] = 1
+                sample.disc_cluster_summary["global_raw_peak_count"] = int(len(global_rows_raw))
+                sample.disc_cluster_summary["global_pen_peak_count"] = int(len(global_rows_pen))
+            except Exception:
+                pass
+    else:
+        rows_raw = global_rows_raw
+        rows_pen = global_rows_pen
+
+    if clustering_accepted and not cluster_reporting_accepted:
+        try:
+            sample.disc_cluster_summary = dict(sample.disc_cluster_summary or {})
+            sample.disc_cluster_summary["accepted"] = False
+            sample.disc_cluster_summary.setdefault("reason", "rejected_by_global_surface")
+            sample.disc_cluster_summary["global_raw_peak_count"] = int(len(global_rows_raw))
+            sample.disc_cluster_summary["global_pen_peak_count"] = int(len(global_rows_pen))
+        except Exception:
+            pass
 
     # Fallback:
     # Only promote the median of the per-run optima to a pseudo-peak if the
@@ -1659,9 +1858,19 @@ def _calculateOptimalAge(signals, sample, progress):
         rows_for_ui = rows_raw
         if cluster_reporting_accepted:
             cids = sorted({int(r.get("cluster_id")) for r in rows_for_ui if "cluster_id" in r})
-            curves = [cluster_curve_raw[c] for c in cids if c in cluster_curve_raw]
-            S_view = np.nanmax(np.vstack(curves), axis=0) if curves else Smed_raw
+            mats = [np.asarray(S_by_cluster_raw[c], float) for c in cids if c in S_by_cluster_raw]
+            if mats:
+                S_runs_view = np.nanmax(np.stack(mats, axis=2), axis=2)
+                S_view, _, _ = robust_ensemble_curve(
+                    S_runs_view,
+                    smooth_frac=smf,
+                )
+            else:
+                S_runs_view = S_runs_raw
+                curves = [cluster_curve_raw[c] for c in cids if c in cluster_curve_raw]
+                S_view = np.nanmax(np.vstack(curves), axis=0) if curves else Smed_raw
         else:
+            S_runs_view = S_runs_raw
             S_view = Smed_raw
         rejected_stage_ui = rejected_raw_stage
     elif rows_pen:
@@ -1669,19 +1878,31 @@ def _calculateOptimalAge(signals, sample, progress):
         rows_for_ui = rows_pen
         if cluster_reporting_accepted:
             cids = sorted({int(r.get("cluster_id")) for r in rows_for_ui if "cluster_id" in r})
-            curves = [cluster_curve_pen[c] for c in cids if c in cluster_curve_pen]
-            S_view = np.nanmax(np.vstack(curves), axis=0) if curves else Smed_pen
+            mats = [np.asarray(S_by_cluster_pen[c], float) for c in cids if c in S_by_cluster_pen]
+            if mats:
+                S_runs_view = np.nanmax(np.stack(mats, axis=2), axis=2)
+                S_view, _, _ = robust_ensemble_curve(
+                    S_runs_view,
+                    smooth_frac=smf,
+                )
+            else:
+                S_runs_view = S_runs_pen
+                curves = [cluster_curve_pen[c] for c in cids if c in cluster_curve_pen]
+                S_view = np.nanmax(np.vstack(curves), axis=0) if curves else Smed_pen
         else:
+            S_runs_view = S_runs_pen
             S_view = Smed_pen
         rejected_stage_ui = rejected_pen_stage
     else:
         rows_for_ui = []
         if ui_surface == "RAW":
             view_which = "raw"
+            S_runs_view = S_runs_raw
             S_view = Smed_raw
             rejected_stage_ui = rejected_raw_stage
         else:
             view_which = "pen"
+            S_runs_view = S_runs_pen
             S_view = Smed_pen
             rejected_stage_ui = rejected_pen_stage
 
@@ -1693,6 +1914,26 @@ def _calculateOptimalAge(signals, sample, progress):
 
     rejected_rows: List[Dict] = [dict(r) for r in (rejected_stage_ui or [])]
     rejected_rows.extend(dict(r) for r in cluster_rejected_rows)
+
+    if rejected_rows:
+        deduped_rejected: List[Dict] = []
+        seen = set()
+        step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
+        tol = max(0.51 * step, 1e-6)
+        for row in rejected_rows:
+            age = float(row.get("age_ma", np.nan))
+            reason = str(row.get("reason", ""))
+            cid = int(row.get("cluster_id", -999999)) if "cluster_id" in row and row.get("cluster_id") is not None else -999999
+            if np.isfinite(age):
+                age_key = round(age / tol)
+            else:
+                age_key = None
+            key = (cid, reason, age_key)
+            if key in seen:
+                continue
+            seen.add(key)
+            deduped_rejected.append(row)
+        rejected_rows = deduped_rejected
 
     if merge_nearby:
         pre_merge_ui = [dict(r) for r in rows_for_ui]
@@ -1753,12 +1994,16 @@ def _calculateOptimalAge(signals, sample, progress):
     # Surface-shape recent boundary modes are reported separately rather than
     # being discarded or forced into a fake interior peak.
     pre_boundary_mode_ui = [dict(r) for r in rows_for_ui]
-    rows_for_ui, boundary_row_ui = _inject_recent_boundary_mode(
-        rows_for_ui,
-        optima_ma_display,
-        len(runs),
-        ages_ma,
-    )
+    has_cluster_boundary_row = any(str(r.get("mode", "")) == "recent_boundary" for r in rows_for_ui)
+    if cluster_reporting_accepted and has_cluster_boundary_row:
+        boundary_row_ui = next((dict(r) for r in rows_for_ui if str(r.get("mode", "")) == "recent_boundary"), None)
+    else:
+        rows_for_ui, boundary_row_ui = _inject_recent_boundary_mode(
+            rows_for_ui,
+            optima_ma_display,
+            len(runs),
+            ages_ma,
+        )
     if boundary_row_ui is not None:
         if view_which == "raw":
             rows_raw = [dict(r) for r in rows_for_ui]
@@ -1877,9 +2122,20 @@ def _calculateOptimalAge(signals, sample, progress):
 
     if isinstance(getattr(sample, "ensemble_surface_flags", None), dict):
         sample.ensemble_surface_flags["view_surface_source"] = "clustered" if cluster_reporting_accepted else "global_all"
+    sample.display_heatmap_ages_ma = np.asarray(ages_ma, float)
+    sample.display_heatmap_runs_S = np.asarray(S_runs_view, float)
 
     # Keep the top-panel heatmap on the same source as the final reported curve.
+    selected_cluster_ids = sorted(
+        {
+            int(r.get("cluster_id"))
+            for r in rows_for_ui
+            if isinstance(r, dict) and r.get("cluster_id") is not None
+        }
+    ) if cluster_reporting_accepted else []
     for run in runs:
+        run._heatmap_cluster_ids = tuple(selected_cluster_ids) if selected_cluster_ids else None
+        run._heatmap_view_which = view_which
         run.createHeatmapData(
             settings.minimumRimAge,
             settings.maximumRimAge,
@@ -1955,6 +2211,7 @@ def _calculateOptimalAge(signals, sample, progress):
             selection=r.get("selection", "strict"),
             mode=r.get("mode", ""),
             label=r.get("label", ""),
+            cluster_id=r.get("cluster_id"),
         )
         for i, (r, (med, lo, hi, sup)) in enumerate(zip(rows_for_ui, catalogue_legacy))
     ]
@@ -1982,6 +2239,10 @@ def _calculateOptimalAge(signals, sample, progress):
     except Exception:
         pass
 
+    cluster_summary_payload = dict(getattr(sample, "disc_cluster_summary", {}) or {})
+    cluster_summary_payload["split_accepted"] = bool(cluster_summary_payload.get("accepted", False))
+    cluster_summary_payload["reporting_accepted"] = bool(cluster_reporting_accepted)
+
     payload = (
         optimalAge,
         lower95,
@@ -1995,8 +2256,10 @@ def _calculateOptimalAge(signals, sample, progress):
         {"rejected_peak_candidates": list(rejected_rows or [])},
         {
             "labels": None if not cluster_reporting_accepted else list(np.asarray(getattr(sample, "disc_cluster_labels", []), int)),
-            "summary": getattr(sample, "disc_cluster_summary", []),
+            "summary": cluster_summary_payload,
             "accepted": bool(cluster_reporting_accepted),
+            "split_accepted": bool(cluster_summary_payload.get("split_accepted", False)),
+            "reporting_accepted": bool(cluster_reporting_accepted),
         },
     )
     try:

@@ -101,6 +101,10 @@ class SummaryDataPanel(QWidget):
         self.exportCatalogueButton.setIcon(Icons.export())
         self.exportCatalogueButton.clicked.connect(self._exportEnsemble)
 
+        self.exportClusteringButton = QPushButton("  Export clustering diagnostics")
+        self.exportClusteringButton.setIcon(Icons.export())
+        self.exportClusteringButton.clicked.connect(self._exportClusteringDiagnostics)
+
         bottomBox = QWidget()
         bottomLay = QVBoxLayout(bottomBox)
         bottomLay.setContentsMargins(0, 0, 0, 0)
@@ -108,6 +112,7 @@ class SummaryDataPanel(QWidget):
         bottomLay.addWidget(sep)
         bottomLay.addWidget(self.catalogueTable)
         bottomLay.addWidget(self.exportCatalogueButton)
+        bottomLay.addWidget(self.exportClusteringButton)
 
         # --------- stack both sections in a V-splitter so heights are adjustable ----------
         splitter = QSplitter(Qt.Vertical)
@@ -310,3 +315,6 @@ class SummaryDataPanel(QWidget):
         data = [[self.catalogueTable.item(r, c).text() if self.catalogueTable.item(r, c) else ""
                  for c in range(n)] for r in range(self.catalogueTable.rowCount())]
         self.controller.exportCSV(headers, data)
+
+    def _exportClusteringDiagnostics(self):
+        self.controller.exportClusteringDiagnostics(self.samples)

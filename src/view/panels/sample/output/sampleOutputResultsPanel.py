@@ -14,8 +14,9 @@ from utils.ui.numericInput import FloatInput, AgeInput, IntInput  # IntInput kep
 class SampleOutputResultsPanel(QGroupBox):
     peakRowSelected = pyqtSignal(int)
 
-    def __init__(self, sample):
+    def __init__(self, controller, sample):
         super().__init__("Result")
+        self.controller = controller
         self.sample = sample
 
         # Root layout
@@ -51,7 +52,7 @@ class SampleOutputResultsPanel(QGroupBox):
         self.rootLayout.addWidget(formHost)
 
         # ----- Peak catalogue group -----
-        self.catBox = QGroupBox("Peak catalogue (ensemble support)")
+        self.catBox = QGroupBox("Ensemble catalogue")
         catLayout = QVBoxLayout(self.catBox)
 
         self.catTable = QTableWidget(0, 5)
@@ -104,6 +105,17 @@ class SampleOutputResultsPanel(QGroupBox):
         rejLayout.addWidget(self.rejectedTable)
         self.rejectedBox.setVisible(False)
         self.rootLayout.addWidget(self.rejectedBox)
+
+        self.clusterInfoBox = QGroupBox("Clustering diagnostics")
+        clusterLayout = QVBoxLayout(self.clusterInfoBox)
+        self.clusterInfoLabel = QLabel("")
+        self.clusterInfoLabel.setWordWrap(True)
+        clusterLayout.addWidget(self.clusterInfoLabel)
+        self.clusterExportButton = QPushButton("Export clustering diagnostics…")
+        self.clusterExportButton.clicked.connect(self._export_clustering_diagnostics)
+        clusterLayout.addWidget(self.clusterExportButton)
+        self.clusterInfoBox.setVisible(False)
+        self.rootLayout.addWidget(self.clusterInfoBox)
 
         self.exportCurveButton = QPushButton("Export curve (CSV)")
         self.exportCurveButton.clicked.connect(self.exportGoodnessCurveCSV)
@@ -181,9 +193,9 @@ class SampleOutputResultsPanel(QGroupBox):
             n_boundary = sum(1 for r in rows if isinstance(r, dict) and str(r.get("mode", "")) == "recent_boundary")
             n_peaks = len(rows) - n_boundary
             if n_boundary and n_peaks:
-                return f"Resolved ({n_peaks} peak{'s' if n_peaks != 1 else ''} + {n_boundary} boundary mode{'s' if n_boundary != 1 else ''})"
+                    return f"Resolved ({n_peaks} interior peak{'s' if n_peaks != 1 else ''} + {n_boundary} boundary mode{'s' if n_boundary != 1 else ''})"
             if n_boundary:
-                return f"Resolved ({n_boundary} boundary mode{'s' if n_boundary != 1 else ''})"
+                return f"Boundary mode only ({n_boundary})"
             return f"Resolved ({len(rows)} peak{'s' if len(rows) != 1 else ''})"
 
         reason = getattr(self.sample, "ensemble_abstain_reason", None)
@@ -241,6 +253,8 @@ class SampleOutputResultsPanel(QGroupBox):
         self.catalogueNote.setVisible(False)
         self.rejectedTable.setRowCount(0)
         self.rejectedBox.setVisible(False)
+        self.clusterInfoLabel.setText("")
+        self.clusterInfoBox.setVisible(False)
         self.optimalAge.setValue(None)
         self.optimalAgeLower.setValue(None)
         self.optimalAgeUpper.setValue(None)
@@ -349,6 +363,10 @@ class SampleOutputResultsPanel(QGroupBox):
         self.rejectedTable.resizeRowsToContents()
         self.rejectedBox.setVisible(bool(rej))
 
+        cluster_text = self._cluster_info_text()
+        self.clusterInfoLabel.setText(cluster_text)
+        self.clusterInfoBox.setVisible(bool(cluster_text))
+
         self.catTable.blockSignals(prev)
         self.catBox.updateGeometry()
         self.rootLayout.invalidate()
@@ -393,6 +411,71 @@ class SampleOutputResultsPanel(QGroupBox):
                     float(r.get("direct_support", r.get("support", float("nan")))),
                     float(r.get("winner_support", r.get("support", float("nan")))),
                 ])
+
+    def _cluster_info_text(self):
+        summary = getattr(self.sample, "disc_cluster_summary", None)
+        if not isinstance(summary, dict) or not summary:
+            return ""
+
+        lines = []
+        split_accepted = bool(
+            summary.get("split_accepted", summary.get("accepted", getattr(self.sample, "_cdc_cluster_split_accepted", False)))
+        )
+        reporting_accepted = bool(
+            summary.get("reporting_accepted", getattr(self.sample, "_cdc_cluster_reporting_accepted", False))
+        )
+        reason = str(summary.get("reason", "") or "")
+        lines.append(
+            "Split accepted: "
+            + ("yes" if split_accepted else "no")
+            + " | Reporting accepted: "
+            + ("yes" if reporting_accepted else "no")
+        )
+        if reason:
+            lines.append("Reason: " + reason.replace("_", " "))
+
+        anchors = summary.get("anchors", []) or []
+        if anchors:
+            anchor_text = ", ".join(
+                f"A{int(row.get('anchor_id', 0))}={float(row.get('age_ma')):.1f} Ma (n={int(row.get('n_concordant', 0))})"
+                for row in anchors
+                if row.get("age_ma") is not None
+            )
+            if anchor_text:
+                lines.append("Anchors: " + anchor_text)
+
+        if summary.get("n_discordant", None) is not None:
+            n_valid = int(summary.get('n_valid_proxies', 0))
+            n_clustered = int(summary.get('n_clustered_proxies', 0))
+            n_unclustered = int(summary.get('n_unclustered_valid_proxies', max(0, n_valid - n_clustered)))
+            lines.append(
+                "Discordant grains: "
+                + f"{int(summary.get('n_discordant', 0))} total, "
+                + f"{int(summary.get('n_assigned', 0))} assigned, "
+                + f"{int(summary.get('n_ambiguous', 0))} ambiguous, "
+                + f"{n_valid} valid proxies"
+            )
+            if n_valid:
+                lines.append(
+                    "Valid proxies: "
+                    + f"{n_clustered} retained in robust clusters, "
+                    + f"{n_unclustered} left unclustered"
+                )
+
+        clusters = summary.get("clusters", []) or []
+        if clusters:
+            cluster_text = ", ".join(
+                f"C{int(row.get('k', 0))}: n={int(row.get('n', 0))}, proxy median={float(row.get('median_ma')):.1f} Ma"
+                for row in clusters
+                if row.get("median_ma") is not None
+            )
+            if cluster_text:
+                lines.append("Clusters: " + cluster_text)
+
+        return "\n".join(lines)
+
+    def _export_clustering_diagnostics(self):
+        self.controller.exportClusteringDiagnostics([self.sample])
 
     # ----- Events -----
     def _onProcessingCleared(self):

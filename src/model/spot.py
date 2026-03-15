@@ -53,6 +53,7 @@ class Spot:
 
         self.processed = False
         self.reverseDiscordant = False
+        self.cluster_id = None
 
 
     def clear(self):
@@ -60,6 +61,7 @@ class Spot:
         self.concordant = None
         self.discordance = None
         self.reverseDiscordant = False
+        self.cluster_id = None
         self.displayStrings = list(self._baseDisplayStrings)
         self.invalidColumns = list(self._baseInvalidColumns)
 

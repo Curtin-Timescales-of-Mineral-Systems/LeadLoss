@@ -83,11 +83,15 @@ def _collapse_to_single_anchor(n_total: int, ages: np.ndarray):
     return labels, 1, np.asarray([med], float)
 
 
+MIN_ANCHOR_SEP_MA = 50.0
+
+
 def cluster_concordant_populations(
     concordantSpots,
     max_pops: int = 6,
     min_frac: float = 0.10,
     min_sep_sigma: float = 2.0,
+    min_sep_ma: float = MIN_ANCHOR_SEP_MA,
 ):
     """
     Estimate a small set of concordant anchor modes.
@@ -138,8 +142,11 @@ def cluster_concordant_populations(
 
     kept.sort(key=lambda item: item["median_ma"])
     for left, right in zip(kept[:-1], kept[1:]):
+        abs_sep = abs(float(right["median_ma"]) - float(left["median_ma"]))
+        if abs_sep < float(min_sep_ma):
+            return _collapse_to_single_anchor(n_total, ages)
         denom = max(float(left["sigma_ma"]), float(right["sigma_ma"]), 1e-6)
-        sep = abs(float(right["median_ma"]) - float(left["median_ma"])) / denom
+        sep = abs_sep / denom
         if sep < float(min_sep_sigma):
             return _collapse_to_single_anchor(n_total, ages)
 

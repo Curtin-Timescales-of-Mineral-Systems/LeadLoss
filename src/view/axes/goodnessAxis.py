@@ -25,6 +25,9 @@ class GoodnessAxis:
         self._win_patches: List = []
         self._win_edges: List[Line2D] = []
         self._hi_line: Optional[Line2D] = None
+        self._boundary_patches: List = []
+        self._boundary_edges: List[Line2D] = []
+        self._boundary_markers: List[Line2D] = []
 
     # ------------------------------- public API -------------------------------
 
@@ -129,9 +132,44 @@ class GoodnessAxis:
 
         self.ax.figure.canvas.draw_idle()
 
+    def set_boundary_modes(self, rows: Optional[List[dict]]) -> None:
+        self._clear_boundary_modes()
+        if not rows or self._ages_ma_last is None or self._y_last is None:
+            self.ax.figure.canvas.draw_idle()
+            return
+
+        x = np.asarray(self._ages_ma_last, float)
+        y = np.asarray(self._y_last, float)
+        m = np.isfinite(x) & np.isfinite(y)
+        if not m.any():
+            self.ax.figure.canvas.draw_idle()
+            return
+
+        x0 = float(x[m][0])
+        y0 = float(np.interp(x0, x[m], y[m]))
+        for row in rows:
+            try:
+                hi = float(row.get("ci_high", np.nan))
+            except Exception:
+                continue
+            if not np.isfinite(hi) or hi <= x0:
+                continue
+            patch = self.ax.axvspan(x0, hi, alpha=0.10, color="tab:orange", zorder=0)
+            edge = self.ax.axvline(x0, lw=1.2, ls=":", color="tab:orange", alpha=0.9)
+            (marker,) = self.ax.plot([x0], [y0], ls="", marker="<", ms=8, mfc="none", mec="tab:orange", zorder=10)
+            self._boundary_patches.append(patch)
+            self._boundary_edges.append(edge)
+            self._boundary_markers.append(marker)
+        self.ax.figure.canvas.draw_idle()
+
     def highlight_peak(self, idx: Optional[int]) -> None:
         self._remove_hi_line()
         if idx is None or idx < 0 or idx >= len(self._catalogue_rows):
+            wins = [
+                (r["ci_low"], r["ci_high"]) for r in self._catalogue_rows
+                if np.isfinite(r["ci_low"]) and np.isfinite(r["ci_high"]) and r["ci_high"] > r["ci_low"]
+            ]
+            self.set_windows(wins, primary_idx=None)
             self.ax.figure.canvas.draw_idle(); return
 
         wins = [(r["ci_low"], r["ci_high"]) for r in self._catalogue_rows
@@ -146,7 +184,7 @@ class GoodnessAxis:
     def clear(self) -> None:
         self._line.set_data([], []); self._peaks.set_data([], [])
         self._ages_ma_last = None; self._y_last = None; self._catalogue_rows = []
-        self._clear_windows(); self._remove_hi_line()
+        self._clear_windows(); self._clear_boundary_modes(); self._remove_hi_line()
         self.ax.relim(); self.ax.autoscale_view(); self.ax.figure.canvas.draw_idle()
 
     # ------------------------------- internals --------------------------------
@@ -188,6 +226,26 @@ class GoodnessAxis:
             try: self._hi_line.remove()
             except Exception: pass
             self._hi_line = None
+
+    def _clear_boundary_modes(self):
+        for p in self._boundary_patches:
+            try:
+                p.remove()
+            except Exception:
+                pass
+        for e in self._boundary_edges:
+            try:
+                e.remove()
+            except Exception:
+                pass
+        for m in self._boundary_markers:
+            try:
+                m.remove()
+            except Exception:
+                pass
+        self._boundary_patches = []
+        self._boundary_edges = []
+        self._boundary_markers = []
 
     # Optional legacy helper
     def update_from_runs(self, runs, ages_grid_years: Optional[Iterable[float]] = None, **_):
