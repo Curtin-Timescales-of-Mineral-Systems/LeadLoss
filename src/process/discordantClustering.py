@@ -69,9 +69,6 @@ __all__ = [
     "build_fixed_discordant_labels",
     "find_discordant_clusters",
     "cluster_proxies_years",
-    "_labels_from_this_run",
-    "_hard_accept_labels",
-    "_stack_min_across_clusters",
     "fit_gmm1d_bic",
     "assign_labels_gmm1d",
     "_adaptive_gates",
@@ -224,7 +221,8 @@ def assign_labels_gmm1d(x, model):
 
 def _stack_min_across_clusters(runs, ages_y, which: str = "pen") -> np.ndarray:
     """
-    Build an R×G matrix of per-run goodness, taking the maximum across clusters.
+    Build an R×G matrix of per-run goodness from the minimum KS distance across
+    clusters (equivalently, the maximum goodness across clusters).
 
     For each run and age:
       - if unclustered, use 1 - D (or 1 - score) directly
@@ -597,16 +595,16 @@ def _soft_accept_labels(core_labels, up_ma, *, min_points: int = 5,
     The defensible clustering path no longer soft-merges components. Callers that
     still import this helper receive the hard-gated labels, or all zeros on reject.
     """
-    accepted, _summary = _hard_accept_labels(
+    accepted_labels, _summary = _hard_accept_labels(
         core_labels,
         up_ma,
         min_points=min_points,
         min_frac=min_frac,
         sep_sig_thr=sep_sig_thr,
     )
-    if accepted is None:
+    if accepted_labels is None:
         return np.zeros_like(np.asarray(core_labels, int), int)
-    return accepted
+    return accepted_labels
 
 
 def lower_intercept_proxy(u_pb, pb_pb, ages_y):
@@ -765,8 +763,9 @@ def find_discordant_clusters(upper_ages, max_k: int = DC_MAX_COMPONENTS,
     Accepts 1-D ages (Ma OR years), fits 1..max_k Gaussian components by BIC,
     and returns (labels, n_components, model_or_none).
 
-    NOTE: This does *not* apply size/separation gates; those are handled by
-    _soft_accept_labels(...) at the call site to match your historical pipeline.
+    NOTE: This does *not* apply the final size/separation gates. The live
+    pipeline applies those gates afterwards via _hard_accept_labels(...) in
+    build_fixed_discordant_labels(...).
     """
     a = np.asarray(upper_ages, float).ravel()
     a = a[np.isfinite(a)]

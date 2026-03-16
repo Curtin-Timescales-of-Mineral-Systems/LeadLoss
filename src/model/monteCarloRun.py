@@ -171,7 +171,7 @@ class MonteCarloRun:
         xL = calculations.u238pb206_from_age(float(leadLossAge))
         yL = calculations.pb207pb206_from_age(float(leadLossAge))
 
-        # Project all discordant points once (old execution order)
+        # Project all discordant points once for the current lower-intercept age.
         all_ui = np.empty_like(self.discordant_uPb, dtype=float)
         for i, (du, dp) in enumerate(zip(self.discordant_uPb, self.discordant_pbPb)):
             ui = calculations.discordant_age(xL, yL, float(du), float(dp))
@@ -209,7 +209,7 @@ class MonteCarloRun:
     def calculateOptimalAge(self):
         """
         Choose the node with the MINIMUM penalised dissimilarity (score = D*).
-        Also compute per-run peaks on RAW and PEN goodness surfaces (old thresholds).
+        Also compute per-run peaks on RAW and PEN goodness surfaces.
         Keep a small ks_surface shim for downstream code.
         """
         if not self.statistics_by_pb_loss_age:

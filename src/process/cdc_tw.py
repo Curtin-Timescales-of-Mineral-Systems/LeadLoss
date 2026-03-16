@@ -39,7 +39,7 @@ def age_ma_from_pb207pb206(v: float) -> float:
         if not np.isfinite(v) or v <= 0.0:
             return float("nan")
 
-        lo, hi = 1e-9, 5000.0  # avoid 0/0 at t=0
+        lo, hi = 1e-9, 5000.0  # avoid 0/0 at t=0; 5000 Ma covers plausible Pb207/Pb206 solutions
         def f(t):
             num = np.expm1(LAMBDA_235 * t)
             den = np.expm1(LAMBDA_238 * t)

@@ -95,7 +95,7 @@ PER_RUN_MIN_WIDTH: int = _env_int("CDC_PER_RUN_MIN_WIDTH", "3")
 # Ensemble peak gates – “conservative” thresholds used in the paper
 FH_HEIGHT_FRAC: float = _env_float("CDC_FH_HEIGHT_FRAC", "0.00")   # disabled by default
 FD_DIST_FRAC: float = _env_float("CDC_FD_DIST_FRAC", "0.10")       # min peak separation in nodes (fraction of grid)
-FP_PROM_FRAC: float = _env_float("CDC_FP_PROM_FRAC", "0.10")       # min ensemble prominence as a fraction of Δ 0.05
+FP_PROM_FRAC: float = _env_float("CDC_FP_PROM_FRAC", "0.10")       # min ensemble prominence as a fraction of Δ
 FW_WIN_FRAC: float = _env_float("CDC_FW_WIN_FRAC", "0.10")         # half-width of vote window as fraction of grid
 FR_RUN_REL: float = _env_float("CDC_FR_RUN_REL", "0.25")           # run-level relative height gate (fraction of run’s dynamic range)
 FS_SUPPORT: float = _env_float(

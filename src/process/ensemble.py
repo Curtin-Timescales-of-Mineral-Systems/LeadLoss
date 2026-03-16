@@ -15,8 +15,6 @@ peak_widths = _peak_widths
 
 _EPS = 1e-12
 
-ADAPT_FR = False
-
 # -------------------------- utilities ----------------------------------------
 def _step_from_grid(x: np.ndarray) -> float:
     x = np.asarray(x, float)
@@ -774,6 +772,14 @@ def build_cluster_catalogue_legacy(
     per_run_peaks_list: Optional[List[np.ndarray]] = None,
     **_ignored: Any,
 ) -> List[Dict]:
+    """
+    Conservative cluster-specific catalogue builder used by the anchor-clustered
+    reporting path.
+
+    This mirrors the shared ensemble catalogue logic closely, but operates on a
+    single accepted discordant cluster surface after the cluster-specific CDC
+    stack has already been built in cdc_pipeline.py.
+    """
     x = np.asarray(age_grid, float)
     S = np.asarray(goodness_runs, float)
     if S.ndim != 2 or S.shape[0] == 0 or S.shape[1] < 3:

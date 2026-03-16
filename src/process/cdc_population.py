@@ -83,6 +83,8 @@ def _collapse_to_single_anchor(n_total: int, ages: np.ndarray):
     return labels, 1, np.asarray([med], float)
 
 
+# Minimum absolute separation required before nearby concordant submodes are
+# treated as distinct anchors rather than a single broad concordant population.
 MIN_ANCHOR_SEP_MA = 50.0
 
 
@@ -251,7 +253,7 @@ def assign_discordant_to_anchors(
 
 def assign_discordant_to_populations(discordantSpots, pop_means_ma):
     """
-    Backward-compatible wrapper.
+    Deprecated backward-compatible wrapper.
 
     The defensible clustering path should call assign_discordant_to_anchors(...)
     directly so ambiguity is visible to the caller.
