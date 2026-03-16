@@ -20,6 +20,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         super().__init__(defaultSettings, *args, **kwargs)
         self.setWindowTitle("Calculation settings")
         self._onDiscordanceTypeChanged()
+        self._syncPeakControls()
         self._alignLabels()
 
     def initMainSettings(self):
@@ -113,10 +114,10 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         # Ensemble multi-peak finder
         self.enableEnsembleCB = QCheckBox("Ensemble catalogue", self)
         self.enableEnsembleCB.setChecked(bool(getattr(d, "enable_ensemble_peak_picking", True)))
-        self.enableEnsembleCB.stateChanged.connect(self._validate)
+        self.enableEnsembleCB.stateChanged.connect(self._onEnsembleToggleChanged)
 
-        v.addWidget(self.useClusteringCB)
         v.addWidget(self.enableEnsembleCB)
+        v.addWidget(self.useClusteringCB)
         v.addStretch(1)
 
         box.setLayout(v)
@@ -131,6 +132,16 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         self.discordancePercentageCutoffLE.setVisible(perc)
         self.discordanceEllipseSigmasLabel.setVisible(not perc)
         self.discordanceEllipseSigmasRB.setVisible(not perc)  # set True when not perc
+
+    def _syncPeakControls(self):
+        ensemble_enabled = self.enableEnsembleCB.isChecked()
+        if not ensemble_enabled:
+            self.useClusteringCB.setChecked(False)
+        self.useClusteringCB.setEnabled(ensemble_enabled)
+
+    def _onEnsembleToggleChanged(self):
+        self._syncPeakControls()
+        self._validate()
 
     def getWarning(self, settings):
         if self.pointWithNoErrors and settings.discordanceClassificationMethod == DiscordanceClassificationMethod.ERROR_ELLIPSE:
@@ -154,8 +165,8 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         s.penaliseInvalidAges = self.penaliseInvalidAgesCB.isChecked()
         s.monteCarloRuns      = self.monteCarloRunsInput.value()
 
-        s.use_discordant_clustering = self.useClusteringCB.isChecked()
         s.enable_ensemble_peak_picking = self.enableEnsembleCB.isChecked()
+        s.use_discordant_clustering = s.enable_ensemble_peak_picking and self.useClusteringCB.isChecked()
 
         # Fixed publication-safe defaults (hidden from GUI to reduce user burden)
         s.conservative_abstain_on_monotonic = True
