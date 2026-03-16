@@ -1,4 +1,9 @@
 from process import calculations
+from process.cdc_config import (
+    PER_RUN_MIN_DIST,
+    PER_RUN_MIN_WIDTH,
+    PER_RUN_PROM_FRAC,
+)
 from process.ensemble import per_run_peaks
 import numpy as np
 import math
@@ -248,24 +253,36 @@ class MonteCarloRun:
         # Legacy surface shim now follows active primary channel.
         self.ks_surface = _KSSurface(age_ma, D_primary)
 
-        # Per-run peaks on BOTH surfaces (old semantics and thresholds)
+        # Keep legacy per-run peak arrays aligned with the configured ensemble gates.
         S_raw = 1.0 - D_raw
         S_pen = 1.0 - D_pen
         try:
             self.peaks_ma_raw = per_run_peaks(
                 age_ma, S_raw,
-                prom_frac=0.04, min_dist=3, min_width_nodes=3,
+                prom_frac=float(PER_RUN_PROM_FRAC),
+                min_dist=int(PER_RUN_MIN_DIST),
+                min_width_nodes=int(PER_RUN_MIN_WIDTH),
                 require_full_prom=False, max_keep=None, fallback_global_max=False
             )
             self.peaks_ma_pen = per_run_peaks(
                 age_ma, S_pen,
-                prom_frac=0.03, min_dist=3, min_width_nodes=3,
+                prom_frac=float(PER_RUN_PROM_FRAC),
+                min_dist=int(PER_RUN_MIN_DIST),
+                min_width_nodes=int(PER_RUN_MIN_WIDTH),
                 require_full_prom=False, max_keep=None, fallback_global_max=False
             )
         except TypeError:
-            # Legacy signature fallback (match old thresholds)
-            self.peaks_ma_raw = per_run_peaks(age_ma, S_raw, prom_frac=0.03, min_dist=3)
-            self.peaks_ma_pen = per_run_peaks(age_ma, S_pen, prom_frac=0.03, min_dist=3)
+            # Legacy signature fallback uses the same configured prominence and distance.
+            self.peaks_ma_raw = per_run_peaks(
+                age_ma, S_raw,
+                prom_frac=float(PER_RUN_PROM_FRAC),
+                min_dist=int(PER_RUN_MIN_DIST),
+            )
+            self.peaks_ma_pen = per_run_peaks(
+                age_ma, S_pen,
+                prom_frac=float(PER_RUN_PROM_FRAC),
+                min_dist=int(PER_RUN_MIN_DIST),
+            )
 
         # Legacy alias (RAW by default)
         self.peaks_ma = self.peaks_ma_raw

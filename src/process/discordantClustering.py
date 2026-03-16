@@ -46,7 +46,7 @@ def _adaptive_gates(n: int) -> Tuple[int, float, float]:
     base_min = max(3, min(6, int(math.ceil(0.12 * n))))
     min_points = max(DC_MIN_POINTS, base_min)
 
-    # For very small n require a larger fraction, then taper to 10 %
+    # For very small n require a larger fraction, then taper to 15 %.
     if n < 8:
         min_frac = 0.40
     elif n < 12:
