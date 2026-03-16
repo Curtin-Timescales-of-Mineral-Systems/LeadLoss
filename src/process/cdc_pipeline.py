@@ -103,112 +103,12 @@ def _processSample(signals, sample):
         if not completed:
             return False, skip_reason
         
-        st = sample.calculationSettings
-
-        # 3) Edge-guard: widen once if many per-run optima hug a boundary
-        try:
-            if bool(getattr(st, "use_discordant_clustering", False)) and bool(getattr(sample, "_cdc_clustering_accepted", False)):
-                return True, None
-            ages_ma = np.asarray(st.rimAges(), float) / 1e6
-            if ages_ma.size >= 2 and sample.monteCarloRuns:
-                # robust step estimate
-                raw_step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 0.0
-                if not np.isfinite(raw_step) or raw_step <= 0.0:
-                    raw_step = 5.0
-                step_ma = raw_step
-
-                # Edge-guard follows the same primary channel used for the run.
-                prefer_pen = bool(getattr(st, "penaliseInvalidAges", False))
-                if prefer_pen:
-                    opt_ma = np.array(
-                        [r.optimal_pb_loss_age for r in sample.monteCarloRuns],
-                        dtype=float,
-                    ) / 1e6
-                else:
-                    opt_ma = np.array(
-                        [_raw_optimum_age_ma(r) for r in sample.monteCarloRuns],
-                        dtype=float,
-                    )
-                opt_ma  = opt_ma[np.isfinite(opt_ma)]
-                if opt_ma.size:
-                    hit_lo    = np.mean(opt_ma <= (ages_ma[0] + step_ma))      # young boundary
-                    hit_hi    = np.mean(opt_ma >= (ages_ma[-1] - step_ma))     # old boundary
-                    edge_hits = max(hit_lo, hit_hi)
-
-                    if edge_hits > 0.20:
-                        # Keep the search window strictly > 0 Ma; 0 can trigger
-                        # singular behaviour in TW transforms used downstream.
-                        MIN_MODEL_AGE_Y = 1.0e6
-                        span_y        = float(st.maximumRimAge) - float(st.minimumRimAge)
-                        if np.isfinite(span_y) and span_y > 0.0:
-                            expand_y      = 0.20 * span_y
-                            widen_younger = (hit_lo >= hit_hi)
-
-                            if widen_younger:
-                                new_min = max(MIN_MODEL_AGE_Y, float(st.minimumRimAge) - expand_y)
-                                new_max = float(st.maximumRimAge)
-                            else:
-                                new_min = float(st.minimumRimAge)
-                                new_max = float(st.maximumRimAge) + expand_y
-
-                            if np.isfinite(new_min) and np.isfinite(new_max) and new_max > new_min:
-                                # keep grid step roughly constant
-                                ages_ma_new = np.asarray(st.rimAges(), float) / 1e6
-                                raw_step2 = float(np.median(np.diff(ages_ma_new))) if ages_ma_new.size >= 2 else 0.0
-                                if not np.isfinite(raw_step2) or raw_step2 <= 0.0:
-                                    raw_step2 = step_ma or 5.0
-                                step_ma2 = raw_step2
-
-                                span_ma_new = (new_max - new_min) / 1e6
-                                safe_step_for_div = step_ma2 if (np.isfinite(step_ma2) and step_ma2 > 1e-9) else max(span_ma_new, 1.0)
-                                if not np.isfinite(safe_step_for_div) or safe_step_for_div <= 0.0:
-                                    safe_step_for_div = max(span_ma_new, 1.0)
-
-                                prev_min = float(st.minimumRimAge)
-                                prev_max = float(st.maximumRimAge)
-                                prev_n = int(st.rimAgesSampled)
-                                prev_runs = list(sample.monteCarloRuns)
-                                prev_catalogue = list(getattr(sample, "peak_catalogue", []) or [])
-
-                                # Skip no-op reruns when bounds are unchanged after
-                                # clamping (common near the 1 Ma lower bound).
-                                if (abs(new_min - prev_min) > 1.0) or (abs(new_max - prev_max) > 1.0):
-                                    try:
-                                        st.minimumRimAge  = new_min
-                                        st.maximumRimAge  = new_max
-                                        st.rimAgesSampled = int(max(3, round(span_ma_new / safe_step_for_div) + 1))
-
-                                        # re-run once with widened window
-                                        sample.monteCarloRuns = []
-                                        sample.peak_catalogue = []
-                                        completed, skip_reason = _performRimAgeSampling(signals, sample)
-                                        if not completed:
-                                            st.minimumRimAge = prev_min
-                                            st.maximumRimAge = prev_max
-                                            st.rimAgesSampled = prev_n
-                                            sample.monteCarloRuns = prev_runs
-                                            sample.peak_catalogue = prev_catalogue
-                                            return False, skip_reason
-                                    except Exception:
-                                        st.minimumRimAge = prev_min
-                                        st.maximumRimAge = prev_max
-                                        st.rimAgesSampled = prev_n
-                                        sample.monteCarloRuns = prev_runs
-                                        sample.peak_catalogue = prev_catalogue
-                                        raise
-
-        except Exception:
-            pass
-
         return True, None
 
     finally:
         # runtime log (best effort)
-        try:
-            n_grid = len(sample.calculationSettings.rimAges())
-            R_runs = sample.calculationSettings.monteCarloRuns
-        except Exception:
-            n_grid, R_runs = 0, 0
+        n_grid = len(sample.calculationSettings.rimAges())
+        R_runs = sample.calculationSettings.monteCarloRuns
         _write_runlog(dict(
             method="CDC", phase="e2e_runtime",
             sample=sample.name, tier=_infer_tier(sample.name),
@@ -380,10 +280,7 @@ def _performRimAgeSampling(signals, sample):
         signals.progress(ProgressType.SAMPLING, progress, sample.name, run)
 
     mc_elapsed = time.perf_counter() - t0
-    try:
-        grid_len = len(settings.rimAges())
-    except Exception:
-        grid_len = 0
+    grid_len = len(settings.rimAges())
 
     _write_runlog(dict(
         method="CDC", phase="MC",
@@ -435,17 +332,17 @@ def _emit_summedKS(signals, sample, progress, ages_ma, y_curve, rows_for_ui):
     sample.summedKS_ci_high_Ma = np.asarray([hi for _, hi in ui_peaks_ci], float)
 
     payload = (ages_ma.tolist(), y_curve.tolist(), ui_peaks_age, ui_peaks_ci, ui_support)
-    try:
-        if hasattr(sample.signals, "summedKS"):
+    if hasattr(sample.signals, "summedKS"):
+        try:
             sample.signals.summedKS.emit(payload)
-    except Exception:
-        pass
+        except (AttributeError, RuntimeError, TypeError):
+            pass
     try:
         signals.progress("summedKS", progress, sample.name, payload)
     except TypeError:
         try:
             signals.progress("summedKS", progress, sample.name, (payload[0], payload[1], payload[2]))
-        except Exception:
+        except (AttributeError, RuntimeError, TypeError):
             pass
 
 def _smooth_frac_for_grid(ages_ma):
@@ -972,10 +869,11 @@ def _single_crest_fallback_row(ages_ma, S_curve, optima_ma, min_support):
     # Simple local maxima detector on the smoothed ensemble curve.
     loc = np.where((y[1:-1] >= y[:-2]) & (y[1:-1] >= y[2:]))[0] + 1
     if loc.size == 0:
-        try:
-            loc = np.array([int(np.nanargmax(y))], dtype=int)
-        except Exception:
+        finite_idx = np.flatnonzero(np.isfinite(y))
+        if finite_idx.size == 0:
             return None
+        best_rel = int(np.nanargmax(y[finite_idx]))
+        loc = np.array([int(finite_idx[best_rel])], dtype=int)
 
     interior = [int(j) for j in loc if (x[j] > (lo_age + edge_margin)) and (x[j] < (hi_age - edge_margin))]
     if not interior:
@@ -1137,7 +1035,7 @@ def _snap_rows_to_curve(rows, ages_ma, S_view):
         try:
             lo_old = float(rr.get("ci_low", np.nan))
             hi_old = float(rr.get("ci_high", np.nan))
-        except Exception:
+        except (TypeError, ValueError):
             lo_old, hi_old = np.nan, np.nan
 
         if maxima.size > 0 and np.any(~used):
@@ -1470,7 +1368,7 @@ def _calculateOptimalAge(signals, sample, progress):
         sample.peak_catalogue = []
         try:
             sample.signals.optimalAgeCalculated.emit()
-        except Exception:
+        except (AttributeError, RuntimeError, TypeError):
             pass
 
         # Plot legacy curve for diagnostics (optional)
@@ -1521,6 +1419,11 @@ def _calculateOptimalAge(signals, sample, progress):
                 continue
             out[r_i] = float(ages_ma[int(np.nanargmax(row))])
         return out
+
+    def _update_cluster_summary(**updates):
+        summary = dict(getattr(sample, "disc_cluster_summary", {}) or {})
+        summary.update(updates)
+        sample.disc_cluster_summary = summary
 
     rows_raw = _build_global_catalogue_rows(
         sample.name,
@@ -1758,14 +1661,12 @@ def _calculateOptimalAge(signals, sample, progress):
             cluster_reporting_accepted = False
             rows_raw = global_rows_raw
             rows_pen = global_rows_pen
-            try:
-                sample.disc_cluster_summary = dict(sample.disc_cluster_summary or {})
-                sample.disc_cluster_summary["accepted"] = False
-                sample.disc_cluster_summary["reason"] = "rejected_by_global_surface"
-                sample.disc_cluster_summary["global_raw_peak_count"] = int(len(global_rows_raw))
-                sample.disc_cluster_summary["global_pen_peak_count"] = int(len(global_rows_pen))
-            except Exception:
-                pass
+            _update_cluster_summary(
+                accepted=False,
+                reason="rejected_by_global_surface",
+                global_raw_peak_count=int(len(global_rows_raw)),
+                global_pen_peak_count=int(len(global_rows_pen)),
+            )
     elif cluster_reporting_accepted:
         rows_raw = rows_raw_cluster
         rows_pen = rows_pen_cluster
@@ -1781,61 +1682,51 @@ def _calculateOptimalAge(signals, sample, progress):
             cluster_reporting_accepted = False
             rows_raw = global_rows_raw
             rows_pen = global_rows_pen
-            try:
-                sample.disc_cluster_summary = dict(sample.disc_cluster_summary or {})
-                sample.disc_cluster_summary["accepted"] = False
-                sample.disc_cluster_summary["reason"] = "no_reportable_cluster_peaks"
-                sample.disc_cluster_summary["global_raw_peak_count"] = int(len(global_rows_raw))
-                sample.disc_cluster_summary["global_pen_peak_count"] = int(len(global_rows_pen))
-            except Exception:
-                pass
+            _update_cluster_summary(
+                accepted=False,
+                reason="no_reportable_cluster_peaks",
+                global_raw_peak_count=int(len(global_rows_raw)),
+                global_pen_peak_count=int(len(global_rows_pen)),
+            )
         elif len(interior_cluster_rows) == 0:
             cluster_reporting_accepted = False
             rows_raw = global_rows_raw
             rows_pen = global_rows_pen
-            try:
-                sample.disc_cluster_summary = dict(sample.disc_cluster_summary or {})
-                sample.disc_cluster_summary["accepted"] = False
-                sample.disc_cluster_summary["reason"] = "boundary_only_cluster_without_global_support"
-                sample.disc_cluster_summary["global_raw_peak_count"] = int(len(global_rows_raw))
-                sample.disc_cluster_summary["global_pen_peak_count"] = int(len(global_rows_pen))
-            except Exception:
-                pass
+            _update_cluster_summary(
+                accepted=False,
+                reason="boundary_only_cluster_without_global_support",
+                global_raw_peak_count=int(len(global_rows_raw)),
+                global_pen_peak_count=int(len(global_rows_pen)),
+            )
         elif len(interior_cluster_rows) > 1:
             cluster_reporting_accepted = False
             rows_raw = global_rows_raw
             rows_pen = global_rows_pen
-            try:
-                sample.disc_cluster_summary = dict(sample.disc_cluster_summary or {})
-                sample.disc_cluster_summary["accepted"] = False
-                sample.disc_cluster_summary["reason"] = "cluster_multi_interior_without_global_support"
-                sample.disc_cluster_summary["global_raw_peak_count"] = int(len(global_rows_raw))
-                sample.disc_cluster_summary["global_pen_peak_count"] = int(len(global_rows_pen))
-                sample.disc_cluster_summary["n_cluster_boundary_modes"] = int(len(boundary_cluster_rows))
-            except Exception:
-                pass
+            _update_cluster_summary(
+                accepted=False,
+                reason="cluster_multi_interior_without_global_support",
+                global_raw_peak_count=int(len(global_rows_raw)),
+                global_pen_peak_count=int(len(global_rows_pen)),
+                n_cluster_boundary_modes=int(len(boundary_cluster_rows)),
+            )
         elif n_cluster_reportable == 1:
-            try:
-                sample.disc_cluster_summary = dict(sample.disc_cluster_summary or {})
-                sample.disc_cluster_summary["reason"] = "partial_cluster_resolution"
-                sample.disc_cluster_summary["n_reportable_cluster_peaks"] = 1
-                sample.disc_cluster_summary["global_raw_peak_count"] = int(len(global_rows_raw))
-                sample.disc_cluster_summary["global_pen_peak_count"] = int(len(global_rows_pen))
-            except Exception:
-                pass
+            _update_cluster_summary(
+                reason="partial_cluster_resolution",
+                n_reportable_cluster_peaks=1,
+                global_raw_peak_count=int(len(global_rows_raw)),
+                global_pen_peak_count=int(len(global_rows_pen)),
+            )
     else:
         rows_raw = global_rows_raw
         rows_pen = global_rows_pen
 
     if clustering_accepted and not cluster_reporting_accepted:
-        try:
-            sample.disc_cluster_summary = dict(sample.disc_cluster_summary or {})
-            sample.disc_cluster_summary["accepted"] = False
-            sample.disc_cluster_summary.setdefault("reason", "rejected_by_global_surface")
-            sample.disc_cluster_summary["global_raw_peak_count"] = int(len(global_rows_raw))
-            sample.disc_cluster_summary["global_pen_peak_count"] = int(len(global_rows_pen))
-        except Exception:
-            pass
+        summary = dict(getattr(sample, "disc_cluster_summary", {}) or {})
+        summary["accepted"] = False
+        summary.setdefault("reason", "rejected_by_global_surface")
+        summary["global_raw_peak_count"] = int(len(global_rows_raw))
+        summary["global_pen_peak_count"] = int(len(global_rows_pen))
+        sample.disc_cluster_summary = summary
 
     # Fallback:
     # Only promote the median of the per-run optima to a pseudo-peak if the
@@ -2236,7 +2127,7 @@ def _calculateOptimalAge(signals, sample, progress):
 
     try:
         sample.signals.optimalAgeCalculated.emit()
-    except Exception:
+    except (AttributeError, RuntimeError, TypeError):
         pass
 
     cluster_summary_payload = dict(getattr(sample, "disc_cluster_summary", {}) or {})

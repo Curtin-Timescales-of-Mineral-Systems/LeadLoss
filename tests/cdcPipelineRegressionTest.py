@@ -182,6 +182,21 @@ class CDCPipelineRegressionTest(unittest.TestCase):
                 {"flat_or_monotonic_surface", "boundary_dominated_surface", "no_supported_peaks"},
             )
 
+    def test_processing_preserves_user_model_window_and_grid(self):
+        csv_path = _repo_root() / "papers/2025-peak-picking/data/inputs/Case 8 fan-to-zero Inputs/case8_fan_to_zero_synth_TW.csv"
+        sample = _build_samples(csv_path, sample_filter={"8A"}, mc_runs=100)[0]
+
+        settings = sample.calculationSettings
+        expected_min = float(settings.minimumRimAge)
+        expected_max = float(settings.maximumRimAge)
+        expected_nodes = int(settings.rimAgesSampled)
+
+        sample = _run_pipeline([sample])["8A"]
+
+        self.assertEqual(float(sample.calculationSettings.minimumRimAge), expected_min)
+        self.assertEqual(float(sample.calculationSettings.maximumRimAge), expected_max)
+        self.assertEqual(int(sample.calculationSettings.rimAgesSampled), expected_nodes)
+
     def test_ui_curve_matches_catalogue_case4a(self):
         csv_path = _repo_root() / "papers/2025-peak-picking/data/inputs/Cases 1-7 Pb loss Inputs/cases1to4_synth_TW.csv"
 
