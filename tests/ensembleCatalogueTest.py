@@ -8,7 +8,7 @@ from process.cdc_pipeline import (
     _snap_rows_to_curve,
     _single_crest_fallback_row,
 )
-from process.ensemble import build_ensemble_catalogue
+from process.ensemble import build_ensemble_catalogue, widen_rows_to_curvature_floor
 
 
 class EnsembleCatalogueTests(unittest.TestCase):
@@ -193,6 +193,53 @@ class EnsembleCatalogueTests(unittest.TestCase):
             and (120.0 < float(r["age_ma"]) < 260.0)
             for r in diagnostics
         ))
+
+    def test_curvature_floor_widens_flat_top_without_crossing_neighboring_basin(self):
+        ages = np.linspace(1.0, 1000.0, 200)
+        curve = 0.22 + 0.24 * np.exp(-0.5 * ((ages - 280.0) / 85.0) ** 2)
+        curve += 0.20 * np.exp(-0.5 * ((ages - 730.0) / 80.0) ** 2)
+        flat = (ages >= 260.0) & (ages <= 300.0)
+        curve[flat] = np.nanmax(curve[flat])
+        runs = np.vstack([curve.copy() for _ in range(12)])
+        rows = [dict(age_ma=279.7, ci_low=278.9, ci_high=280.4, support=1.0)]
+        widened = widen_rows_to_curvature_floor(rows, ages, curve, runs, orientation="max")
+
+        self.assertEqual(len(widened), 1)
+        row = widened[0]
+        self.assertGreater(float(row["age_ma"]), 260.0)
+        self.assertLess(float(row["age_ma"]), 320.0)
+        self.assertGreater(float(row["ci_high"]) - float(row["ci_low"]), 30.0)
+        self.assertLess(float(row["ci_high"]), 560.0)
+
+    def test_curvature_floor_preserves_peak_rows_and_ages(self):
+        ages = np.linspace(1.0, 1000.0, 200)
+        curve = 0.18 + 0.26 * np.exp(-0.5 * ((ages - 280.0) / 90.0) ** 2)
+        curve += 0.17 * np.exp(-0.5 * ((ages - 730.0) / 70.0) ** 2)
+        runs = np.vstack([
+            curve + 0.003 * np.sin(ages / 55.0 + phase)
+            for phase in np.linspace(0.0, 1.1, 12)
+        ])
+        rows = [
+            dict(age_ma=279.7, ci_low=278.9, ci_high=280.4, support=0.96, direct_support=0.96, winner_support=0.45, selection="strict"),
+            dict(age_ma=731.2, ci_low=726.0, ci_high=736.0, support=1.0, direct_support=1.0, winner_support=0.53, selection="strict"),
+        ]
+
+        widened = widen_rows_to_curvature_floor(rows, ages, curve, runs, orientation="max")
+
+        self.assertEqual(len(widened), len(rows))
+        for before, after in zip(rows, widened):
+            self.assertAlmostEqual(float(after["age_ma"]), float(before["age_ma"]), places=9)
+            self.assertAlmostEqual(float(after["support"]), float(before["support"]), places=9)
+            self.assertAlmostEqual(float(after["direct_support"]), float(before["direct_support"]), places=9)
+            self.assertAlmostEqual(float(after["winner_support"]), float(before["winner_support"]), places=9)
+            self.assertEqual(str(after["selection"]), str(before["selection"]))
+            self.assertLessEqual(float(after["ci_low"]), float(before["ci_low"]))
+            self.assertGreaterEqual(float(after["ci_high"]), float(before["ci_high"]))
+
+        self.assertGreater(
+            float(widened[0]["ci_high"]) - float(widened[0]["ci_low"]),
+            float(rows[0]["ci_high"]) - float(rows[0]["ci_low"]),
+        )
 
 
 if __name__ == "__main__":

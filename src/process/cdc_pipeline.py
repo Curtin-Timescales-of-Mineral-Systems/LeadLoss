@@ -24,7 +24,12 @@ from process.discordantClustering import (
     build_fixed_discordant_labels,
     stack_goodness_by_cluster,
 )
-from process.ensemble import robust_ensemble_curve, build_ensemble_catalogue, build_cluster_catalogue_legacy
+from process.ensemble import (
+    robust_ensemble_curve,
+    build_ensemble_catalogue,
+    build_cluster_catalogue_legacy,
+    widen_rows_to_curvature_floor,
+)
 from process.cdc_config import (
     CATALOGUE_CSV_PEN,
     CATALOGUE_CSV_RAW,
@@ -1909,6 +1914,13 @@ def _calculateOptimalAge(signals, sample, progress):
             "boundary_dominated_surface",
             ages_ma,
         )
+
+    # Experimental CI calibration: widen retained rows using a local
+    # curvature-derived floor after peak selection/merging, so peak counts stay
+    # unchanged while broad or flat-topped crests do not collapse to tiny CIs.
+    rows_raw = widen_rows_to_curvature_floor(rows_raw, ages_ma, Smed_raw, S_runs_raw, orientation="max")
+    rows_pen = widen_rows_to_curvature_floor(rows_pen, ages_ma, Smed_pen, S_runs_pen, orientation="max")
+    rows_for_ui = widen_rows_to_curvature_floor(rows_for_ui, ages_ma, S_view, S_runs_view, orientation="max")
 
     # Ensure snapped age lies inside its CI (preserve width >= 1 step)
     if rows_for_ui:
