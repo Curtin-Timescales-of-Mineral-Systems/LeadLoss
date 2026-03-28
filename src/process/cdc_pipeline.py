@@ -75,6 +75,11 @@ from utils import config
 from utils.peakHelpers import fmt_peak_stats
 
 TIME_PER_TASK = 0.0
+_BOUNDARY_NEAR_GRID_STEPS = 8.0
+_BOUNDARY_FAR_GRID_STEPS = 5.0
+_CLUSTER_ALIGN_MIN_TOL_MA = 100.0
+_DEGENERATE_CI_GRID_FRAC = 0.75
+_SINGLE_CREST_PROM_FRAC = 0.03
 
 class ProgressType(Enum):
     CONCORDANCE = 0
@@ -647,8 +652,10 @@ def _apply_boundary_dominance_guard(rows, optima_ma, ages_ma):
     span = max(hi - lo, step)
     # Keep edge zones scale-aware so genuinely young events are not suppressed
     # just because absolute fallback floors dominate small modelling windows.
-    near_edge_zone = min(max(8.0 * step, 0.08 * span), 0.25 * span)
-    far_from_edge_zone = min(max(5.0 * step, 0.05 * span), 0.20 * span)
+    # Keep boundary heuristics tied to grid resolution so coarse meshes do not
+    # label nearby interior peaks as edge modes.
+    near_edge_zone = min(max(_BOUNDARY_NEAR_GRID_STEPS * step, 0.08 * span), 0.25 * span)
+    far_from_edge_zone = min(max(_BOUNDARY_FAR_GRID_STEPS * step, 0.05 * span), 0.20 * span)
     strict_boundary_mode = edge_frac >= 0.85
 
     out = []
@@ -894,7 +901,9 @@ def _single_crest_fallback_row(ages_ma, S_curve, optima_ma, min_support):
     # Accept broad single-crest surfaces where absolute prominence is modest
     # compared to full-window delta, but still clearly above local roughness.
     rough = float(np.nanmedian(np.abs(np.diff(y)))) if y.size >= 3 else 0.0
-    prom_min = max(0.03 * delta, 3.0 * rough, 0.008)
+    # Broad single-crest surfaces are accepted once they rise by roughly 3% of
+    # the full window dynamic range and stand above local roughness.
+    prom_min = max(_SINGLE_CREST_PROM_FRAC * delta, 3.0 * rough, 0.008)
     weak_side_min = max(rough, 0.002)
     if prom_one_sided < prom_min:
         return None
@@ -1630,7 +1639,9 @@ def _calculateOptimalAge(signals, sample, progress):
         if not cluster_rows or not global_rows:
             return []
         step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
-        tol_ma = max(100.0, 8.0 * step)
+        # Allow a generous match tolerance so cluster/global rows still align on
+        # coarse age grids or broad synthetic modes.
+        tol_ma = max(_CLUSTER_ALIGN_MIN_TOL_MA, _BOUNDARY_NEAR_GRID_STEPS * step)
 
         aligned = [dict(r) for r in cluster_rows if str(r.get("mode", "")) == "recent_boundary"]
         used_global = set()
@@ -1955,7 +1966,9 @@ def _calculateOptimalAge(signals, sample, progress):
             if (hi - lo) < step:
                 lo, hi = a - step, a + step
             near_edge  = (a - min_age) <= step or (max_age - a) <= step
-            degenerate = (hi - lo) <= 0.75 * step
+            # Sub-grid intervals are numerical collapses rather than a credible
+            # statement of age resolution, especially at window edges.
+            degenerate = (hi - lo) <= _DEGENERATE_CI_GRID_FRAC * step
             if near_edge and degenerate:
                 if float(r.get("filter_support", r.get("support", 0.0))) >= max(support_floor, 0.12):
                     lo, hi = a - step, a + step

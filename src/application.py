@@ -288,11 +288,15 @@ class LeadLossApplication:
 
     def cheatLoad(self):
         try:
-            inputFile = "/home/matthew/Code/concordia-applications/LeadLoss/tests/leadLossTest_with_errors.csv"
+            fixture = Path(__file__).resolve().parents[1] / "tests" / "leadLossTest_with_errors.csv"
+            if not fixture.exists():
+                print(f"cheatLoad fixture not found: {fixture}", file=sys.stderr)
+                return
+            inputFile = str(fixture)
             Settings.setCurrentFile(inputFile)
             settings = Settings.get(SettingsType.IMPORT)
             self._importCSV(inputFile, settings)
-        except:
+        except Exception:
             print(traceback.format_exc(), file=sys.stderr)
 
 

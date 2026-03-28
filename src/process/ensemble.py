@@ -15,6 +15,8 @@ peak_widths = _peak_widths
 
 _EPS = 1e-12
 _CI_CURVATURE_MIN_HALF_WINDOW = 4
+_COARSE_SIGMA_GRID_FRAC = 0.03
+_DEGENERATE_CI_GRID_FRAC = 0.75
 
 # -------------------------- utilities ----------------------------------------
 def _step_from_grid(x: np.ndarray) -> float:
@@ -441,7 +443,9 @@ def build_ensemble_catalogue(
     pk_major = np.array([], dtype=int)
     major_rad = max(1, int(0.05 * G)) if merge_per_hump else 0
     if merge_per_hump:
-        sigma_coarse = max(5.0, 0.03 * float(G))
+        # A coarse surface blurred over ~3% of the grid helps merge shoulder
+        # roughness while keeping distinct humps separate.
+        sigma_coarse = max(5.0, _COARSE_SIGMA_GRID_FRAC * float(G))
         S_med_coarse = gaussian_filter1d(S_med_s, sigma=sigma_coarse, mode="reflect")
         y_coarse = sign * S_med_coarse
         pk_major, _ = find_peaks(
@@ -754,7 +758,8 @@ def build_ensemble_catalogue(
         hi_ci = min(hi_ci, float(x[-1]))
         if (not np.isfinite(lo_ci)) or (not np.isfinite(hi_ci)) or (hi_ci <= lo_ci):
             lo_ci, hi_ci = max(age_out - step, float(x[0])), min(age_out + step, float(x[-1]))
-        if (hi_ci - lo_ci) < (0.75 * step):
+        # Treat sub-grid intervals as collapsed numerical artefacts.
+        if (hi_ci - lo_ci) < (_DEGENERATE_CI_GRID_FRAC * step):
             lo_ci, hi_ci = max(age_out - step, float(x[0])), min(age_out + step, float(x[-1]))
         if age_out < lo_ci:
             age_out = float(lo_ci)
@@ -908,7 +913,8 @@ def build_cluster_catalogue_legacy(
         return []
 
     y = sign * S_med_s
-    sigma_coarse = max(5.0, 0.03 * float(G))
+    # Mirror the coarse smoothing used in the global catalogue builder.
+    sigma_coarse = max(5.0, _COARSE_SIGMA_GRID_FRAC * float(G))
     S_med_coarse = gaussian_filter1d(S_med_s, sigma=sigma_coarse, mode="reflect")
     y_coarse = sign * S_med_coarse
     prom_abs = max(float(f_p) * float(Delta), _EPS)
@@ -1120,7 +1126,8 @@ def build_cluster_catalogue_legacy(
         hi_ci = min(hi_ci, float(x[-1]))
         if (not np.isfinite(lo_ci)) or (not np.isfinite(hi_ci)) or (hi_ci <= lo_ci):
             lo_ci, hi_ci = max(age_ref - step, float(x[0])), min(age_ref + step, float(x[-1]))
-        if (hi_ci - lo_ci) < (0.75 * step):
+        # Treat sub-grid intervals as collapsed numerical artefacts.
+        if (hi_ci - lo_ci) < (_DEGENERATE_CI_GRID_FRAC * step):
             lo_ci, hi_ci = max(age_ref - step, float(x[0])), min(age_ref + step, float(x[-1]))
 
         min_width = 5.0 * step
