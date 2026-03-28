@@ -1,15 +1,3 @@
-"""CDC/ensemble configuration derived from environment variables.
-
-This module centralises the many 'knobs' that were previously defined at the top of
-process/processing.py.
-
-Design goals
-------------
-- Keep defaults identical to the manuscript implementation.
-- Allow paper/diagnostic outputs to be enabled without hard-coded absolute paths.
-- Keep the GUI default behaviour unchanged (outputs off unless enabled).
-"""
-
 from __future__ import annotations
 
 import os

@@ -1,9 +1,3 @@
-"""Heatmap post-processing helper.
-
-This is kept separate so the core CDC pipeline isn't cluttered with UI-specific
-visualisation aggregation code.
-"""
-
 from __future__ import annotations
 
 import numpy as np

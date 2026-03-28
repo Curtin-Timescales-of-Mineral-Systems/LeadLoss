@@ -15,7 +15,7 @@ from process.cdc_config import REV_TOL_X, REV_TOL_Y
 
 # ======================  DECAY CONSTANTS & TW HELPERS  ======================
 
-# These are in units of 1/Ma (consistent with the existing implementation).
+# These are in units of 1/Ma
 LAMBDA_238 = 1.55125e-4
 LAMBDA_235 = 9.8485e-4
 R_U = 137.818  # 238U/235U
