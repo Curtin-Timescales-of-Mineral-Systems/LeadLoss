@@ -65,6 +65,10 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
+def _fixture(name: str) -> Path:
+    return Path(__file__).resolve().parent / "fixtures" / name
+
+
 def _build_samples(csv_path: Path, *, sample_filter=None, mc_runs: int = 20):
     imp = LeadLossImportSettings()
     _, rows = csvUtils.read_input(str(csv_path), imp)
@@ -100,7 +104,7 @@ def _run_pipeline(samples):
 
 class CDCPipelineRegressionTest(unittest.TestCase):
     def test_fan_to_zero_boundary_regression(self):
-        csv_path = _repo_root() / "papers/2025-peak-picking/data/inputs/Case 8 fan-to-zero Inputs/case8_fan_to_zero_synth_TW.csv"
+        csv_path = _fixture("case8_fan_to_zero_synth_TW.csv")
         names = {"8A", "8B", "8C"}
 
         samples = _run_pipeline(_build_samples(csv_path, sample_filter=names))
@@ -119,7 +123,7 @@ class CDCPipelineRegressionTest(unittest.TestCase):
             )
 
     def test_processing_preserves_user_model_window_and_grid(self):
-        csv_path = _repo_root() / "papers/2025-peak-picking/data/inputs/Case 8 fan-to-zero Inputs/case8_fan_to_zero_synth_TW.csv"
+        csv_path = _fixture("case8_fan_to_zero_synth_TW.csv")
         sample = _build_samples(csv_path, sample_filter={"8A"}, mc_runs=100)[0]
 
         settings = sample.calculationSettings
@@ -134,7 +138,7 @@ class CDCPipelineRegressionTest(unittest.TestCase):
         self.assertEqual(int(sample.calculationSettings.rimAgesSampled), expected_nodes)
 
     def test_ui_curve_matches_catalogue_case4a(self):
-        csv_path = _repo_root() / "papers/2025-peak-picking/data/inputs/Cases 1-7 Pb loss Inputs/cases1to4_synth_TW.csv"
+        csv_path = _fixture("cases1to4_synth_TW.csv")
 
         sample = _run_pipeline(_build_samples(csv_path, sample_filter={"4A"}))["4A"]
 
@@ -153,7 +157,7 @@ class CDCPipelineRegressionTest(unittest.TestCase):
         )
 
     def test_unimodal_case1c_retains_single_peak(self):
-        csv_path = _repo_root() / "papers/2025-peak-picking/data/inputs/Cases 1-7 Pb loss Inputs/cases1to4_synth_TW.csv"
+        csv_path = _fixture("cases1to4_synth_TW.csv")
 
         sample = _run_pipeline(_build_samples(csv_path, sample_filter={"1C"}, mc_runs=100))["1C"]
 

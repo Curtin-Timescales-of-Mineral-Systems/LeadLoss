@@ -4,23 +4,18 @@ Thank you for considering a contribution.
 
 ## Scope
 
-This repository contains:
-
-- application code (to be added/maintained over time), and
-- a manuscript reproduction bundle under `papers/2025-peak-picking/`.
-
-To keep the manuscript workflow reproducible, please avoid changes that break the ability to regenerate the tables/figures without clearly documenting the new requirements.
+This repository contains the application code and tests for the public LeadLoss release.
+Manuscript assets are distributed separately from the code repository.
 
 ## Suggested workflow
 
 1. Create a feature branch.
 2. Make small, focused commits.
-3. If you modify manuscript scripts, run the relevant reproduction commands from:
-   - `papers/2025-peak-picking/README.md`
+3. Run the relevant tests before opening a pull request.
 4. Open a pull request with:
    - a clear summary of changes,
    - links to any related issues,
-   - notes on whether outputs changed.
+   - notes on whether user-facing behaviour changed.
 
 ## Repository hygiene
 

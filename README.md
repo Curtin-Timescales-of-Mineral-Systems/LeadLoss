@@ -5,7 +5,7 @@
 LeadLoss is a Python-based tool for estimating the most likely timing of Pb-loss in discordant zircon samples. This repository includes:
 
 - a cross-platform **GUI application** for interactive analysis, and
-- a **manuscript reproduction bundle** for the 2025 “peak-picking” Pb-loss paper (figures and tables).
+- the source code and tests for the current no-clustering public release.
 
 The revised public GUI release follows the no-clustering workflow used in the updated manuscript. Archived discordant-clustering code remains in the repository for provenance but is not exposed in the release interface.
 
@@ -46,22 +46,11 @@ python src/application.py
 Note: `soerp` is now optional in source installs. If it is unavailable on your platform,
 the app falls back to deterministic math operations for the affected internals.
 
-## Manuscript reproduction (2025 peak-picking)
+## Manuscript assets
 
-Reproduction materials and instructions (environment + commands) are in:
-
-- `papers/2025-peak-picking/README.md`
-
-One-command reproduction (figures + tables):
-
-```bash
-python papers/2025-peak-picking/scripts/run_all.py --clean
-```
-
-This generates manuscript artefacts into:
-
-- `papers/2025-peak-picking/outputs/tables/`
-- `papers/2025-peak-picking/outputs/figures/`
+The revised manuscript, figures, and benchmark/data assets are distributed separately
+from the code release as a curated Zenodo-style package. This keeps the repository
+code-focused and avoids mixing working manuscript material into the public code line.
 
 ## Input requirements (GUI)
 
@@ -78,10 +67,10 @@ During import, you can specify column names or indices (e.g., A, B, C, D or 1, 2
 
 The GUI can export:
 
-- optimal Pb-loss age estimates with 95% confidence intervals
+- optimal Pb-loss age estimates with empirical 95% intervals
 - K–S test statistics (p-values and D-values)
 - individual Monte Carlo sampling results
-- ensemble catalogue of Pb-loss age estimates with 95% confidence intervals and support values
+- ensemble catalogue of Pb-loss age estimates with empirical 95% intervals and support values
 
 ## Troubleshooting
 

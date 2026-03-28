@@ -1,3 +1,0 @@
-method,phase,sample,tier,R,n_grid,elapsed_s,per_run_median_s,per_run_p95_s,rss_peak_mb,python,numpy
-CDC,MC,2A,A,200,200,50.22,0.2494,0.2597,323.4,3.11.7,1.26.4
-CDC,e2e_runtime,2A,A,200,200,50.586,,,325.8,3.11.7,1.26.4
