@@ -1,4 +1,0 @@
-dataset,filtered_rows_u_pb_zircon,unique_samples_u_pb_zircon,samples_with_coords,matched_by_strict_id,matched_by_fuzzy_id_only,matched_by_coord_only_0p001deg,matched_total_after_all_methods,still_missing_after_all_methods
-GA Geochronology,107,89,89,58,0,0,58,31
-GSWA Geochronology,1456,1444,1444,1322,0,4,1326,118
-McNaughton Legacy SHRIMP,467,426,426,0,13,6,19,407
