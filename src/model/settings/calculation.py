@@ -38,7 +38,8 @@ class LeadLossCalculationSettings:
         self.useSummedKS = False
         self.summedKSSmoothSigma = 1.0
 
-        # Optional discordant clustering
+        # Archived backend path retained for provenance; the release GUI keeps
+        # clustering disabled and does not expose it to users.
         self.use_discordant_clustering = False
         self.relabel_clusters_per_run = False
 

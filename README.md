@@ -7,6 +7,8 @@ LeadLoss is a Python-based tool for estimating the most likely timing of Pb-loss
 - a cross-platform **GUI application** for interactive analysis, and
 - a **manuscript reproduction bundle** for the 2025 “peak-picking” Pb-loss paper (figures and tables).
 
+The revised public GUI release follows the no-clustering workflow used in the updated manuscript. Archived discordant-clustering code remains in the repository for provenance but is not exposed in the release interface.
+
 ## Download and installation
 
 ### Option 1: Standalone executables (recommended)

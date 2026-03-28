@@ -104,20 +104,20 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
     def _initPeakSettings(self):
         d = self.defaultSettings
-        box = QGroupBox("Peak extraction & clustering")
+        box = QGroupBox("Peak extraction")
         v = QVBoxLayout()
-
-        self.useClusteringCB = QCheckBox("Cluster discordant grains", self)
-        self.useClusteringCB.setChecked(bool(getattr(d, "use_discordant_clustering", False)))
-        self.useClusteringCB.stateChanged.connect(self._validate)
 
         # Ensemble multi-peak finder
         self.enableEnsembleCB = QCheckBox("Ensemble catalogue", self)
         self.enableEnsembleCB.setChecked(bool(getattr(d, "enable_ensemble_peak_picking", True)))
         self.enableEnsembleCB.stateChanged.connect(self._onEnsembleToggleChanged)
+        self.noClusteringNote = QLabel(
+            "Discordant clustering is archived and not exposed in this release."
+        )
+        self.noClusteringNote.setWordWrap(True)
 
         v.addWidget(self.enableEnsembleCB)
-        v.addWidget(self.useClusteringCB)
+        v.addWidget(self.noClusteringNote)
         v.addStretch(1)
 
         box.setLayout(v)
@@ -134,10 +134,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         self.discordanceEllipseSigmasRB.setVisible(not perc)  # set True when not perc
 
     def _syncPeakControls(self):
-        ensemble_enabled = self.enableEnsembleCB.isChecked()
-        if not ensemble_enabled:
-            self.useClusteringCB.setChecked(False)
-        self.useClusteringCB.setEnabled(ensemble_enabled)
+        self.noClusteringNote.setVisible(self.enableEnsembleCB.isChecked())
 
     def _onEnsembleToggleChanged(self):
         self._syncPeakControls()
@@ -166,7 +163,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         s.monteCarloRuns      = self.monteCarloRunsInput.value()
 
         s.enable_ensemble_peak_picking = self.enableEnsembleCB.isChecked()
-        s.use_discordant_clustering = s.enable_ensemble_peak_picking and self.useClusteringCB.isChecked()
+        s.use_discordant_clustering = False
 
         # Fixed publication-safe defaults (hidden from GUI to reduce user burden)
         s.conservative_abstain_on_monotonic = True
