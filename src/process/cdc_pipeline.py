@@ -1573,77 +1573,61 @@ def _calculateOptimalAge(signals, sample, progress):
                 and ((not abstain_on_monotonic) or (not _is_effectively_monotonic(Smed_pen_k, Delta_pen_k)))
             )
 
+            _surface_vars = {
+                "raw": dict(
+                    pickable=raw_pickable_k, S_k=S_raw_k, Smed_k=Smed_raw_k,
+                    optima_k=optima_ma_raw_k, curve_dict=cluster_curve_raw,
+                    diag_dict=cluster_diag_raw,
+                ),
+                "pen": dict(
+                    pickable=pen_pickable_k, S_k=S_pen_k, Smed_k=Smed_pen_k,
+                    optima_k=optima_ma_pen_k, curve_dict=cluster_curve_pen,
+                    diag_dict=cluster_diag_pen,
+                ),
+            }
             rows_raw_k: List[Dict] = []
             rows_pen_k: List[Dict] = []
+            _rows_by_tag = {"raw": rows_raw_k, "pen": rows_pen_k}
 
-            if raw_pickable_k:
-                cluster_curve_raw[int(cid)] = np.asarray(Smed_raw_k, float)
-                rows_raw_k = build_cluster_catalogue_legacy(
-                    sample.name,
-                    _infer_tier(sample.name),
-                    ages_ma,
-                    S_raw_k,
-                    orientation="max",
-                    smooth_frac=smf,
-                    f_d=FD_DIST_FRAC,
-                    f_p=FP_PROM_FRAC,
-                    f_v=FV_VALLEY_FRAC,
-                    f_w=FW_WIN_FRAC,
-                    w_min_nodes=3,
-                    support_min=FS_SUPPORT,
-                    r_min=RMIN_RUNS,
-                    f_r=FR_RUN_REL,
-                    per_run_prom_frac=PER_RUN_PROM_FRAC,
-                    per_run_min_dist=PER_RUN_MIN_DIST,
-                    per_run_min_width=PER_RUN_MIN_WIDTH,
-                    per_run_require_full_prom=False,
-                    height_frac=FH_HEIGHT_FRAC,
-                    optima_ma=optima_ma_raw_k,
-                ) or []
-            if not rows_raw_k:
-                row_boundary = None
-                if bool(cluster_diag_raw.get(int(cid), {}).get("boundary", False)):
-                    row_boundary = _recent_boundary_mode_row(optima_ma_raw_k, len(runs), ages_ma)
-                if row_boundary is not None:
-                    row_boundary["cluster_id"] = int(cid)
-                    rows_raw_k = [row_boundary]
+            for _tag, _sv in _surface_vars.items():
+                _rows_k: List[Dict] = []
+                if _sv["pickable"]:
+                    _sv["curve_dict"][int(cid)] = np.asarray(_sv["Smed_k"], float)
+                    _rows_k = build_cluster_catalogue_legacy(
+                        sample.name,
+                        _infer_tier(sample.name),
+                        ages_ma,
+                        _sv["S_k"],
+                        orientation="max",
+                        smooth_frac=smf,
+                        f_d=FD_DIST_FRAC,
+                        f_p=FP_PROM_FRAC,
+                        f_v=FV_VALLEY_FRAC,
+                        f_w=FW_WIN_FRAC,
+                        w_min_nodes=3,
+                        support_min=FS_SUPPORT,
+                        r_min=RMIN_RUNS,
+                        f_r=FR_RUN_REL,
+                        per_run_prom_frac=PER_RUN_PROM_FRAC,
+                        per_run_min_dist=PER_RUN_MIN_DIST,
+                        per_run_min_width=PER_RUN_MIN_WIDTH,
+                        per_run_require_full_prom=False,
+                        height_frac=FH_HEIGHT_FRAC,
+                        optima_ma=_sv["optima_k"],
+                    ) or []
+                if not _rows_k:
+                    row_boundary = None
+                    if bool(_sv["diag_dict"].get(int(cid), {}).get("boundary", False)):
+                        row_boundary = _recent_boundary_mode_row(_sv["optima_k"], len(runs), ages_ma)
+                    if row_boundary is not None:
+                        row_boundary["cluster_id"] = int(cid)
+                        _rows_k = [row_boundary]
+                for r in _rows_k:
+                    r["cluster_id"] = int(cid)
+                _rows_by_tag[_tag] = _rows_k
 
-            if pen_pickable_k:
-                cluster_curve_pen[int(cid)] = np.asarray(Smed_pen_k, float)
-                rows_pen_k = build_cluster_catalogue_legacy(
-                    sample.name,
-                    _infer_tier(sample.name),
-                    ages_ma,
-                    S_pen_k,
-                    orientation="max",
-                    smooth_frac=smf,
-                    f_d=FD_DIST_FRAC,
-                    f_p=FP_PROM_FRAC,
-                    f_v=FV_VALLEY_FRAC,
-                    f_w=FW_WIN_FRAC,
-                    w_min_nodes=3,
-                    support_min=FS_SUPPORT,
-                    r_min=RMIN_RUNS,
-                    f_r=FR_RUN_REL,
-                    per_run_prom_frac=PER_RUN_PROM_FRAC,
-                    per_run_min_dist=PER_RUN_MIN_DIST,
-                    per_run_min_width=PER_RUN_MIN_WIDTH,
-                    per_run_require_full_prom=False,
-                    height_frac=FH_HEIGHT_FRAC,
-                    optima_ma=optima_ma_pen_k,
-                ) or []
-            if not rows_pen_k:
-                row_boundary = None
-                if bool(cluster_diag_pen.get(int(cid), {}).get("boundary", False)):
-                    row_boundary = _recent_boundary_mode_row(optima_ma_pen_k, len(runs), ages_ma)
-                if row_boundary is not None:
-                    row_boundary["cluster_id"] = int(cid)
-                    rows_pen_k = [row_boundary]
-
-            for r in rows_raw_k:
-                r["cluster_id"] = int(cid)
-            for r in rows_pen_k:
-                r["cluster_id"] = int(cid)
+            rows_raw_k = _rows_by_tag["raw"]
+            rows_pen_k = _rows_by_tag["pen"]
 
             if rows_raw_k:
                 rows_raw_cluster.extend(dict(r) for r in rows_raw_k)
