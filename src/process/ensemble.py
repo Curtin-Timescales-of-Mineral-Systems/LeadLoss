@@ -363,6 +363,122 @@ def robust_ensemble_curve(S_runs: np.ndarray, smooth_frac: float = 0.01,
     Delta = max(q95 - q5, _EPS)
     return S_med_s, float(Delta), float(sigma_nodes)
 
+def _score_candidate_peaks(
+    pk, x, S, S_med_s, sign, R,
+    per_run_peaks_list, optima_ma, run_gate,
+    f_r, support_min, r_min,
+    left_bounds, right_bounds,
+    j_ref_all, age_ref_all,
+    diagnostic_rows,
+):
+    """Per-run voting, support computation, and CI estimation for candidate peaks."""
+    out: List[Dict] = []
+
+    for j_idx, j_c in enumerate(pk):
+        j_ref = int(j_ref_all[j_idx])
+        age_ref = float(age_ref_all[j_idx])
+
+        a = max(1, int(left_bounds[j_idx]))
+        b = min(S.shape[1] - 2, int(right_bounds[j_idx]))
+        lo_ma_win, hi_ma_win = float(x[a]), float(x[b])
+
+        f_r_eff = float(f_r)
+
+        votes: List[float] = []
+        direct_votes: List[float] = []
+        optima_for_peak: List[float] = []
+
+        for r in range(R):
+            y_r = sign * S[r]
+            pr_list = per_run_peaks_list[r] if r < len(per_run_peaks_list) else None
+            pr_list = np.asarray(pr_list, float) if pr_list is not None else np.array([], float)
+            cand = pr_list[(pr_list >= lo_ma_win) & (pr_list <= hi_ma_win)]
+
+            if cand.size == 0:
+                j_abs = int(a + np.argmax(y_r[a:b+1]))
+                p5, p95 = run_gate[r, 0], run_gate[r, 1]
+                thr = p5 + f_r_eff * max(p95 - p5, 0.0)
+                if y_r[j_abs] < thr:
+                    continue
+                age_vote = float(_parabolic_refine(x, S[r], j_abs))
+            else:
+                j_choices = [int(np.argmin(np.abs(x - p))) for p in cand]
+                heights_r = [float(y_r[jj]) for jj in j_choices]
+                j_abs = int(j_choices[int(np.argmax(heights_r))])
+
+                p5, p95 = run_gate[r, 0], run_gate[r, 1]
+                thr = p5 + f_r_eff * max(p95 - p5, 0.0)
+                if y_r[j_abs] < thr:
+                    continue
+                age_vote = float(_parabolic_refine(x, S[r], j_abs))
+                direct_votes.append(age_vote)
+
+            if age_ref_all.size > 1:
+                nearest = int(np.argmin(np.abs(age_ref_all - age_vote)))
+                if nearest != j_idx:
+                    continue
+
+            votes.append(age_vote)
+
+            if optima_ma is not None and 0 <= r < optima_ma.size:
+                opt_val = float(optima_ma[r])
+                if np.isfinite(opt_val) and (lo_ma_win <= opt_val <= hi_ma_win):
+                    optima_for_peak.append(opt_val)
+
+        support = len(direct_votes) / float(R)
+
+        if support < max(float(support_min), float(r_min) / float(max(R, 1))):
+            _append_diagnostic_peak(
+                diagnostic_rows, x, S_med_s, int(j_ref),
+                reason="low_support",
+                direct_support=float(support),
+                winner_support=float(len(optima_for_peak) / float(max(R, 1))) if optima_ma is not None else np.nan,
+                ci_low=lo_ma_win, ci_high=hi_ma_win,
+            )
+            continue
+
+        step = float(x[1] - x[0])
+        if len(direct_votes) >= 3:
+            lo_ci, hi_ci = np.nanpercentile(direct_votes, [2.5, 97.5])
+        elif optima_ma is not None and len(optima_for_peak) >= 3:
+            lo_ci, hi_ci = np.nanpercentile(optima_for_peak, [2.5, 97.5])
+        elif len(votes) >= 3:
+            lo_ci, hi_ci = np.nanpercentile(votes, [2.5, 97.5])
+        else:
+            lo_ci, hi_ci = age_ref - step, age_ref + step
+
+        if len(direct_votes) >= 1:
+            med_votes = float(np.median(direct_votes))
+        elif len(optima_for_peak) >= 1:
+            med_votes = float(np.median(optima_for_peak))
+        elif len(votes) >= 1:
+            med_votes = float(np.median(votes))
+        else:
+            med_votes = age_ref
+        age_out = float(med_votes if np.isfinite(med_votes) else age_ref)
+
+        lo_ci = max(lo_ci, float(x[0]))
+        hi_ci = min(hi_ci, float(x[-1]))
+        if (not np.isfinite(lo_ci)) or (not np.isfinite(hi_ci)) or (hi_ci <= lo_ci):
+            lo_ci, hi_ci = max(age_out - step, float(x[0])), min(age_out + step, float(x[-1]))
+        if (hi_ci - lo_ci) < (_DEGENERATE_CI_GRID_FRAC * step):
+            lo_ci, hi_ci = max(age_out - step, float(x[0])), min(age_out + step, float(x[-1]))
+        if age_out < lo_ci:
+            age_out = float(lo_ci)
+        elif age_out > hi_ci:
+            age_out = float(hi_ci)
+
+        out.append(dict(
+            peak_no=0,
+            age_ma=age_out,
+            ci_low=float(lo_ci),
+            ci_high=float(hi_ci),
+            support=float(support),
+        ))
+
+    return out
+
+
 def build_ensemble_catalogue(
     sample_name: str,
     tier: str,
@@ -632,7 +748,7 @@ def build_ensemble_catalogue(
         right_bounds[i] = boundary
         left_bounds[i + 1] = boundary
 
-    # ---------------- Per-run gates + voting as before ----------------------
+    # ---------------- Per-run gates + voting ----------------------
     run_gate = np.empty((R, 2), float)
     for r in range(R):
         y_r = sign * S[r]
@@ -654,126 +770,20 @@ def build_ensemble_catalogue(
             )
             per_run_peaks_list.append(np.asarray(pr, float))
 
-    out: List[Dict] = []
     optima_ma = np.asarray(optima_ma, float) if optima_ma is not None else None
     j_ref_all = np.array([_crest_index(S_med_s, int(jc), half_win=2) for jc in pk], int)
     age_ref_all = np.array([_parabolic_refine(x, S_med_s, int(jr)) for jr in j_ref_all], float)
 
-    for j_idx, j_c in enumerate(pk):
-        # refine apex on unoriented ensemble curve
-        j_ref = int(j_ref_all[j_idx])
-        age_ref = float(age_ref_all[j_idx])
-
-        a = max(1, int(left_bounds[j_idx]))
-        b = min(G - 2, int(right_bounds[j_idx]))
-        lo_ma_win, hi_ma_win = float(x[a]), float(x[b])
-
-        f_r_eff = float(f_r)
-
-        votes: List[float] = []
-        direct_votes: List[float] = []
-        optima_for_peak: List[float] = []
-
-        for r in range(R):
-            y_r = sign * S[r]
-            pr_list = per_run_peaks_list[r] if r < len(per_run_peaks_list) else None
-            pr_list = np.asarray(pr_list, float) if pr_list is not None else np.array([], float)
-            cand = pr_list[(pr_list >= lo_ma_win) & (pr_list <= hi_ma_win)]
-
-            if cand.size == 0:
-                # fallback : take the local crest in [a,b], but ONLY inside this hump
-                j_abs = int(a + np.argmax(y_r[a:b+1]))
-                p5, p95 = run_gate[r, 0], run_gate[r, 1]
-                thr = p5 + f_r_eff * max(p95 - p5, 0.0)
-                if y_r[j_abs] < thr:
-                    continue
-                age_vote = float(_parabolic_refine(x, S[r], j_abs))
-            else:
-                j_choices = [int(np.argmin(np.abs(x - p))) for p in cand]
-                heights_r = [float(y_r[jj]) for jj in j_choices]
-                j_abs     = int(j_choices[int(np.argmax(heights_r))])
-
-                p5, p95 = run_gate[r, 0], run_gate[r, 1]
-                thr = p5 + f_r_eff * max(p95 - p5, 0.0)
-                if y_r[j_abs] < thr:
-                    continue
-                age_vote = float(_parabolic_refine(x, S[r], j_abs))
-                direct_votes.append(age_vote)
-
-            # Prevent one run from supporting multiple nearby candidate peaks.
-            if age_ref_all.size > 1:
-                nearest = int(np.argmin(np.abs(age_ref_all - age_vote)))
-                if nearest != j_idx:
-                    continue
-
-            votes.append(age_vote)
-
-            if optima_ma is not None and 0 <= r < optima_ma.size:
-                opt_val = float(optima_ma[r])
-                if np.isfinite(opt_val) and (lo_ma_win <= opt_val <= hi_ma_win):
-                    optima_for_peak.append(opt_val)
-
-        # "Actual support": only runs with explicit per-run peaks in-window count.
-        support = len(direct_votes) / float(R)
-
-        if support < max(float(support_min), float(r_min) / float(max(R, 1))):
-            _append_diagnostic_peak(
-                diagnostic_rows,
-                x,
-                S_med_s,
-                int(j_ref),
-                reason="low_support",
-                direct_support=float(support),
-                winner_support=float(len(optima_for_peak) / float(max(R, 1))) if optima_ma is not None else np.nan,
-                ci_low=lo_ma_win,
-                ci_high=hi_ma_win,
-            )
-            continue
-
-        # CI from the same evidence stream as support when possible.
-        # Support is based on explicit per-run peaks in-window, so prefer those
-        # votes for CI before falling back to run-optima or generic local votes.
-        step = float(x[1] - x[0])
-        if len(direct_votes) >= 3:
-            lo_ci, hi_ci = np.nanpercentile(direct_votes, [2.5, 97.5])
-        elif optima_ma is not None and len(optima_for_peak) >= 3:
-            lo_ci, hi_ci = np.nanpercentile(optima_for_peak, [2.5, 97.5])
-        elif len(votes) >= 3:
-            # fallback-only rows can still get a CI, but support remains low.
-            lo_ci, hi_ci = np.nanpercentile(votes, [2.5, 97.5])
-        else:
-            lo_ci, hi_ci = age_ref - step, age_ref + step
-
-        if len(direct_votes) >= 1:
-            med_votes = float(np.median(direct_votes))
-        elif len(optima_for_peak) >= 1:
-            med_votes = float(np.median(optima_for_peak))
-        elif len(votes) >= 1:
-            med_votes = float(np.median(votes))
-        else:
-            med_votes = age_ref
-        age_out = float(med_votes if np.isfinite(med_votes) else age_ref)
-
-        lo_ci = max(lo_ci, float(x[0]))
-        hi_ci = min(hi_ci, float(x[-1]))
-        if (not np.isfinite(lo_ci)) or (not np.isfinite(hi_ci)) or (hi_ci <= lo_ci):
-            lo_ci, hi_ci = max(age_out - step, float(x[0])), min(age_out + step, float(x[-1]))
-        # Treat sub-grid intervals as collapsed numerical artefacts.
-        if (hi_ci - lo_ci) < (_DEGENERATE_CI_GRID_FRAC * step):
-            lo_ci, hi_ci = max(age_out - step, float(x[0])), min(age_out + step, float(x[-1]))
-        if age_out < lo_ci:
-            age_out = float(lo_ci)
-        elif age_out > hi_ci:
-            age_out = float(hi_ci)
-
-        out.append(dict(
-            sample=sample_name,
-            peak_no=0,  # set after sort
-            age_ma=age_out,
-            ci_low=float(lo_ci),
-            ci_high=float(hi_ci),
-            support=float(support),
-        ))
+    out = _score_candidate_peaks(
+        pk, x, S, S_med_s, sign, R,
+        per_run_peaks_list, optima_ma, run_gate,
+        f_r, support_min, r_min,
+        left_bounds, right_bounds,
+        j_ref_all, age_ref_all,
+        diagnostic_rows,
+    )
+    for d in out:
+        d["sample"] = sample_name
 
     if diagnostic_rows is not None and pk_visual.size:
         step = _step_from_grid(x)
