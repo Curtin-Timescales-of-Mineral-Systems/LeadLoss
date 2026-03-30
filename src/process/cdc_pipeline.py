@@ -1331,6 +1331,147 @@ def _keep_same(rows, keep):
     return [r for r in rows if float(r.get("age_ma", float("nan"))) in keep_ages]
 
 
+def _compute_run_optima_ci(raw, pen, prefer_pen, runs):
+    """Section (A): median-of-run-optima with 95% CI."""
+    optima_ma_primary = pen.optima_ma if prefer_pen else raw.optima_ma
+    opt_all = np.sort(np.asarray(optima_ma_primary[np.isfinite(optima_ma_primary)] * 1e6, float))
+    if opt_all.size == 0:
+        if prefer_pen:
+            opt_all = np.sort(np.asarray([r.optimal_pb_loss_age for r in runs], float))
+        else:
+            opt_all = np.sort(np.asarray([_raw_optimum_age_ma(r) * 1e6 for r in runs], float))
+    n = opt_all.size
+    if n:
+        optimalAge = float(np.median(opt_all))
+        lower95 = float(opt_all[int(np.floor(0.025 * n))])
+        upper95 = float(opt_all[int(np.ceil(0.975 * n)) - 1])
+    else:
+        optimalAge = lower95 = upper95 = float("nan")
+    return optimalAge, lower95, upper95, opt_all
+
+
+def _compute_legacy_surface(raw, pen, prefer_pen, ages_y):
+    """Section (B): legacy surface optimum for export/figure."""
+    S_runs_primary = pen.S_runs if prefer_pen else raw.S_runs
+    sum_good = np.nansum(S_runs_primary, axis=0)
+    cnt_good = np.sum(np.isfinite(S_runs_primary), axis=0)
+    mean_good = np.divide(
+        sum_good, cnt_good,
+        out=np.full_like(sum_good, np.nan, dtype=float),
+        where=cnt_good > 0,
+    )
+    mean_primary = 1.0 - mean_good
+    mean_primary = np.where(np.isfinite(mean_primary), mean_primary, np.inf)
+    legacy_idx = _findOptimalIndex(mean_primary.tolist())
+    optimalAge_legacy = float(ages_y[legacy_idx])
+    S_legacy_curve = 1.0 - mean_primary
+    return optimalAge_legacy, S_legacy_curve, mean_primary
+
+
+def _compute_mean_stats(runs, primary_which, prefer_pen):
+    """Section (C): mean stats at each run's own optimum."""
+    stats = [_optimum_stat_from_stats_attr(r, "_all_statistics_by_pb_loss_age", which=primary_which) for r in runs]
+    stats = [s for s in stats if s is not None]
+    if stats:
+        meanD = float(np.mean([s.test_statistics[0] for s in stats]))
+        pvals = np.asarray([s.test_statistics[1] for s in stats], float)
+        p_ok = np.isfinite(pvals)
+        meanP = float(np.mean(pvals[p_ok])) if np.any(p_ok) else float("nan")
+        meanInv = float(np.mean([s.number_of_invalid_ages for s in stats]))
+        if prefer_pen:
+            meanSc = float(np.mean([s.score for s in stats]))
+        else:
+            meanSc = float(np.mean([s.test_statistics[0] for s in stats]))
+    else:
+        meanD = meanP = meanInv = meanSc = float("nan")
+    return meanD, meanP, meanInv, meanSc
+
+
+def _publish_results(
+    signals, sample, progress, settings, runs, raw, pen,
+    rows_for_ui, rejected_rows, ages_ma, ages_y, S_view,
+    optimalAge, optimalAge_ui, optimalAge_legacy, lower95, upper95, opt_all,
+    meanD, meanP, meanInv, meanSc, cluster_reporting_accepted,
+):
+    """Renumber peaks, export CSVs/NPZ, publish UI payload."""
+    for row_list in (rows_for_ui, raw.rows, pen.rows):
+        for i, r in enumerate(row_list, 1):
+            r["peak_no"] = i
+
+    if CDC_WRITE_OUTPUTS:
+        _append_catalogue_rows(sample.name, pen.rows, dest_path=CATALOGUE_CSV_PEN)
+        _append_catalogue_rows(sample.name, raw.rows, dest_path=CATALOGUE_CSV_RAW)
+        _write_npz_diagnostics(
+            sample_name=sample.name,
+            ages_ma=ages_ma, ages_y=ages_y, runs=runs,
+            S_runs_raw=raw.S_runs, S_runs_pen=pen.S_runs,
+            Smed_raw=raw.Smed, Smed_pen=pen.Smed,
+            S_view=S_view, rows_for_ui=rows_for_ui,
+        )
+
+    rows_for_plot = _snap_rows_to_curve(rows_for_ui, ages_ma, S_view)
+
+    catalogue_legacy = [(r["age_ma"], r["ci_low"], r["ci_high"], r["support"]) for r in rows_for_ui]
+    peak_str = fmt_peak_stats(catalogue_legacy) if catalogue_legacy else "—"
+
+    plot_peaks = np.asarray([float(r.get("age_ma", np.nan)) for r in rows_for_plot], float)
+    plot_ci_low = np.asarray([float(r.get("ci_low", np.nan)) for r in rows_for_plot], float)
+    plot_ci_high = np.asarray([float(r.get("ci_high", np.nan)) for r in rows_for_plot], float)
+    sample.summedKS_peaks_Ma = plot_peaks
+    sample.summedKS_ci_low_Ma = plot_ci_low
+    sample.summedKS_ci_high_Ma = plot_ci_high
+    sample.peak_uncertainty_str = peak_str
+    detailed_catalogue = [
+        dict(
+            sample=sample.name, peak_no=i + 1,
+            ci_low=lo, age_ma=med, ci_high=hi, support=sup,
+            direct_support=float(r.get("direct_support", sup)),
+            winner_support=float(r.get("winner_support", sup)),
+            selection=r.get("selection", "strict"),
+            mode=r.get("mode", ""), label=r.get("label", ""),
+            cluster_id=r.get("cluster_id"),
+        )
+        for i, (r, (med, lo, hi, sup)) in enumerate(zip(rows_for_ui, catalogue_legacy))
+    ]
+    sample.peak_catalogue = detailed_catalogue
+
+    _emit_summedKS(signals, sample, progress, ages_ma, S_view, rows_for_plot)
+
+    if KS_EXPORT_ROOT is not None:
+        _export_legacy_ks(
+            sample, settings, runs, ages_y,
+            ui_opt_years=optimalAge_ui, ui_low95_years=lower95,
+            ui_high95_years=upper95, run_optima_years=opt_all,
+            legacy_opt_years=optimalAge_legacy,
+        )
+
+    try:
+        sample.signals.optimalAgeCalculated.emit()
+    except (AttributeError, RuntimeError, TypeError):
+        pass
+
+    cluster_summary_payload = dict(getattr(sample, "disc_cluster_summary", {}) or {})
+    cluster_summary_payload["split_accepted"] = bool(cluster_summary_payload.get("accepted", False))
+    cluster_summary_payload["reporting_accepted"] = bool(cluster_reporting_accepted)
+
+    payload = (
+        optimalAge, lower95, upper95, meanD, meanP, meanInv, meanSc,
+        peak_str, detailed_catalogue,
+        {"rejected_peak_candidates": list(rejected_rows or [])},
+        {
+            "labels": None if not cluster_reporting_accepted else list(np.asarray(getattr(sample, "disc_cluster_labels", []), int)),
+            "summary": cluster_summary_payload,
+            "accepted": bool(cluster_reporting_accepted),
+            "split_accepted": bool(cluster_summary_payload.get("split_accepted", False)),
+            "reporting_accepted": bool(cluster_reporting_accepted),
+        },
+    )
+    try:
+        signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, payload)
+    except TypeError:
+        signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, payload[:7])
+
+
 def _calculateOptimalAge(signals, sample, progress):
     """
       • UI shows median-of-run-optima with consistent CI.
@@ -1392,56 +1533,13 @@ def _calculateOptimalAge(signals, sample, progress):
     )
     sample.ensemble_abstain_reason = None
 
-    # ---------- (A) Run-optima median & CI (for UI) ----------
-    optima_ma_primary = pen.optima_ma if prefer_pen else raw.optima_ma
-    opt_all = np.sort(np.asarray(optima_ma_primary[np.isfinite(optima_ma_primary)] * 1e6, float))
-    if opt_all.size == 0:
-        if prefer_pen:
-            opt_all = np.sort(np.asarray([r.optimal_pb_loss_age for r in runs], float))
-        else:
-            opt_all = np.sort(np.asarray([_raw_optimum_age_ma(r) * 1e6 for r in runs], float))
-    n = opt_all.size
-    if n:
-        optimalAge_ui = float(np.median(opt_all))  # years
-        lower95 = float(opt_all[int(np.floor(0.025 * n))])
-        upper95 = float(opt_all[int(np.ceil(0.975 * n)) - 1])
-    else:
-        optimalAge_ui = lower95 = upper95 = float("nan")
-    optimalAge = optimalAge_ui 
-    # ---------- (B) Legacy surface optimum (for export/figure) ----------
-    # Legacy export curve remains a simple mean dissimilarity-by-age, tied to
-    # the active primary channel on the global all-discordants surface.
-    S_runs_primary = pen.S_runs if prefer_pen else raw.S_runs
-    sum_good = np.nansum(S_runs_primary, axis=0)
-    cnt_good = np.sum(np.isfinite(S_runs_primary), axis=0)
-    mean_good = np.divide(
-        sum_good,
-        cnt_good,
-        out=np.full_like(sum_good, np.nan, dtype=float),
-        where=cnt_good > 0,
-    )
-    mean_primary = 1.0 - mean_good
-    mean_primary = np.where(np.isfinite(mean_primary), mean_primary, np.inf)
-    legacy_idx = _findOptimalIndex(mean_primary.tolist())
-    optimalAge_legacy = float(ages_y[legacy_idx])  # years (grid node)
-    S_legacy_curve = 1.0 - mean_primary  # legacy S(t)
+    optimalAge, lower95, upper95, opt_all = _compute_run_optima_ci(raw, pen, prefer_pen, runs)
+    optimalAge_ui = optimalAge
+
+    optimalAge_legacy, S_legacy_curve, mean_primary = _compute_legacy_surface(raw, pen, prefer_pen, ages_y)
     sample.legacy_surface_optimal_age = optimalAge_legacy
 
-    # ---------- (C) Mean stats at each run’s own optimum ----------
-    stats = [_optimum_stat_from_stats_attr(r, "_all_statistics_by_pb_loss_age", which=primary_which) for r in runs]
-    stats = [s for s in stats if s is not None]
-    if stats:
-        meanD = float(np.mean([s.test_statistics[0] for s in stats]))
-        pvals = np.asarray([s.test_statistics[1] for s in stats], float)
-        p_ok = np.isfinite(pvals)
-        meanP = float(np.mean(pvals[p_ok])) if np.any(p_ok) else float("nan")
-        meanInv = float(np.mean([s.number_of_invalid_ages for s in stats]))
-        if prefer_pen:
-            meanSc = float(np.mean([s.score for s in stats]))
-        else:
-            meanSc = float(np.mean([s.test_statistics[0] for s in stats]))
-    else:
-        meanD = meanP = meanInv = meanSc = float("nan")
+    meanD, meanP, meanInv, meanSc = _compute_mean_stats(runs, primary_which, prefer_pen)
 
     # ---------- (D) Ensemble OFF branch ----------
     enabled = bool(getattr(settings, "enable_ensemble_peak_picking", False))
@@ -2031,110 +2129,9 @@ def _calculateOptimalAge(signals, sample, progress):
         rejected_rows = sorted(kept_rejected, key=lambda r: float(r.get("age_ma", np.nan)))
     sample.rejected_peak_candidates = rejected_rows
 
-    # Renumber peak_no after filtering so CSV doesn't have gaps
-    for row_list in (rows_for_ui, raw.rows, pen.rows):
-        for i, r in enumerate(row_list, 1):
-            r["peak_no"] = i
-
-    # Export rows_for_ui/raw.rows/pen.rows are final
-    if CDC_WRITE_OUTPUTS:
-        _append_catalogue_rows(sample.name, pen.rows, dest_path=CATALOGUE_CSV_PEN)
-        _append_catalogue_rows(sample.name, raw.rows, dest_path=CATALOGUE_CSV_RAW)
-        _write_npz_diagnostics(
-            sample_name=sample.name,
-            ages_ma=ages_ma,
-            ages_y=ages_y,
-            runs=runs,
-            S_runs_raw=raw.S_runs,
-            S_runs_pen=pen.S_runs,
-            Smed_raw=raw.Smed,
-            Smed_pen=pen.Smed,
-            S_view=S_view,
-            rows_for_ui=rows_for_ui,
-        )
-
-    # Plot rows come from final accepted rows, with marker ages snapped to the
-    # final displayed curve for visual consistency.
-    rows_for_plot = _snap_rows_to_curve(rows_for_ui, ages_ma, S_view)
-
-    # Publish to UI
-    catalogue_legacy = [(r["age_ma"], r["ci_low"], r["ci_high"], r["support"]) for r in rows_for_ui]
-
-    red_peaks = np.asarray([m for m, *_ in catalogue_legacy], float)
-    peak_str  = fmt_peak_stats(catalogue_legacy) if catalogue_legacy else "—"
-
-    plot_peaks = np.asarray([float(r.get("age_ma", np.nan)) for r in rows_for_plot], float)
-    plot_ci_low = np.asarray([float(r.get("ci_low", np.nan)) for r in rows_for_plot], float)
-    plot_ci_high = np.asarray([float(r.get("ci_high", np.nan)) for r in rows_for_plot], float)
-    sample.summedKS_peaks_Ma = plot_peaks
-    sample.summedKS_ci_low_Ma = plot_ci_low
-    sample.summedKS_ci_high_Ma = plot_ci_high
-    sample.peak_uncertainty_str = peak_str
-    detailed_catalogue = [
-        dict(
-            sample=sample.name,
-            peak_no=i + 1,
-            ci_low=lo,
-            age_ma=med,
-            ci_high=hi,
-            support=sup,
-            direct_support=float(r.get("direct_support", sup)),
-            winner_support=float(r.get("winner_support", sup)),
-            selection=r.get("selection", "strict"),
-            mode=r.get("mode", ""),
-            label=r.get("label", ""),
-            cluster_id=r.get("cluster_id"),
-        )
-        for i, (r, (med, lo, hi, sup)) in enumerate(zip(rows_for_ui, catalogue_legacy))
-    ]
-    sample.peak_catalogue = detailed_catalogue
-
-    _emit_summedKS(signals, sample, progress, ages_ma, S_view, rows_for_plot)
-
-    # Preserve the legacy KS exports used by Fig. 07 even when the ensemble
-    # catalogue is enabled for reporting.
-    if KS_EXPORT_ROOT is not None:
-        _export_legacy_ks(
-            sample,
-            settings,
-            runs,
-            ages_y,
-            ui_opt_years=optimalAge_ui,
-            ui_low95_years=lower95,
-            ui_high95_years=upper95,
-            run_optima_years=opt_all,
-            legacy_opt_years=optimalAge_legacy,
-        )
-
-    try:
-        sample.signals.optimalAgeCalculated.emit()
-    except (AttributeError, RuntimeError, TypeError):
-        pass
-
-    cluster_summary_payload = dict(getattr(sample, "disc_cluster_summary", {}) or {})
-    cluster_summary_payload["split_accepted"] = bool(cluster_summary_payload.get("accepted", False))
-    cluster_summary_payload["reporting_accepted"] = bool(cluster_reporting_accepted)
-
-    payload = (
-        optimalAge,
-        lower95,
-        upper95,
-        meanD,
-        meanP,
-        meanInv,
-        meanSc,
-        peak_str,
-        detailed_catalogue,
-        {"rejected_peak_candidates": list(rejected_rows or [])},
-        {
-            "labels": None if not cluster_reporting_accepted else list(np.asarray(getattr(sample, "disc_cluster_labels", []), int)),
-            "summary": cluster_summary_payload,
-            "accepted": bool(cluster_reporting_accepted),
-            "split_accepted": bool(cluster_summary_payload.get("split_accepted", False)),
-            "reporting_accepted": bool(cluster_reporting_accepted),
-        },
+    _publish_results(
+        signals, sample, progress, settings, runs, raw, pen,
+        rows_for_ui, rejected_rows, ages_ma, ages_y, S_view,
+        optimalAge, optimalAge_ui, optimalAge_legacy, lower95, upper95, opt_all,
+        meanD, meanP, meanInv, meanSc, cluster_reporting_accepted,
     )
-    try:
-        signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, payload)
-    except TypeError:
-        signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, payload[:7])
