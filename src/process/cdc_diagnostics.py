@@ -200,6 +200,35 @@ def ks_ui_ages_for_rim_Ma(discordantSpots, rim_Ma: float) -> np.ndarray:
     return ui
 
 
+def _ma_or_blank(x):
+    if x is None:
+        return ""
+    try:
+        x = float(x)
+    except Exception:
+        return ""
+    if not np.isfinite(x):
+        return ""
+    return f"{(x / 1e6):.6f}"
+
+
+def _surface_optimum_years(d_curve: np.ndarray, ages_y: np.ndarray) -> float:
+    d_curve = np.where(np.isfinite(d_curve), d_curve, np.inf)
+    return float(ages_y[int(np.nanargmin(d_curve))])
+
+
+def _run_optima_years(runs, ages_y: np.ndarray, which: str) -> np.ndarray:
+    vals = []
+    for r in runs:
+        if which == "pen":
+            vals.append(float(getattr(r, "optimal_pb_loss_age", np.nan)))
+            continue
+        d_by_age = np.array([r.statistics_by_pb_loss_age[a].test_statistics[0] for a in ages_y], float)
+        d_by_age = np.where(np.isfinite(d_by_age), d_by_age, np.inf)
+        vals.append(float(ages_y[int(np.nanargmin(d_by_age))]))
+    return np.asarray(vals, float)
+
+
 def export_legacy_ks(
     sample,
     settings,
@@ -253,35 +282,9 @@ def export_legacy_ks(
 
     KS_EXPORT_ROOT.mkdir(parents=True, exist_ok=True)
 
-    def _ma_or_blank(x):
-        if x is None:
-            return ""
-        try:
-            x = float(x)
-        except Exception:
-            return ""
-        if not np.isfinite(x):
-            return ""
-        return f"{(x / 1e6):.6f}"
-
-    def _surface_optimum_years(d_curve: np.ndarray) -> float:
-        d_curve = np.where(np.isfinite(d_curve), d_curve, np.inf)
-        return float(ages_y[int(np.nanargmin(d_curve))])
-
-    def _run_optima_years(which: str) -> np.ndarray:
-        vals = []
-        for r in runs:
-            if which == "pen":
-                vals.append(float(getattr(r, "optimal_pb_loss_age", np.nan)))
-                continue
-            d_by_age = np.array([r.statistics_by_pb_loss_age[a].test_statistics[0] for a in ages_y], float)
-            d_by_age = np.where(np.isfinite(d_by_age), d_by_age, np.inf)
-            vals.append(float(ages_y[int(np.nanargmin(d_by_age))]))
-        return np.asarray(vals, float)
-
     run_optima_by_tag = {
-        "raw": _run_optima_years("raw"),
-        "pen": _run_optima_years("pen"),
+        "raw": _run_optima_years(runs, ages_y, "raw"),
+        "pen": _run_optima_years(runs, ages_y, "pen"),
     }
 
     # Preserve caller-provided optima for the active channel when available.
@@ -303,9 +306,9 @@ def export_legacy_ks(
         else:
             ui_opt = ui_low = ui_high = float("nan")
 
-        rim_opt_ma = float(ui_opt) / 1e6 if np.isfinite(ui_opt) else float(_surface_optimum_years(d_curve) / 1e6)
+        rim_opt_ma = float(ui_opt) / 1e6 if np.isfinite(ui_opt) else float(_surface_optimum_years(d_curve, ages_y) / 1e6)
         rim_opt_int = int(round(rim_opt_ma))
-        surface_opt = _surface_optimum_years(d_curve)
+        surface_opt = _surface_optimum_years(d_curve, ages_y)
 
         good_path = KS_EXPORT_ROOT / f"KS_goodness_{tag}.csv"
         with good_path.open("w", newline="") as fh:

@@ -1261,6 +1261,62 @@ def _build_global_catalogue_rows(sample_name: str,
 
     return rows
 
+def _cluster_optima_from_goodness(S_cluster: np.ndarray, ages_ma: np.ndarray) -> np.ndarray:
+    S_cluster = np.asarray(S_cluster, float)
+    if S_cluster.ndim != 2 or S_cluster.size == 0:
+        return np.array([], float)
+    out = np.full(S_cluster.shape[0], np.nan, float)
+    for r_i, row in enumerate(S_cluster):
+        if not np.isfinite(row).any():
+            continue
+        out[r_i] = float(ages_ma[int(np.nanargmax(row))])
+    return out
+
+
+def _update_cluster_summary(sample, **updates):
+    summary = dict(getattr(sample, "disc_cluster_summary", {}) or {})
+    summary.update(updates)
+    sample.disc_cluster_summary = summary
+
+
+def _align_cluster_rows_to_global(cluster_rows, global_rows, ages_ma: np.ndarray):
+    if not cluster_rows or not global_rows:
+        return []
+    step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
+    # Allow a generous match tolerance so cluster/global rows still align on
+    # coarse age grids or broad synthetic modes.
+    tol_ma = max(_CLUSTER_ALIGN_MIN_TOL_MA, _BOUNDARY_NEAR_GRID_STEPS * step)
+
+    aligned = [dict(r) for r in cluster_rows if str(r.get("mode", "")) == "recent_boundary"]
+    used_global = set()
+    ordered_cluster = sorted(
+        [dict(r) for r in cluster_rows if str(r.get("mode", "")) != "recent_boundary"],
+        key=lambda rr: (
+            -float(rr.get("support", 0.0)),
+            float(rr.get("ci_high", np.inf)) - float(rr.get("ci_low", -np.inf)),
+        ),
+    )
+    global_centers = np.asarray([float(r["age_ma"]) for r in global_rows], float)
+
+    for row in ordered_cluster:
+        age = float(row["age_ma"])
+        deltas = np.abs(global_centers - age)
+        idx = int(np.argmin(deltas))
+        if deltas[idx] > tol_ma or idx in used_global:
+            continue
+        used_global.add(idx)
+        aligned.append(row)
+
+    return sorted(aligned, key=lambda rr: float(rr["age_ma"]))
+
+
+def _keep_same(rows, keep):
+    if not rows or not keep:
+        return []
+    keep_ages = {float(r["age_ma"]) for r in keep}
+    return [r for r in rows if float(r.get("age_ma", float("nan"))) in keep_ages]
+
+
 def _calculateOptimalAge(signals, sample, progress):
     """
       • UI shows median-of-run-optima with consistent CI.
@@ -1423,22 +1479,6 @@ def _calculateOptimalAge(signals, sample, progress):
     cluster_diag_pen: Dict[int, Dict] = {}
     cluster_rejected_rows: List[Dict] = []
 
-    def _cluster_optima_from_goodness(S_cluster: np.ndarray) -> np.ndarray:
-        S_cluster = np.asarray(S_cluster, float)
-        if S_cluster.ndim != 2 or S_cluster.size == 0:
-            return np.array([], float)
-        out = np.full(S_cluster.shape[0], np.nan, float)
-        for r_i, row in enumerate(S_cluster):
-            if not np.isfinite(row).any():
-                continue
-            out[r_i] = float(ages_ma[int(np.nanargmax(row))])
-        return out
-
-    def _update_cluster_summary(**updates):
-        summary = dict(getattr(sample, "disc_cluster_summary", {}) or {})
-        summary.update(updates)
-        sample.disc_cluster_summary = summary
-
     rows_raw = _build_global_catalogue_rows(
         sample.name,
         _infer_tier(sample.name),
@@ -1495,8 +1535,8 @@ def _calculateOptimalAge(signals, sample, progress):
             if S_pen_k.size:
                 S_pen_k = S_pen_k[mask_runs]
 
-            optima_ma_raw_k = _cluster_optima_from_goodness(S_raw_k)
-            optima_ma_pen_k = _cluster_optima_from_goodness(S_pen_k)
+            optima_ma_raw_k = _cluster_optima_from_goodness(S_raw_k, ages_ma)
+            optima_ma_pen_k = _cluster_optima_from_goodness(S_pen_k, ages_ma)
 
             Smed_raw_k = np.array([], float)
             Smed_pen_k = np.array([], float)
@@ -1635,49 +1675,19 @@ def _calculateOptimalAge(signals, sample, progress):
                     )
                 )
 
-    def _align_cluster_rows_to_global(cluster_rows, global_rows):
-        if not cluster_rows or not global_rows:
-            return []
-        step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
-        # Allow a generous match tolerance so cluster/global rows still align on
-        # coarse age grids or broad synthetic modes.
-        tol_ma = max(_CLUSTER_ALIGN_MIN_TOL_MA, _BOUNDARY_NEAR_GRID_STEPS * step)
-
-        aligned = [dict(r) for r in cluster_rows if str(r.get("mode", "")) == "recent_boundary"]
-        used_global = set()
-        ordered_cluster = sorted(
-            [dict(r) for r in cluster_rows if str(r.get("mode", "")) != "recent_boundary"],
-            key=lambda rr: (
-                -float(rr.get("support", 0.0)),
-                float(rr.get("ci_high", np.inf)) - float(rr.get("ci_low", -np.inf)),
-            ),
-        )
-        global_centers = np.asarray([float(r["age_ma"]) for r in global_rows], float)
-
-        for row in ordered_cluster:
-            age = float(row["age_ma"])
-            deltas = np.abs(global_centers - age)
-            idx = int(np.argmin(deltas))
-            if deltas[idx] > tol_ma or idx in used_global:
-                continue
-            used_global.add(idx)
-            aligned.append(row)
-
-        return sorted(aligned, key=lambda rr: float(rr["age_ma"]))
-
     global_multipeaked = max(len(global_rows_raw), len(global_rows_pen)) >= 2
     cluster_reporting_accepted = bool(
         use_dc and clustering_accepted and USE_CLUSTER_CATALOGUE
     )
 
     if cluster_reporting_accepted and global_multipeaked:
-        rows_raw = _align_cluster_rows_to_global(rows_raw_cluster, global_rows_raw)
-        rows_pen = _align_cluster_rows_to_global(rows_pen_cluster, global_rows_pen)
+        rows_raw = _align_cluster_rows_to_global(rows_raw_cluster, global_rows_raw, ages_ma)
+        rows_pen = _align_cluster_rows_to_global(rows_pen_cluster, global_rows_pen, ages_ma)
         if max(len(rows_raw), len(rows_pen)) < 2:
             cluster_reporting_accepted = False
             rows_raw = global_rows_raw
             rows_pen = global_rows_pen
-            _update_cluster_summary(
+            _update_cluster_summary(sample,
                 accepted=False,
                 reason="rejected_by_global_surface",
                 global_raw_peak_count=int(len(global_rows_raw)),
@@ -1698,7 +1708,7 @@ def _calculateOptimalAge(signals, sample, progress):
             cluster_reporting_accepted = False
             rows_raw = global_rows_raw
             rows_pen = global_rows_pen
-            _update_cluster_summary(
+            _update_cluster_summary(sample,
                 accepted=False,
                 reason="no_reportable_cluster_peaks",
                 global_raw_peak_count=int(len(global_rows_raw)),
@@ -1708,7 +1718,7 @@ def _calculateOptimalAge(signals, sample, progress):
             cluster_reporting_accepted = False
             rows_raw = global_rows_raw
             rows_pen = global_rows_pen
-            _update_cluster_summary(
+            _update_cluster_summary(sample,
                 accepted=False,
                 reason="boundary_only_cluster_without_global_support",
                 global_raw_peak_count=int(len(global_rows_raw)),
@@ -1718,7 +1728,7 @@ def _calculateOptimalAge(signals, sample, progress):
             cluster_reporting_accepted = False
             rows_raw = global_rows_raw
             rows_pen = global_rows_pen
-            _update_cluster_summary(
+            _update_cluster_summary(sample,
                 accepted=False,
                 reason="cluster_multi_interior_without_global_support",
                 global_raw_peak_count=int(len(global_rows_raw)),
@@ -1726,7 +1736,7 @@ def _calculateOptimalAge(signals, sample, progress):
                 n_cluster_boundary_modes=int(len(boundary_cluster_rows)),
             )
         elif n_cluster_reportable == 1:
-            _update_cluster_summary(
+            _update_cluster_summary(sample,
                 reason="partial_cluster_resolution",
                 n_reportable_cluster_peaks=1,
                 global_raw_peak_count=int(len(global_rows_raw)),
@@ -2004,12 +2014,6 @@ def _calculateOptimalAge(signals, sample, progress):
         _capture_rejected_step(pre_width_ui, rows_for_ui, rejected_rows, "wide_ci", ages_ma)
 
         # Keep rows_raw/rows_pen in sync with what we actually show
-        def _keep_same(rows, keep):
-            if not rows or not keep:
-                return []
-            keep_ages = {float(r["age_ma"]) for r in keep}
-            return [r for r in rows if float(r.get("age_ma", float("nan"))) in keep_ages]
-
         rows_raw = _keep_same(rows_raw, rows_for_ui)
         rows_pen = _keep_same(rows_pen, rows_for_ui)
 
