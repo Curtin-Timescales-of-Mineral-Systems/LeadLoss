@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import platform
 import time
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, List, Optional, Tuple
 
@@ -1261,6 +1262,19 @@ def _build_global_catalogue_rows(sample_name: str,
 
     return rows
 
+@dataclass
+class SurfaceState:
+    """Bundles the per-surface (RAW or PEN) state that flows through the pipeline."""
+    S_runs: np.ndarray
+    Smed: np.ndarray
+    Delta: float
+    mono: bool
+    pickable: bool
+    optima_ma: np.ndarray
+    rows: List[Dict] = field(default_factory=list)
+    rejected: List[Dict] = field(default_factory=list)
+
+
 def _cluster_optima_from_goodness(S_cluster: np.ndarray, ages_ma: np.ndarray) -> np.ndarray:
     S_cluster = np.asarray(S_cluster, float)
     if S_cluster.ndim != 2 or S_cluster.size == 0:
@@ -1336,49 +1350,50 @@ def _calculateOptimalAge(signals, sample, progress):
     # Grid
     ages_y = np.asarray(settings.rimAges(), float)   # years
     ages_ma = ages_y / 1e6
-    optima_ma_pen = np.array(
-        [_optimum_age_ma_from_stats_attr(r, "_all_statistics_by_pb_loss_age", which="pen") for r in runs],
-        float,
-    )
-    optima_ma_raw = np.array(
-        [_optimum_age_ma_from_stats_attr(r, "_all_statistics_by_pb_loss_age", which="raw") for r in runs],
-        float,
-    )
-
-    # Per-run goodness matrices from the global all-discordants surface.
-    S_runs_raw = _stack_goodness_from_stats_attr(
-        runs, ages_y, "_all_statistics_by_pb_loss_age", which="raw"
-    )
-    S_runs_pen = _stack_goodness_from_stats_attr(
-        runs, ages_y, "_all_statistics_by_pb_loss_age", which="pen"
-    )
-
-    # Smoothing + ensemble curves (only relevant if ensemble mode ON)
+    # Per-run optima and goodness matrices from the global all-discordants surface.
     smf = _smooth_frac_for_grid(ages_ma)
-    Smed_raw, Delta_raw, _ = robust_ensemble_curve(S_runs_raw, smooth_frac=smf)
-    Smed_pen, Delta_pen, _ = robust_ensemble_curve(S_runs_pen, smooth_frac=smf)
-    mono_raw = _is_effectively_monotonic(Smed_raw, Delta_raw)
-    mono_pen = _is_effectively_monotonic(Smed_pen, Delta_pen)
+
+    _optima_raw = np.array(
+        [_optimum_age_ma_from_stats_attr(r, "_all_statistics_by_pb_loss_age", which="raw") for r in runs], float,
+    )
+    _S_runs_raw = _stack_goodness_from_stats_attr(runs, ages_y, "_all_statistics_by_pb_loss_age", which="raw")
+    _Smed_raw, _Delta_raw, _ = robust_ensemble_curve(_S_runs_raw, smooth_frac=smf)
+    _mono_raw = _is_effectively_monotonic(_Smed_raw, _Delta_raw)
+
+    _optima_pen = np.array(
+        [_optimum_age_ma_from_stats_attr(r, "_all_statistics_by_pb_loss_age", which="pen") for r in runs], float,
+    )
+    _S_runs_pen = _stack_goodness_from_stats_attr(runs, ages_y, "_all_statistics_by_pb_loss_age", which="pen")
+    _Smed_pen, _Delta_pen, _ = robust_ensemble_curve(_S_runs_pen, smooth_frac=smf)
+    _mono_pen = _is_effectively_monotonic(_Smed_pen, _Delta_pen)
+
+    raw = SurfaceState(
+        S_runs=_S_runs_raw, Smed=_Smed_raw, Delta=_Delta_raw, mono=_mono_raw,
+        pickable=(_Delta_raw >= ENS_DELTA_MIN) and ((not abstain_on_monotonic) or (not _mono_raw)),
+        optima_ma=_optima_raw,
+    )
+    pen = SurfaceState(
+        S_runs=_S_runs_pen, Smed=_Smed_pen, Delta=_Delta_pen, mono=_mono_pen,
+        pickable=(_Delta_pen >= ENS_DELTA_MIN) and ((not abstain_on_monotonic) or (not _mono_pen)),
+        optima_ma=_optima_pen,
+    )
+
     ui_surface = str(getattr(settings, "catalogue_surface", CATALOGUE_SURFACE)).strip().upper()
     if ui_surface not in {"RAW", "PEN"}:
         ui_surface = "PEN"
-    # Initial display surface; final selection follows the same global surface
-    # that produces the accepted rows.
-    S_view = Smed_raw if (ui_surface == "RAW") else Smed_pen
+    S_view = raw.Smed if (ui_surface == "RAW") else pen.Smed
     sample.ensemble_surface_flags = dict(
-        raw_delta=float(Delta_raw),
-        pen_delta=float(Delta_pen),
-        raw_monotonic=bool(mono_raw),
-        pen_monotonic=bool(mono_pen),
+        raw_delta=float(raw.Delta),
+        pen_delta=float(pen.Delta),
+        raw_monotonic=bool(raw.mono),
+        pen_monotonic=bool(pen.mono),
         primary_channel=str(primary_which),
         view_surface_source="global_all",
     )
     sample.ensemble_abstain_reason = None
-    raw_pickable = (Delta_raw >= ENS_DELTA_MIN) and ((not abstain_on_monotonic) or (not mono_raw))
-    pen_pickable = (Delta_pen >= ENS_DELTA_MIN) and ((not abstain_on_monotonic) or (not mono_pen))
 
     # ---------- (A) Run-optima median & CI (for UI) ----------
-    optima_ma_primary = optima_ma_pen if prefer_pen else optima_ma_raw
+    optima_ma_primary = pen.optima_ma if prefer_pen else raw.optima_ma
     opt_all = np.sort(np.asarray(optima_ma_primary[np.isfinite(optima_ma_primary)] * 1e6, float))
     if opt_all.size == 0:
         if prefer_pen:
@@ -1396,7 +1411,7 @@ def _calculateOptimalAge(signals, sample, progress):
     # ---------- (B) Legacy surface optimum (for export/figure) ----------
     # Legacy export curve remains a simple mean dissimilarity-by-age, tied to
     # the active primary channel on the global all-discordants surface.
-    S_runs_primary = S_runs_pen if prefer_pen else S_runs_raw
+    S_runs_primary = pen.S_runs if prefer_pen else raw.S_runs
     sum_good = np.nansum(S_runs_primary, axis=0)
     cnt_good = np.sum(np.isfinite(S_runs_primary), axis=0)
     mean_good = np.divide(
@@ -1466,10 +1481,6 @@ def _calculateOptimalAge(signals, sample, progress):
     # ------------------------------------------------------------------
     # Build catalogues from one path only: the global all-discordants surface.
     # ------------------------------------------------------------------
-    rows_raw: List[Dict] = []
-    rows_pen: List[Dict] = []
-    rejected_raw_stage: List[Dict] = []
-    rejected_pen_stage: List[Dict] = []
     use_dc = bool(getattr(settings, "use_discordant_clustering", False))
     clustering_accepted = bool(getattr(sample, "_cdc_clustering_accepted", False))
     cluster_reporting_accepted = False
@@ -1479,32 +1490,21 @@ def _calculateOptimalAge(signals, sample, progress):
     cluster_diag_pen: Dict[int, Dict] = {}
     cluster_rejected_rows: List[Dict] = []
 
-    rows_raw = _build_global_catalogue_rows(
-        sample.name,
-        _infer_tier(sample.name),
-        ages_ma,
-        S_runs_raw,
-        Smed_raw,
-        smf=smf,
-        merge_nearby=merge_nearby,
-        pickable=raw_pickable,
-        optima_ma=optima_ma_raw,
-        diagnostic_rows=rejected_raw_stage,
-    )
-    rows_pen = _build_global_catalogue_rows(
-        sample.name,
-        _infer_tier(sample.name),
-        ages_ma,
-        S_runs_pen,
-        Smed_pen,
-        smf=smf,
-        merge_nearby=merge_nearby,
-        pickable=pen_pickable,
-        optima_ma=optima_ma_pen,
-        diagnostic_rows=rejected_pen_stage,
-    )
-    global_rows_raw = [dict(r) for r in rows_raw]
-    global_rows_pen = [dict(r) for r in rows_pen]
+    for surf in (raw, pen):
+        surf.rows = _build_global_catalogue_rows(
+            sample.name,
+            _infer_tier(sample.name),
+            ages_ma,
+            surf.S_runs,
+            surf.Smed,
+            smf=smf,
+            merge_nearby=merge_nearby,
+            pickable=surf.pickable,
+            optima_ma=surf.optima_ma,
+            diagnostic_rows=surf.rejected,
+        )
+    global_rows_raw = [dict(r) for r in raw.rows]
+    global_rows_pen = [dict(r) for r in pen.rows]
 
     S_by_cluster_raw = {}
     S_by_cluster_pen = {}
@@ -1665,12 +1665,12 @@ def _calculateOptimalAge(signals, sample, progress):
     )
 
     if cluster_reporting_accepted and global_multipeaked:
-        rows_raw = _align_cluster_rows_to_global(rows_raw_cluster, global_rows_raw, ages_ma)
-        rows_pen = _align_cluster_rows_to_global(rows_pen_cluster, global_rows_pen, ages_ma)
-        if max(len(rows_raw), len(rows_pen)) < 2:
+        raw.rows = _align_cluster_rows_to_global(rows_raw_cluster, global_rows_raw, ages_ma)
+        pen.rows = _align_cluster_rows_to_global(rows_pen_cluster, global_rows_pen, ages_ma)
+        if max(len(raw.rows), len(pen.rows)) < 2:
             cluster_reporting_accepted = False
-            rows_raw = global_rows_raw
-            rows_pen = global_rows_pen
+            raw.rows = global_rows_raw
+            pen.rows = global_rows_pen
             _update_cluster_summary(sample,
                 accepted=False,
                 reason="rejected_by_global_surface",
@@ -1678,20 +1678,20 @@ def _calculateOptimalAge(signals, sample, progress):
                 global_pen_peak_count=int(len(global_rows_pen)),
             )
     elif cluster_reporting_accepted:
-        rows_raw = rows_raw_cluster
-        rows_pen = rows_pen_cluster
-        ui_cluster_rows = rows_raw if ui_surface == "RAW" else rows_pen
+        raw.rows = rows_raw_cluster
+        pen.rows = rows_pen_cluster
+        ui_cluster_rows = raw.rows if ui_surface == "RAW" else pen.rows
         interior_cluster_rows = [
             dict(r) for r in ui_cluster_rows if str(r.get("mode", "")) != "recent_boundary"
         ]
         boundary_cluster_rows = [
             dict(r) for r in ui_cluster_rows if str(r.get("mode", "")) == "recent_boundary"
         ]
-        n_cluster_reportable = max(len(rows_raw), len(rows_pen))
+        n_cluster_reportable = max(len(raw.rows), len(pen.rows))
         if n_cluster_reportable == 0:
             cluster_reporting_accepted = False
-            rows_raw = global_rows_raw
-            rows_pen = global_rows_pen
+            raw.rows = global_rows_raw
+            pen.rows = global_rows_pen
             _update_cluster_summary(sample,
                 accepted=False,
                 reason="no_reportable_cluster_peaks",
@@ -1700,8 +1700,8 @@ def _calculateOptimalAge(signals, sample, progress):
             )
         elif len(interior_cluster_rows) == 0:
             cluster_reporting_accepted = False
-            rows_raw = global_rows_raw
-            rows_pen = global_rows_pen
+            raw.rows = global_rows_raw
+            pen.rows = global_rows_pen
             _update_cluster_summary(sample,
                 accepted=False,
                 reason="boundary_only_cluster_without_global_support",
@@ -1710,8 +1710,8 @@ def _calculateOptimalAge(signals, sample, progress):
             )
         elif len(interior_cluster_rows) > 1:
             cluster_reporting_accepted = False
-            rows_raw = global_rows_raw
-            rows_pen = global_rows_pen
+            raw.rows = global_rows_raw
+            pen.rows = global_rows_pen
             _update_cluster_summary(sample,
                 accepted=False,
                 reason="cluster_multi_interior_without_global_support",
@@ -1727,8 +1727,8 @@ def _calculateOptimalAge(signals, sample, progress):
                 global_pen_peak_count=int(len(global_rows_pen)),
             )
     else:
-        rows_raw = global_rows_raw
-        rows_pen = global_rows_pen
+        raw.rows = global_rows_raw
+        pen.rows = global_rows_pen
 
     if clustering_accepted and not cluster_reporting_accepted:
         summary = dict(getattr(sample, "disc_cluster_summary", {}) or {})
@@ -1742,72 +1742,49 @@ def _calculateOptimalAge(signals, sample, progress):
     # Only promote the median of the per-run optima to a pseudo-peak if the
     # ensemble surface has some structure (Δ >= ENS_DELTA_MIN). If both RAW
     # and PEN surfaces are essentially flat, leave the catalogue empty.
-    if (not rows_raw) and (not rows_pen) and len(opt_all) > 0:
+    if (not raw.rows) and (not pen.rows) and len(opt_all) > 0:
 
         # Fallback: if no ensemble peaks survive, **do not** invent one.
         # Leave the catalogue empty – the single CDC optimal age is still
-        # reported in the summary, but there is no robust ensemble peak.        
-        rows_raw = []
-        rows_pen = []
-        if (not raw_pickable) and (not pen_pickable):
+        # reported in the summary, but there is no robust ensemble peak.
+        raw.rows = []
+        pen.rows = []
+        if (not raw.pickable) and (not pen.pickable):
             sample.ensemble_abstain_reason = "flat_or_monotonic_surface"
 
     # Choose which to DISPLAY in the UI strictly from the same ensemble surface
     # that produced the accepted rows.
-    if (ui_surface == "RAW") and rows_raw:
-        view_which = "raw"
-        rows_for_ui = rows_raw
+    S_by_cluster = {"RAW": S_by_cluster_raw, "PEN": S_by_cluster_pen}
+    cluster_curves = {"RAW": cluster_curve_raw, "PEN": cluster_curve_pen}
+
+    chosen = raw if (ui_surface == "RAW" and raw.rows) else pen if pen.rows else None
+    if chosen is not None:
+        view_which = "raw" if chosen is raw else "pen"
+        rows_for_ui = chosen.rows
+        tag = ui_surface if chosen is raw else "PEN"
         if cluster_reporting_accepted:
             cids = sorted({int(r.get("cluster_id")) for r in rows_for_ui if "cluster_id" in r})
-            mats = [np.asarray(S_by_cluster_raw[c], float) for c in cids if c in S_by_cluster_raw]
+            mats = [np.asarray(S_by_cluster[tag][c], float) for c in cids if c in S_by_cluster[tag]]
             if mats:
                 S_runs_view = np.nanmax(np.stack(mats, axis=2), axis=2)
-                S_view, _, _ = robust_ensemble_curve(
-                    S_runs_view,
-                    smooth_frac=smf,
-                )
+                S_view, _, _ = robust_ensemble_curve(S_runs_view, smooth_frac=smf)
             else:
-                S_runs_view = S_runs_raw
-                curves = [cluster_curve_raw[c] for c in cids if c in cluster_curve_raw]
-                S_view = np.nanmax(np.vstack(curves), axis=0) if curves else Smed_raw
+                S_runs_view = chosen.S_runs
+                curves = [cluster_curves[tag][c] for c in cids if c in cluster_curves[tag]]
+                S_view = np.nanmax(np.vstack(curves), axis=0) if curves else chosen.Smed
         else:
-            S_runs_view = S_runs_raw
-            S_view = Smed_raw
-        rejected_stage_ui = rejected_raw_stage
-    elif rows_pen:
-        view_which = "pen"
-        rows_for_ui = rows_pen
-        if cluster_reporting_accepted:
-            cids = sorted({int(r.get("cluster_id")) for r in rows_for_ui if "cluster_id" in r})
-            mats = [np.asarray(S_by_cluster_pen[c], float) for c in cids if c in S_by_cluster_pen]
-            if mats:
-                S_runs_view = np.nanmax(np.stack(mats, axis=2), axis=2)
-                S_view, _, _ = robust_ensemble_curve(
-                    S_runs_view,
-                    smooth_frac=smf,
-                )
-            else:
-                S_runs_view = S_runs_pen
-                curves = [cluster_curve_pen[c] for c in cids if c in cluster_curve_pen]
-                S_view = np.nanmax(np.vstack(curves), axis=0) if curves else Smed_pen
-        else:
-            S_runs_view = S_runs_pen
-            S_view = Smed_pen
-        rejected_stage_ui = rejected_pen_stage
+            S_runs_view = chosen.S_runs
+            S_view = chosen.Smed
+        rejected_stage_ui = chosen.rejected
     else:
         rows_for_ui = []
-        if ui_surface == "RAW":
-            view_which = "raw"
-            S_runs_view = S_runs_raw
-            S_view = Smed_raw
-            rejected_stage_ui = rejected_raw_stage
-        else:
-            view_which = "pen"
-            S_runs_view = S_runs_pen
-            S_view = Smed_pen
-            rejected_stage_ui = rejected_pen_stage
+        chosen_fallback = raw if ui_surface == "RAW" else pen
+        view_which = "raw" if chosen_fallback is raw else "pen"
+        S_runs_view = chosen_fallback.S_runs
+        S_view = chosen_fallback.Smed
+        rejected_stage_ui = chosen_fallback.rejected
 
-    for _rows in (rows_raw, rows_pen, rows_for_ui):
+    for _rows in (raw.rows, pen.rows, rows_for_ui):
         for _r in _rows:
             _r.setdefault("selection", "strict")
 
@@ -1839,47 +1816,41 @@ def _calculateOptimalAge(signals, sample, progress):
     if merge_nearby:
         pre_merge_ui = [dict(r) for r in rows_for_ui]
         rows_for_ui = _collapse_ci_clusters(rows_for_ui)
-        rows_raw    = _collapse_ci_clusters(rows_raw)
-        rows_pen    = _collapse_ci_clusters(rows_pen)
+        for surf in (raw, pen):
+            surf.rows = _collapse_ci_clusters(surf.rows)
         _capture_rejected_step(pre_merge_ui, rows_for_ui, rejected_rows, "merged_overlapping_candidates", ages_ma)
 
     # Recompute winner-vote support from per-run optima while preserving
     # direct per-run peak support as the primary "support" metric.
     support_floor = max(float(FS_SUPPORT), 0.03)
-    optima_ma_raw_rows = optima_ma_raw
-    optima_ma_pen_rows = optima_ma_pen
-    rows_raw = _recompute_winner_support(rows_raw, optima_ma_raw_rows, ages_ma, min_support=None)
-    rows_pen = _recompute_winner_support(rows_pen, optima_ma_pen_rows, ages_ma, min_support=None)
-    if ui_surface == "RAW":
-        optima_ma_ui_vote = optima_ma_raw_rows
-    else:
-        optima_ma_ui_vote = optima_ma_pen_rows
-    rows_for_ui = _recompute_winner_support(rows_for_ui, optima_ma_ui_vote, ages_ma, min_support=None)
-    rows_raw = _apply_support_filter(rows_raw, support_floor, support_filter_mode)
-    rows_pen = _apply_support_filter(rows_pen, support_floor, support_filter_mode)
-    pre_support_ui = [dict(r) for r in rows_for_ui]
-    rows_for_ui = _apply_support_filter(rows_for_ui, support_floor, support_filter_mode)
-    _capture_rejected_step(pre_support_ui, rows_for_ui, rejected_rows, "low_support", ages_ma)
+    optima_ma_ui_vote = raw.optima_ma if ui_surface == "RAW" else pen.optima_ma
+
+    def _filter_pipeline(label=None):
+        """Apply support recompute + filter to raw, pen, and rows_for_ui."""
+        nonlocal rows_for_ui
+        for surf in (raw, pen):
+            surf.rows = _recompute_winner_support(surf.rows, surf.optima_ma, ages_ma, min_support=None)
+            surf.rows = _apply_support_filter(surf.rows, support_floor, support_filter_mode)
+        rows_for_ui = _recompute_winner_support(rows_for_ui, optima_ma_ui_vote, ages_ma, min_support=None)
+        pre = [dict(r) for r in rows_for_ui]
+        rows_for_ui = _apply_support_filter(rows_for_ui, support_floor, support_filter_mode)
+        if label:
+            _capture_rejected_step(pre, rows_for_ui, rejected_rows, label, ages_ma)
+
+    _filter_pipeline("low_support")
 
     # In no-merge mode, remove near-identical plateau duplicates and re-vote so
     # winner support reflects the deduped set.
     if (not merge_nearby) and PLATEAU_DEDUPE:
-        rows_raw = _plateau_dedupe_rows(rows_raw, ages_ma)
-        rows_pen = _plateau_dedupe_rows(rows_pen, ages_ma)
+        for surf in (raw, pen):
+            surf.rows = _plateau_dedupe_rows(surf.rows, ages_ma)
         pre_dedupe_ui = [dict(r) for r in rows_for_ui]
         rows_for_ui = _plateau_dedupe_rows(rows_for_ui, ages_ma)
         _capture_rejected_step(pre_dedupe_ui, rows_for_ui, rejected_rows, "plateau_duplicate", ages_ma)
-        rows_raw = _recompute_winner_support(rows_raw, optima_ma_raw_rows, ages_ma, min_support=None)
-        rows_pen = _recompute_winner_support(rows_pen, optima_ma_pen_rows, ages_ma, min_support=None)
-        rows_for_ui = _recompute_winner_support(rows_for_ui, optima_ma_ui_vote, ages_ma, min_support=None)
-        rows_raw = _apply_support_filter(rows_raw, support_floor, support_filter_mode)
-        rows_pen = _apply_support_filter(rows_pen, support_floor, support_filter_mode)
-        pre_support_ui = [dict(r) for r in rows_for_ui]
-        rows_for_ui = _apply_support_filter(rows_for_ui, support_floor, support_filter_mode)
-        _capture_rejected_step(pre_support_ui, rows_for_ui, rejected_rows, "low_support", ages_ma)
+        _filter_pipeline("low_support")
 
     # Boundary/fallback guards follow the same surface used for reporting.
-    optima_ma_display = optima_ma_raw_rows if view_which == "raw" else optima_ma_pen_rows
+    optima_ma_display = raw.optima_ma if view_which == "raw" else pen.optima_ma
 
     # Boundary-dominance guard: avoid reporting near-edge strict peaks when
     # run-level optima overwhelmingly collapse to a boundary.
@@ -1888,8 +1859,8 @@ def _calculateOptimalAge(signals, sample, progress):
     if boundary_reason is not None:
         _capture_rejected_step(pre_boundary_ui, rows_for_ui, rejected_rows, boundary_reason, ages_ma)
     if boundary_reason is not None:
-        rows_raw = []
-        rows_pen = []
+        raw.rows = []
+        pen.rows = []
         sample.ensemble_abstain_reason = boundary_reason
 
     # Surface-shape recent boundary modes are reported separately rather than
@@ -1907,9 +1878,9 @@ def _calculateOptimalAge(signals, sample, progress):
         )
     if boundary_row_ui is not None:
         if view_which == "raw":
-            rows_raw = [dict(r) for r in rows_for_ui]
+            raw.rows = [dict(r) for r in rows_for_ui]
         else:
-            rows_pen = [dict(r) for r in rows_for_ui]
+            pen.rows = [dict(r) for r in rows_for_ui]
         sample.ensemble_abstain_reason = None
         # Any near-edge numeric rows that were replaced should be transparent.
         _capture_rejected_step(
@@ -1923,8 +1894,8 @@ def _calculateOptimalAge(signals, sample, progress):
     # Experimental CI calibration: widen retained rows using a local
     # curvature-derived floor after peak selection/merging, so peak counts stay
     # unchanged while broad or flat-topped crests do not collapse to tiny CIs.
-    rows_raw = widen_rows_to_curvature_floor(rows_raw, ages_ma, Smed_raw, S_runs_raw, orientation="max")
-    rows_pen = widen_rows_to_curvature_floor(rows_pen, ages_ma, Smed_pen, S_runs_pen, orientation="max")
+    for surf in (raw, pen):
+        surf.rows = widen_rows_to_curvature_floor(surf.rows, ages_ma, surf.Smed, surf.S_runs, orientation="max")
     rows_for_ui = widen_rows_to_curvature_floor(rows_for_ui, ages_ma, S_view, S_runs_view, orientation="max")
 
     # Ensure snapped age lies inside its CI (preserve width >= 1 step)
@@ -1997,9 +1968,9 @@ def _calculateOptimalAge(signals, sample, progress):
         rows_for_ui = filtered
         _capture_rejected_step(pre_width_ui, rows_for_ui, rejected_rows, "wide_ci", ages_ma)
 
-        # Keep rows_raw/rows_pen in sync with what we actually show
-        rows_raw = _keep_same(rows_raw, rows_for_ui)
-        rows_pen = _keep_same(rows_pen, rows_for_ui)
+        # Keep raw/pen rows in sync with what we actually show
+        raw.rows = _keep_same(raw.rows, rows_for_ui)
+        pen.rows = _keep_same(pen.rows, rows_for_ui)
 
     # Conservative fallback for clear interior single-crest surfaces.
     if not rows_for_ui:
@@ -2012,11 +1983,11 @@ def _calculateOptimalAge(signals, sample, progress):
         if fb is not None:
             rows_for_ui = [dict(fb)]
             if ui_surface == "RAW":
-                rows_raw = [dict(fb)]
-                rows_pen = []
+                raw.rows = [dict(fb)]
+                pen.rows = []
             else:
-                rows_pen = [dict(fb)]
-                rows_raw = []
+                pen.rows = [dict(fb)]
+                raw.rows = []
             sample.ensemble_abstain_reason = None
 
     # Conservative display/reporting: if no peaks survive, annotate as unresolved.
@@ -2061,26 +2032,23 @@ def _calculateOptimalAge(signals, sample, progress):
     sample.rejected_peak_candidates = rejected_rows
 
     # Renumber peak_no after filtering so CSV doesn't have gaps
-    for i, r in enumerate(rows_for_ui, 1):
-        r["peak_no"] = i
-    for i, r in enumerate(rows_raw, 1):
-        r["peak_no"] = i
-    for i, r in enumerate(rows_pen, 1):
-        r["peak_no"] = i
+    for row_list in (rows_for_ui, raw.rows, pen.rows):
+        for i, r in enumerate(row_list, 1):
+            r["peak_no"] = i
 
-    # Export rows_for_ui/rows_raw/rows_pen are final
+    # Export rows_for_ui/raw.rows/pen.rows are final
     if CDC_WRITE_OUTPUTS:
-        _append_catalogue_rows(sample.name, rows_pen, dest_path=CATALOGUE_CSV_PEN)
-        _append_catalogue_rows(sample.name, rows_raw, dest_path=CATALOGUE_CSV_RAW)
+        _append_catalogue_rows(sample.name, pen.rows, dest_path=CATALOGUE_CSV_PEN)
+        _append_catalogue_rows(sample.name, raw.rows, dest_path=CATALOGUE_CSV_RAW)
         _write_npz_diagnostics(
             sample_name=sample.name,
             ages_ma=ages_ma,
             ages_y=ages_y,
             runs=runs,
-            S_runs_raw=S_runs_raw,
-            S_runs_pen=S_runs_pen,
-            Smed_raw=Smed_raw,
-            Smed_pen=Smed_pen,
+            S_runs_raw=raw.S_runs,
+            S_runs_pen=pen.S_runs,
+            Smed_raw=raw.Smed,
+            Smed_pen=pen.Smed,
             S_view=S_view,
             rows_for_ui=rows_for_ui,
         )
