@@ -1387,6 +1387,168 @@ def _compute_mean_stats(runs, primary_which, prefer_pen):
     return meanD, meanP, meanInv, meanSc
 
 
+def _apply_guards_and_fallbacks(
+    sample, settings, runs, raw, pen,
+    rows_for_ui, rejected_rows,
+    ages_ma, S_view, S_runs_view,
+    view_which, ui_surface,
+    support_floor, cluster_reporting_accepted,
+):
+    """Boundary guards, CI calibration, wide-CI filter, single-crest fallback."""
+    optima_ma_display = raw.optima_ma if view_which == "raw" else pen.optima_ma
+
+    # Boundary-dominance guard
+    pre_boundary_ui = [dict(r) for r in rows_for_ui]
+    rows_for_ui, boundary_reason = _apply_boundary_dominance_guard(rows_for_ui, optima_ma_display, ages_ma)
+    if boundary_reason is not None:
+        _capture_rejected_step(pre_boundary_ui, rows_for_ui, rejected_rows, boundary_reason, ages_ma)
+        raw.rows = []
+        pen.rows = []
+        sample.ensemble_abstain_reason = boundary_reason
+
+    # Recent boundary mode injection
+    pre_boundary_mode_ui = [dict(r) for r in rows_for_ui]
+    has_cluster_boundary_row = any(str(r.get("mode", "")) == "recent_boundary" for r in rows_for_ui)
+    if cluster_reporting_accepted and has_cluster_boundary_row:
+        boundary_row_ui = next((dict(r) for r in rows_for_ui if str(r.get("mode", "")) == "recent_boundary"), None)
+    else:
+        rows_for_ui, boundary_row_ui = _inject_recent_boundary_mode(
+            rows_for_ui, optima_ma_display, len(runs), ages_ma,
+        )
+    if boundary_row_ui is not None:
+        if view_which == "raw":
+            raw.rows = [dict(r) for r in rows_for_ui]
+        else:
+            pen.rows = [dict(r) for r in rows_for_ui]
+        sample.ensemble_abstain_reason = None
+        _capture_rejected_step(
+            pre_boundary_mode_ui, rows_for_ui, rejected_rows,
+            "boundary_dominated_surface", ages_ma,
+        )
+
+    # CI calibration: widen using local curvature floor
+    for surf in (raw, pen):
+        surf.rows = widen_rows_to_curvature_floor(surf.rows, ages_ma, surf.Smed, surf.S_runs, orientation="max")
+    rows_for_ui = widen_rows_to_curvature_floor(rows_for_ui, ages_ma, S_view, S_runs_view, orientation="max")
+
+    # Ensure snapped age lies inside its CI
+    if rows_for_ui:
+        step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
+        min_age, max_age = float(ages_ma[0]), float(ages_ma[-1])
+        fixed = []
+        for r in rows_for_ui:
+            a  = float(r["age_ma"])
+            lo = float(r["ci_low"])
+            hi = float(r["ci_high"])
+            w  = max(hi - lo, step)
+            if (a < lo) or (a > hi):
+                lo, hi = a - 0.5 * w, a + 0.5 * w
+                lo, hi = max(lo, min_age), min(hi, max_age)
+                if (hi - lo) < step:
+                    lo, hi = max(a - step, min_age), min(a + step, max_age)
+            fixed.append(dict(r, ci_low=lo, ci_high=hi))
+        rows_for_ui = fixed
+
+    # Enforce minimum CI width and drop boundary-degenerate peaks
+    if rows_for_ui:
+        step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
+        min_age, max_age = float(ages_ma[0]), float(ages_ma[-1])
+        pre_clean_ui = [dict(r) for r in rows_for_ui]
+        cleaned = []
+        for r in rows_for_ui:
+            a  = float(r["age_ma"])
+            lo = float(r["ci_low"])
+            hi = float(r["ci_high"])
+            if (hi - lo) < step:
+                lo, hi = a - step, a + step
+            near_edge  = (a - min_age) <= step or (max_age - a) <= step
+            degenerate = (hi - lo) <= _DEGENERATE_CI_GRID_FRAC * step
+            if near_edge and degenerate:
+                if float(r.get("filter_support", r.get("support", 0.0))) >= max(support_floor, 0.12):
+                    lo, hi = a - step, a + step
+                else:
+                    continue
+            cleaned.append(dict(r, ci_low=lo, ci_high=hi))
+        rows_for_ui = cleaned
+        _capture_rejected_step(pre_clean_ui, rows_for_ui, rejected_rows, "edge_degenerate_ci", ages_ma)
+
+    for r in rows_for_ui:
+        a = float(r["age_ma"])
+        if not (float(r["ci_low"]) <= a <= float(r["ci_high"])):
+            r["ci_low"]  = min(float(r["ci_low"]),  a)
+            r["ci_high"] = max(float(r["ci_high"]), a)
+
+    # Drop peaks with absurdly wide CIs
+    if rows_for_ui:
+        total_span = float(ages_ma[-1] - ages_ma[0])
+        MAX_CI_FRAC = 0.5
+        pre_width_ui = [dict(r) for r in rows_for_ui]
+        filtered = []
+        for r in rows_for_ui:
+            if str(r.get("mode", "")) == "recent_boundary":
+                filtered.append(r)
+                continue
+            width = float(r["ci_high"] - r["ci_low"])
+            score = float(r.get("filter_support", r.get("support", 0.0)))
+            if width > MAX_CI_FRAC * total_span and score < max(support_floor, 0.25):
+                continue
+            filtered.append(r)
+        rows_for_ui = filtered
+        _capture_rejected_step(pre_width_ui, rows_for_ui, rejected_rows, "wide_ci", ages_ma)
+        raw.rows = _keep_same(raw.rows, rows_for_ui)
+        pen.rows = _keep_same(pen.rows, rows_for_ui)
+
+    # Single-crest fallback
+    if not rows_for_ui:
+        fb = _single_crest_fallback_row(
+            ages_ma, S_view, optima_ma_display,
+            min_support=max(float(support_floor), 0.10),
+        )
+        if fb is not None:
+            rows_for_ui = [dict(fb)]
+            if ui_surface == "RAW":
+                raw.rows = [dict(fb)]
+                pen.rows = []
+            else:
+                pen.rows = [dict(fb)]
+                raw.rows = []
+            sample.ensemble_abstain_reason = None
+
+    if not rows_for_ui:
+        if sample.ensemble_abstain_reason is None:
+            sample.ensemble_abstain_reason = "no_supported_peaks"
+
+    if isinstance(getattr(sample, "ensemble_surface_flags", None), dict):
+        sample.ensemble_surface_flags["view_surface_source"] = "clustered" if cluster_reporting_accepted else "global_all"
+    sample.display_heatmap_ages_ma = np.asarray(ages_ma, float)
+    sample.display_heatmap_runs_S = np.asarray(S_runs_view, float)
+
+    # Heatmap setup
+    selected_cluster_ids = sorted(
+        {int(r.get("cluster_id")) for r in rows_for_ui if isinstance(r, dict) and r.get("cluster_id") is not None}
+    ) if cluster_reporting_accepted else []
+    for run in runs:
+        run._heatmap_cluster_ids = tuple(selected_cluster_ids) if selected_cluster_ids else None
+        run._heatmap_view_which = view_which
+        run.createHeatmapData(settings.minimumRimAge, settings.maximumRimAge, config.HEATMAP_RESOLUTION)
+
+    # Deduplicate rejected rows
+    if rejected_rows:
+        used = [False] * len(rows_for_ui)
+        tol = max(0.51 * _step_ma_from_grid(ages_ma), 1e-6)
+        kept_rejected: List[Dict] = []
+        for rr in rejected_rows:
+            j = _row_match_index(rr, rows_for_ui, used, tol)
+            if j is None:
+                kept_rejected.append(rr)
+            else:
+                used[j] = True
+        rejected_rows = sorted(kept_rejected, key=lambda r: float(r.get("age_ma", np.nan)))
+    sample.rejected_peak_candidates = rejected_rows
+
+    return rows_for_ui, rejected_rows
+
+
 def _publish_results(
     signals, sample, progress, settings, runs, raw, pen,
     rows_for_ui, rejected_rows, ages_ma, ages_y, S_view,
@@ -1947,187 +2109,13 @@ def _calculateOptimalAge(signals, sample, progress):
         _capture_rejected_step(pre_dedupe_ui, rows_for_ui, rejected_rows, "plateau_duplicate", ages_ma)
         _filter_pipeline("low_support")
 
-    # Boundary/fallback guards follow the same surface used for reporting.
-    optima_ma_display = raw.optima_ma if view_which == "raw" else pen.optima_ma
-
-    # Boundary-dominance guard: avoid reporting near-edge strict peaks when
-    # run-level optima overwhelmingly collapse to a boundary.
-    pre_boundary_ui = [dict(r) for r in rows_for_ui]
-    rows_for_ui, boundary_reason = _apply_boundary_dominance_guard(rows_for_ui, optima_ma_display, ages_ma)
-    if boundary_reason is not None:
-        _capture_rejected_step(pre_boundary_ui, rows_for_ui, rejected_rows, boundary_reason, ages_ma)
-    if boundary_reason is not None:
-        raw.rows = []
-        pen.rows = []
-        sample.ensemble_abstain_reason = boundary_reason
-
-    # Surface-shape recent boundary modes are reported separately rather than
-    # being discarded or forced into a fake interior peak.
-    pre_boundary_mode_ui = [dict(r) for r in rows_for_ui]
-    has_cluster_boundary_row = any(str(r.get("mode", "")) == "recent_boundary" for r in rows_for_ui)
-    if cluster_reporting_accepted and has_cluster_boundary_row:
-        boundary_row_ui = next((dict(r) for r in rows_for_ui if str(r.get("mode", "")) == "recent_boundary"), None)
-    else:
-        rows_for_ui, boundary_row_ui = _inject_recent_boundary_mode(
-            rows_for_ui,
-            optima_ma_display,
-            len(runs),
-            ages_ma,
-        )
-    if boundary_row_ui is not None:
-        if view_which == "raw":
-            raw.rows = [dict(r) for r in rows_for_ui]
-        else:
-            pen.rows = [dict(r) for r in rows_for_ui]
-        sample.ensemble_abstain_reason = None
-        # Any near-edge numeric rows that were replaced should be transparent.
-        _capture_rejected_step(
-            pre_boundary_mode_ui,
-            rows_for_ui,
-            rejected_rows,
-            "boundary_dominated_surface",
-            ages_ma,
-        )
-
-    # Experimental CI calibration: widen retained rows using a local
-    # curvature-derived floor after peak selection/merging, so peak counts stay
-    # unchanged while broad or flat-topped crests do not collapse to tiny CIs.
-    for surf in (raw, pen):
-        surf.rows = widen_rows_to_curvature_floor(surf.rows, ages_ma, surf.Smed, surf.S_runs, orientation="max")
-    rows_for_ui = widen_rows_to_curvature_floor(rows_for_ui, ages_ma, S_view, S_runs_view, orientation="max")
-
-    # Ensure snapped age lies inside its CI (preserve width >= 1 step)
-    if rows_for_ui:
-        step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
-        min_age, max_age = float(ages_ma[0]), float(ages_ma[-1])
-        fixed = []
-        for r in rows_for_ui:
-            a  = float(r["age_ma"])
-            lo = float(r["ci_low"])
-            hi = float(r["ci_high"])
-            w  = max(hi - lo, step)
-
-            if (a < lo) or (a > hi):
-                lo, hi = a - 0.5 * w, a + 0.5 * w
-                lo, hi = max(lo, min_age), min(hi, max_age)
-                if (hi - lo) < step:
-                    lo, hi = max(a - step, min_age), min(a + step, max_age)
-
-            fixed.append(dict(r, ci_low=lo, ci_high=hi))
-        rows_for_ui = fixed
-
-    # Enforce a minimum CI width and drop boundary‑degenerate peaks
-    if rows_for_ui:
-        step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
-        min_age, max_age = float(ages_ma[0]), float(ages_ma[-1])
-        pre_clean_ui = [dict(r) for r in rows_for_ui]
-        cleaned = []
-        for r in rows_for_ui:
-            a  = float(r["age_ma"])
-            lo = float(r["ci_low"])
-            hi = float(r["ci_high"])
-            if (hi - lo) < step:
-                lo, hi = a - step, a + step
-            near_edge  = (a - min_age) <= step or (max_age - a) <= step
-            # Sub-grid intervals are numerical collapses rather than a credible
-            # statement of age resolution, especially at window edges.
-            degenerate = (hi - lo) <= _DEGENERATE_CI_GRID_FRAC * step
-            if near_edge and degenerate:
-                if float(r.get("filter_support", r.get("support", 0.0))) >= max(support_floor, 0.12):
-                    lo, hi = a - step, a + step
-                else:
-                    continue
-            cleaned.append(dict(r, ci_low=lo, ci_high=hi))
-        rows_for_ui = cleaned
-        _capture_rejected_step(pre_clean_ui, rows_for_ui, rejected_rows, "edge_degenerate_ci", ages_ma)
-
-    for r in rows_for_ui:
-        a = float(r["age_ma"])
-        if not (float(r["ci_low"]) <= a <= float(r["ci_high"])):
-            r["ci_low"]  = min(float(r["ci_low"]),  a)
-            r["ci_high"] = max(float(r["ci_high"]), a)
-
-    # ---- Drop peaks with absurdly wide CIs (essentially the entire grid) ----
-    if rows_for_ui:
-        total_span = float(ages_ma[-1] - ages_ma[0])
-        MAX_CI_FRAC = 0.5  # drop peaks whose CI spans >50% of the modelling window
-
-        pre_width_ui = [dict(r) for r in rows_for_ui]
-        filtered = []
-        for r in rows_for_ui:
-            if str(r.get("mode", "")) == "recent_boundary":
-                filtered.append(r)
-                continue
-            width = float(r["ci_high"] - r["ci_low"])
-            score = float(r.get("filter_support", r.get("support", 0.0)))
-            if width > MAX_CI_FRAC * total_span and score < max(support_floor, 0.25):
-                continue
-            filtered.append(r)
-        rows_for_ui = filtered
-        _capture_rejected_step(pre_width_ui, rows_for_ui, rejected_rows, "wide_ci", ages_ma)
-
-        # Keep raw/pen rows in sync with what we actually show
-        raw.rows = _keep_same(raw.rows, rows_for_ui)
-        pen.rows = _keep_same(pen.rows, rows_for_ui)
-
-    # Conservative fallback for clear interior single-crest surfaces.
-    if not rows_for_ui:
-        fb = _single_crest_fallback_row(
-            ages_ma,
-            S_view,
-            optima_ma_display,
-            min_support=max(float(support_floor), 0.10),
-        )
-        if fb is not None:
-            rows_for_ui = [dict(fb)]
-            if ui_surface == "RAW":
-                raw.rows = [dict(fb)]
-                pen.rows = []
-            else:
-                pen.rows = [dict(fb)]
-                raw.rows = []
-            sample.ensemble_abstain_reason = None
-
-    # Conservative display/reporting: if no peaks survive, annotate as unresolved.
-    if not rows_for_ui:
-        if sample.ensemble_abstain_reason is None:
-            sample.ensemble_abstain_reason = "no_supported_peaks"
-
-    if isinstance(getattr(sample, "ensemble_surface_flags", None), dict):
-        sample.ensemble_surface_flags["view_surface_source"] = "clustered" if cluster_reporting_accepted else "global_all"
-    sample.display_heatmap_ages_ma = np.asarray(ages_ma, float)
-    sample.display_heatmap_runs_S = np.asarray(S_runs_view, float)
-
-    # Keep the top-panel heatmap on the same source as the final reported curve.
-    selected_cluster_ids = sorted(
-        {
-            int(r.get("cluster_id"))
-            for r in rows_for_ui
-            if isinstance(r, dict) and r.get("cluster_id") is not None
-        }
-    ) if cluster_reporting_accepted else []
-    for run in runs:
-        run._heatmap_cluster_ids = tuple(selected_cluster_ids) if selected_cluster_ids else None
-        run._heatmap_view_which = view_which
-        run.createHeatmapData(
-            settings.minimumRimAge,
-            settings.maximumRimAge,
-            config.HEATMAP_RESOLUTION,
-        )
-
-    # Keep only candidates that were not accepted in final rows_for_ui.
-    if rejected_rows:
-        used = [False] * len(rows_for_ui)
-        tol = max(0.51 * _step_ma_from_grid(ages_ma), 1e-6)
-        kept_rejected: List[Dict] = []
-        for rr in rejected_rows:
-            j = _row_match_index(rr, rows_for_ui, used, tol)
-            if j is None:
-                kept_rejected.append(rr)
-            else:
-                used[j] = True
-        rejected_rows = sorted(kept_rejected, key=lambda r: float(r.get("age_ma", np.nan)))
-    sample.rejected_peak_candidates = rejected_rows
+    rows_for_ui, rejected_rows = _apply_guards_and_fallbacks(
+        sample, settings, runs, raw, pen,
+        rows_for_ui, rejected_rows,
+        ages_ma, S_view, S_runs_view,
+        view_which, ui_surface,
+        support_floor, cluster_reporting_accepted,
+    )
 
     _publish_results(
         signals, sample, progress, settings, runs, raw, pen,
