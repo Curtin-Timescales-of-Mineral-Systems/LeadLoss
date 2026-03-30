@@ -164,15 +164,7 @@ def adaptive_peaks(x, y_raw, tier, smooth: float = 2):
 
     pk, _ = find_peaks(y, prominence=float(prom), distance=3)
 
-    def _refine(i: int) -> float:
-        if i <= 0 or i >= len(x) - 1:
-            return float(x[i])
-        x0, x1, x2 = x[i-1:i+2]; y0, y1, y2 = y[i-1:i+2]
-        d = (y0 - 2.0*y1 + y2)
-        delta = 0.5*(y0 - y2)/d if d else 0.0
-        return float(x1 + delta*(x2 - x1))
-
-    return np.array([_refine(int(i)) for i in pk], float)
+    return np.array([refine_peak(x, y, int(i)) for i in pk], float)
 
 def keep_if_supported(
     x_grid,
