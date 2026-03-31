@@ -66,10 +66,6 @@ MERGE_NEARBY_PEAKS: bool = _env_bool(
     _profile_default("CDC_MERGE_NEARBY_PEAKS", "0", paper="0", exploratory="0"),
 )
 
-# Clustered per-sample catalogue branch. This is only used on clustering-enabled
-# branches; the baseline no-clustering branch simply never references it.
-USE_CLUSTER_CATALOGUE: bool = _env_bool("CDC_USE_CLUSTER_CATALOGUE", "1")
-
 # In no-merge mode, still collapse near-identical picks on the same flat crest.
 PLATEAU_DEDUPE: bool = _env_bool("CDC_PLATEAU_DEDUPE", "1")
 PLATEAU_DEDUPE_RADIUS_STEPS: float = _env_float("CDC_PLATEAU_DEDUPE_RADIUS_STEPS", "2.0")

@@ -276,7 +276,7 @@ class SampleOutputFigure(AbstractFigure):
         st = getattr(self.sample, "calculationSettings", None)
         if st is not None and getattr(self.sample, "monteCarloRuns", None):
             # Final optimal-age delivery can change the authoritative surface
-            # (e.g. clustered fallback to global_all), so refresh the heatmap
+            # (e.g. surface selection change), so refresh the heatmap
             # from the final per-run cached columns now that processing is done.
             ages_ma = getattr(self.sample, "display_heatmap_ages_ma", None)
             S_runs = getattr(self.sample, "display_heatmap_runs_S", None)

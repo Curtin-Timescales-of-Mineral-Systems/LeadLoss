@@ -38,11 +38,6 @@ class LeadLossCalculationSettings:
         self.useSummedKS = False
         self.summedKSSmoothSigma = 1.0
 
-        # Archived backend path retained for provenance; the release GUI keeps
-        # clustering disabled and does not expose it to users.
-        self.use_discordant_clustering = False
-        self.relabel_clusters_per_run = False
-
         # Conservative ensemble peak catalogue
         self.enable_ensemble_peak_picking = True
         self.conservative_abstain_on_monotonic = True

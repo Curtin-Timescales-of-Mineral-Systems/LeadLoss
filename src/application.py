@@ -247,20 +247,6 @@ class LeadLossApplication:
 
         self.signals.taskComplete.emit(True, "Export Monte Carlo runs complete")
 
-    def exportClusteringDiagnostics(self, samples=None):
-        output_file = self.view.getOutputFile()
-        if not output_file:
-            self.signals.taskComplete.emit(False, "Export canceled by user")
-            return
-
-        written = self.model.exportClusteringDiagnostics(output_file, samples=samples)
-        stem = Path(output_file)
-        stem = stem.with_suffix("") if stem.suffix else stem
-        self.signals.taskComplete.emit(
-            True,
-            f"Exported clustering diagnostics to {stem.name}_*.csv ({len(written)} files)",
-        )
-
     ###########
     ## Other ##
     ###########

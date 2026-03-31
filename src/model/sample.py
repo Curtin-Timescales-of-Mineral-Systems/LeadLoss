@@ -10,11 +10,6 @@ class Sample:
 
         self.peak_catalogue = []
         self.rejected_peak_candidates = []
-        self.disc_cluster_labels = None
-        self.disc_cluster_summary = {}
-        self._cdc_clustering_accepted = False
-        self._cdc_cluster_split_accepted = False
-        self._cdc_cluster_reporting_accepted = False
 
         self.validSpots = [spot for spot in self.spots if spot.valid]
         self.invalidSpots = [spot for spot in self.spots if not spot.valid]
@@ -93,11 +88,6 @@ class Sample:
         self.monteCarloRuns = []
         self.peak_catalogue = []
         self.rejected_peak_candidates = []
-        self.disc_cluster_labels = None
-        self.disc_cluster_summary = {}
-        self._cdc_clustering_accepted = False
-        self._cdc_cluster_split_accepted = False
-        self._cdc_cluster_reporting_accepted = False
         for spot in self.spots:
             spot.clear()
         self.signals.processingCleared.emit()
@@ -147,31 +137,6 @@ class Sample:
             if isinstance(maybe_rejected, dict) and "rejected_peak_candidates" in maybe_rejected:
                 self.rejected_peak_candidates = list(maybe_rejected.get("rejected_peak_candidates") or [])
                 next_idx += 1
-
-        disc_idx = next_idx
-        if len(args) > disc_idx:
-            payload = args[disc_idx]
-            if isinstance(payload, dict):
-                self.disc_cluster_labels = payload.get("labels")
-                self.disc_cluster_summary = payload.get("summary", {}) or {}
-                split_ok = bool(
-                    payload.get(
-                        "split_accepted",
-                        self.disc_cluster_summary.get("split_accepted", self.disc_cluster_summary.get("accepted", False)),
-                    )
-                )
-                report_ok = bool(
-                    payload.get(
-                        "reporting_accepted",
-                        self.disc_cluster_summary.get("reporting_accepted", payload.get("accepted", False)),
-                    )
-                )
-                self._cdc_cluster_split_accepted = split_ok
-                self._cdc_cluster_reporting_accepted = report_ok
-                self._cdc_clustering_accepted = split_ok
-            else:
-                self.disc_cluster_labels = payload
-                self.disc_cluster_summary = args[disc_idx + 1] if len(args) > disc_idx + 1 else {}
 
         if self.signals:
             self.signals.optimalAgeCalculated.emit()

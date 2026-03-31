@@ -21,14 +21,9 @@ import numpy as np
 from model.monteCarloRun import MonteCarloRun
 from model.settings.calculation import DiscordanceClassificationMethod
 from process import calculations
-from process.discordantClustering import (
-    build_fixed_discordant_labels,
-    stack_goodness_by_cluster,
-)
 from process.ensemble import (
     robust_ensemble_curve,
     build_ensemble_catalogue,
-    build_cluster_catalogue_legacy,
     widen_rows_to_curvature_floor,
 )
 from process.cdc_config import (
@@ -59,7 +54,6 @@ from process.cdc_config import (
     SMOOTH_MA,
     SMOOTH_FRAC,
     TIMING_MODE,
-    USE_CLUSTER_CATALOGUE,
 )
 from process.cdc_diagnostics import (
     append_catalogue_rows as _append_catalogue_rows,
@@ -78,7 +72,6 @@ from utils.peakHelpers import fmt_peak_stats
 TIME_PER_TASK = 0.0
 _BOUNDARY_NEAR_GRID_STEPS = 8.0
 _BOUNDARY_FAR_GRID_STEPS = 5.0
-_CLUSTER_ALIGN_MIN_TOL_MA = 100.0
 _DEGENERATE_CI_GRID_FRAC = 0.75
 _SINGLE_CREST_PROM_FRAC = 0.03
 
@@ -244,28 +237,6 @@ def _performRimAgeSampling(signals, sample):
     discordantUPbValues  = np.stack([rng.normal(s.uPbValue,  s.uPbStDev,  stabilitySamples) for s in discordantSpots], axis=1)
     discordantPbPbValues = np.stack([rng.normal(s.pbPbValue, s.pbPbStDev, stabilitySamples) for s in discordantSpots], axis=1)
 
-    use_dc = bool(getattr(settings, "use_discordant_clustering", False))
-    full_labels = None
-    cluster_summary = dict(accepted=False, reason="disabled", clusters=[], anchor_means_ma=[])
-    if use_dc:
-        accepted, labels, cluster_summary = build_fixed_discordant_labels(
-            concordantSpots,
-            discordantSpots,
-        )
-        if accepted:
-            full_labels = np.asarray(labels, int)
-
-    sample.disc_cluster_labels = None if full_labels is None else np.asarray(full_labels, int)
-    sample.disc_cluster_summary = cluster_summary
-    sample._cdc_clustering_accepted = bool(cluster_summary.get("accepted", False))
-
-    if full_labels is not None:
-        for spot, lab in zip(discordantSpots, full_labels):
-            spot.cluster_id = int(lab)
-    else:
-        for spot in discordantSpots:
-            spot.cluster_id = None
-
     # --------- sampling loop ---------
     per_run_times = []
     t0 = time.perf_counter()
@@ -280,7 +251,6 @@ def _performRimAgeSampling(signals, sample):
             j, sample.name,
             concordantUPbValues[j],  concordantPbPbValues[j],
             discordantUPbValues[j],  discordantPbPbValues[j],
-            discordant_labels=full_labels,
             settings=settings
         )
         _performSingleRun(settings, run)
@@ -616,7 +586,7 @@ def _apply_boundary_dominance_guard(rows, optima_ma, ages_ma):
     Suppress near-edge peaks when per-run optima are overwhelmingly boundary-dominated.
 
     This targets failure modes where a broad/monotonic surface produces a spurious
-    near-edge local hump with high reproducibility, especially after cluster stacking.
+    near-edge local hump with high reproducibility.
     """
     if (not rows) or (len(rows) == 0):
         return rows, None
@@ -807,7 +777,7 @@ def _plateau_dedupe_rows(rows, ages_ma):
     """
     Collapse near-identical peaks that sit on the same broad/flat crest.
     This is lighter than full peak merging and mainly removes duplicate picks
-    emitted from adjacent cluster surfaces.
+    emitted from adjacent surface windows.
     """
     if (not rows) or len(rows) <= 1:
         return rows
@@ -1039,9 +1009,8 @@ def _snap_rows_to_curve(rows, ages_ma, S_view):
 
     # Assign each displayed row to the nearest available displayed-curve crest,
     # but do not drag the marker a long way from the reported age just to land
-    # on a local maximum. That was producing misleading plots on clustered
-    # samples where the catalogue age and the plotted marker diverged by
-    # hundreds of Ma.
+    # on a local maximum. That was producing misleading plots where the
+    # catalogue age and the plotted marker diverged by hundreds of Ma.
     order = np.argsort([float(dict(r).get("age_ma", np.nan)) for r in rows])
     snapped = [None] * len(rows)
     for ii in order:
@@ -1275,55 +1244,6 @@ class SurfaceState:
     rejected: List[Dict] = field(default_factory=list)
 
 
-def _cluster_optima_from_goodness(S_cluster: np.ndarray, ages_ma: np.ndarray) -> np.ndarray:
-    S_cluster = np.asarray(S_cluster, float)
-    if S_cluster.ndim != 2 or S_cluster.size == 0:
-        return np.array([], float)
-    out = np.full(S_cluster.shape[0], np.nan, float)
-    for r_i, row in enumerate(S_cluster):
-        if not np.isfinite(row).any():
-            continue
-        out[r_i] = float(ages_ma[int(np.nanargmax(row))])
-    return out
-
-
-def _update_cluster_summary(sample, **updates):
-    summary = dict(getattr(sample, "disc_cluster_summary", {}) or {})
-    summary.update(updates)
-    sample.disc_cluster_summary = summary
-
-
-def _align_cluster_rows_to_global(cluster_rows, global_rows, ages_ma: np.ndarray):
-    if not cluster_rows or not global_rows:
-        return []
-    step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
-    # Allow a generous match tolerance so cluster/global rows still align on
-    # coarse age grids or broad synthetic modes.
-    tol_ma = max(_CLUSTER_ALIGN_MIN_TOL_MA, _BOUNDARY_NEAR_GRID_STEPS * step)
-
-    aligned = [dict(r) for r in cluster_rows if str(r.get("mode", "")) == "recent_boundary"]
-    used_global = set()
-    ordered_cluster = sorted(
-        [dict(r) for r in cluster_rows if str(r.get("mode", "")) != "recent_boundary"],
-        key=lambda rr: (
-            -float(rr.get("support", 0.0)),
-            float(rr.get("ci_high", np.inf)) - float(rr.get("ci_low", -np.inf)),
-        ),
-    )
-    global_centers = np.asarray([float(r["age_ma"]) for r in global_rows], float)
-
-    for row in ordered_cluster:
-        age = float(row["age_ma"])
-        deltas = np.abs(global_centers - age)
-        idx = int(np.argmin(deltas))
-        if deltas[idx] > tol_ma or idx in used_global:
-            continue
-        used_global.add(idx)
-        aligned.append(row)
-
-    return sorted(aligned, key=lambda rr: float(rr["age_ma"]))
-
-
 def _keep_same(rows, keep):
     if not rows or not keep:
         return []
@@ -1392,7 +1312,7 @@ def _apply_guards_and_fallbacks(
     rows_for_ui, rejected_rows,
     ages_ma, S_view, S_runs_view,
     view_which, ui_surface,
-    support_floor, cluster_reporting_accepted,
+    support_floor,
 ):
     """Boundary guards, CI calibration, wide-CI filter, single-crest fallback."""
     optima_ma_display = raw.optima_ma if view_which == "raw" else pen.optima_ma
@@ -1408,13 +1328,9 @@ def _apply_guards_and_fallbacks(
 
     # Recent boundary mode injection
     pre_boundary_mode_ui = [dict(r) for r in rows_for_ui]
-    has_cluster_boundary_row = any(str(r.get("mode", "")) == "recent_boundary" for r in rows_for_ui)
-    if cluster_reporting_accepted and has_cluster_boundary_row:
-        boundary_row_ui = next((dict(r) for r in rows_for_ui if str(r.get("mode", "")) == "recent_boundary"), None)
-    else:
-        rows_for_ui, boundary_row_ui = _inject_recent_boundary_mode(
-            rows_for_ui, optima_ma_display, len(runs), ages_ma,
-        )
+    rows_for_ui, boundary_row_ui = _inject_recent_boundary_mode(
+        rows_for_ui, optima_ma_display, len(runs), ages_ma,
+    )
     if boundary_row_ui is not None:
         if view_which == "raw":
             raw.rows = [dict(r) for r in rows_for_ui]
@@ -1519,16 +1435,12 @@ def _apply_guards_and_fallbacks(
             sample.ensemble_abstain_reason = "no_supported_peaks"
 
     if isinstance(getattr(sample, "ensemble_surface_flags", None), dict):
-        sample.ensemble_surface_flags["view_surface_source"] = "clustered" if cluster_reporting_accepted else "global_all"
+        sample.ensemble_surface_flags["view_surface_source"] = "global_all"
     sample.display_heatmap_ages_ma = np.asarray(ages_ma, float)
     sample.display_heatmap_runs_S = np.asarray(S_runs_view, float)
 
     # Heatmap setup
-    selected_cluster_ids = sorted(
-        {int(r.get("cluster_id")) for r in rows_for_ui if isinstance(r, dict) and r.get("cluster_id") is not None}
-    ) if cluster_reporting_accepted else []
     for run in runs:
-        run._heatmap_cluster_ids = tuple(selected_cluster_ids) if selected_cluster_ids else None
         run._heatmap_view_which = view_which
         run.createHeatmapData(settings.minimumRimAge, settings.maximumRimAge, config.HEATMAP_RESOLUTION)
 
@@ -1553,7 +1465,7 @@ def _publish_results(
     signals, sample, progress, settings, runs, raw, pen,
     rows_for_ui, rejected_rows, ages_ma, ages_y, S_view,
     optimalAge, optimalAge_ui, optimalAge_legacy, lower95, upper95, opt_all,
-    meanD, meanP, meanInv, meanSc, cluster_reporting_accepted,
+    meanD, meanP, meanInv, meanSc,
 ):
     """Renumber peaks, export CSVs/NPZ, publish UI payload."""
     for row_list in (rows_for_ui, raw.rows, pen.rows):
@@ -1591,7 +1503,6 @@ def _publish_results(
             winner_support=float(r.get("winner_support", sup)),
             selection=r.get("selection", "strict"),
             mode=r.get("mode", ""), label=r.get("label", ""),
-            cluster_id=r.get("cluster_id"),
         )
         for i, (r, (med, lo, hi, sup)) in enumerate(zip(rows_for_ui, catalogue_legacy))
     ]
@@ -1612,21 +1523,10 @@ def _publish_results(
     except (AttributeError, RuntimeError, TypeError):
         pass
 
-    cluster_summary_payload = dict(getattr(sample, "disc_cluster_summary", {}) or {})
-    cluster_summary_payload["split_accepted"] = bool(cluster_summary_payload.get("accepted", False))
-    cluster_summary_payload["reporting_accepted"] = bool(cluster_reporting_accepted)
-
     payload = (
         optimalAge, lower95, upper95, meanD, meanP, meanInv, meanSc,
         peak_str, detailed_catalogue,
         {"rejected_peak_candidates": list(rejected_rows or [])},
-        {
-            "labels": None if not cluster_reporting_accepted else list(np.asarray(getattr(sample, "disc_cluster_labels", []), int)),
-            "summary": cluster_summary_payload,
-            "accepted": bool(cluster_reporting_accepted),
-            "split_accepted": bool(cluster_summary_payload.get("split_accepted", False)),
-            "reporting_accepted": bool(cluster_reporting_accepted),
-        },
     )
     try:
         signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, payload)
@@ -1739,17 +1639,8 @@ def _calculateOptimalAge(signals, sample, progress):
             signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, payload[:7])
         return
     # ------------------------------------------------------------------
-    # Build catalogues from one path only: the global all-discordants surface.
+    # Build catalogues from the global all-discordants surface.
     # ------------------------------------------------------------------
-    use_dc = bool(getattr(settings, "use_discordant_clustering", False))
-    clustering_accepted = bool(getattr(sample, "_cdc_clustering_accepted", False))
-    cluster_reporting_accepted = False
-    cluster_curve_raw: Dict[int, np.ndarray] = {}
-    cluster_curve_pen: Dict[int, np.ndarray] = {}
-    cluster_diag_raw: Dict[int, Dict] = {}
-    cluster_diag_pen: Dict[int, Dict] = {}
-    cluster_rejected_rows: List[Dict] = []
-
     for surf in (raw, pen):
         surf.rows = _build_global_catalogue_rows(
             sample.name,
@@ -1763,250 +1654,9 @@ def _calculateOptimalAge(signals, sample, progress):
             optima_ma=surf.optima_ma,
             diagnostic_rows=surf.rejected,
         )
-    global_rows_raw = [dict(r) for r in raw.rows]
-    global_rows_pen = [dict(r) for r in pen.rows]
 
-    S_by_cluster_raw = {}
-    S_by_cluster_pen = {}
-    if use_dc and clustering_accepted and USE_CLUSTER_CATALOGUE:
-        rows_raw_cluster: List[Dict] = []
-        rows_pen_cluster: List[Dict] = []
-
-        S_by_cluster_raw = stack_goodness_by_cluster(runs, ages_y, which="raw")
-        S_by_cluster_pen = stack_goodness_by_cluster(runs, ages_y, which="pen")
-
-        for cid in sorted(set(S_by_cluster_raw.keys()) | set(S_by_cluster_pen.keys())):
-            S_raw_k = np.asarray(S_by_cluster_raw.get(cid), float)
-            S_pen_k = np.asarray(S_by_cluster_pen.get(cid), float)
-            if S_raw_k.size == 0 and S_pen_k.size == 0:
-                continue
-
-            mask_runs = None
-            if S_raw_k.size:
-                mask_runs = np.isfinite(S_raw_k).any(axis=1)
-            if S_pen_k.size:
-                mask_pen = np.isfinite(S_pen_k).any(axis=1)
-                mask_runs = mask_pen if mask_runs is None else (mask_runs | mask_pen)
-            if mask_runs is None or int(np.sum(mask_runs)) < max(RMIN_RUNS, 2):
-                continue
-
-            if S_raw_k.size:
-                S_raw_k = S_raw_k[mask_runs]
-            if S_pen_k.size:
-                S_pen_k = S_pen_k[mask_runs]
-
-            optima_ma_raw_k = _cluster_optima_from_goodness(S_raw_k, ages_ma)
-            optima_ma_pen_k = _cluster_optima_from_goodness(S_pen_k, ages_ma)
-
-            Smed_raw_k = np.array([], float)
-            Smed_pen_k = np.array([], float)
-            Delta_raw_k = 0.0
-            Delta_pen_k = 0.0
-            if S_raw_k.size:
-                Smed_raw_k, Delta_raw_k, _ = robust_ensemble_curve(S_raw_k, smooth_frac=smf)
-            if S_pen_k.size:
-                Smed_pen_k, Delta_pen_k, _ = robust_ensemble_curve(S_pen_k, smooth_frac=smf)
-
-            if Smed_raw_k.size:
-                j_raw = int(np.nanargmax(Smed_raw_k))
-                cluster_diag_raw[int(cid)] = dict(
-                    argmax_age=float(ages_ma[j_raw]),
-                    boundary=bool(j_raw <= 1 or j_raw >= (ages_ma.size - 2)),
-                    n_rows=0,
-                    n_runs=int(mask_runs.sum()),
-                )
-            if Smed_pen_k.size:
-                j_pen = int(np.nanargmax(Smed_pen_k))
-                cluster_diag_pen[int(cid)] = dict(
-                    argmax_age=float(ages_ma[j_pen]),
-                    boundary=bool(j_pen <= 1 or j_pen >= (ages_ma.size - 2)),
-                    n_rows=0,
-                    n_runs=int(mask_runs.sum()),
-                )
-
-            raw_pickable_k = bool(
-                Smed_raw_k.size and (Delta_raw_k >= ENS_DELTA_MIN)
-                and ((not abstain_on_monotonic) or (not _is_effectively_monotonic(Smed_raw_k, Delta_raw_k)))
-            )
-            pen_pickable_k = bool(
-                Smed_pen_k.size and (Delta_pen_k >= ENS_DELTA_MIN)
-                and ((not abstain_on_monotonic) or (not _is_effectively_monotonic(Smed_pen_k, Delta_pen_k)))
-            )
-
-            _surface_vars = {
-                "raw": dict(
-                    pickable=raw_pickable_k, S_k=S_raw_k, Smed_k=Smed_raw_k,
-                    optima_k=optima_ma_raw_k, curve_dict=cluster_curve_raw,
-                    diag_dict=cluster_diag_raw,
-                ),
-                "pen": dict(
-                    pickable=pen_pickable_k, S_k=S_pen_k, Smed_k=Smed_pen_k,
-                    optima_k=optima_ma_pen_k, curve_dict=cluster_curve_pen,
-                    diag_dict=cluster_diag_pen,
-                ),
-            }
-            rows_raw_k: List[Dict] = []
-            rows_pen_k: List[Dict] = []
-            _rows_by_tag = {"raw": rows_raw_k, "pen": rows_pen_k}
-
-            for _tag, _sv in _surface_vars.items():
-                _rows_k: List[Dict] = []
-                if _sv["pickable"]:
-                    _sv["curve_dict"][int(cid)] = np.asarray(_sv["Smed_k"], float)
-                    _rows_k = build_cluster_catalogue_legacy(
-                        sample.name,
-                        _infer_tier(sample.name),
-                        ages_ma,
-                        _sv["S_k"],
-                        orientation="max",
-                        smooth_frac=smf,
-                        f_d=FD_DIST_FRAC,
-                        f_p=FP_PROM_FRAC,
-                        f_v=FV_VALLEY_FRAC,
-                        f_w=FW_WIN_FRAC,
-                        w_min_nodes=3,
-                        support_min=FS_SUPPORT,
-                        r_min=RMIN_RUNS,
-                        f_r=FR_RUN_REL,
-                        per_run_prom_frac=PER_RUN_PROM_FRAC,
-                        per_run_min_dist=PER_RUN_MIN_DIST,
-                        per_run_min_width=PER_RUN_MIN_WIDTH,
-                        per_run_require_full_prom=False,
-                        height_frac=FH_HEIGHT_FRAC,
-                        optima_ma=_sv["optima_k"],
-                    ) or []
-                if not _rows_k:
-                    row_boundary = None
-                    if bool(_sv["diag_dict"].get(int(cid), {}).get("boundary", False)):
-                        row_boundary = _recent_boundary_mode_row(_sv["optima_k"], len(runs), ages_ma)
-                    if row_boundary is not None:
-                        row_boundary["cluster_id"] = int(cid)
-                        _rows_k = [row_boundary]
-                for r in _rows_k:
-                    r["cluster_id"] = int(cid)
-                _rows_by_tag[_tag] = _rows_k
-
-            rows_raw_k = _rows_by_tag["raw"]
-            rows_pen_k = _rows_by_tag["pen"]
-
-            if rows_raw_k:
-                rows_raw_cluster.extend(dict(r) for r in rows_raw_k)
-                if int(cid) in cluster_diag_raw:
-                    cluster_diag_raw[int(cid)]["n_rows"] = int(len(rows_raw_k))
-            elif optima_ma_raw_k.size:
-                cluster_rejected_rows.append(
-                    dict(
-                        cluster_id=int(cid),
-                        age_ma=float(np.nanmedian(optima_ma_raw_k)),
-                        direct_support=np.nan,
-                        winner_support=np.nan,
-                        reason="no_reportable_cluster_peak",
-                    )
-                )
-
-            if rows_pen_k:
-                rows_pen_cluster.extend(dict(r) for r in rows_pen_k)
-                if int(cid) in cluster_diag_pen:
-                    cluster_diag_pen[int(cid)]["n_rows"] = int(len(rows_pen_k))
-            elif optima_ma_pen_k.size:
-                cluster_rejected_rows.append(
-                    dict(
-                        cluster_id=int(cid),
-                        age_ma=float(np.nanmedian(optima_ma_pen_k)),
-                        direct_support=np.nan,
-                        winner_support=np.nan,
-                        reason="no_reportable_cluster_peak",
-                    )
-                )
-
-    global_multipeaked = max(len(global_rows_raw), len(global_rows_pen)) >= 2
-    cluster_reporting_accepted = bool(
-        use_dc and clustering_accepted and USE_CLUSTER_CATALOGUE
-    )
-
-    if cluster_reporting_accepted and global_multipeaked:
-        raw.rows = _align_cluster_rows_to_global(rows_raw_cluster, global_rows_raw, ages_ma)
-        pen.rows = _align_cluster_rows_to_global(rows_pen_cluster, global_rows_pen, ages_ma)
-        if max(len(raw.rows), len(pen.rows)) < 2:
-            cluster_reporting_accepted = False
-            raw.rows = global_rows_raw
-            pen.rows = global_rows_pen
-            _update_cluster_summary(sample,
-                accepted=False,
-                reason="rejected_by_global_surface",
-                global_raw_peak_count=int(len(global_rows_raw)),
-                global_pen_peak_count=int(len(global_rows_pen)),
-            )
-    elif cluster_reporting_accepted:
-        raw.rows = rows_raw_cluster
-        pen.rows = rows_pen_cluster
-        ui_cluster_rows = raw.rows if ui_surface == "RAW" else pen.rows
-        interior_cluster_rows = [
-            dict(r) for r in ui_cluster_rows if str(r.get("mode", "")) != "recent_boundary"
-        ]
-        boundary_cluster_rows = [
-            dict(r) for r in ui_cluster_rows if str(r.get("mode", "")) == "recent_boundary"
-        ]
-        n_cluster_reportable = max(len(raw.rows), len(pen.rows))
-        if n_cluster_reportable == 0:
-            cluster_reporting_accepted = False
-            raw.rows = global_rows_raw
-            pen.rows = global_rows_pen
-            _update_cluster_summary(sample,
-                accepted=False,
-                reason="no_reportable_cluster_peaks",
-                global_raw_peak_count=int(len(global_rows_raw)),
-                global_pen_peak_count=int(len(global_rows_pen)),
-            )
-        elif len(interior_cluster_rows) == 0:
-            cluster_reporting_accepted = False
-            raw.rows = global_rows_raw
-            pen.rows = global_rows_pen
-            _update_cluster_summary(sample,
-                accepted=False,
-                reason="boundary_only_cluster_without_global_support",
-                global_raw_peak_count=int(len(global_rows_raw)),
-                global_pen_peak_count=int(len(global_rows_pen)),
-            )
-        elif len(interior_cluster_rows) > 1:
-            cluster_reporting_accepted = False
-            raw.rows = global_rows_raw
-            pen.rows = global_rows_pen
-            _update_cluster_summary(sample,
-                accepted=False,
-                reason="cluster_multi_interior_without_global_support",
-                global_raw_peak_count=int(len(global_rows_raw)),
-                global_pen_peak_count=int(len(global_rows_pen)),
-                n_cluster_boundary_modes=int(len(boundary_cluster_rows)),
-            )
-        elif n_cluster_reportable == 1:
-            _update_cluster_summary(sample,
-                reason="partial_cluster_resolution",
-                n_reportable_cluster_peaks=1,
-                global_raw_peak_count=int(len(global_rows_raw)),
-                global_pen_peak_count=int(len(global_rows_pen)),
-            )
-    else:
-        raw.rows = global_rows_raw
-        pen.rows = global_rows_pen
-
-    if clustering_accepted and not cluster_reporting_accepted:
-        summary = dict(getattr(sample, "disc_cluster_summary", {}) or {})
-        summary["accepted"] = False
-        summary.setdefault("reason", "rejected_by_global_surface")
-        summary["global_raw_peak_count"] = int(len(global_rows_raw))
-        summary["global_pen_peak_count"] = int(len(global_rows_pen))
-        sample.disc_cluster_summary = summary
-
-    # Fallback:
-    # Only promote the median of the per-run optima to a pseudo-peak if the
-    # ensemble surface has some structure (Δ >= ENS_DELTA_MIN). If both RAW
-    # and PEN surfaces are essentially flat, leave the catalogue empty.
+    # Fallback: if no ensemble peaks survive, leave the catalogue empty.
     if (not raw.rows) and (not pen.rows) and len(opt_all) > 0:
-
-        # Fallback: if no ensemble peaks survive, **do not** invent one.
-        # Leave the catalogue empty – the single CDC optimal age is still
-        # reported in the summary, but there is no robust ensemble peak.
         raw.rows = []
         pen.rows = []
         if (not raw.pickable) and (not pen.pickable):
@@ -2014,27 +1664,12 @@ def _calculateOptimalAge(signals, sample, progress):
 
     # Choose which to DISPLAY in the UI strictly from the same ensemble surface
     # that produced the accepted rows.
-    S_by_cluster = {"RAW": S_by_cluster_raw, "PEN": S_by_cluster_pen}
-    cluster_curves = {"RAW": cluster_curve_raw, "PEN": cluster_curve_pen}
-
     chosen = raw if (ui_surface == "RAW" and raw.rows) else pen if pen.rows else None
     if chosen is not None:
         view_which = "raw" if chosen is raw else "pen"
         rows_for_ui = chosen.rows
-        tag = ui_surface if chosen is raw else "PEN"
-        if cluster_reporting_accepted:
-            cids = sorted({int(r.get("cluster_id")) for r in rows_for_ui if "cluster_id" in r})
-            mats = [np.asarray(S_by_cluster[tag][c], float) for c in cids if c in S_by_cluster[tag]]
-            if mats:
-                S_runs_view = np.nanmax(np.stack(mats, axis=2), axis=2)
-                S_view, _, _ = robust_ensemble_curve(S_runs_view, smooth_frac=smf)
-            else:
-                S_runs_view = chosen.S_runs
-                curves = [cluster_curves[tag][c] for c in cids if c in cluster_curves[tag]]
-                S_view = np.nanmax(np.vstack(curves), axis=0) if curves else chosen.Smed
-        else:
-            S_runs_view = chosen.S_runs
-            S_view = chosen.Smed
+        S_runs_view = chosen.S_runs
+        S_view = chosen.Smed
         rejected_stage_ui = chosen.rejected
     else:
         rows_for_ui = []
@@ -2051,7 +1686,6 @@ def _calculateOptimalAge(signals, sample, progress):
     _ensure_output_dirs()
 
     rejected_rows: List[Dict] = [dict(r) for r in (rejected_stage_ui or [])]
-    rejected_rows.extend(dict(r) for r in cluster_rejected_rows)
 
     if rejected_rows:
         deduped_rejected: List[Dict] = []
@@ -2061,12 +1695,11 @@ def _calculateOptimalAge(signals, sample, progress):
         for row in rejected_rows:
             age = float(row.get("age_ma", np.nan))
             reason = str(row.get("reason", ""))
-            cid = int(row.get("cluster_id", -999999)) if "cluster_id" in row and row.get("cluster_id") is not None else -999999
             if np.isfinite(age):
                 age_key = round(age / tol)
             else:
                 age_key = None
-            key = (cid, reason, age_key)
+            key = (reason, age_key)
             if key in seen:
                 continue
             seen.add(key)
@@ -2114,12 +1747,12 @@ def _calculateOptimalAge(signals, sample, progress):
         rows_for_ui, rejected_rows,
         ages_ma, S_view, S_runs_view,
         view_which, ui_surface,
-        support_floor, cluster_reporting_accepted,
+        support_floor,
     )
 
     _publish_results(
         signals, sample, progress, settings, runs, raw, pen,
         rows_for_ui, rejected_rows, ages_ma, ages_y, S_view,
         optimalAge, optimalAge_ui, optimalAge_legacy, lower95, upper95, opt_all,
-        meanD, meanP, meanInv, meanSc, cluster_reporting_accepted,
+        meanD, meanP, meanInv, meanSc,
     )

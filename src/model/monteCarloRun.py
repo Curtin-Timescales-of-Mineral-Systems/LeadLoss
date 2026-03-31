@@ -90,10 +90,7 @@ class MonteCarloRunPbLossAgeStatistics:
 
 
 class MonteCarloRun:
-    """
-    One Monte Carlo realisation over the Pb-loss age grid.
-    Optional discordant clustering is carried by fixed labels for the whole sample.
-    """
+    """One Monte Carlo realisation over the Pb-loss age grid."""
 
     def __init__(self,
                  run_number,
@@ -102,8 +99,6 @@ class MonteCarloRun:
                  concordant_pbPb,
                  discordant_uPb,
                  discordant_pbPb,
-                 discordant_labels=None,
-                 discord_clusters=None,
                  settings=None):
 
         self.run_number   = run_number
@@ -121,15 +116,6 @@ class MonteCarloRun:
         self.con_p = self.concordant_pbPb
         self.dis_u = self.discordant_uPb
         self.dis_p = self.discordant_pbPb
-
-        if discordant_labels is None and discord_clusters is not None:
-            discordant_labels = discord_clusters
-
-        self.labels = None
-        if discordant_labels is not None:
-            lab = np.asarray(discordant_labels)
-            if lab.shape[0] == self.dis_u.shape[0]:
-                self.labels = lab.astype(int)
 
         # Cache concordant ages (YEARS) for this run
         self.concordant_ages = []
@@ -152,8 +138,6 @@ class MonteCarloRun:
         self.lead_loss_ages = []
 
         self._all_statistics_by_pb_loss_age = {}
-        self._stats_by_age_by_cluster = {}
-        self._heatmap_cluster_ids = None
         self._heatmap_view_which = None
 
         # --- per-run peak attributes (RAW & PEN) ---
@@ -184,27 +168,6 @@ class MonteCarloRun:
         self._all_statistics_by_pb_loss_age[leadLossAge] = st_all
         self.statistics_by_pb_loss_age[leadLossAge] = st_all
         self._raw_statistics_by_pb_loss_age[leadLossAge] = st_all
-
-        if self.labels is None:
-            self._stats_by_age_by_cluster.setdefault(0, {})[float(leadLossAge)] = st_all
-            return
-
-        any_valid_cluster = False
-        for lab in np.unique(self.labels):
-            if int(lab) < 0:
-                continue
-            mask = (self.labels == lab)
-            if not np.any(mask):
-                continue
-            ages_k = all_ui[mask].tolist()
-            st_k = MonteCarloRunPbLossAgeStatistics(
-                self.concordant_ages, ages_k, dissimilarity_test, penalise_invalid_ages
-            )
-            self._stats_by_age_by_cluster.setdefault(int(lab), {})[float(leadLossAge)] = st_k
-            any_valid_cluster = True
-
-        if not any_valid_cluster:
-            self._stats_by_age_by_cluster.setdefault(0, {})[float(leadLossAge)] = st_all
 
     def calculateOptimalAge(self):
         """
@@ -304,52 +267,27 @@ class MonteCarloRun:
         else:
             prefer_pen = bool(getattr(self.settings, "penaliseInvalidAges", True))
 
-        cluster_ids = getattr(self, "_heatmap_cluster_ids", None)
-        cluster_ids = tuple(cluster_ids) if cluster_ids is not None else tuple()
-        cluster_maps = []
-        if cluster_ids and isinstance(getattr(self, "_stats_by_age_by_cluster", None), dict):
-            for cid in cluster_ids:
-                m = self._stats_by_age_by_cluster.get(int(cid))
-                if isinstance(m, dict) and m:
-                    cluster_maps.append(m)
+        stats_map = self.statistics_by_pb_loss_age if prefer_pen else self._raw_statistics_by_pb_loss_age
+        if not isinstance(stats_map, dict) or not stats_map:
+            stats_map = getattr(self, "_all_statistics_by_pb_loss_age", None)
 
-        if cluster_maps:
-            runAges = sorted({float(a) for m in cluster_maps for a in m.keys()})
+        if not isinstance(stats_map, dict) or not stats_map:
+            self.heatmapColumnData = []
+            return
 
-            def _value_at(age_key: float) -> float:
-                vals = []
-                for m in cluster_maps:
-                    st = m.get(float(age_key))
-                    if st is None:
-                        continue
-                    v = float(st.score) if prefer_pen else float(st.test_statistics[0])
-                    if np.isfinite(v):
-                        vals.append(float(np.clip(v, 0.0, 1.0)))
-                if not vals:
-                    return float("nan")
-                return float(np.nanmin(vals))
-        else:
-            stats_map = self.statistics_by_pb_loss_age if prefer_pen else self._raw_statistics_by_pb_loss_age
-            if not isinstance(stats_map, dict) or not stats_map:
-                stats_map = getattr(self, "_all_statistics_by_pb_loss_age", None)
+        def _value_at(age_key: float) -> float:
+            st = stats_map.get(float(age_key))
+            if st is None:
+                return float("nan")
+            if prefer_pen:
+                v = float(st.score)
+            else:
+                v = float(st.test_statistics[0])
+            if not np.isfinite(v):
+                return float("nan")
+            return float(np.clip(v, 0.0, 1.0))
 
-            if not isinstance(stats_map, dict) or not stats_map:
-                self.heatmapColumnData = []
-                return
-
-            def _value_at(age_key: float) -> float:
-                st = stats_map.get(float(age_key))
-                if st is None:
-                    return float("nan")
-                if prefer_pen:
-                    v = float(st.score)
-                else:
-                    v = float(st.test_statistics[0])
-                if not np.isfinite(v):
-                    return float("nan")
-                return float(np.clip(v, 0.0, 1.0))
-
-            runAges = sorted(list(stats_map.keys()))
+        runAges = sorted(list(stats_map.keys()))
 
         ageInc = (maxAge - minAge) / resolution
         if not runAges:
