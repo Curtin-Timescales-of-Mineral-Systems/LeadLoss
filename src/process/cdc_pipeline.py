@@ -317,7 +317,8 @@ def _emit_summedKS(signals, sample, progress, ages_ma, y_curve, rows_for_ui):
         try:
             sample.signals.summedKS.emit(payload)
         except (AttributeError, RuntimeError, TypeError):
-            pass
+            import traceback
+            traceback.print_exc()
     try:
         signals.progress("summedKS", progress, sample.name, payload)
     except TypeError:

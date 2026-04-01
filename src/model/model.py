@@ -1,5 +1,4 @@
 import time
-import csv
 import numpy as np
 
 from collections import defaultdict
@@ -9,7 +8,6 @@ from model.spot import Spot
 from process import processing
 from utils import csvUtils
 
-from PyQt5.QtWidgets import QFileDialog
 
 class LeadLossModel:
 
@@ -89,6 +87,8 @@ class LeadLossModel:
                     sample.summedKS_ci_low_Ma = np.asarray([], dtype=float)
                     sample.summedKS_ci_high_Ma = np.asarray([], dtype=float)
             except Exception:
+                import traceback
+                traceback.print_exc()
                 sample.summedKS_ages_Ma = None
                 sample.summedKS_goodness = None
                 sample.summedKS_peaks_Ma = None
@@ -169,19 +169,4 @@ class LeadLossModel:
     ## Export data ##
     ################
 
-    def exportMonteCarloRuns(self, append=False):
-        filename = QFileDialog.getSaveFileName(
-            caption='Save CSV file',
-            directory='.',
-            options=QFileDialog.DontUseNativeDialog
-        )[0]
-        if not filename:
-            return
-        mode = 'a' if append else 'w'
-        with open(filename, mode, newline="") as csvfile:
-            writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-            for sample in self.samples:
-                for run in sample.getMonteCarloRuns():
-                    run.calculateOptimalAge()
-                    writer.writerow(run.toList())
 
