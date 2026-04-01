@@ -1518,11 +1518,6 @@ def _publish_results(
             legacy_opt_years=optimalAge_legacy,
         )
 
-    try:
-        sample.signals.optimalAgeCalculated.emit()
-    except (AttributeError, RuntimeError, TypeError):
-        pass
-
     payload = (
         optimalAge, lower95, upper95, meanD, meanP, meanInv, meanSc,
         peak_str, detailed_catalogue,
@@ -1611,10 +1606,6 @@ def _calculateOptimalAge(signals, sample, progress):
         sample.legacy_surface_optimal_age = optimalAge_legacy
 
         sample.peak_catalogue = []
-        try:
-            sample.signals.optimalAgeCalculated.emit()
-        except (AttributeError, RuntimeError, TypeError):
-            pass
 
         # Plot legacy curve for diagnostics (optional)
         _emit_summedKS(signals, sample, progress, ages_ma, S_legacy_curve, rows_for_ui=[])
