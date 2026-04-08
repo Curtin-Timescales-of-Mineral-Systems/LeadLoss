@@ -15,9 +15,9 @@ authors:
 repository-code: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
 url: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
 
-version: "paper-2025-peak-picking-v1.2.1"
-doi: "10.5281/zenodo.18217446"
-date-released: "2026-01-12"
+version: "v2.0.0"
+doi: "10.5281/zenodo.XXXXXXX"  # UPDATE with actual Zenodo DOI after release
+date-released: "2026-04-08"
 
 keywords:
   - U-Pb geochronology
@@ -38,9 +38,9 @@ preferred-citation:
   authors:
     - family-names: Mathieson
       given-names: Lucy
-  version: "paper-2025-peak-picking-v1.2.1"
-  doi: "10.5281/zenodo.18217446"
-  date-released: "2026-01-12"
+  version: "v2.0.0"
+  doi: "10.5281/zenodo.XXXXXXX"  # UPDATE with actual Zenodo DOI after release
+  date-released: "2026-04-08"
   url: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
 
 references:
