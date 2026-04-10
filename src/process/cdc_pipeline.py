@@ -1252,8 +1252,12 @@ def _keep_same(rows, keep):
     return [r for r in rows if float(r.get("age_ma", float("nan"))) in keep_ages]
 
 
-def _compute_run_optima_ci(raw, pen, prefer_pen, runs):
-    """Section (A): median-of-run-optima with 95% CI."""
+def _compute_optimal_age_ci(raw, pen, prefer_pen, runs):
+    """
+    95% confidence interval for the optimal Pb-loss age, taken as the
+    2.5/97.5 percentiles of the per-run optimum ages. Matches the published
+    Mathieson 2025b implementation.
+    """
     optima_ma_primary = pen.optima_ma if prefer_pen else raw.optima_ma
     opt_all = np.sort(np.asarray(optima_ma_primary[np.isfinite(optima_ma_primary)] * 1e6, float))
     if opt_all.size == 0:
@@ -1263,16 +1267,20 @@ def _compute_run_optima_ci(raw, pen, prefer_pen, runs):
             opt_all = np.sort(np.asarray([_raw_optimum_age_ma(r) * 1e6 for r in runs], float))
     n = opt_all.size
     if n:
-        optimalAge = float(np.median(opt_all))
         lower95 = float(opt_all[int(np.floor(0.025 * n))])
         upper95 = float(opt_all[int(np.ceil(0.975 * n)) - 1])
     else:
-        optimalAge = lower95 = upper95 = float("nan")
-    return optimalAge, lower95, upper95, opt_all
+        lower95 = upper95 = float("nan")
+    return lower95, upper95, opt_all
 
 
-def _compute_legacy_surface(raw, pen, prefer_pen, ages_y):
-    """Section (B): legacy surface optimum for export/figure."""
+def _compute_optimal_age(raw, pen, prefer_pen, ages_y):
+    """
+    Optimal Pb-loss age for a sample, taken as the argmax of the pointwise
+    mean penalised CDC goodness curve across Monte Carlo realisations.
+    Plateau ties are resolved by _findOptimalIndex (midpoint of the plateau).
+    Matches the published Mathieson 2025b implementation.
+    """
     S_runs_primary = pen.S_runs if prefer_pen else raw.S_runs
     sum_good = np.nansum(S_runs_primary, axis=0)
     cnt_good = np.sum(np.isfinite(S_runs_primary), axis=0)
@@ -1283,14 +1291,14 @@ def _compute_legacy_surface(raw, pen, prefer_pen, ages_y):
     )
     mean_primary = 1.0 - mean_good
     mean_primary = np.where(np.isfinite(mean_primary), mean_primary, np.inf)
-    legacy_idx = _findOptimalIndex(mean_primary.tolist())
-    optimalAge_legacy = float(ages_y[legacy_idx])
-    S_legacy_curve = 1.0 - mean_primary
-    return optimalAge_legacy, S_legacy_curve, mean_primary
+    optimal_idx = _findOptimalIndex(mean_primary.tolist())
+    optimalAge = float(ages_y[optimal_idx])
+    S_optimal_curve = 1.0 - mean_primary
+    return optimalAge, S_optimal_curve, mean_primary
 
 
 def _compute_mean_stats(runs, primary_which, prefer_pen):
-    """Section (C): mean stats at each run's own optimum."""
+    """Mean D, p-value, invalid count and score at each run's own optimum."""
     stats = [_optimum_stat_from_stats_attr(r, "_all_statistics_by_pb_loss_age", which=primary_which) for r in runs]
     stats = [s for s in stats if s is not None]
     if stats:
@@ -1465,7 +1473,7 @@ def _apply_guards_and_fallbacks(
 def _publish_results(
     signals, sample, progress, settings, runs, raw, pen,
     rows_for_ui, rejected_rows, ages_ma, ages_y, S_view,
-    optimalAge, optimalAge_ui, optimalAge_legacy, lower95, upper95, opt_all,
+    optimalAge, lower95, upper95, opt_all,
     meanD, meanP, meanInv, meanSc,
 ):
     """Renumber peaks, export CSVs/NPZ, publish UI payload."""
@@ -1514,9 +1522,9 @@ def _publish_results(
     if KS_EXPORT_ROOT is not None:
         _export_legacy_ks(
             sample, settings, runs, ages_y,
-            ui_opt_years=optimalAge_ui, ui_low95_years=lower95,
+            ui_opt_years=optimalAge, ui_low95_years=lower95,
             ui_high95_years=upper95, run_optima_years=opt_all,
-            legacy_opt_years=optimalAge_legacy,
+            legacy_opt_years=optimalAge,
         )
 
     payload = (
@@ -1591,36 +1599,34 @@ def _calculateOptimalAge(signals, sample, progress):
     )
     sample.ensemble_abstain_reason = None
 
-    optimalAge, lower95, upper95, opt_all = _compute_run_optima_ci(raw, pen, prefer_pen, runs)
-    optimalAge_ui = optimalAge
+    # 95% CI for the optimal age: 2.5/97.5 percentiles of per-run optima.
+    lower95, upper95, opt_all = _compute_optimal_age_ci(raw, pen, prefer_pen, runs)
 
-    optimalAge_legacy, S_legacy_curve, mean_primary = _compute_legacy_surface(raw, pen, prefer_pen, ages_y)
-    sample.legacy_surface_optimal_age = optimalAge_legacy
+    # Optimal age: argmax of the mean penalised CDC goodness curve via
+    # _findOptimalIndex (tie-aware plateau midpoint).
+    optimalAge, S_optimal_curve, mean_primary = _compute_optimal_age(raw, pen, prefer_pen, ages_y)
+    sample.legacy_surface_optimal_age = optimalAge
 
     meanD, meanP, meanInv, meanSc = _compute_mean_stats(runs, primary_which, prefer_pen)
 
     # ---------- (D) Ensemble OFF branch ----------
     enabled = bool(getattr(settings, "enable_ensemble_peak_picking", False))
     if not enabled:
-        # UI point estimate = median of run optima
-        optimalAge = optimalAge_ui
-        sample.legacy_surface_optimal_age = optimalAge_legacy
-
         sample.peak_catalogue = []
 
-        # Plot legacy curve for diagnostics (optional)
-        _emit_summedKS(signals, sample, progress, ages_ma, S_legacy_curve, rows_for_ui=[])
+        # Plot the optimal-age curve for diagnostics
+        _emit_summedKS(signals, sample, progress, ages_ma, S_optimal_curve, rows_for_ui=[])
 
-        # Export legacy surface optimum + curve (for paper figure)
+        # Export the optimal age and curve for paper figures
         if KS_EXPORT_ROOT is not None:
             _export_legacy_ks(
                 sample, settings, runs, ages_y,
                 D_pen=mean_primary,
-                ui_opt_years=optimalAge_ui,
+                ui_opt_years=optimalAge,
                 ui_low95_years=lower95,
                 ui_high95_years=upper95,
                 run_optima_years=opt_all,
-                legacy_opt_years=optimalAge_legacy,
+                legacy_opt_years=optimalAge,
             )
 
 
@@ -1745,6 +1751,6 @@ def _calculateOptimalAge(signals, sample, progress):
     _publish_results(
         signals, sample, progress, settings, runs, raw, pen,
         rows_for_ui, rejected_rows, ages_ma, ages_y, S_view,
-        optimalAge, optimalAge_ui, optimalAge_legacy, lower95, upper95, opt_all,
+        optimalAge, lower95, upper95, opt_all,
         meanD, meanP, meanInv, meanSc,
     )
