@@ -188,89 +188,16 @@ def widen_rows_to_curvature_floor(
     orientation: str = "max",
 ) -> List[Dict]:
     """
-    Widen reported CIs to at least a basin-clipped local-curvature floor.
+    Pass-through. The CI bounds reported by build_ensemble_catalogue are the
+    2.5/97.5 percentiles of the per-run peak ages assigned to each catalogue
+    peak, with no further widening.
 
-    The floor uses the local quadratic curvature of the accepted ensemble crest
-    together with a data-derived vertical tolerance:
-      - robust run-to-run spread at the crest node (MAD), and
-      - robust mismatch between the actual crest and its local quadratic fit.
-
-    Exact flat-top plateaus also get their span enforced as a minimum width.
-    This is intended to run after peak selection/merging so peak counts stay
-    unchanged while the reported intervals stop collapsing to unrealistically
-    tiny vote clouds.
+    An earlier version applied a local curvature/plateau floor on top of the
+    vote-percentile interval. That widening did not solve the underlying CI
+    calibration problem on broad-plateau peaks and was removed so that the
+    code matches the published manuscript intervals exactly.
     """
-    if not rows:
-        return []
-
-    x = np.asarray(age_grid, float)
-    S = np.asarray(curve, float)
-    runs = np.asarray(run_surfaces, float)
-    if x.size < 3 or S.size != x.size or runs.ndim != 2 or runs.shape[1] != x.size:
-        return [dict(r) for r in rows]
-
-    sign = 1.0 if str(orientation).lower().startswith("max") else -1.0
-    y = sign * S
-    pk, _ = find_peaks(y, distance=1)
-    if pk.size == 0:
-        return [dict(r) for r in rows]
-
-    out: List[Dict] = []
-    for row in rows:
-        rr = dict(row)
-        if str(rr.get("mode", "")) == "recent_boundary":
-            out.append(rr)
-            continue
-
-        age = float(rr.get("age_ma", np.nan))
-        if not np.isfinite(age):
-            out.append(rr)
-            continue
-
-        idx = int(np.argmin(np.abs(x[pk] - age)))
-        j_peak = int(pk[idx])
-        lo_idx, hi_idx = _basin_bounds_from_peaks(y, j_peak, pk)
-        plateau_lo, plateau_hi = _plateau_bounds(y, j_peak)
-        plateau_lo = max(plateau_lo, lo_idx)
-        plateau_hi = min(plateau_hi, hi_idx)
-
-        plateau_lo_ma = float(x[plateau_lo])
-        plateau_hi_ma = float(x[plateau_hi])
-        lo_floor = plateau_lo_ma
-        hi_floor = plateau_hi_ma
-
-        plateau_half_nodes = max(j_peak - plateau_lo, plateau_hi - j_peak)
-        fit_half_window = max(_CI_CURVATURE_MIN_HALF_WINDOW, plateau_half_nodes + 2)
-        fit_lo = max(lo_idx, j_peak - fit_half_window)
-        fit_hi = min(hi_idx, j_peak + fit_half_window)
-
-        if (fit_hi - fit_lo + 1) >= 3:
-            xx = x[fit_lo:fit_hi + 1] - float(x[j_peak])
-            yy = y[fit_lo:fit_hi + 1]
-            coef = np.polyfit(xx, yy, 2)
-            fit_y = np.polyval(coef, xx)
-            curvature = abs(2.0 * float(coef[0]))
-            fit_resid_mad = float(np.median(np.abs(yy - fit_y)))
-
-            crest_vals = sign * runs[:, j_peak]
-            crest_vals = crest_vals[np.isfinite(crest_vals)]
-            if crest_vals.size:
-                crest_med = float(np.median(crest_vals))
-                crest_mad = float(np.median(np.abs(crest_vals - crest_med)))
-            else:
-                crest_mad = 0.0
-
-            delta_s = max(crest_mad, fit_resid_mad)
-            if np.isfinite(curvature) and curvature > _EPS and np.isfinite(delta_s) and delta_s > 0.0:
-                half_width = float(np.sqrt((2.0 * delta_s) / curvature))
-                lo_floor = min(lo_floor, max(float(x[lo_idx]), age - half_width))
-                hi_floor = max(hi_floor, min(float(x[hi_idx]), age + half_width))
-
-        if np.isfinite(lo_floor) and np.isfinite(hi_floor) and hi_floor > lo_floor:
-            rr["ci_low"] = float(min(float(rr.get("ci_low", lo_floor)), lo_floor))
-            rr["ci_high"] = float(max(float(rr.get("ci_high", hi_floor)), hi_floor))
-        out.append(rr)
-    return out
+    return [dict(r) for r in rows]
 
 # -------------------------- per-run peaks --------------------
 def per_run_peaks(
