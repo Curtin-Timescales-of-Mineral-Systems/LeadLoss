@@ -266,25 +266,6 @@ def widen_rows_to_curvature_floor(
                 lo_floor = min(lo_floor, max(float(x[lo_idx]), age - half_width))
                 hi_floor = max(hi_floor, min(float(x[hi_idx]), age + half_width))
 
-        # ---- Half-prominence basin floor ----
-        # Walk from peak until curve drops below peak_height - 0.5 * prominence.
-        # This ensures the CI spans the region where the goodness is within
-        # half the peak's prominence of the crest, reflecting the range of
-        # candidate ages that the curve cannot meaningfully distinguish.
-        peak_prom_vals = peak_prominences(y, np.array([j_peak]))
-        if peak_prom_vals[0].size > 0:
-            half_prom_level = float(y[j_peak]) - 0.5 * float(peak_prom_vals[0][0])
-            hp_left = j_peak
-            while hp_left > lo_idx and y[hp_left] > half_prom_level:
-                hp_left -= 1
-            hp_right = j_peak
-            while hp_right < hi_idx and y[hp_right] > half_prom_level:
-                hp_right += 1
-            hp_lo_ma = float(x[hp_left])
-            hp_hi_ma = float(x[hp_right])
-            lo_floor = min(lo_floor, max(float(x[lo_idx]), hp_lo_ma))
-            hi_floor = max(hi_floor, min(float(x[hi_idx]), hp_hi_ma))
-
         if np.isfinite(lo_floor) and np.isfinite(hi_floor) and hi_floor > lo_floor:
             rr["ci_low"] = float(min(float(rr.get("ci_low", lo_floor)), lo_floor))
             rr["ci_high"] = float(max(float(rr.get("ci_high", hi_floor)), hi_floor))
