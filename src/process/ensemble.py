@@ -1,8 +1,26 @@
+"""Ensemble peak picking for CDC goodness surfaces.
+
+This module takes a stack of Monte Carlo goodness curves over a common age grid
+and turns them into a small catalogue of supported Pb-loss peaks.
+
+Core ideas:
+- build a robust ensemble median surface from the run stack
+- propose candidate humps on that surface
+- keep only candidates that are reproducible across runs
+- report one age and one empirical interval per surviving peak
+
+The age reported for most peaks is the median of the run-level votes assigned to
+that candidate. A narrow plateau-onset adjustment is available for broad,
+older-tailed youngest peaks in multi-peak samples; that rule shifts the
+reported age leftward toward the onset of the younger event while leaving the
+rest of the catalogue unchanged.
+"""
+
 from __future__ import annotations
 
 import warnings
 import numpy as np
-from typing import List, Dict, Optional, Tuple, Any
+from typing import List, Dict, Optional, Tuple
 from scipy.ndimage import gaussian_filter1d
 from scipy.signal import (
     find_peaks as _find_peaks,
@@ -14,7 +32,6 @@ peak_prominences = _peak_prominences
 peak_widths = _peak_widths
 
 _EPS = 1e-12
-_CI_CURVATURE_MIN_HALF_WINDOW = 4
 _COARSE_SIGMA_GRID_FRAC = 0.03
 _DEGENERATE_CI_GRID_FRAC = 0.75
 
@@ -26,6 +43,30 @@ def _step_from_grid(x: np.ndarray) -> float:
         if np.isfinite(step) and step > 0.0:
             return step
     return 1.0
+
+
+def _half_prominence_edges(x: np.ndarray, y: np.ndarray, pk: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    x = np.asarray(x, float)
+    y = np.asarray(y, float)
+    pk = np.asarray(pk, int)
+    if x.size == 0 or y.size != x.size or pk.size == 0:
+        return np.array([], float), np.array([], float)
+
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message="some peaks have a prominence of 0")
+        prom, left_bases, right_bases = peak_prominences(y, pk)
+        _, _, left_ips, right_ips = peak_widths(
+            y,
+            pk,
+            rel_height=0.5,
+            prominence_data=(prom, left_bases, right_bases),
+        )
+
+    idx = np.arange(x.size, dtype=float)
+    return (
+        np.asarray(np.interp(left_ips, idx, x), float),
+        np.asarray(np.interp(right_ips, idx, x), float),
+    )
 
 
 def _append_diagnostic_peak(
@@ -161,43 +202,63 @@ def _crest_index(y: np.ndarray, k: int, half_win: int = 2) -> int:
     return int(a + j_local)
 
 
-def _plateau_bounds(y: np.ndarray, peak_idx: int) -> Tuple[int, int]:
-    y = np.asarray(y, float)
-    n = y.size
-    if n == 0:
-        return 0, 0
-
-    j = int(np.clip(int(peak_idx), 0, n - 1))
-    crest = float(y[j])
-    left = j
-    right = j
-
-    while left > 0 and np.isclose(y[left - 1], crest, rtol=1e-12, atol=1e-15):
-        left -= 1
-    while right < (n - 1) and np.isclose(y[right + 1], crest, rtol=1e-12, atol=1e-15):
-        right += 1
-    return left, right
-
-
-def widen_rows_to_curvature_floor(
-    rows: List[Dict],
-    age_grid: np.ndarray,
-    curve: np.ndarray,
-    run_surfaces: np.ndarray,
+def _apply_plateau_onset_adjustment(
+    age_out: float,
+    peak_left_edge: float,
+    peak_right_edge: float,
     *,
-    orientation: str = "max",
-) -> List[Dict]:
+    base_age_mode: str,
+    n_peaks: int,
+    is_youngest: bool,
+    total_span: float,
+    mode: str,
+    min_width_frac: float,
+    min_right_left_ratio: float,
+    blend_frac: float,
+) -> Tuple[float, str, float, float]:
     """
-    Pass-through. The CI bounds reported by build_ensemble_catalogue are the
-    2.5/97.5 percentiles of the per-run peak ages assigned to each catalogue
-    peak, with no further widening.
+    Shift broad older-tailed youngest peaks toward their onset.
 
-    An earlier version applied a local curvature/plateau floor on top of the
-    vote-percentile interval. That widening did not solve the underlying CI
-    calibration problem on broad-plateau peaks and was removed so that the
-    code matches the published manuscript intervals exactly.
+    This rule is deliberately narrow: it applies only to the youngest member of
+    a multi-peak catalogue, only when the half-prominence basin is broad, and
+    only when the right span is longer than the left span. The goal is to avoid
+    older-shifted vote-median ages on cancellation plateaus without changing
+    normal sharp or single-peak behaviour.
     """
-    return [dict(r) for r in rows]
+    age_mode = str(base_age_mode)
+    peak_width_frac = (
+        float(max(0.0, peak_right_edge - peak_left_edge)) / max(total_span, _EPS)
+        if np.isfinite(peak_left_edge) and np.isfinite(peak_right_edge)
+        else np.nan
+    )
+    right_left_ratio = np.nan
+
+    if str(mode).lower() != "midpoint_left":
+        return age_out, age_mode, peak_width_frac, right_left_ratio
+
+    left_span = age_out - peak_left_edge if np.isfinite(peak_left_edge) else np.nan
+    right_span = peak_right_edge - age_out if np.isfinite(peak_right_edge) else np.nan
+    right_left_ratio = (
+        float(right_span / max(left_span, _EPS))
+        if np.isfinite(left_span) and np.isfinite(right_span)
+        else np.nan
+    )
+
+    if (
+        n_peaks > 1
+        and is_youngest
+        and np.isfinite(peak_left_edge)
+        and np.isfinite(peak_width_frac)
+        and peak_width_frac > float(min_width_frac)
+        and np.isfinite(right_left_ratio)
+        and right_left_ratio > float(min_right_left_ratio)
+        and peak_left_edge < age_out
+    ):
+        blend = float(np.clip(blend_frac, 0.0, 1.0))
+        age_out = float((1.0 - blend) * age_out + blend * peak_left_edge)
+        age_mode = "plateau_onset_midpoint"
+
+    return age_out, age_mode, peak_width_frac, right_left_ratio
 
 # -------------------------- per-run peaks --------------------
 def per_run_peaks(
@@ -296,6 +357,11 @@ def _score_candidate_peaks(
     f_r, support_min, r_min,
     left_bounds, right_bounds,
     j_ref_all, age_ref_all,
+    left_edge_ma_all, right_edge_ma_all,
+    plateau_onset_mode,
+    plateau_onset_min_width_frac,
+    plateau_onset_min_right_left_ratio,
+    plateau_onset_blend_frac,
     diagnostic_rows,
 ):
     """Per-run voting, support computation, and CI estimation for candidate peaks."""
@@ -376,13 +442,34 @@ def _score_candidate_peaks(
 
         if len(direct_votes) >= 1:
             med_votes = float(np.median(direct_votes))
+            base_age_mode = "vote_median"
         elif len(optima_for_peak) >= 1:
             med_votes = float(np.median(optima_for_peak))
+            base_age_mode = "vote_median"
         elif len(votes) >= 1:
             med_votes = float(np.median(votes))
+            base_age_mode = "vote_median"
         else:
             med_votes = age_ref
+            base_age_mode = "curve_crest"
         age_out = float(med_votes if np.isfinite(med_votes) else age_ref)
+
+        peak_left_edge = float(left_edge_ma_all[j_idx]) if j_idx < len(left_edge_ma_all) else np.nan
+        peak_right_edge = float(right_edge_ma_all[j_idx]) if j_idx < len(right_edge_ma_all) else np.nan
+        total_span = max(float(x[-1]) - float(x[0]), _EPS)
+        age_out, age_mode, peak_width_frac, right_left_ratio = _apply_plateau_onset_adjustment(
+            age_out,
+            peak_left_edge,
+            peak_right_edge,
+            base_age_mode=base_age_mode,
+            n_peaks=len(pk),
+            is_youngest=(j_idx == 0),
+            total_span=total_span,
+            mode=plateau_onset_mode,
+            min_width_frac=plateau_onset_min_width_frac,
+            min_right_left_ratio=plateau_onset_min_right_left_ratio,
+            blend_frac=plateau_onset_blend_frac,
+        )
 
         lo_ci = max(lo_ci, float(x[0]))
         hi_ci = min(hi_ci, float(x[-1]))
@@ -391,9 +478,9 @@ def _score_candidate_peaks(
         if (hi_ci - lo_ci) < (_DEGENERATE_CI_GRID_FRAC * step):
             lo_ci, hi_ci = max(age_out - step, float(x[0])), min(age_out + step, float(x[-1]))
         if age_out < lo_ci:
-            age_out = float(lo_ci)
+            lo_ci = float(age_out)
         elif age_out > hi_ci:
-            age_out = float(hi_ci)
+            hi_ci = float(age_out)
 
         out.append(dict(
             peak_no=0,
@@ -401,6 +488,11 @@ def _score_candidate_peaks(
             ci_low=float(lo_ci),
             ci_high=float(hi_ci),
             support=float(support),
+            age_mode=age_mode,
+            peak_left_edge_ma=peak_left_edge,
+            peak_right_edge_ma=peak_right_edge,
+            peak_half_prom_width_frac=peak_width_frac,
+            peak_right_left_ratio=right_left_ratio,
         ))
 
     return out
@@ -429,6 +521,10 @@ def build_ensemble_catalogue(
     per_run_min_dist: int = 3,
     per_run_min_width: int = 3,
     per_run_require_full_prom: bool = False,
+    plateau_onset_mode: str = "off",
+    plateau_onset_min_width_frac: float = 0.20,
+    plateau_onset_min_right_left_ratio: float = 1.30,
+    plateau_onset_blend_frac: float = 0.50,
     # minimum ensemble dynamic range below which we do not pick peaks
     delta_min: float = 0.0,
     # only keep peaks whose crest is at least this fraction
@@ -442,14 +538,14 @@ def build_ensemble_catalogue(
     merge_per_hump: bool = True,
     merge_shoulders: bool = True,
     diagnostic_rows: Optional[List[Dict]] = None,
-    **_ignored: Any,
 ) -> List[Dict]:
     """
     Ensemble picker:
       • candidate humps from a *coarse* ensemble median,
       • at most ONE fine-scale peak per coarse hump,
       • keep only peaks reproducible across runs by local votes,
-      • CIs from per-peak optima distribution.
+      • CIs from per-peak optima distribution,
+      • optional plateau-onset adjustment for broad older-tailed youngest peaks.
 
     Notes on support:
       • support is computed from runs with an explicit per-run peak inside the
@@ -700,6 +796,7 @@ def build_ensemble_catalogue(
     optima_ma = np.asarray(optima_ma, float) if optima_ma is not None else None
     j_ref_all = np.array([_crest_index(S_med_s, int(jc), half_win=2) for jc in pk], int)
     age_ref_all = np.array([_parabolic_refine(x, S_med_s, int(jr)) for jr in j_ref_all], float)
+    left_edge_ma_all, right_edge_ma_all = _half_prominence_edges(x, y, pk)
 
     out = _score_candidate_peaks(
         pk, x, S, S_med_s, sign, R,
@@ -707,6 +804,10 @@ def build_ensemble_catalogue(
         f_r, support_min, r_min,
         left_bounds, right_bounds,
         j_ref_all, age_ref_all,
+        left_edge_ma_all, right_edge_ma_all,
+        plateau_onset_mode,
+        plateau_onset_min_width_frac, plateau_onset_min_right_left_ratio,
+        plateau_onset_blend_frac,
         diagnostic_rows,
     )
     for d in out:

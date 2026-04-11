@@ -34,6 +34,10 @@ except ImportError:  # pragma: no cover
     resource = None
 
 
+CATALOGUE_CI_METHOD = "vote_percentile"
+CATALOGUE_CI_INTERPRETATION = "empirical_2.5_97.5_percentile_of_per_run_optima"
+
+
 def _spot_age_proxy_ma(spot) -> float:
     """Stable age proxy (Ma) from TW coordinates for one spot."""
     t = age_ma_from_pb207pb206(spot.pbPbValue)
@@ -93,7 +97,17 @@ def append_catalogue_rows(sample_name: str, rows: Sequence[Dict], dest_path: Pat
     with dest_path.open("a", newline="") as fh:
         w = csv.DictWriter(
             fh,
-            fieldnames=["sample", "peak_no", "age_ma", "ci_low", "ci_high", "support"],
+            fieldnames=[
+                "sample",
+                "peak_no",
+                "age_ma",
+                "ci_low",
+                "ci_high",
+                "support",
+                "age_mode",
+                "ci_method",
+                "ci_interpretation",
+            ],
             extrasaction="ignore",
         )
         if write_header:
@@ -107,6 +121,9 @@ def append_catalogue_rows(sample_name: str, rows: Sequence[Dict], dest_path: Pat
                     ci_low=r["ci_low"],
                     ci_high=r["ci_high"],
                     support=r.get("support", float("nan")),
+                    age_mode=r.get("age_mode", "vote_median"),
+                    ci_method=r.get("ci_method", CATALOGUE_CI_METHOD),
+                    ci_interpretation=r.get("ci_interpretation", CATALOGUE_CI_INTERPRETATION),
                 )
             )
 

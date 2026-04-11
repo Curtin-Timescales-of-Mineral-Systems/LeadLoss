@@ -52,6 +52,10 @@ The revised manuscript, figures, and benchmark/data assets are distributed separ
 from the code release as a curated Zenodo-style package. This keeps the repository
 code-focused and avoids mixing working manuscript material into the public code line.
 
+For a developer-oriented overview of the current CDC execution path, see the
+separate backup note at
+`/Users/lucymathieson/Desktop/refactor_untracked_backup_2026-04-11/docs/cdc_processing_path.md`.
+
 ## Input requirements (GUI)
 
 The GUI expects a CSV file where each row represents a single spot analysis. Required columns are:
@@ -67,10 +71,10 @@ During import, you can specify column names or indices (e.g., A, B, C, D or 1, 2
 
 The GUI can export:
 
-- optimal Pb-loss age estimates with empirical 95% intervals
+- optimal Pb-loss age estimates with empirical 2.5/97.5 percentile intervals
 - K–S test statistics (p-values and D-values)
 - individual Monte Carlo sampling results
-- ensemble catalogue of Pb-loss age estimates with empirical 95% intervals and support values
+- ensemble catalogue of Pb-loss age estimates with empirical 2.5/97.5 percentile intervals, age-mode metadata, and support values
 
 ## Troubleshooting
 

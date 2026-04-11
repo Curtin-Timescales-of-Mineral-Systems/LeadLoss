@@ -39,9 +39,9 @@ class SummaryDataPanel(QWidget):
             "Sample",
             "Concordant\npoints",
             "Discordant\npoints",
-            "95%\nlower\nbound",
+            "2.5%\nrun-opt\nbound",
             "Pb-loss\nage (Ma)",
-            "95%\nupper\nbound",
+            "97.5%\nrun-opt\nbound",
             "d-value",
             "p-value",
             "Score"
@@ -78,8 +78,8 @@ class SummaryDataPanel(QWidget):
 
         # ---- ensemble catalogue (all samples) ----
         cat_headers = [
-            "Sample", "Peak #", "95% low", "Age (Ma)", "95% high",
-            "Direct support (%)", "Winner support (%)"
+            "Sample", "Peak #", "2.5% peak low", "Age (Ma)", "97.5% peak high",
+            "Direct support (%)", "Winner support (%)", "Age mode", "CI method"
         ]
         self.catalogueTable = QTableWidget(0, len(cat_headers))
         self.catalogueTable.setHorizontalHeaderLabels(cat_headers)
@@ -104,7 +104,7 @@ class SummaryDataPanel(QWidget):
         bottomBox = QWidget()
         bottomLay = QVBoxLayout(bottomBox)
         bottomLay.setContentsMargins(0, 0, 0, 0)
-        bottomLay.addWidget(QLabel("Ensemble peak catalogue (all samples)"))
+        bottomLay.addWidget(QLabel("Ensemble peak catalogue (empirical 2.5/97.5 percentile intervals)"))
         bottomLay.addWidget(sep)
         bottomLay.addWidget(self.catalogueTable)
         bottomLay.addWidget(self.exportCatalogueButton)
@@ -275,20 +275,24 @@ class SummaryDataPanel(QWidget):
                 direct_sup = d.get("direct_support", d.get("support"))   # fraction 0..1
                 winner_sup = d.get("winner_support", d.get("support"))   # fraction 0..1
                 pno = d.get("peak_no") or j  # fallback numbering per sample
-                rows.append([s.name, pno, lo, age, hi, direct_sup, winner_sup])
+                age_mode = d.get("age_mode", "vote_median")
+                ci_method = d.get("ci_method", "vote_percentile")
+                rows.append([s.name, pno, lo, age, hi, direct_sup, winner_sup, age_mode, ci_method])
 
         # Repopulate table
         self.catalogueTable.setSortingEnabled(False)  # avoid re-sorts while filling
         self.catalogueTable.setRowCount(len(rows))
 
-        for r, (sname, pkno, lo, age, hi, direct_sup, winner_sup) in enumerate(rows):
+        for r, (sname, pkno, lo, age, hi, direct_sup, winner_sup, age_mode, ci_method) in enumerate(rows):
             self.catalogueTable.setItem(r, 0, self._cell(sname))
             self.catalogueTable.setItem(r, 1, self._cell("" if pkno is None else pkno))
-            self.catalogueTable.setItem(r, 2, self._cell(self._fmt_ma(lo)))   # 95% low
+            self.catalogueTable.setItem(r, 2, self._cell(self._fmt_ma(lo)))
             self.catalogueTable.setItem(r, 3, self._cell(self._fmt_ma(age)))  # Age
-            self.catalogueTable.setItem(r, 4, self._cell(self._fmt_ma(hi)))   # 95% high
+            self.catalogueTable.setItem(r, 4, self._cell(self._fmt_ma(hi)))
             self.catalogueTable.setItem(r, 5, self._cell(self._fmt_pct(direct_sup)))
             self.catalogueTable.setItem(r, 6, self._cell(self._fmt_pct(winner_sup)))
+            self.catalogueTable.setItem(r, 7, self._cell(age_mode))
+            self.catalogueTable.setItem(r, 8, self._cell(ci_method))
 
         self.catalogueTable.resizeColumnsToContents()
         self.catalogueTable.resizeRowsToContents()

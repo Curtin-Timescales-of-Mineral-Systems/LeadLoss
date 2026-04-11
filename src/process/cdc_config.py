@@ -99,6 +99,17 @@ def _env_bool(name: str, default: str = "0") -> bool:
     except Exception:
         return bool(int(default))
 
+# Broad-plateau onset adjustment.
+# For the youngest peak in a multi-peak sample, broad older-tailed plateaus can
+# place the default vote-median peak age systematically older than the onset of
+# the younger Pb-loss event. The default catalogue age therefore blends the
+# vote-median age with the left half-prominence edge when that plateau-like
+# geometry is present. All other peaks retain the vote-median age.
+PLATEAU_ONSET_MODE: str = "midpoint_left"
+PLATEAU_ONSET_MIN_WIDTH_FRAC: float = 0.20
+PLATEAU_ONSET_MIN_RIGHT_LEFT_RATIO: float = 1.30
+PLATEAU_ONSET_BLEND_FRAC: float = 0.50
+
 
 _ks_root = os.environ.get("CDC_KS_EXPORT_DIR", "").strip()
 KS_EXPORT_ROOT: Optional[Path] = Path(_ks_root).expanduser() if _ks_root else None

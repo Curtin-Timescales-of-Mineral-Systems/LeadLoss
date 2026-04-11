@@ -24,7 +24,6 @@ from process import calculations
 from process.ensemble import (
     robust_ensemble_curve,
     build_ensemble_catalogue,
-    widen_rows_to_curvature_floor,
 )
 from process.cdc_config import (
     CATALOGUE_CSV_PEN,
@@ -48,6 +47,10 @@ from process.cdc_config import (
     PER_RUN_MIN_DIST,
     PER_RUN_MIN_WIDTH,
     PER_RUN_PROM_FRAC,
+    PLATEAU_ONSET_BLEND_FRAC,
+    PLATEAU_ONSET_MIN_WIDTH_FRAC,
+    PLATEAU_ONSET_MIN_RIGHT_LEFT_RATIO,
+    PLATEAU_ONSET_MODE,
     RMIN_RUNS,
     FV_VALLEY_FRAC,
     RUNLOG,
@@ -82,8 +85,14 @@ class ProgressType(Enum):
 
 def processSamples(signals, samples):
     if CDC_WRITE_OUTPUTS:
-        _reset_csv(CATALOGUE_CSV_PEN, "sample,peak_no,age_ma,ci_low,ci_high,support")
-        _reset_csv(CATALOGUE_CSV_RAW, "sample,peak_no,age_ma,ci_low,ci_high,support")
+        _reset_csv(
+            CATALOGUE_CSV_PEN,
+            "sample,peak_no,age_ma,ci_low,ci_high,support,age_mode,ci_method,ci_interpretation",
+        )
+        _reset_csv(
+            CATALOGUE_CSV_RAW,
+            "sample,peak_no,age_ma,ci_low,ci_high,support,age_mode,ci_method,ci_interpretation",
+        )
         _reset_csv(RUNLOG,            "method,phase,sample,tier,R,n_grid,elapsed_s,per_run_median_s,per_run_p95_s,rss_peak_mb,python,numpy")
 
     for sample in samples:
@@ -1173,31 +1182,6 @@ def _optimum_stat_from_stats_attr(run, stats_attr: str, which: str = "pen"):
     return stats_map[float(ages[idx])]
 
 
-def _median_best_from_runs(runs, stats_attr: str, which: str = "pen") -> float:
-    """
-    Median run-level best dissimilarity from a stats map attribute.
-    Lower is better.
-    """
-    vals = []
-    for run in runs:
-        stats_map = getattr(run, stats_attr, None)
-        if not isinstance(stats_map, dict) or not stats_map:
-            continue
-        ages = sorted(stats_map.keys())
-        if not ages:
-            continue
-        if which == "raw":
-            arr = np.array([stats_map[a].test_statistics[0] for a in ages], float)
-        else:
-            arr = np.array([stats_map[a].score for a in ages], float)
-        arr = arr[np.isfinite(arr)]
-        if arr.size:
-            vals.append(float(np.min(arr)))
-    if not vals:
-        return float("nan")
-    return float(np.median(np.asarray(vals, float)))
-
-
 def _build_global_catalogue_rows(sample_name: str,
                                  tier: str,
                                  ages_ma: np.ndarray,
@@ -1209,7 +1193,7 @@ def _build_global_catalogue_rows(sample_name: str,
                                  pickable: bool,
                                  optima_ma: np.ndarray,
                                  diagnostic_rows: Optional[List[Dict]] = None):
-    """Build global ensemble rows for one surface."""
+    """Build ensemble rows for one global surface (raw or penalised)."""
     if (not pickable) or (Smed.size == 0):
         return []
 
@@ -1222,7 +1206,11 @@ def _build_global_catalogue_rows(sample_name: str,
         w_min_nodes=3, support_min=FS_SUPPORT, r_min=RMIN_RUNS, f_r=FR_RUN_REL,
         per_run_prom_frac=PER_RUN_PROM_FRAC, per_run_min_dist=PER_RUN_MIN_DIST,
         per_run_min_width=PER_RUN_MIN_WIDTH, per_run_require_full_prom=False,
-        pen_ok_mask=None, cand_curve=Smed, height_frac=FH_HEIGHT_FRAC, optima_ma=optima_ma,
+        plateau_onset_mode=PLATEAU_ONSET_MODE,
+        plateau_onset_min_width_frac=PLATEAU_ONSET_MIN_WIDTH_FRAC,
+        plateau_onset_min_right_left_ratio=PLATEAU_ONSET_MIN_RIGHT_LEFT_RATIO,
+        plateau_onset_blend_frac=PLATEAU_ONSET_BLEND_FRAC,
+        height_frac=FH_HEIGHT_FRAC, optima_ma=optima_ma,
         merge_per_hump=merge_nearby, merge_shoulders=merge_nearby,
         diagnostic_rows=diag_rows,
     ) or []
@@ -1254,8 +1242,8 @@ def _keep_same(rows, keep):
 
 def _compute_optimal_age_ci(raw, pen, prefer_pen, runs):
     """
-    95% confidence interval for the optimal Pb-loss age, taken as the
-    2.5/97.5 percentiles of the per-run optimum ages. Matches the published
+    Empirical 2.5/97.5 percentile interval for the optimal Pb-loss age,
+    taken from the per-run optimum ages. Matches the published
     Mathieson 2025b implementation.
     """
     optima_ma_primary = pen.optima_ma if prefer_pen else raw.optima_ma
@@ -1350,11 +1338,6 @@ def _apply_guards_and_fallbacks(
             pre_boundary_mode_ui, rows_for_ui, rejected_rows,
             "boundary_dominated_surface", ages_ma,
         )
-
-    # CI calibration: widen using local curvature floor
-    for surf in (raw, pen):
-        surf.rows = widen_rows_to_curvature_floor(surf.rows, ages_ma, surf.Smed, surf.S_runs, orientation="max")
-    rows_for_ui = widen_rows_to_curvature_floor(rows_for_ui, ages_ma, S_view, S_runs_view, orientation="max")
 
     # Ensure snapped age lies inside its CI
     if rows_for_ui:
@@ -1494,8 +1477,8 @@ def _publish_results(
 
     rows_for_plot = _snap_rows_to_curve(rows_for_ui, ages_ma, S_view)
 
-    catalogue_legacy = [(r["age_ma"], r["ci_low"], r["ci_high"], r["support"]) for r in rows_for_ui]
-    peak_str = fmt_peak_stats(catalogue_legacy) if catalogue_legacy else "—"
+    published_peak_tuples = [(r["age_ma"], r["ci_low"], r["ci_high"], r["support"]) for r in rows_for_ui]
+    peak_str = fmt_peak_stats(published_peak_tuples) if published_peak_tuples else "—"
 
     plot_peaks = np.asarray([float(r.get("age_ma", np.nan)) for r in rows_for_plot], float)
     plot_ci_low = np.asarray([float(r.get("ci_low", np.nan)) for r in rows_for_plot], float)
@@ -1510,10 +1493,19 @@ def _publish_results(
             ci_low=lo, age_ma=med, ci_high=hi, support=sup,
             direct_support=float(r.get("direct_support", sup)),
             winner_support=float(r.get("winner_support", sup)),
+            age_mode=str(r.get("age_mode", "vote_median")),
+            peak_left_edge_ma=r.get("peak_left_edge_ma", np.nan),
+            peak_right_edge_ma=r.get("peak_right_edge_ma", np.nan),
+            peak_half_prom_width_frac=r.get("peak_half_prom_width_frac", np.nan),
+            peak_right_left_ratio=r.get("peak_right_left_ratio", np.nan),
             selection=r.get("selection", "strict"),
             mode=r.get("mode", ""), label=r.get("label", ""),
+            ci_method=str(r.get("ci_method", "vote_percentile")),
+            ci_interpretation=str(
+                r.get("ci_interpretation", "empirical_2.5_97.5_percentile_of_per_run_optima")
+            ),
         )
-        for i, (r, (med, lo, hi, sup)) in enumerate(zip(rows_for_ui, catalogue_legacy))
+        for i, (r, (med, lo, hi, sup)) in enumerate(zip(rows_for_ui, published_peak_tuples))
     ]
     sample.peak_catalogue = detailed_catalogue
 
@@ -1540,8 +1532,15 @@ def _publish_results(
 
 def _calculateOptimalAge(signals, sample, progress):
     """
-      • UI shows median-of-run-optima with consistent CI.
-      • Exports and figures use legacy surface optimum and curve.
+    Main CDC execution for one sample after Monte Carlo runs have been built.
+
+    The processing splits into two parallel summaries:
+    - legacy single-age summary:
+      tie-aware argmax of the mean penalised goodness surface plus the
+      empirical 2.5/97.5 percentile interval of per-run optima
+    - ensemble peak catalogue:
+      reproducible peaks on the raw and penalised global surfaces, followed by
+      support filtering, boundary/plateau guards, and publication/export
     """
     settings, runs = sample.calculationSettings, sample.monteCarloRuns
     if not runs:
@@ -1599,17 +1598,14 @@ def _calculateOptimalAge(signals, sample, progress):
     )
     sample.ensemble_abstain_reason = None
 
-    # 95% CI for the optimal age: 2.5/97.5 percentiles of per-run optima.
+    # Legacy single-age summary.
     lower95, upper95, opt_all = _compute_optimal_age_ci(raw, pen, prefer_pen, runs)
-
-    # Optimal age: argmax of the mean penalised CDC goodness curve via
-    # _findOptimalIndex (tie-aware plateau midpoint).
     optimalAge, S_optimal_curve, mean_primary = _compute_optimal_age(raw, pen, prefer_pen, ages_y)
     sample.legacy_surface_optimal_age = optimalAge
 
     meanD, meanP, meanInv, meanSc = _compute_mean_stats(runs, primary_which, prefer_pen)
 
-    # ---------- (D) Ensemble OFF branch ----------
+    # Ensemble OFF branch: publish only the legacy single-age summary.
     enabled = bool(getattr(settings, "enable_ensemble_peak_picking", False))
     if not enabled:
         sample.peak_catalogue = []
@@ -1636,9 +1632,7 @@ def _calculateOptimalAge(signals, sample, progress):
         except TypeError:
             signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, payload[:7])
         return
-    # ------------------------------------------------------------------
-    # Build catalogues from the global all-discordants surface.
-    # ------------------------------------------------------------------
+    # Build peak catalogues on the global raw and penalised surfaces.
     for surf in (raw, pen):
         surf.rows = _build_global_catalogue_rows(
             sample.name,
@@ -1716,8 +1710,8 @@ def _calculateOptimalAge(signals, sample, progress):
     support_floor = max(float(FS_SUPPORT), 0.03)
     optima_ma_ui_vote = raw.optima_ma if ui_surface == "RAW" else pen.optima_ma
 
-    def _filter_pipeline(label=None):
-        """Apply support recompute + filter to raw, pen, and rows_for_ui."""
+    def _refresh_support_filtered_catalogues(label=None):
+        """Recompute winner support and apply the support filter to all catalogues."""
         nonlocal rows_for_ui
         for surf in (raw, pen):
             surf.rows = _recompute_winner_support(surf.rows, surf.optima_ma, ages_ma, min_support=None)
@@ -1728,7 +1722,7 @@ def _calculateOptimalAge(signals, sample, progress):
         if label:
             _capture_rejected_step(pre, rows_for_ui, rejected_rows, label, ages_ma)
 
-    _filter_pipeline("low_support")
+    _refresh_support_filtered_catalogues("low_support")
 
     # In no-merge mode, remove near-identical plateau duplicates and re-vote so
     # winner support reflects the deduped set.
@@ -1738,7 +1732,7 @@ def _calculateOptimalAge(signals, sample, progress):
         pre_dedupe_ui = [dict(r) for r in rows_for_ui]
         rows_for_ui = _plateau_dedupe_rows(rows_for_ui, ages_ma)
         _capture_rejected_step(pre_dedupe_ui, rows_for_ui, rejected_rows, "plateau_duplicate", ages_ma)
-        _filter_pipeline("low_support")
+        _refresh_support_filtered_catalogues("low_support")
 
     rows_for_ui, rejected_rows = _apply_guards_and_fallbacks(
         sample, settings, runs, raw, pen,
