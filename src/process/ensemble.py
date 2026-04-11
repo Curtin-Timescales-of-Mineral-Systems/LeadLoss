@@ -9,11 +9,11 @@ Core ideas:
 - keep only candidates that are reproducible across runs
 - report one age and one empirical interval per surviving peak
 
-The age reported for most peaks is the median of the run-level votes assigned to
-that candidate. A narrow plateau-onset adjustment is available for broad,
-older-tailed youngest peaks in multi-peak samples; that rule shifts the
-reported age leftward toward the onset of the younger event while leaving the
-rest of the catalogue unchanged.
+Reported peak ages are usually the median of the run-level ages contributing
+to each catalogue entry. For broad, older-tailed youngest peaks in multi-peak
+samples, a plateau-onset adjustment moves the reported age partway toward the
+left shoulder of the peak to reduce the older bias that can arise when
+overlapping age populations flatten the younger peak.
 """
 
 from __future__ import annotations
