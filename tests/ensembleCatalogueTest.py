@@ -2,12 +2,9 @@ import unittest
 
 import numpy as np
 
-from process.cdc_pipeline import (
-    _is_effectively_monotonic,
-    _recompute_winner_support,
-    _snap_rows_to_curve,
-    _single_crest_fallback_row,
-)
+from process.cdc.filtering import _recompute_winner_support
+from process.cdc.guards import _single_crest_fallback_row, _snap_rows_to_curve
+from process.cdc.surfaces import _is_effectively_monotonic
 from process.ensemble import build_ensemble_catalogue
 
 

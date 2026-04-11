@@ -33,7 +33,8 @@ from process.cdc_config import (
     RMIN_RUNS,
     FV_VALLEY_FRAC,
 )
-from process.cdc_pipeline import _collapse_ci_clusters, _smooth_frac_for_grid
+from process.cdc.filtering import _collapse_ci_clusters
+from process.cdc.surfaces import _smooth_frac_for_grid
 from process.cdc_utils import infer_tier as _infer_tier
 from process.ensemble import build_ensemble_catalogue
 
