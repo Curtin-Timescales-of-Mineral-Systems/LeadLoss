@@ -1,3 +1,13 @@
+"""Peak-catalogue filtering and deduplication helpers for CDC.
+
+These functions operate on already-detected candidate peaks:
+- merge overlapping candidates
+- recompute winner-vote support
+- apply support thresholds
+- deduplicate plateau-like duplicates
+- track which candidates were rejected at each step
+"""
+
 from __future__ import annotations
 
 from typing import Dict, List, Optional, Tuple

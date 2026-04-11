@@ -1,3 +1,11 @@
+"""Final result publication for CDC runs.
+
+This module translates the internal CDC state into:
+- sample attributes used by the GUI
+- emitted progress/signals payloads
+- CSV and NPZ diagnostics exports
+"""
+
 from __future__ import annotations
 
 from typing import Dict, List

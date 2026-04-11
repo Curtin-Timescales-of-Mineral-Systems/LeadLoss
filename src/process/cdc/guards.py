@@ -1,3 +1,13 @@
+"""Post-catalogue safety rules and fallback handling for CDC peak outputs.
+
+This module does not build peaks. It applies defensive logic after the
+candidate catalogue exists:
+- suppress boundary-dominated artefacts
+- inject explicit recent-boundary modes when appropriate
+- snap rows back to the displayed curve
+- create a single-crest fallback when peak detection yields nothing usable
+"""
+
 from __future__ import annotations
 
 from typing import Dict, List, Optional, Tuple
@@ -547,4 +557,3 @@ def _apply_guards_and_fallbacks(
     sample.rejected_peak_candidates = rejected_rows
 
     return rows_for_ui, rejected_rows
-
