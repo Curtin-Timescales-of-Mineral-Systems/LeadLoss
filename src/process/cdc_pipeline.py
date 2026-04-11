@@ -1304,6 +1304,208 @@ def _compute_mean_stats(runs, primary_which, prefer_pen):
     return meanD, meanP, meanInv, meanSc
 
 
+def _build_surface_states(settings, runs, ages_y, ages_ma, abstain_on_monotonic):
+    """Build raw and penalised global surface states from the run stack."""
+    smf = _smooth_frac_for_grid(ages_ma)
+
+    optima_raw = np.array(
+        [_optimum_age_ma_from_stats_attr(r, "_all_statistics_by_pb_loss_age", which="raw") for r in runs], float,
+    )
+    S_runs_raw = _stack_goodness_from_stats_attr(runs, ages_y, "_all_statistics_by_pb_loss_age", which="raw")
+    Smed_raw, Delta_raw, _ = robust_ensemble_curve(S_runs_raw, smooth_frac=smf)
+    mono_raw = _is_effectively_monotonic(Smed_raw, Delta_raw)
+
+    optima_pen = np.array(
+        [_optimum_age_ma_from_stats_attr(r, "_all_statistics_by_pb_loss_age", which="pen") for r in runs], float,
+    )
+    S_runs_pen = _stack_goodness_from_stats_attr(runs, ages_y, "_all_statistics_by_pb_loss_age", which="pen")
+    Smed_pen, Delta_pen, _ = robust_ensemble_curve(S_runs_pen, smooth_frac=smf)
+    mono_pen = _is_effectively_monotonic(Smed_pen, Delta_pen)
+
+    raw = SurfaceState(
+        S_runs=S_runs_raw,
+        Smed=Smed_raw,
+        Delta=Delta_raw,
+        mono=mono_raw,
+        pickable=(Delta_raw >= ENS_DELTA_MIN) and ((not abstain_on_monotonic) or (not mono_raw)),
+        optima_ma=optima_raw,
+    )
+    pen = SurfaceState(
+        S_runs=S_runs_pen,
+        Smed=Smed_pen,
+        Delta=Delta_pen,
+        mono=mono_pen,
+        pickable=(Delta_pen >= ENS_DELTA_MIN) and ((not abstain_on_monotonic) or (not mono_pen)),
+        optima_ma=optima_pen,
+    )
+    return smf, raw, pen
+
+
+def _initialise_surface_view_state(sample, settings, raw, pen, primary_which):
+    """Record surface diagnostics and choose the default surface shown in the UI."""
+    ui_surface = str(getattr(settings, "catalogue_surface", CATALOGUE_SURFACE)).strip().upper()
+    if ui_surface not in {"RAW", "PEN"}:
+        ui_surface = "PEN"
+    S_view = raw.Smed if (ui_surface == "RAW") else pen.Smed
+    sample.ensemble_surface_flags = dict(
+        raw_delta=float(raw.Delta),
+        pen_delta=float(pen.Delta),
+        raw_monotonic=bool(raw.mono),
+        pen_monotonic=bool(pen.mono),
+        primary_channel=str(primary_which),
+        view_surface_source="global_all",
+    )
+    sample.ensemble_abstain_reason = None
+    return ui_surface, S_view
+
+
+def _publish_legacy_only(
+    signals, sample, progress, settings, runs, ages_ma, ages_y,
+    S_optimal_curve, optimalAge, lower95, upper95, opt_all,
+    meanD, meanP, meanInv, meanSc, mean_primary,
+):
+    """Publish the legacy single-age result when ensemble peak-picking is disabled."""
+    sample.peak_catalogue = []
+    _emit_summedKS(signals, sample, progress, ages_ma, S_optimal_curve, rows_for_ui=[])
+
+    if KS_EXPORT_ROOT is not None:
+        _export_legacy_ks(
+            sample,
+            settings,
+            runs,
+            ages_y,
+            D_pen=mean_primary,
+            ui_opt_years=optimalAge,
+            ui_low95_years=lower95,
+            ui_high95_years=upper95,
+            run_optima_years=opt_all,
+            legacy_opt_years=optimalAge,
+        )
+
+    payload = (optimalAge, lower95, upper95, meanD, meanP, meanInv, meanSc, "—", [])
+    try:
+        signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, payload)
+    except TypeError:
+        signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, payload[:7])
+
+
+def _select_ui_surface(ui_surface, raw, pen):
+    """Select the surface whose rows drive the UI summary and plotting payload."""
+    chosen = raw if (ui_surface == "RAW" and raw.rows) else pen if pen.rows else None
+    if chosen is not None:
+        view_which = "raw" if chosen is raw else "pen"
+        rows_for_ui = chosen.rows
+        S_runs_view = chosen.S_runs
+        S_view = chosen.Smed
+        rejected_stage_ui = chosen.rejected
+    else:
+        rows_for_ui = []
+        chosen_fallback = raw if ui_surface == "RAW" else pen
+        view_which = "raw" if chosen_fallback is raw else "pen"
+        S_runs_view = chosen_fallback.S_runs
+        S_view = chosen_fallback.Smed
+        rejected_stage_ui = chosen_fallback.rejected
+    return rows_for_ui, S_runs_view, S_view, view_which, rejected_stage_ui
+
+
+def _dedupe_rejected_rows(rejected_rows, ages_ma):
+    """Collapse duplicate rejected-peak records generated in adjacent steps."""
+    if not rejected_rows:
+        return []
+
+    deduped_rejected: List[Dict] = []
+    seen = set()
+    step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
+    tol = max(0.51 * step, 1e-6)
+    for row in rejected_rows:
+        age = float(row.get("age_ma", np.nan))
+        reason = str(row.get("reason", ""))
+        age_key = round(age / tol) if np.isfinite(age) else None
+        key = (reason, age_key)
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped_rejected.append(row)
+    return deduped_rejected
+
+
+def _refresh_support_filtered_catalogues(
+    raw,
+    pen,
+    rows_for_ui,
+    rejected_rows,
+    ages_ma,
+    support_floor,
+    support_filter_mode,
+    optima_ma_ui_vote,
+    *,
+    label=None,
+):
+    """Recompute winner support and apply the support filter to all catalogues."""
+    for surf in (raw, pen):
+        surf.rows = _recompute_winner_support(surf.rows, surf.optima_ma, ages_ma, min_support=None)
+        surf.rows = _apply_support_filter(surf.rows, support_floor, support_filter_mode)
+
+    rows_for_ui = _recompute_winner_support(rows_for_ui, optima_ma_ui_vote, ages_ma, min_support=None)
+    pre_rows = [dict(r) for r in rows_for_ui]
+    rows_for_ui = _apply_support_filter(rows_for_ui, support_floor, support_filter_mode)
+    if label:
+        _capture_rejected_step(pre_rows, rows_for_ui, rejected_rows, label, ages_ma)
+    return rows_for_ui, rejected_rows
+
+
+def _run_filter_pipeline(
+    raw,
+    pen,
+    rows_for_ui,
+    rejected_rows,
+    ages_ma,
+    merge_nearby,
+    support_floor,
+    support_filter_mode,
+    optima_ma_ui_vote,
+):
+    """Apply overlap merging, support filtering, and plateau deduplication."""
+    if merge_nearby:
+        pre_merge_ui = [dict(r) for r in rows_for_ui]
+        rows_for_ui = _collapse_ci_clusters(rows_for_ui)
+        for surf in (raw, pen):
+            surf.rows = _collapse_ci_clusters(surf.rows)
+        _capture_rejected_step(pre_merge_ui, rows_for_ui, rejected_rows, "merged_overlapping_candidates", ages_ma)
+
+    rows_for_ui, rejected_rows = _refresh_support_filtered_catalogues(
+        raw,
+        pen,
+        rows_for_ui,
+        rejected_rows,
+        ages_ma,
+        support_floor,
+        support_filter_mode,
+        optima_ma_ui_vote,
+        label="low_support",
+    )
+
+    if (not merge_nearby) and PLATEAU_DEDUPE:
+        for surf in (raw, pen):
+            surf.rows = _plateau_dedupe_rows(surf.rows, ages_ma)
+        pre_dedupe_ui = [dict(r) for r in rows_for_ui]
+        rows_for_ui = _plateau_dedupe_rows(rows_for_ui, ages_ma)
+        _capture_rejected_step(pre_dedupe_ui, rows_for_ui, rejected_rows, "plateau_duplicate", ages_ma)
+        rows_for_ui, rejected_rows = _refresh_support_filtered_catalogues(
+            raw,
+            pen,
+            rows_for_ui,
+            rejected_rows,
+            ages_ma,
+            support_floor,
+            support_filter_mode,
+            optima_ma_ui_vote,
+            label="low_support",
+        )
+
+    return rows_for_ui, rejected_rows
+
+
 def _apply_guards_and_fallbacks(
     sample, settings, runs, raw, pen,
     rows_for_ui, rejected_rows,
@@ -1553,86 +1755,26 @@ def _calculateOptimalAge(signals, sample, progress):
     prefer_pen = bool(getattr(settings, "penaliseInvalidAges", False))
     primary_which = "pen" if prefer_pen else "raw"
 
-    # Grid
-    ages_y = np.asarray(settings.rimAges(), float)   # years
+    ages_y = np.asarray(settings.rimAges(), float)
     ages_ma = ages_y / 1e6
-    # Per-run optima and goodness matrices from the global all-discordants surface.
-    smf = _smooth_frac_for_grid(ages_ma)
+    smf, raw, pen = _build_surface_states(settings, runs, ages_y, ages_ma, abstain_on_monotonic)
+    ui_surface, S_view = _initialise_surface_view_state(sample, settings, raw, pen, primary_which)
 
-    _optima_raw = np.array(
-        [_optimum_age_ma_from_stats_attr(r, "_all_statistics_by_pb_loss_age", which="raw") for r in runs], float,
-    )
-    _S_runs_raw = _stack_goodness_from_stats_attr(runs, ages_y, "_all_statistics_by_pb_loss_age", which="raw")
-    _Smed_raw, _Delta_raw, _ = robust_ensemble_curve(_S_runs_raw, smooth_frac=smf)
-    _mono_raw = _is_effectively_monotonic(_Smed_raw, _Delta_raw)
-
-    _optima_pen = np.array(
-        [_optimum_age_ma_from_stats_attr(r, "_all_statistics_by_pb_loss_age", which="pen") for r in runs], float,
-    )
-    _S_runs_pen = _stack_goodness_from_stats_attr(runs, ages_y, "_all_statistics_by_pb_loss_age", which="pen")
-    _Smed_pen, _Delta_pen, _ = robust_ensemble_curve(_S_runs_pen, smooth_frac=smf)
-    _mono_pen = _is_effectively_monotonic(_Smed_pen, _Delta_pen)
-
-    raw = SurfaceState(
-        S_runs=_S_runs_raw, Smed=_Smed_raw, Delta=_Delta_raw, mono=_mono_raw,
-        pickable=(_Delta_raw >= ENS_DELTA_MIN) and ((not abstain_on_monotonic) or (not _mono_raw)),
-        optima_ma=_optima_raw,
-    )
-    pen = SurfaceState(
-        S_runs=_S_runs_pen, Smed=_Smed_pen, Delta=_Delta_pen, mono=_mono_pen,
-        pickable=(_Delta_pen >= ENS_DELTA_MIN) and ((not abstain_on_monotonic) or (not _mono_pen)),
-        optima_ma=_optima_pen,
-    )
-
-    ui_surface = str(getattr(settings, "catalogue_surface", CATALOGUE_SURFACE)).strip().upper()
-    if ui_surface not in {"RAW", "PEN"}:
-        ui_surface = "PEN"
-    S_view = raw.Smed if (ui_surface == "RAW") else pen.Smed
-    sample.ensemble_surface_flags = dict(
-        raw_delta=float(raw.Delta),
-        pen_delta=float(pen.Delta),
-        raw_monotonic=bool(raw.mono),
-        pen_monotonic=bool(pen.mono),
-        primary_channel=str(primary_which),
-        view_surface_source="global_all",
-    )
-    sample.ensemble_abstain_reason = None
-
-    # Legacy single-age summary.
     lower95, upper95, opt_all = _compute_optimal_age_ci(raw, pen, prefer_pen, runs)
     optimalAge, S_optimal_curve, mean_primary = _compute_optimal_age(raw, pen, prefer_pen, ages_y)
     sample.legacy_surface_optimal_age = optimalAge
 
     meanD, meanP, meanInv, meanSc = _compute_mean_stats(runs, primary_which, prefer_pen)
 
-    # Ensemble OFF branch: publish only the legacy single-age summary.
     enabled = bool(getattr(settings, "enable_ensemble_peak_picking", False))
     if not enabled:
-        sample.peak_catalogue = []
-
-        # Plot the optimal-age curve for diagnostics
-        _emit_summedKS(signals, sample, progress, ages_ma, S_optimal_curve, rows_for_ui=[])
-
-        # Export the optimal age and curve for paper figures
-        if KS_EXPORT_ROOT is not None:
-            _export_legacy_ks(
-                sample, settings, runs, ages_y,
-                D_pen=mean_primary,
-                ui_opt_years=optimalAge,
-                ui_low95_years=lower95,
-                ui_high95_years=upper95,
-                run_optima_years=opt_all,
-                legacy_opt_years=optimalAge,
-            )
-
-
-        payload = (optimalAge, lower95, upper95, meanD, meanP, meanInv, meanSc, "—", [])
-        try:
-            signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, payload)
-        except TypeError:
-            signals.progress(ProgressType.OPTIMAL, 1.0, sample.name, payload[:7])
+        _publish_legacy_only(
+            signals, sample, progress, settings, runs, ages_ma, ages_y,
+            S_optimal_curve, optimalAge, lower95, upper95, opt_all,
+            meanD, meanP, meanInv, meanSc, mean_primary,
+        )
         return
-    # Build peak catalogues on the global raw and penalised surfaces.
+
     for surf in (raw, pen):
         surf.rows = _build_global_catalogue_rows(
             sample.name,
@@ -1654,85 +1796,20 @@ def _calculateOptimalAge(signals, sample, progress):
         if (not raw.pickable) and (not pen.pickable):
             sample.ensemble_abstain_reason = "flat_or_monotonic_surface"
 
-    # Choose which to DISPLAY in the UI strictly from the same ensemble surface
-    # that produced the accepted rows.
-    chosen = raw if (ui_surface == "RAW" and raw.rows) else pen if pen.rows else None
-    if chosen is not None:
-        view_which = "raw" if chosen is raw else "pen"
-        rows_for_ui = chosen.rows
-        S_runs_view = chosen.S_runs
-        S_view = chosen.Smed
-        rejected_stage_ui = chosen.rejected
-    else:
-        rows_for_ui = []
-        chosen_fallback = raw if ui_surface == "RAW" else pen
-        view_which = "raw" if chosen_fallback is raw else "pen"
-        S_runs_view = chosen_fallback.S_runs
-        S_view = chosen_fallback.Smed
-        rejected_stage_ui = chosen_fallback.rejected
+    rows_for_ui, S_runs_view, S_view, view_which, rejected_stage_ui = _select_ui_surface(ui_surface, raw, pen)
 
     for _rows in (raw.rows, pen.rows, rows_for_ui):
         for _r in _rows:
             _r.setdefault("selection", "strict")
 
     _ensure_output_dirs()
-
-    rejected_rows: List[Dict] = [dict(r) for r in (rejected_stage_ui or [])]
-
-    if rejected_rows:
-        deduped_rejected: List[Dict] = []
-        seen = set()
-        step = float(np.median(np.diff(ages_ma))) if ages_ma.size >= 2 else 5.0
-        tol = max(0.51 * step, 1e-6)
-        for row in rejected_rows:
-            age = float(row.get("age_ma", np.nan))
-            reason = str(row.get("reason", ""))
-            if np.isfinite(age):
-                age_key = round(age / tol)
-            else:
-                age_key = None
-            key = (reason, age_key)
-            if key in seen:
-                continue
-            seen.add(key)
-            deduped_rejected.append(row)
-        rejected_rows = deduped_rejected
-
-    if merge_nearby:
-        pre_merge_ui = [dict(r) for r in rows_for_ui]
-        rows_for_ui = _collapse_ci_clusters(rows_for_ui)
-        for surf in (raw, pen):
-            surf.rows = _collapse_ci_clusters(surf.rows)
-        _capture_rejected_step(pre_merge_ui, rows_for_ui, rejected_rows, "merged_overlapping_candidates", ages_ma)
-
-    # Recompute winner-vote support from per-run optima while preserving
-    # direct per-run peak support as the primary "support" metric.
+    rejected_rows: List[Dict] = _dedupe_rejected_rows([dict(r) for r in (rejected_stage_ui or [])], ages_ma)
     support_floor = max(float(FS_SUPPORT), 0.03)
     optima_ma_ui_vote = raw.optima_ma if ui_surface == "RAW" else pen.optima_ma
-
-    def _refresh_support_filtered_catalogues(label=None):
-        """Recompute winner support and apply the support filter to all catalogues."""
-        nonlocal rows_for_ui
-        for surf in (raw, pen):
-            surf.rows = _recompute_winner_support(surf.rows, surf.optima_ma, ages_ma, min_support=None)
-            surf.rows = _apply_support_filter(surf.rows, support_floor, support_filter_mode)
-        rows_for_ui = _recompute_winner_support(rows_for_ui, optima_ma_ui_vote, ages_ma, min_support=None)
-        pre = [dict(r) for r in rows_for_ui]
-        rows_for_ui = _apply_support_filter(rows_for_ui, support_floor, support_filter_mode)
-        if label:
-            _capture_rejected_step(pre, rows_for_ui, rejected_rows, label, ages_ma)
-
-    _refresh_support_filtered_catalogues("low_support")
-
-    # In no-merge mode, remove near-identical plateau duplicates and re-vote so
-    # winner support reflects the deduped set.
-    if (not merge_nearby) and PLATEAU_DEDUPE:
-        for surf in (raw, pen):
-            surf.rows = _plateau_dedupe_rows(surf.rows, ages_ma)
-        pre_dedupe_ui = [dict(r) for r in rows_for_ui]
-        rows_for_ui = _plateau_dedupe_rows(rows_for_ui, ages_ma)
-        _capture_rejected_step(pre_dedupe_ui, rows_for_ui, rejected_rows, "plateau_duplicate", ages_ma)
-        _refresh_support_filtered_catalogues("low_support")
+    rows_for_ui, rejected_rows = _run_filter_pipeline(
+        raw, pen, rows_for_ui, rejected_rows, ages_ma,
+        merge_nearby, support_floor, support_filter_mode, optima_ma_ui_vote,
+    )
 
     rows_for_ui, rejected_rows = _apply_guards_and_fallbacks(
         sample, settings, runs, raw, pen,
