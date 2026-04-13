@@ -18,10 +18,6 @@ from process.cdc_config import (
     PER_RUN_MIN_DIST,
     PER_RUN_MIN_WIDTH,
     PER_RUN_PROM_FRAC,
-    PLATEAU_ONSET_BLEND_FRAC,
-    PLATEAU_ONSET_MIN_RIGHT_LEFT_RATIO,
-    PLATEAU_ONSET_MIN_WIDTH_FRAC,
-    PLATEAU_ONSET_MODE,
     RMIN_RUNS,
     FV_VALLEY_FRAC,
     SMOOTH_FRAC,
@@ -29,8 +25,6 @@ from process.cdc_config import (
 )
 from process.cdc.state import SurfaceState
 from process.ensemble import build_ensemble_catalogue, robust_ensemble_curve
-
-
 def _findOptimalIndex(valuesToCompare):
     """
     Select the best index with the published plateau-aware tie handling.
@@ -221,10 +215,6 @@ def _build_global_catalogue_rows(
         per_run_min_dist=PER_RUN_MIN_DIST,
         per_run_min_width=PER_RUN_MIN_WIDTH,
         per_run_require_full_prom=False,
-        plateau_onset_mode=PLATEAU_ONSET_MODE,
-        plateau_onset_min_width_frac=PLATEAU_ONSET_MIN_WIDTH_FRAC,
-        plateau_onset_min_right_left_ratio=PLATEAU_ONSET_MIN_RIGHT_LEFT_RATIO,
-        plateau_onset_blend_frac=PLATEAU_ONSET_BLEND_FRAC,
         height_frac=FH_HEIGHT_FRAC,
         optima_ma=optima_ma,
         merge_per_hump=merge_nearby,
@@ -239,7 +229,7 @@ def _build_global_catalogue_rows(
 
 def _compute_optimal_age_ci(raw, pen, prefer_pen, runs):
     """
-    Empirical 2.5/97.5 percentile interval for the optimal Pb-loss age.
+    Empirical 2.5/97.5 percentile stability interval for the optimal Pb-loss age.
     """
     optima_ma_primary = pen.optima_ma if prefer_pen else raw.optima_ma
     opt_all = np.sort(np.asarray(optima_ma_primary[np.isfinite(optima_ma_primary)] * 1e6, float))

@@ -39,9 +39,9 @@ class SummaryDataPanel(QWidget):
             "Sample",
             "Concordant\npoints",
             "Discordant\npoints",
-            "2.5%\nrun-opt\nbound",
+            "Lower\nstability\nbound",
             "Pb-loss\nage (Ma)",
-            "97.5%\nrun-opt\nbound",
+            "Upper\nstability\nbound",
             "d-value",
             "p-value",
             "Score"
@@ -78,8 +78,8 @@ class SummaryDataPanel(QWidget):
 
         # ---- ensemble catalogue (all samples) ----
         cat_headers = [
-            "Sample", "Peak #", "2.5% peak low", "Age (Ma)", "97.5% peak high",
-            "Direct support (%)", "Winner support (%)", "Age mode", "CI method"
+            "Sample", "Peak #", "Lower\nstability\nbound", "Age (Ma)", "Upper\nstability\nbound",
+            "Direct support (%)", "Winner support (%)", "Age mode", "Bound type"
         ]
         self.catalogueTable = QTableWidget(0, len(cat_headers))
         self.catalogueTable.setHorizontalHeaderLabels(cat_headers)
@@ -104,7 +104,7 @@ class SummaryDataPanel(QWidget):
         bottomBox = QWidget()
         bottomLay = QVBoxLayout(bottomBox)
         bottomLay.setContentsMargins(0, 0, 0, 0)
-        bottomLay.addWidget(QLabel("Ensemble peak catalogue (empirical 2.5/97.5 percentile intervals)"))
+        bottomLay.addWidget(QLabel("Ensemble peak catalogue (stability bounds + support metrics)"))
         bottomLay.addWidget(sep)
         bottomLay.addWidget(self.catalogueTable)
         bottomLay.addWidget(self.exportCatalogueButton)
@@ -270,20 +270,20 @@ class SummaryDataPanel(QWidget):
             # Build table rows
             for j, d in enumerate(norm, start=1):
                 age = d.get("age_ma")
-                lo  = d.get("ci_low")
-                hi  = d.get("ci_high")
+                lo  = d.get("stability_low", d.get("ci_low"))
+                hi  = d.get("stability_high", d.get("ci_high"))
                 direct_sup = d.get("direct_support", d.get("support"))   # fraction 0..1
                 winner_sup = d.get("winner_support", d.get("support"))   # fraction 0..1
                 pno = d.get("peak_no") or j  # fallback numbering per sample
                 age_mode = d.get("age_mode", "vote_median")
-                ci_method = d.get("ci_method", "vote_percentile")
-                rows.append([s.name, pno, lo, age, hi, direct_sup, winner_sup, age_mode, ci_method])
+                bound_type = d.get("stability_method", d.get("ci_method", "vote_percentile"))
+                rows.append([s.name, pno, lo, age, hi, direct_sup, winner_sup, age_mode, bound_type])
 
         # Repopulate table
         self.catalogueTable.setSortingEnabled(False)  # avoid re-sorts while filling
         self.catalogueTable.setRowCount(len(rows))
 
-        for r, (sname, pkno, lo, age, hi, direct_sup, winner_sup, age_mode, ci_method) in enumerate(rows):
+        for r, (sname, pkno, lo, age, hi, direct_sup, winner_sup, age_mode, bound_type) in enumerate(rows):
             self.catalogueTable.setItem(r, 0, self._cell(sname))
             self.catalogueTable.setItem(r, 1, self._cell("" if pkno is None else pkno))
             self.catalogueTable.setItem(r, 2, self._cell(self._fmt_ma(lo)))
@@ -292,7 +292,7 @@ class SummaryDataPanel(QWidget):
             self.catalogueTable.setItem(r, 5, self._cell(self._fmt_pct(direct_sup)))
             self.catalogueTable.setItem(r, 6, self._cell(self._fmt_pct(winner_sup)))
             self.catalogueTable.setItem(r, 7, self._cell(age_mode))
-            self.catalogueTable.setItem(r, 8, self._cell(ci_method))
+            self.catalogueTable.setItem(r, 8, self._cell(bound_type))
 
         self.catalogueTable.resizeColumnsToContents()
         self.catalogueTable.resizeRowsToContents()

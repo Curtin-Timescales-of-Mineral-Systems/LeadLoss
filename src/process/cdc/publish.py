@@ -36,11 +36,11 @@ def reset_output_exports():
         return
     _reset_csv(
         CATALOGUE_CSV_PEN,
-        "sample,peak_no,age_ma,ci_low,ci_high,support,age_mode,ci_method,ci_interpretation",
+        "sample,peak_no,age_ma,ci_low,ci_high,support,support_low,support_high,stability_low,stability_high,age_mode,ci_method,ci_interpretation,stability_method",
     )
     _reset_csv(
         CATALOGUE_CSV_RAW,
-        "sample,peak_no,age_ma,ci_low,ci_high,support,age_mode,ci_method,ci_interpretation",
+        "sample,peak_no,age_ma,ci_low,ci_high,support,support_low,support_high,stability_low,stability_high,age_mode,ci_method,ci_interpretation,stability_method",
     )
     _reset_csv(
         RUNLOG,
@@ -75,6 +75,42 @@ def _emit_summedKS(signals, sample, progress, ages_ma, y_curve, rows_for_ui):
             signals.progress("summedKS", progress, sample.name, (payload[0], payload[1], payload[2]))
         except (AttributeError, RuntimeError, TypeError):
             pass
+
+
+def _public_interval_row(row: Dict) -> Dict:
+    """Return one row with stability bounds promoted to the public interval."""
+    rr = dict(row)
+    stability_low = float(rr.get("stability_low", rr.get("ci_low", np.nan)))
+    stability_high = float(rr.get("stability_high", rr.get("ci_high", np.nan)))
+    support_low = float(rr.get("support_low", rr.get("ci_low", np.nan)))
+    support_high = float(rr.get("support_high", rr.get("ci_high", np.nan)))
+
+    if (not np.isfinite(support_low)) or (not np.isfinite(support_high)) or (support_high <= support_low):
+        support_low, support_high = stability_low, stability_high
+
+    age = float(rr.get("age_ma", np.nan))
+    if np.isfinite(age):
+        if np.isfinite(support_low) and age < support_low:
+            support_low = age
+        if np.isfinite(support_high) and age > support_high:
+            support_high = age
+
+    rr["stability_low"] = stability_low
+    rr["stability_high"] = stability_high
+    rr["support_low"] = support_low
+    rr["support_high"] = support_high
+    rr["ci_low"] = stability_low
+    rr["ci_high"] = stability_high
+    # Public rows expose stability bounds as the reported interval.
+    rr["ci_method"] = "stability_bounds"
+    rr["ci_interpretation"] = "bootstrap_percentile_stability_bounds_of_assigned_run_ages"
+    rr["stability_method"] = str(rr.get("stability_method", "vote_percentile"))
+    return rr
+
+
+def _public_interval_rows(rows: List[Dict]) -> List[Dict]:
+    """Promote stability bounds to the public interval for a row sequence."""
+    return [_public_interval_row(r) for r in (rows or [])]
 
 
 def _publish_legacy_only(
@@ -118,9 +154,13 @@ def _publish_results(
         for i, r in enumerate(row_list, 1):
             r["peak_no"] = i
 
+    public_rows_for_ui = _public_interval_rows(rows_for_ui)
+    public_raw_rows = _public_interval_rows(raw.rows)
+    public_pen_rows = _public_interval_rows(pen.rows)
+
     if CDC_WRITE_OUTPUTS:
-        _append_catalogue_rows(sample.name, pen.rows, dest_path=CATALOGUE_CSV_PEN)
-        _append_catalogue_rows(sample.name, raw.rows, dest_path=CATALOGUE_CSV_RAW)
+        _append_catalogue_rows(sample.name, public_pen_rows, dest_path=CATALOGUE_CSV_PEN)
+        _append_catalogue_rows(sample.name, public_raw_rows, dest_path=CATALOGUE_CSV_RAW)
         _write_npz_diagnostics(
             sample_name=sample.name,
             ages_ma=ages_ma,
@@ -131,11 +171,11 @@ def _publish_results(
             Smed_raw=raw.Smed,
             Smed_pen=pen.Smed,
             S_view=S_view,
-            rows_for_ui=rows_for_ui,
+            rows_for_ui=public_rows_for_ui,
         )
 
-    rows_for_plot = _snap_rows_to_curve(rows_for_ui, ages_ma, S_view)
-    published_peak_tuples = [(r["age_ma"], r["ci_low"], r["ci_high"], r["support"]) for r in rows_for_ui]
+    rows_for_plot = _public_interval_rows(_snap_rows_to_curve(rows_for_ui, ages_ma, S_view))
+    published_peak_tuples = [(r["age_ma"], r["ci_low"], r["ci_high"], r["support"]) for r in public_rows_for_ui]
     peak_str = fmt_peak_stats(published_peak_tuples) if published_peak_tuples else "—"
 
     plot_peaks = np.asarray([float(r.get("age_ma", np.nan)) for r in rows_for_plot], float)
@@ -156,6 +196,10 @@ def _publish_results(
             support=sup,
             direct_support=float(r.get("direct_support", sup)),
             winner_support=float(r.get("winner_support", sup)),
+            support_low=float(r.get("support_low", lo)),
+            support_high=float(r.get("support_high", hi)),
+            stability_low=float(r.get("stability_low", lo)),
+            stability_high=float(r.get("stability_high", hi)),
             age_mode=str(r.get("age_mode", "vote_median")),
             peak_left_edge_ma=r.get("peak_left_edge_ma", np.nan),
             peak_right_edge_ma=r.get("peak_right_edge_ma", np.nan),
@@ -164,12 +208,11 @@ def _publish_results(
             selection=r.get("selection", "strict"),
             mode=r.get("mode", ""),
             label=r.get("label", ""),
-            ci_method=str(r.get("ci_method", "vote_percentile")),
-            ci_interpretation=str(
-                r.get("ci_interpretation", "empirical_2.5_97.5_percentile_of_per_run_optima")
-            ),
+            ci_method="stability_bounds",
+            ci_interpretation="bootstrap_percentile_stability_bounds_of_assigned_run_ages",
+            stability_method=str(r.get("stability_method", "vote_percentile")),
         )
-        for i, (r, (med, lo, hi, sup)) in enumerate(zip(rows_for_ui, published_peak_tuples))
+        for i, (r, (med, lo, hi, sup)) in enumerate(zip(public_rows_for_ui, published_peak_tuples))
     ]
     sample.peak_catalogue = detailed_catalogue
 

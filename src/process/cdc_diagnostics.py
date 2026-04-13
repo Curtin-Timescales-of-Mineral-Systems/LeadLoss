@@ -34,8 +34,8 @@ except ImportError:  # pragma: no cover
     resource = None
 
 
-CATALOGUE_CI_METHOD = "vote_percentile"
-CATALOGUE_CI_INTERPRETATION = "empirical_2.5_97.5_percentile_of_per_run_optima"
+CATALOGUE_CI_METHOD = "stability_bounds"
+CATALOGUE_CI_INTERPRETATION = "bootstrap_percentile_stability_bounds_of_assigned_run_ages"
 
 
 def _spot_age_proxy_ma(spot) -> float:
@@ -104,9 +104,14 @@ def append_catalogue_rows(sample_name: str, rows: Sequence[Dict], dest_path: Pat
                 "ci_low",
                 "ci_high",
                 "support",
+                "support_low",
+                "support_high",
+                "stability_low",
+                "stability_high",
                 "age_mode",
                 "ci_method",
                 "ci_interpretation",
+                "stability_method",
             ],
             extrasaction="ignore",
         )
@@ -121,9 +126,14 @@ def append_catalogue_rows(sample_name: str, rows: Sequence[Dict], dest_path: Pat
                     ci_low=r["ci_low"],
                     ci_high=r["ci_high"],
                     support=r.get("support", float("nan")),
+                    support_low=r.get("support_low", r["ci_low"]),
+                    support_high=r.get("support_high", r["ci_high"]),
+                    stability_low=r.get("stability_low", r["ci_low"]),
+                    stability_high=r.get("stability_high", r["ci_high"]),
                     age_mode=r.get("age_mode", "vote_median"),
                     ci_method=r.get("ci_method", CATALOGUE_CI_METHOD),
                     ci_interpretation=r.get("ci_interpretation", CATALOGUE_CI_INTERPRETATION),
+                    stability_method=r.get("stability_method", "vote_percentile"),
                 )
             )
 
@@ -163,6 +173,10 @@ def write_npz_diagnostics(
         peaks_age_Ma=np.array([r["age_ma"] for r in rows_for_ui], float) if rows_for_ui else np.array([], float),
         peaks_ci_low=np.array([r["ci_low"] for r in rows_for_ui], float) if rows_for_ui else np.array([], float),
         peaks_ci_high=np.array([r["ci_high"] for r in rows_for_ui], float) if rows_for_ui else np.array([], float),
+        peaks_support_low=np.array([r.get("support_low", r["ci_low"]) for r in rows_for_ui], float) if rows_for_ui else np.array([], float),
+        peaks_support_high=np.array([r.get("support_high", r["ci_high"]) for r in rows_for_ui], float) if rows_for_ui else np.array([], float),
+        peaks_stability_low=np.array([r.get("stability_low", r["ci_low"]) for r in rows_for_ui], float) if rows_for_ui else np.array([], float),
+        peaks_stability_high=np.array([r.get("stability_high", r["ci_high"]) for r in rows_for_ui], float) if rows_for_ui else np.array([], float),
         peaks_support=np.array([r.get("support", float("nan")) for r in rows_for_ui], float) if rows_for_ui else np.array([], float),
     )
 
@@ -256,6 +270,8 @@ def export_legacy_ks(
     ui_opt_years=None,
     ui_low95_years=None,
     ui_high95_years=None,
+    ui_stability_low_years=None,
+    ui_stability_high_years=None,
     run_optima_years=None,
     legacy_opt_years=None,
 ) -> None:
@@ -316,12 +332,27 @@ def export_legacy_ks(
     for tag, d_curve in (("raw", D_raw), ("pen", D_pen)):
         opt_years = run_optima_by_tag[tag]
         opt_years = opt_years[np.isfinite(opt_years)]
+        stability_low = stability_high = float("nan")
         if opt_years.size:
             ui_opt = float(np.median(opt_years))
-            ui_low = float(np.quantile(opt_years, 0.025))
-            ui_high = float(np.quantile(opt_years, 0.975))
+            stability_low = float(np.quantile(opt_years, 0.025))
+            stability_high = float(np.quantile(opt_years, 0.975))
         else:
-            ui_opt = ui_low = ui_high = float("nan")
+            ui_opt = float("nan")
+
+        ui_low = stability_low
+        ui_high = stability_high
+        if tag == active_tag:
+            if ui_low95_years is not None and np.isfinite(float(ui_low95_years)):
+                ui_low = float(ui_low95_years)
+            if ui_high95_years is not None and np.isfinite(float(ui_high95_years)):
+                ui_high = float(ui_high95_years)
+            if ui_opt_years is not None and np.isfinite(float(ui_opt_years)):
+                ui_opt = float(ui_opt_years)
+            if ui_stability_low_years is not None and np.isfinite(float(ui_stability_low_years)):
+                stability_low = float(ui_stability_low_years)
+            if ui_stability_high_years is not None and np.isfinite(float(ui_stability_high_years)):
+                stability_high = float(ui_stability_high_years)
 
         rim_opt_ma = float(ui_opt) / 1e6 if np.isfinite(ui_opt) else float(_surface_optimum_years(d_curve, ages_y) / 1e6)
         rim_opt_int = int(round(rim_opt_ma))
@@ -337,12 +368,24 @@ def export_legacy_ks(
         summ_path = KS_EXPORT_ROOT / f"KS_optimum_summary_{tag}.csv"
         with summ_path.open("w", newline="") as fh:
             w = csv.writer(fh)
-            w.writerow(["opt_ui_Ma", "low95_ui_Ma", "high95_ui_Ma", "opt_surface_Ma", "n_runs"])
+            w.writerow(
+                [
+                    "opt_ui_Ma",
+                    "support_low_ui_Ma",
+                    "support_high_ui_Ma",
+                    "stability_low_ui_Ma",
+                    "stability_high_ui_Ma",
+                    "opt_surface_Ma",
+                    "n_runs",
+                ]
+            )
             w.writerow(
                 [
                     _ma_or_blank(ui_opt),
                     _ma_or_blank(ui_low),
                     _ma_or_blank(ui_high),
+                    _ma_or_blank(stability_low),
+                    _ma_or_blank(stability_high),
                     _ma_or_blank(surface_opt),
                     n_runs,
                 ]

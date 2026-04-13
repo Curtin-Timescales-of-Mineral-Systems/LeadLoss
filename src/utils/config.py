@@ -5,7 +5,7 @@
 LEAD_LOSS_TITLE = "Pb-loss"
 VERSION = "1.0"
 
-# Size of the confidence interval -- 1 or 2
+# Size of the displayed analytical-error bounds -- 1 or 2 sigma
 SIGMAS_MIXED_POINT_ERROR = 1
 SIGMAS_RIM_AGE_ERROR = 1
 SIGMAS_OUTPUT_ERROR = 2

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Dict
-
 import numpy as np
 
 from process.cdc_config import ENS_DELTA_MIN
@@ -13,7 +11,15 @@ _SINGLE_CREST_PROM_FRAC = 0.03
 
 
 def _single_crest_fallback_row(ages_ma, S_curve, optima_ma, min_support):
-    """Conservative fallback when strict peak gating abstains."""
+    """Return one conservative row for a single clear interior crest.
+
+    This fallback is only used after the stricter catalogue pipeline leaves no
+    reportable rows. It does not search for multiple peaks. Instead it asks a
+    narrower question: does the displayed surface still contain one obvious
+    interior crest with enough prominence, support on both sides, non-boundary
+    run optima, and enough per-run support to justify reporting a single broad
+    peak rather than abstaining completely?
+    """
     x = np.asarray(ages_ma, float)
     y = np.asarray(S_curve, float)
     if x.size < 7 or y.size != x.size:
@@ -115,9 +121,16 @@ def _single_crest_fallback_row(ages_ma, S_curve, optima_ma, min_support):
         age_ma=age,
         ci_low=float(ci_low),
         ci_high=float(ci_high),
+        support_low=float(lo_win),
+        support_high=float(hi_win),
+        stability_low=float(ci_low),
+        stability_high=float(ci_high),
         support=winner_support,
         direct_support=winner_support,
         winner_support=winner_support,
+        ci_method="stability_bounds",
+        ci_interpretation="bootstrap_percentile_stability_bounds_of_windowed_run_optima",
+        stability_method="vote_percentile",
         selection="fallback",
         peak_no=1,
     )

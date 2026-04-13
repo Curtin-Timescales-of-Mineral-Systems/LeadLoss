@@ -71,10 +71,10 @@ During import, you can specify column names or indices (e.g., A, B, C, D or 1, 2
 
 The GUI can export:
 
-- optimal Pb-loss age estimates with empirical 2.5/97.5 percentile intervals
+- optimal Pb-loss age estimates with empirical 2.5/97.5 percentile stability bounds
 - K–S test statistics (p-values and D-values)
 - individual Monte Carlo sampling results
-- ensemble catalogue of Pb-loss age estimates with empirical 2.5/97.5 percentile intervals, age-mode metadata, and support values
+- ensemble catalogue of Pb-loss age estimates with empirical 2.5/97.5 percentile stability bounds, age-mode metadata, and support values
 
 ## Troubleshooting
 

@@ -3,12 +3,12 @@ from PyQt5.QtWidgets import (
     QWidget, QLabel, QFormLayout, QHBoxLayout, QAbstractItemView,
     QPushButton, QFileDialog, QApplication, QSizePolicy, QMessageBox
 )
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import pyqtSignal
 import csv
 import io
 
 from utils import config
-from utils.ui.numericInput import FloatInput, AgeInput, IntInput  # IntInput kept in case used elsewhere
+from utils.ui.numericInput import FloatInput, AgeInput
 
 
 class SampleOutputResultsPanel(QGroupBox):
@@ -43,7 +43,7 @@ class SampleOutputResultsPanel(QGroupBox):
         formHost = QWidget()
         form = QFormLayout(formHost)
         form.addRow("Optimal Pb-loss age", self.optimalAge)
-        form.addRow("95% confidence interval", boundsLayout)
+        form.addRow("95% stability bounds", boundsLayout)
         form.addRow("Mean D value (KS test)", self.dValue)
         form.addRow("Mean p value (KS test)", self.pValue)
         form.addRow("Mean # of invalid ages", self.invalidAges)
@@ -57,7 +57,7 @@ class SampleOutputResultsPanel(QGroupBox):
 
         self.catTable = QTableWidget(0, 5)
         self.catTable.setHorizontalHeaderLabels(
-            ["#", "Age (Ma)", "95% CI (Ma)", "Direct support", "Winner support"]
+            ["#", "Age (Ma)", "95% stability bounds (Ma)", "Direct support", "Winner support"]
         )
         self.catTable.verticalHeader().setVisible(False)
         self.catTable.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -105,17 +105,6 @@ class SampleOutputResultsPanel(QGroupBox):
         rejLayout.addWidget(self.rejectedTable)
         self.rejectedBox.setVisible(False)
         self.rootLayout.addWidget(self.rejectedBox)
-
-        self.clusterInfoBox = QGroupBox("Clustering diagnostics")
-        clusterLayout = QVBoxLayout(self.clusterInfoBox)
-        self.clusterInfoLabel = QLabel("")
-        self.clusterInfoLabel.setWordWrap(True)
-        clusterLayout.addWidget(self.clusterInfoLabel)
-        self.clusterExportButton = QPushButton("Export clustering diagnostics…")
-        self.clusterExportButton.clicked.connect(self._export_clustering_diagnostics)
-        clusterLayout.addWidget(self.clusterExportButton)
-        self.clusterInfoBox.setVisible(False)
-        self.rootLayout.addWidget(self.clusterInfoBox)
 
         self.exportCurveButton = QPushButton("Export curve (CSV)")
         self.exportCurveButton.clicked.connect(self.exportGoodnessCurveCSV)
@@ -223,8 +212,8 @@ class SampleOutputResultsPanel(QGroupBox):
             "boundary_dominated_surface": "Boundary-dominated optima",
             "boundary_dominated_cluster_surface": "Boundary-dominated cluster surface",
             "no_reportable_cluster_peak": "No reportable cluster peak",
-            "edge_degenerate_ci": "Edge-degenerate confidence interval",
-            "wide_ci": "Confidence interval too broad",
+            "edge_degenerate_ci": "Edge-degenerate stability bounds",
+            "wide_ci": "Stability bounds too broad",
         }
         return mapping.get(str(code), str(code).replace("_", " "))
 
@@ -253,8 +242,6 @@ class SampleOutputResultsPanel(QGroupBox):
         self.catalogueNote.setVisible(False)
         self.rejectedTable.setRowCount(0)
         self.rejectedBox.setVisible(False)
-        self.clusterInfoLabel.setText("")
-        self.clusterInfoBox.setVisible(False)
         self.optimalAge.setValue(None)
         self.optimalAgeLower.setValue(None)
         self.optimalAgeUpper.setValue(None)
@@ -363,10 +350,6 @@ class SampleOutputResultsPanel(QGroupBox):
         self.rejectedTable.resizeRowsToContents()
         self.rejectedBox.setVisible(bool(rej))
 
-        cluster_text = self._cluster_info_text()
-        self.clusterInfoLabel.setText(cluster_text)
-        self.clusterInfoBox.setVisible(bool(cluster_text))
-
         self.catTable.blockSignals(prev)
         self.catBox.updateGeometry()
         self.rootLayout.invalidate()
@@ -381,7 +364,7 @@ class SampleOutputResultsPanel(QGroupBox):
         if not rows:
             return
         s = io.StringIO()
-        s.write("rank,age_ma,ci_low,ci_high,direct_support,winner_support\n")
+        s.write("rank,age_ma,stability_low,stability_high,direct_support,winner_support\n")
         for i, r in enumerate(rows, 1):
             s.write(
                 f"{i},{float(r.get('age_ma', float('nan'))):.6f},"
@@ -401,7 +384,7 @@ class SampleOutputResultsPanel(QGroupBox):
             return
         with open(path, "w", newline="") as f:
             w = csv.writer(f)
-            w.writerow(["rank", "age_ma", "ci_low", "ci_high", "direct_support", "winner_support"])
+            w.writerow(["rank", "age_ma", "stability_low", "stability_high", "direct_support", "winner_support"])
             for i, r in enumerate(rows, 1):
                 w.writerow([
                     i,
@@ -411,71 +394,6 @@ class SampleOutputResultsPanel(QGroupBox):
                     float(r.get("direct_support", r.get("support", float("nan")))),
                     float(r.get("winner_support", r.get("support", float("nan")))),
                 ])
-
-    def _cluster_info_text(self):
-        summary = getattr(self.sample, "disc_cluster_summary", None)
-        if not isinstance(summary, dict) or not summary:
-            return ""
-
-        lines = []
-        split_accepted = bool(
-            summary.get("split_accepted", summary.get("accepted", getattr(self.sample, "_cdc_cluster_split_accepted", False)))
-        )
-        reporting_accepted = bool(
-            summary.get("reporting_accepted", getattr(self.sample, "_cdc_cluster_reporting_accepted", False))
-        )
-        reason = str(summary.get("reason", "") or "")
-        lines.append(
-            "Split accepted: "
-            + ("yes" if split_accepted else "no")
-            + " | Reporting accepted: "
-            + ("yes" if reporting_accepted else "no")
-        )
-        if reason:
-            lines.append("Reason: " + reason.replace("_", " "))
-
-        anchors = summary.get("anchors", []) or []
-        if anchors:
-            anchor_text = ", ".join(
-                f"A{int(row.get('anchor_id', 0))}={float(row.get('age_ma')):.1f} Ma (n={int(row.get('n_concordant', 0))})"
-                for row in anchors
-                if row.get("age_ma") is not None
-            )
-            if anchor_text:
-                lines.append("Anchors: " + anchor_text)
-
-        if summary.get("n_discordant", None) is not None:
-            n_valid = int(summary.get('n_valid_proxies', 0))
-            n_clustered = int(summary.get('n_clustered_proxies', 0))
-            n_unclustered = int(summary.get('n_unclustered_valid_proxies', max(0, n_valid - n_clustered)))
-            lines.append(
-                "Discordant grains: "
-                + f"{int(summary.get('n_discordant', 0))} total, "
-                + f"{int(summary.get('n_assigned', 0))} assigned, "
-                + f"{int(summary.get('n_ambiguous', 0))} ambiguous, "
-                + f"{n_valid} valid proxies"
-            )
-            if n_valid:
-                lines.append(
-                    "Valid proxies: "
-                    + f"{n_clustered} retained in robust clusters, "
-                    + f"{n_unclustered} left unclustered"
-                )
-
-        clusters = summary.get("clusters", []) or []
-        if clusters:
-            cluster_text = ", ".join(
-                f"C{int(row.get('k', 0))}: n={int(row.get('n', 0))}, proxy median={float(row.get('median_ma')):.1f} Ma"
-                for row in clusters
-                if row.get("median_ma") is not None
-            )
-            if cluster_text:
-                lines.append("Clusters: " + cluster_text)
-
-        return "\n".join(lines)
-
-    def _export_clustering_diagnostics(self):
-        self.controller.exportClusteringDiagnostics([self.sample])
 
     # ----- Events -----
     def _onProcessingCleared(self):

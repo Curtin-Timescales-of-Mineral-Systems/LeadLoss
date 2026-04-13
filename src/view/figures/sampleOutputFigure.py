@@ -12,7 +12,7 @@ from view.figures.abstractFigure import AbstractFigure
 class SampleOutputFigure(AbstractFigure):
     """
     Top: empirical KS run-density map.
-    Bottom: ensemble goodness summary with peak markers / CI windows.
+    Bottom: ensemble goodness summary with peak markers / stability windows.
     """
 
     def __init__(self, controller, sample):

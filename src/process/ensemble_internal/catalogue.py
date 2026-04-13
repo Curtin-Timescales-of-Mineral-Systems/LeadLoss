@@ -14,17 +14,19 @@ from process.ensemble_internal.primitives import (
     _DEGENERATE_CI_GRID_FRAC,
     _EPS,
     _append_diagnostic_peak,
-    _apply_plateau_onset_adjustment,
     _basin_bounds_from_peaks,
     _crest_index,
     _estimate_window_support,
-    _half_prominence_edges,
     _parabolic_refine,
+    _support_window_edges,
     _step_from_grid,
     find_peaks,
     peak_prominences,
     peak_widths,
 )
+
+_UNMATCHED_FINE_RESCUE_PROM_MULT = 1.5
+_UNMATCHED_FINE_RESCUE_PROM_FRAC = 0.15
 
 
 def _score_candidate_peaks(
@@ -46,10 +48,6 @@ def _score_candidate_peaks(
     age_ref_all,
     left_edge_ma_all,
     right_edge_ma_all,
-    plateau_onset_mode,
-    plateau_onset_min_width_frac,
-    plateau_onset_min_right_left_ratio,
-    plateau_onset_blend_frac,
     diagnostic_rows,
 ):
     """Per-run voting, support computation, and CI estimation for candidate peaks."""
@@ -148,20 +146,9 @@ def _score_candidate_peaks(
 
         peak_left_edge = float(left_edge_ma_all[j_idx]) if j_idx < len(left_edge_ma_all) else np.nan
         peak_right_edge = float(right_edge_ma_all[j_idx]) if j_idx < len(right_edge_ma_all) else np.nan
-        total_span = max(float(x[-1]) - float(x[0]), _EPS)
-        age_out, age_mode, peak_width_frac, right_left_ratio = _apply_plateau_onset_adjustment(
-            age_out,
-            peak_left_edge,
-            peak_right_edge,
-            base_age_mode=base_age_mode,
-            n_peaks=len(pk),
-            is_youngest=(j_idx == 0),
-            total_span=total_span,
-            mode=plateau_onset_mode,
-            min_width_frac=plateau_onset_min_width_frac,
-            min_right_left_ratio=plateau_onset_min_right_left_ratio,
-            blend_frac=plateau_onset_blend_frac,
-        )
+        age_mode = str(base_age_mode)
+        peak_width_frac = np.nan
+        right_left_ratio = np.nan
 
         lo_ci = max(lo_ci, float(x[0]))
         hi_ci = min(hi_ci, float(x[-1]))
@@ -174,18 +161,39 @@ def _score_candidate_peaks(
         elif age_out > hi_ci:
             hi_ci = float(age_out)
 
+        # Keep a geometric support span alongside the public stability bounds.
+        support_low = float(max(lo_ma_win, float(x[0])))
+        support_high = float(min(hi_ma_win, float(x[-1])))
+        if np.isfinite(peak_left_edge):
+            support_low = float(max(support_low, peak_left_edge))
+        if np.isfinite(peak_right_edge):
+            support_high = float(min(support_high, peak_right_edge))
+        if (not np.isfinite(support_low)) or (not np.isfinite(support_high)) or (support_high <= support_low):
+            support_low, support_high = float(lo_ci), float(hi_ci)
+        if age_out < support_low:
+            support_low = float(age_out)
+        elif age_out > support_high:
+            support_high = float(age_out)
+
         out.append(
             dict(
                 peak_no=0,
                 age_ma=age_out,
                 ci_low=float(lo_ci),
                 ci_high=float(hi_ci),
+                support_low=float(support_low),
+                support_high=float(support_high),
+                stability_low=float(lo_ci),
+                stability_high=float(hi_ci),
                 support=float(support),
                 age_mode=age_mode,
                 peak_left_edge_ma=peak_left_edge,
                 peak_right_edge_ma=peak_right_edge,
                 peak_half_prom_width_frac=peak_width_frac,
                 peak_right_left_ratio=right_left_ratio,
+                ci_method="stability_bounds",
+                ci_interpretation="bootstrap_percentile_stability_bounds_of_assigned_run_ages",
+                stability_method="vote_percentile",
             )
         )
 
@@ -212,10 +220,6 @@ def build_ensemble_catalogue(
     per_run_min_dist: int = 3,
     per_run_min_width: int = 3,
     per_run_require_full_prom: bool = False,
-    plateau_onset_mode: str = "off",
-    plateau_onset_min_width_frac: float = 0.20,
-    plateau_onset_min_right_left_ratio: float = 1.30,
-    plateau_onset_blend_frac: float = 0.50,
     delta_min: float = 0.0,
     height_frac: float = 0.0,
     optima_ma: Optional[np.ndarray] = None,
@@ -284,6 +288,12 @@ def build_ensemble_catalogue(
     edge_guard = 0
 
     pk_fine, _ = find_peaks(y, distance=1, width=w_min_nodes, prominence=prom_abs)
+    if pk_fine.size:
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", message="some peaks have a prominence of 0")
+            prom_fine_all, _, _ = peak_prominences(y, pk_fine)
+    else:
+        prom_fine_all = np.array([], float)
 
     if pk_fine.size == 0 and merge_per_hump:
         pk_fine = np.array(pk_major, dtype=int)
@@ -311,12 +321,28 @@ def build_ensemble_catalogue(
                 )
             return []
 
+        prom_ref = float(np.nanmax(prom_fine_all)) if prom_fine_all.size else 0.0
+        rescue_prom = max(
+            float(_UNMATCHED_FINE_RESCUE_PROM_MULT) * float(prom_abs),
+            float(_UNMATCHED_FINE_RESCUE_PROM_FRAC) * float(prom_ref),
+        )
+
         chosen_idx = sorted(set(chosen_idx))
         chosen_set = set(chosen_idx)
         for local_i, idx in enumerate(np.asarray(pk_fine, int)):
             if local_i in chosen_set:
                 continue
             close_to_major = np.any(np.abs(pk_major - int(idx)) <= major_rad)
+            strong_unmatched = (
+                (not close_to_major)
+                and prom_fine_all.size > local_i
+                and np.isfinite(float(prom_fine_all[local_i]))
+                and (float(prom_fine_all[local_i]) >= float(rescue_prom))
+            )
+            if strong_unmatched:
+                chosen_idx.append(int(local_i))
+                chosen_set.add(int(local_i))
+                continue
             reason = "suppressed_nearby_weaker_peak" if close_to_major else "coarse_surface_no_separate_mode"
             _append_diagnostic_peak(
                 diagnostic_rows,
@@ -325,6 +351,7 @@ def build_ensemble_catalogue(
                 int(idx),
                 reason=reason,
             )
+        chosen_idx = sorted(set(chosen_idx))
         pk = pk_fine[chosen_idx]
     else:
         pk = np.asarray(np.unique(pk_fine), int)
@@ -455,7 +482,7 @@ def build_ensemble_catalogue(
     optima_ma = np.asarray(optima_ma, float) if optima_ma is not None else None
     j_ref_all = np.array([_crest_index(S_med_s, int(jc), half_win=2) for jc in pk], int)
     age_ref_all = np.array([_parabolic_refine(x, S_med_s, int(jr)) for jr in j_ref_all], float)
-    left_edge_ma_all, right_edge_ma_all = _half_prominence_edges(x, y, pk)
+    left_edge_ma_all, right_edge_ma_all = _support_window_edges(x, y, pk)
 
     out = _score_candidate_peaks(
         pk,
@@ -476,10 +503,6 @@ def build_ensemble_catalogue(
         age_ref_all,
         left_edge_ma_all,
         right_edge_ma_all,
-        plateau_onset_mode,
-        plateau_onset_min_width_frac,
-        plateau_onset_min_right_left_ratio,
-        plateau_onset_blend_frac,
         diagnostic_rows,
     )
     for d in out:

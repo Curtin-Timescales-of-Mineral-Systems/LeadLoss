@@ -30,7 +30,17 @@ def _step_from_grid(x: np.ndarray) -> float:
     return 1.0
 
 
-def _half_prominence_edges(x: np.ndarray, y: np.ndarray, pk: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+def _support_window_edges(
+    x: np.ndarray,
+    y: np.ndarray,
+    pk: np.ndarray,
+    rel_height: float = 0.25,
+) -> Tuple[np.ndarray, np.ndarray]:
+    """Return support-window edges from a relative-prominence contour.
+
+    The default ``rel_height=0.25`` corresponds to a quarter-prominence window
+    around each peak, not the traditional half-prominence / FWHM contour.
+    """
     x = np.asarray(x, float)
     y = np.asarray(y, float)
     pk = np.asarray(pk, int)
@@ -43,7 +53,7 @@ def _half_prominence_edges(x: np.ndarray, y: np.ndarray, pk: np.ndarray) -> Tupl
         _, _, left_ips, right_ips = peak_widths(
             y,
             pk,
-            rel_height=0.5,
+            rel_height=rel_height,
             prominence_data=(prom, left_bases, right_bases),
         )
 
@@ -178,54 +188,3 @@ def _crest_index(y: np.ndarray, k: int, half_win: int = 2) -> int:
     cand = np.where(np.isclose(seg, m, rtol=1e-12, atol=1e-15))[0]
     j_local = int(cand[len(cand) // 2])
     return int(a + j_local)
-
-
-def _apply_plateau_onset_adjustment(
-    age_out: float,
-    peak_left_edge: float,
-    peak_right_edge: float,
-    *,
-    base_age_mode: str,
-    n_peaks: int,
-    is_youngest: bool,
-    total_span: float,
-    mode: str,
-    min_width_frac: float,
-    min_right_left_ratio: float,
-    blend_frac: float,
-) -> Tuple[float, str, float, float]:
-    """Shift broad older-tailed youngest peaks toward their onset."""
-    age_mode = str(base_age_mode)
-    peak_width_frac = (
-        float(max(0.0, peak_right_edge - peak_left_edge)) / max(total_span, _EPS)
-        if np.isfinite(peak_left_edge) and np.isfinite(peak_right_edge)
-        else np.nan
-    )
-    right_left_ratio = np.nan
-
-    if str(mode).lower() != "midpoint_left":
-        return age_out, age_mode, peak_width_frac, right_left_ratio
-
-    left_span = age_out - peak_left_edge if np.isfinite(peak_left_edge) else np.nan
-    right_span = peak_right_edge - age_out if np.isfinite(peak_right_edge) else np.nan
-    right_left_ratio = (
-        float(right_span / max(left_span, _EPS))
-        if np.isfinite(left_span) and np.isfinite(right_span)
-        else np.nan
-    )
-
-    if (
-        n_peaks > 1
-        and is_youngest
-        and np.isfinite(peak_left_edge)
-        and np.isfinite(peak_width_frac)
-        and peak_width_frac > float(min_width_frac)
-        and np.isfinite(right_left_ratio)
-        and right_left_ratio > float(min_right_left_ratio)
-        and peak_left_edge < age_out
-    ):
-        blend = float(np.clip(blend_frac, 0.0, 1.0))
-        age_out = float((1.0 - blend) * age_out + blend * peak_left_edge)
-        age_mode = "plateau_onset_midpoint"
-
-    return age_out, age_mode, peak_width_frac, right_left_ratio
