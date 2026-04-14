@@ -76,6 +76,18 @@ ENS_DELTA_MIN: float = 0.05
 MONO_DY_EPS_FRAC: float = 0.03
 MONO_MAX_TURNS: int = 0
 
+# --------------- CI span guard ---------------
+# Reject catalogue peaks whose vote-percentile interval is too wide to
+# represent a well-resolved age. A peak is rejected when the CI span
+# exceeds max(CI_SPAN_ABS_CAP_MA, CI_SPAN_FRAC_CAP * peak_age). This
+# catches flat-basin pathologies (e.g. sparse concordant set producing
+# noisy per-run curves, or a near-flat ensemble surface outside a single
+# young-age spike) where per-run argmins scatter across a wide basin and
+# the percentile interval balloons far beyond any defensible run-to-run
+# reproducibility claim.
+CI_SPAN_ABS_CAP_MA: float = 200.0
+CI_SPAN_FRAC_CAP: float = 1.0
+
 # --------------- Reverse-discordance detection ---------------
 # Spots plotting above and to the left of concordia in Tera-Wasserburg
 # space are flagged as reverse-discordant and excluded from the MC loop.

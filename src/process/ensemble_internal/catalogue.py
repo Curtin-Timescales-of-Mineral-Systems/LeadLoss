@@ -8,6 +8,7 @@ from typing import Dict, List, Optional
 import numpy as np
 from scipy.ndimage import gaussian_filter1d
 
+from process.cdc_config import CI_SPAN_ABS_CAP_MA, CI_SPAN_FRAC_CAP
 from process.ensemble_internal.curve import per_run_peaks, robust_ensemble_curve
 from process.ensemble_internal.primitives import (
     _COARSE_SIGMA_GRID_FRAC,
@@ -160,6 +161,22 @@ def _score_candidate_peaks(
             lo_ci = float(age_out)
         elif age_out > hi_ci:
             hi_ci = float(age_out)
+
+        ci_span = float(hi_ci - lo_ci)
+        max_allowed_span = max(CI_SPAN_ABS_CAP_MA, CI_SPAN_FRAC_CAP * float(age_out))
+        if ci_span > max_allowed_span:
+            _append_diagnostic_peak(
+                diagnostic_rows,
+                x,
+                S_med_s,
+                int(j_ref),
+                reason="ci_span_exceeds_cap",
+                direct_support=float(support),
+                winner_support=float(len(optima_for_peak) / float(max(R, 1))) if optima_ma is not None else np.nan,
+                ci_low=lo_ci,
+                ci_high=hi_ci,
+            )
+            continue
 
         # Keep a geometric support span alongside the public stability bounds.
         support_low = float(max(lo_ma_win, float(x[0])))
