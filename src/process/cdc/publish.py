@@ -14,14 +14,14 @@ import numpy as np
 
 from process.cdc.state import ProgressType
 from process.cdc.guards import _snap_rows_to_curve
-from process.cdc_config import (
+from process.cdcConfig import (
     CATALOGUE_CSV_PEN,
     CATALOGUE_CSV_RAW,
     CDC_WRITE_OUTPUTS,
     KS_EXPORT_ROOT,
     RUNLOG,
 )
-from process.cdc_diagnostics import (
+from process.cdcDiagnostics import (
     append_catalogue_rows as _append_catalogue_rows,
     export_legacy_ks as _export_legacy_ks,
     reset_csv as _reset_csv,

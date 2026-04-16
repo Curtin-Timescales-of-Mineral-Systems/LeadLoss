@@ -29,19 +29,19 @@ from process.cdc.publish import (
     _publish_results,
     reset_output_exports,
 )
-from process.cdc_config import (
+from process.cdcConfig import (
     CDC_WRITE_OUTPUTS,
     MERGE_NEARBY_PEAKS,
     FS_SUPPORT,
     TIMING_MODE,
 )
-from process.cdc_diagnostics import (
+from process.cdcDiagnostics import (
     ensure_output_dirs as _ensure_output_dirs,
     rss_mb as _rss_mb,
     write_runlog as _write_runlog,
 )
-from process.cdc_tw import is_reverse_discordant as _is_reverse_discordant
-from process.cdc_utils import infer_tier as _infer_tier, seed_from_name as _seed_from_name
+from process.cdcTW import is_reverse_discordant as _is_reverse_discordant
+from process.cdcUtils import infer_tier as _infer_tier, seed_from_name as _seed_from_name
 from utils import config
 
 TIME_PER_TASK = 0.0

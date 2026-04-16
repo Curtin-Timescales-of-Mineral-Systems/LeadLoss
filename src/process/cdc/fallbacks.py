@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from process.cdc_config import ENS_DELTA_MIN
+from process.cdcConfig import ENS_DELTA_MIN
 
 _DEGENERATE_CI_GRID_FRAC = 0.75
 _SINGLE_CREST_PROM_FRAC = 0.03
@@ -13,9 +13,9 @@ _SINGLE_CREST_PROM_FRAC = 0.03
 def _single_crest_fallback_row(ages_ma, S_curve, optima_ma, min_support):
     """Return one conservative row for a single clear interior crest.
 
-    This fallback is only used after the stricter catalogue pipeline leaves no
-    reportable rows. It does not search for multiple peaks. Instead it asks a
-    narrower question: does the displayed surface still contain one obvious
+    Used after the stricter catalogue pipeline leaves no
+    reportable rows. It doesn't search for multiple peaks. Instead, it asks:
+    does the displayed surface still contain one obvious
     interior crest with enough prominence, support on both sides, non-boundary
     run optima, and enough per-run support to justify reporting a single broad
     peak rather than abstaining completely?
@@ -314,8 +314,7 @@ def _filter_overwide_ci(rows_for_ui, raw, pen, rejected_rows, ages_ma, support_f
             filtered.append(r)
             continue
         width = float(r["ci_high"] - r["ci_low"])
-        score = float(r.get("filter_support", r.get("support", 0.0)))
-        if width > max_ci_frac * total_span and score < max(support_floor, 0.25):
+        if width > max_ci_frac * total_span:
             continue
         filtered.append(r)
     rows_for_ui = filtered

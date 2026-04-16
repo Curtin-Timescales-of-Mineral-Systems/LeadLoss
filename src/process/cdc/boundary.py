@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
-from process.cdc_config import FS_SUPPORT, RMIN_RUNS
+from process.cdcConfig import FS_SUPPORT, RMIN_RUNS
 
 _BOUNDARY_NEAR_GRID_STEPS = 8.0
 _BOUNDARY_FAR_GRID_STEPS = 5.0

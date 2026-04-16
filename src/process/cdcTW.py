@@ -1,7 +1,4 @@
 """Tera-Wasserburg (TW) helper functions used by CDC.
-
-This is extracted from process/processing.py to keep that module focused on
-workflow orchestration.
 """
 
 from __future__ import annotations
@@ -11,7 +8,7 @@ from typing import Optional
 import numpy as np
 
 from process import calculations
-from process.cdc_config import REV_TOL_X, REV_TOL_Y
+from process.cdcConfig import REV_TOL_X, REV_TOL_Y
 
 # ======================  DECAY CONSTANTS & TW HELPERS  ======================
 

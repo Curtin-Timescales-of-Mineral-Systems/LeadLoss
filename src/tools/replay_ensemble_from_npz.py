@@ -19,10 +19,9 @@ from typing import Dict, Iterable, Iterator, List, Tuple
 
 import numpy as np
 
-from process.cdc_config import (
+from process.cdcConfig import (
     ENS_DELTA_MIN,
     FD_DIST_FRAC,
-    FH_HEIGHT_FRAC,
     FP_PROM_FRAC,
     FR_RUN_REL,
     FS_SUPPORT,
@@ -35,7 +34,7 @@ from process.cdc_config import (
 )
 from process.cdc.filtering import _collapse_ci_clusters
 from process.cdc.surfaces import _smooth_frac_for_grid
-from process.cdc_utils import infer_tier as _infer_tier
+from process.cdcUtils import infer_tier as _infer_tier
 from process.ensemble import build_ensemble_catalogue
 
 
@@ -325,7 +324,7 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument("--fd", type=float, default=FD_DIST_FRAC)
     ap.add_argument("--fv", type=float, default=FV_VALLEY_FRAC)
     ap.add_argument("--fw", type=float, default=FW_WIN_FRAC)
-    ap.add_argument("--height-frac", type=float, default=FH_HEIGHT_FRAC)
+    ap.add_argument("--height-frac", type=float, default=0.0)
     ap.add_argument("--support-min", type=float, default=FS_SUPPORT)
     ap.add_argument("--r-min", type=int, default=RMIN_RUNS)
     ap.add_argument("--f-r", type=float, default=FR_RUN_REL)

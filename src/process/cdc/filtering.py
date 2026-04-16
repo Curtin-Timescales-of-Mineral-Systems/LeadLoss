@@ -14,7 +14,7 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
-from process.cdc_config import PLATEAU_DEDUPE, PLATEAU_DEDUPE_MIN_OVERLAP_FRAC, PLATEAU_DEDUPE_RADIUS_STEPS
+from process.cdcConfig import PLATEAU_DEDUPE, PLATEAU_DEDUPE_MIN_OVERLAP_FRAC, PLATEAU_DEDUPE_RADIUS_STEPS
 
 
 def _collapse_ci_clusters(rows, width_mult: float = 1.0):

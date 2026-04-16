@@ -9,11 +9,11 @@ class GoodnessAxis:
     x: Age (Ma), y: S = 1 - D or 1 - D* (0..1).
     Draws the curve, peak markers at their y on the curve, and shaded CI windows.
     """
-    def __init__(self, ax, *, title: str = "Goodness (S = 1 - D*)"):
+    def __init__(self, ax, *, title: str = "Goodness-of-fit (S = 1 \u2212 D*)"):
         self.ax = ax
         self.ax.set_title(title)
         self.ax.set_xlabel("Age (Ma)")
-        self.ax.set_ylabel("Goodness S")
+        self.ax.set_ylabel("Goodness-of-fit S")
         # self.ax.set_xlim(left=0)
         (self._line,)  = self.ax.plot([], [], lw=1.8)
         (self._peaks,) = self.ax.plot([], [], ls="", marker="o", ms=6, mfc="none", mec="red")

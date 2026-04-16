@@ -4,11 +4,10 @@ from typing import Dict, List, Optional
 
 import numpy as np
 
-from process.cdc_config import (
+from process.cdcConfig import (
     CATALOGUE_SURFACE,
     ENS_DELTA_MIN,
     FD_DIST_FRAC,
-    FH_HEIGHT_FRAC,
     FP_PROM_FRAC,
     FR_RUN_REL,
     FS_SUPPORT,
@@ -21,7 +20,6 @@ from process.cdc_config import (
     RMIN_RUNS,
     FV_VALLEY_FRAC,
     SMOOTH_FRAC,
-    SMOOTH_MA,
 )
 from process.cdc.state import SurfaceState
 from process.ensemble import build_ensemble_catalogue, robust_ensemble_curve
@@ -52,14 +50,7 @@ def _findOptimalIndex(valuesToCompare):
 
 
 def _smooth_frac_for_grid(ages_ma):
-    """Convert `SMOOTH_MA` into a node fraction when set, else use `SMOOTH_FRAC`."""
-    n = len(ages_ma)
-    if n <= 1:
-        return SMOOTH_FRAC
-    if SMOOTH_MA > 0:
-        step_ma = float(np.median(np.diff(ages_ma))) or 1e-9
-        sigma_nodes = SMOOTH_MA / step_ma
-        return min(0.25, sigma_nodes / n)
+    """Return the smoothing fraction for the ensemble median curve."""
     return SMOOTH_FRAC
 
 
@@ -215,7 +206,7 @@ def _build_global_catalogue_rows(
         per_run_min_dist=PER_RUN_MIN_DIST,
         per_run_min_width=PER_RUN_MIN_WIDTH,
         per_run_require_full_prom=False,
-        height_frac=FH_HEIGHT_FRAC,
+        height_frac=0.0,
         optima_ma=optima_ma,
         merge_per_hump=merge_nearby,
         merge_shoulders=merge_nearby,

@@ -1,13 +1,4 @@
-"""Public CDC pipeline facade.
-
-External callers should continue to import:
-- `process.cdc_pipeline`
-- `process.processing`
-
-The implementation now lives in the internal `process.cdc` package. This file
-exists as the stable public API boundary for the GUI, tests, and any external
-scripts that import the pipeline directly.
-"""
+"""Re-exports from process.cdc for backwards compatibility."""
 
 from __future__ import annotations
 

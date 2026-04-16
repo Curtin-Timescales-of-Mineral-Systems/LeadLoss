@@ -1,5 +1,5 @@
 from process import calculations
-from process.cdc_config import (
+from process.cdcConfig import (
     PER_RUN_MIN_DIST,
     PER_RUN_MIN_WIDTH,
     PER_RUN_PROM_FRAC,
