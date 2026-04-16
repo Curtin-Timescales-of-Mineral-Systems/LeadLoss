@@ -7,8 +7,6 @@ LeadLoss is a Python-based tool for estimating the most likely timing of Pb-loss
 - a cross-platform **GUI application** for interactive analysis, and
 - the source code and tests for the current no-clustering public release.
 
-The revised public GUI release follows the no-clustering workflow used in the updated manuscript. Archived discordant-clustering code remains in the repository for provenance but is not exposed in the release interface.
-
 ## Download and installation
 
 ### Option 1: Standalone executables (recommended)
@@ -45,16 +43,6 @@ python src/application.py
 
 Note: `soerp` is now optional in source installs. If it is unavailable on your platform,
 the app falls back to deterministic math operations for the affected internals.
-
-## Manuscript assets
-
-The revised manuscript, figures, and benchmark/data assets are distributed separately
-from the code release as a curated Zenodo-style package. This keeps the repository
-code-focused and avoids mixing working manuscript material into the public code line.
-
-For a developer-oriented overview of the current CDC execution path, see the
-separate backup note at
-`/Users/lucymathieson/Desktop/refactor_untracked_backup_2026-04-11/docs/cdc_processing_path.md`.
 
 ## Input requirements (GUI)
 
