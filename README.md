@@ -5,7 +5,11 @@
 LeadLoss is a Python-based tool for estimating the most likely timing of Pb-loss in discordant zircon samples. This repository includes:
 
 - a cross-platform **GUI application** for interactive analysis, and
-- the source code and tests for the current no-clustering public release.
+- the source code and tests for the current public code release.
+
+This branch is a code-only public snapshot. Manuscript assets, figure bundles,
+rerun outputs, and large derived datasets are distributed separately from this
+repository.
 
 ## Download and installation
 

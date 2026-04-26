@@ -1,10 +1,10 @@
 cff-version: 1.2.0
 message: >-
-  If you use this repository (code, data, or the manuscript reproduction workflow),
-  please cite the archived software release below. If you use the LeadLoss method in
-  research, please also cite the accompanying methods paper listed under references.
+  If you use this repository, please cite the archived software release for the
+  public code snapshot. If you use the LeadLoss method in research, please also
+  cite the accompanying methods paper listed under references.
 
-title: "LeadLoss: Pb-loss peak picking tools and manuscript reproduction workflow"
+title: "LeadLoss: Pb-loss age screening and ensemble CDC tools"
 type: software
 license: MIT
 
@@ -14,10 +14,6 @@ authors:
 
 repository-code: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
 url: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
-
-version: "v2.0.0"
-doi: "10.5281/zenodo.XXXXXXX"  # UPDATE with actual Zenodo DOI after release
-date-released: "2026-04-08"
 
 keywords:
   - U-Pb geochronology
@@ -34,13 +30,10 @@ identifiers:
 
 preferred-citation:
   type: software
-  title: "LeadLoss: Pb-loss peak picking tools and manuscript reproduction workflow"
+  title: "LeadLoss: Pb-loss age screening and ensemble CDC tools"
   authors:
     - family-names: Mathieson
       given-names: Lucy
-  version: "v2.0.0"
-  doi: "10.5281/zenodo.XXXXXXX"  # UPDATE with actual Zenodo DOI after release
-  date-released: "2026-04-08"
   url: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
 
 references:
