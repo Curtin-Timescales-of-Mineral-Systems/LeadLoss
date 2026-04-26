@@ -179,7 +179,7 @@ def write_npz_diagnostics(
     S_view: np.ndarray,
     rows_for_ui: Sequence[Dict],
 ) -> None:
-    """Write the NPZ diagnostics used for manuscript figures (guarded by CDC_WRITE_OUTPUTS)."""
+    """Write optional NPZ diagnostics for debugging and offline inspection."""
     if not CDC_WRITE_OUTPUTS:
         return
     ensure_output_dirs()
@@ -304,7 +304,7 @@ def export_legacy_ks(
     run_optima_years=None,
     legacy_opt_years=None,
 ) -> None:
-    """Export the legacy KS goodness curve and CDF files used for a manuscript figure."""
+    """Export legacy KS goodness curves and related diagnostic files."""
     if KS_EXPORT_ROOT is None:
         return
     if not runs:

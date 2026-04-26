@@ -339,7 +339,7 @@ def build_parser() -> argparse.ArgumentParser:
         dest="collapse_overlap",
         action="store_true",
         default=True,
-        help="Apply CI-overlap collapse post-filter (default: on, matching manuscript pipeline)",
+        help="Apply CI-overlap collapse post-filter (default: on)",
     )
     ap.add_argument(
         "--no-collapse-overlap",
