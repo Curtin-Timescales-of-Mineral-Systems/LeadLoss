@@ -4,9 +4,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from process.cdcConfig import ENS_DELTA_MIN
+from process.cdcConfig import DEGENERATE_CI_GRID_FRAC, ENS_DELTA_MIN
 
-_DEGENERATE_CI_GRID_FRAC = 0.75
 _SINGLE_CREST_PROM_FRAC = 0.03
 
 
@@ -280,7 +279,7 @@ def _remove_edge_degenerate_ci(rows_for_ui, rejected_rows, ages_ma, support_floo
         if (hi - lo) < step:
             lo, hi = a - step, a + step
         near_edge = (a - min_age) <= step or (max_age - a) <= step
-        degenerate = (hi - lo) <= _DEGENERATE_CI_GRID_FRAC * step
+        degenerate = (hi - lo) <= DEGENERATE_CI_GRID_FRAC * step
         if near_edge and degenerate:
             if float(r.get("filter_support", r.get("support", 0.0))) >= max(support_floor, 0.12):
                 lo, hi = a - step, a + step

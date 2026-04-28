@@ -78,11 +78,23 @@ class SummaryDataPanel(QWidget):
 
         # ---- ensemble catalogue (all samples) ----
         cat_headers = [
-            "Sample", "Peak #", "Lower\nstability\nbound", "Age (Ma)", "Upper\nstability\nbound",
-            "Direct support (%)", "Winner support (%)"
+            "Sample", "Peak #", "Lower\nreported\nstability\nbound", "Age (Ma)", "Upper\nreported\nstability\nbound",
+            "Peak\nsupport\n(%)", "Run-optimum\nsupport\n(%)"
         ]
         self.catalogueTable = QTableWidget(0, len(cat_headers))
         self.catalogueTable.setHorizontalHeaderLabels(cat_headers)
+        self.catalogueTable.horizontalHeaderItem(2).setToolTip(
+            "Lower bound of the reported stability interval."
+        )
+        self.catalogueTable.horizontalHeaderItem(4).setToolTip(
+            "Upper bound of the reported stability interval."
+        )
+        self.catalogueTable.horizontalHeaderItem(5).setToolTip(
+            "Fraction of Monte Carlo runs with an explicit per-run peak inside the reported window."
+        )
+        self.catalogueTable.horizontalHeaderItem(6).setToolTip(
+            "Fraction of run optima that fall inside the reported window."
+        )
 
         hc = self.catalogueTable.horizontalHeader()
         hc.setSectionResizeMode(QHeaderView.Interactive)
@@ -97,14 +109,14 @@ class SummaryDataPanel(QWidget):
         self.catalogueTable.verticalHeader().setVisible(False)
         self.catalogueTable.setMinimumHeight(180)  # gives it some initial presence
 
-        self.exportCatalogueButton = QPushButton("  Export ensemble peaks")
+        self.exportCatalogueButton = QPushButton("  Export ensemble peak catalogue")
         self.exportCatalogueButton.setIcon(Icons.export())
         self.exportCatalogueButton.clicked.connect(self._exportEnsemble)
 
         bottomBox = QWidget()
         bottomLay = QVBoxLayout(bottomBox)
         bottomLay.setContentsMargins(0, 0, 0, 0)
-        bottomLay.addWidget(QLabel("Ensemble peak catalogue (stability bounds + support metrics)"))
+        bottomLay.addWidget(QLabel("Ensemble peak catalogue (reported stability bounds; support columns are diagnostics, not confidence levels)"))
         bottomLay.addWidget(sep)
         bottomLay.addWidget(self.catalogueTable)
         bottomLay.addWidget(self.exportCatalogueButton)

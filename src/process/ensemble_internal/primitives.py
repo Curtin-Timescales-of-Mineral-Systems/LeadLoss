@@ -11,14 +11,16 @@ from scipy.signal import (
     peak_prominences as _peak_prominences,
     peak_widths as _peak_widths,
 )
+from process.cdcConfig import (
+    COARSE_SIGMA_GRID_FRAC as _COARSE_SIGMA_GRID_FRAC,
+    DEGENERATE_CI_GRID_FRAC as _DEGENERATE_CI_GRID_FRAC,
+)
 
 find_peaks = _find_peaks
 peak_prominences = _peak_prominences
 peak_widths = _peak_widths
 
 _EPS = 1e-12
-_COARSE_SIGMA_GRID_FRAC = 0.03
-_DEGENERATE_CI_GRID_FRAC = 0.75
 
 
 def _step_from_grid(x: np.ndarray) -> float:

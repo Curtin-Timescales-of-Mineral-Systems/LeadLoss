@@ -156,7 +156,7 @@ class CDCPipelineRegressionTest(unittest.TestCase):
             msg=f"catalogue ages {catalogue_ages} drifted from plotted ages {plotted_ages}",
         )
 
-    def test_plateau_onset_adjusts_young_mixed_case_peaks(self):
+    def test_mixed_case_catalogue_uses_vote_median_and_stability_bounds(self):
         csv_path = _fixture("cases1to4_synth_TW.csv")
 
         samples = _run_pipeline(_build_samples(csv_path, sample_filter={"2A", "4A"}, mc_runs=200))
@@ -164,24 +164,30 @@ class CDCPipelineRegressionTest(unittest.TestCase):
         sample_2a = samples["2A"]
         peaks_2a = sorted(sample_2a.peak_catalogue or [], key=lambda row: float(row["age_ma"]))
         self.assertEqual(len(peaks_2a), 2)
-        self.assertEqual(str(peaks_2a[0].get("age_mode")), "plateau_onset_midpoint")
+        self.assertEqual(str(peaks_2a[0].get("age_mode")), "vote_median")
         self.assertEqual(str(peaks_2a[1].get("age_mode")), "vote_median")
         self.assertGreater(float(sample_2a.optimalAge) / 1e6, 370.0)
-        self.assertGreater(float(peaks_2a[0]["age_ma"]), 320.0)
-        self.assertLess(float(peaks_2a[0]["age_ma"]), 340.0)
+        self.assertGreater(float(peaks_2a[0]["age_ma"]), 360.0)
+        self.assertLess(float(peaks_2a[0]["age_ma"]), 410.0)
         self.assertGreater(float(peaks_2a[1]["age_ma"]), 1780.0)
         self.assertLess(float(peaks_2a[1]["age_ma"]), 1805.0)
+        self.assertEqual(str(peaks_2a[0].get("ci_method")), "stability_bounds")
+        self.assertLess(float(peaks_2a[0]["ci_low"]), float(peaks_2a[0]["ci_high"]))
+        self.assertLess(float(peaks_2a[0]["support_low"]), float(peaks_2a[0]["support_high"]))
 
         sample_4a = samples["4A"]
         peaks_4a = sorted(sample_4a.peak_catalogue or [], key=lambda row: float(row["age_ma"]))
         self.assertEqual(len(peaks_4a), 2)
-        self.assertEqual(str(peaks_4a[0].get("age_mode")), "plateau_onset_midpoint")
+        self.assertEqual(str(peaks_4a[0].get("age_mode")), "vote_median")
         self.assertEqual(str(peaks_4a[1].get("age_mode")), "vote_median")
         self.assertGreater(float(sample_4a.optimalAge) / 1e6, 540.0)
-        self.assertGreater(float(peaks_4a[0]["age_ma"]), 450.0)
-        self.assertLess(float(peaks_4a[0]["age_ma"]), 475.0)
+        self.assertGreater(float(peaks_4a[0]["age_ma"]), 530.0)
+        self.assertLess(float(peaks_4a[0]["age_ma"]), 580.0)
         self.assertGreater(float(peaks_4a[1]["age_ma"]), 1810.0)
         self.assertLess(float(peaks_4a[1]["age_ma"]), 1840.0)
+        self.assertEqual(str(peaks_4a[0].get("ci_method")), "stability_bounds")
+        self.assertLess(float(peaks_4a[0]["ci_low"]), float(peaks_4a[0]["ci_high"]))
+        self.assertLess(float(peaks_4a[0]["support_low"]), float(peaks_4a[0]["support_high"]))
 
     def test_unimodal_case1c_retains_single_peak(self):
         csv_path = _fixture("cases1to4_synth_TW.csv")

@@ -1,4 +1,8 @@
-"""Re-exports from process.ensemble_internal for backwards compatibility."""
+"""Compatibility shim for historical ensemble imports.
+
+New code should import from ``process.ensemble_internal`` where practical.
+This module is retained so older callers keep working.
+"""
 
 from __future__ import annotations
 

@@ -9,7 +9,6 @@ import numpy as np
 from scipy.ndimage import gaussian_filter1d
 
 from process.ensemble_internal.primitives import (
-    _COARSE_SIGMA_GRID_FRAC,
     _EPS,
     _crest_index,
     _parabolic_refine,
