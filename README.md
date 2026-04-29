@@ -5,7 +5,11 @@
 LeadLoss is a Python-based tool for estimating the most likely timing of Pb-loss in discordant zircon samples. This repository includes:
 
 - a cross-platform **GUI application** for interactive analysis, and
-- a **manuscript reproduction bundle** for the 2025 “peak-picking” Pb-loss paper (figures and tables).
+- the source code and tests for the current public code release.
+
+This branch is a code-only public snapshot. Manuscript assets, figure bundles,
+rerun outputs, and large derived datasets are distributed separately from this
+repository.
 
 ## Download and installation
 
@@ -41,41 +45,8 @@ Run the GUI:
 python src/application.py
 ```
 
-#### Common install issue: `soerp` / `ad`
-
-Some platforms fail to install `soerp` because its dependency `ad` requires **setuptools < 58**.
-
-If you see an error mentioning `ad`, `use_2to3`, or build isolation, use this more robust install sequence:
-
-```bash
-python -m venv .venv-app
-source .venv-app/bin/activate
-python -m pip install --upgrade pip
-
-# Required for `ad` (use_2to3): setuptools must be < 58
-python -m pip install "setuptools==57.5.0" wheel
-
-# Install `ad` first and disable build isolation, then install the app requirements
-python -m pip install --no-build-isolation "ad==1.3.2"
-python -m pip install --no-build-isolation -r requirements-app.txt
-```
-
-## Manuscript reproduction (2025 peak-picking)
-
-Reproduction materials and instructions (environment + commands) are in:
-
-- `papers/2025-peak-picking/README.md`
-
-One-command reproduction (figures + tables):
-
-```bash
-python papers/2025-peak-picking/scripts/run_all.py --clean
-```
-
-This generates manuscript artefacts into:
-
-- `papers/2025-peak-picking/outputs/tables/`
-- `papers/2025-peak-picking/outputs/figures/`
+Note: `soerp` is now optional in source installs. If it is unavailable on your platform,
+the app falls back to deterministic math operations for the affected internals.
 
 ## Input requirements (GUI)
 
@@ -92,10 +63,10 @@ During import, you can specify column names or indices (e.g., A, B, C, D or 1, 2
 
 The GUI can export:
 
-- optimal Pb-loss age estimates with 95% confidence intervals
+- optimal Pb-loss age estimates with empirical 2.5/97.5 percentile stability bounds
 - K–S test statistics (p-values and D-values)
 - individual Monte Carlo sampling results
-- ensemble catalogue of Pb-loss age estimates with 95% confidence intervals and support values
+- ensemble catalogue of Pb-loss age estimates with empirical 2.5/97.5 percentile stability bounds, age-mode metadata, and support values
 
 ## Troubleshooting
 

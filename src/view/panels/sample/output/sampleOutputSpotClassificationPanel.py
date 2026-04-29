@@ -39,13 +39,15 @@ class SampleOutputSpotClassificationPanel(QWidget):
         discordantHeaders = importHeaders + baseHeaders
         discordantSpots = self.sample.discordantSpots()
 
-        layout = self.layout()
+        widget = QWidget()
+        layout = QVBoxLayout(widget)
         layout.addWidget(QLabel("Concordant points"))
         layout.addWidget(spotTable.createSpotTable(concordantHeaders, concordantSpots))
         layout.addWidget(QLabel("Discordant points"))
         layout.addWidget(spotTable.createSpotTable(discordantHeaders, discordantSpots))
         if invalidWarningWidget:
             layout.addWidget(invalidWarningWidget)
+        return widget
 
     def _createInvalidWarningWidget(self):
         n = len(self.sample.invalidSpots)

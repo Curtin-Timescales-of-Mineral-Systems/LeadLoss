@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QSplitter, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QSplitter, QVBoxLayout, QScrollArea
 
 from utils.ui import uiUtils
 from view.figures.sampleOutputFigure import SampleOutputFigure
@@ -34,6 +34,10 @@ class SampleOutputPanel(QWidget):
     def _createDataWidget(self):
         self.spotClassificationWidget = SampleOutputSpotClassificationPanel(self.sample)
         self.resultsAndSettingsWidget = self._createResultsAndSettingsWidget()
+        self.resultsAndSettingsScroll = QScrollArea()
+        self.resultsAndSettingsScroll.setWidgetResizable(True)
+        self.resultsAndSettingsScroll.setFrameShape(QScrollArea.NoFrame)
+        self.resultsAndSettingsScroll.setWidget(self.resultsAndSettingsWidget)
         self.graphWidget = SampleOutputFigure(self.controller, self.sample)
 
         try:
@@ -44,7 +48,7 @@ class SampleOutputPanel(QWidget):
             pass
 
         splitter = QSplitter(Qt.Horizontal)
-        splitter.addWidget(self.resultsAndSettingsWidget)
+        splitter.addWidget(self.resultsAndSettingsScroll)
         splitter.addWidget(self.spotClassificationWidget)
         splitter.addWidget(self.graphWidget)
 
@@ -54,16 +58,17 @@ class SampleOutputPanel(QWidget):
         splitter.setStretchFactor(2, 3)  # graphs
 
         # Optional: set a minimum width for the results/settings column
-        self.resultsAndSettingsWidget.setMinimumWidth(400)
+        self.resultsAndSettingsScroll.setMinimumWidth(360)
+        splitter.setChildrenCollapsible(False)
 
         # Optional: give an initial size distribution (pixels, Qt normalises)
-        splitter.setSizes([500, 300, 600])
+        splitter.setSizes([520, 320, 640])
 
         splitter.setContentsMargins(0, 0, 0, 0)
         return splitter
 
     def _createResultsAndSettingsWidget(self):
-        self.resultsPanel = SampleOutputResultsPanel(self.sample)
+        self.resultsPanel = SampleOutputResultsPanel(self.controller, self.sample)
         self.settingsPanel = SampleCalculationSettingsPanel(self.sample)
 
         layout = QVBoxLayout()

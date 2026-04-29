@@ -38,17 +38,10 @@ class LeadLossCalculationSettings:
         self.useSummedKS = False
         self.summedKSSmoothSigma = 1.0
 
-        # Clustering toggles (old semantics)
-        self.use_discordant_clustering = False
-        self.relabel_clusters_per_run  = False
-
-        # Experimental extras (kept from new)
-        self.enable_ensemble_peak_picking = False
-        self.use_score_weighted_voting    = False
-        self.use_hdi_top_peak_ci          = False
-
-        # Population-aware CDC (new)
-        self.split_by_concordant_population = False
+        # Conservative ensemble peak catalogue
+        self.enable_ensemble_peak_picking = True
+        self.conservative_abstain_on_monotonic = True
+        self.merge_nearby_peaks = False
 
     def rimAges(self):
         return np.linspace(start=self.minimumRimAge, stop=self.maximumRimAge, num=self.rimAgesSampled)

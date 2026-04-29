@@ -1,6 +1,7 @@
 import multiprocessing
 import sys
 import traceback
+from pathlib import Path
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMessageBox, QApplication, QStyleFactory
@@ -191,6 +192,8 @@ class LeadLossApplication:
         self.signals.processingFinished.emit()
 
     def onProcessingErrored(self, exception):
+        if isinstance(exception, (list, tuple)) and len(exception) > 0:
+            exception = exception[0]
         self.signals.taskComplete.emit(False, "Error whilst processing data")
         message = exception.__class__.__name__ + ": " + str(exception)
         QMessageBox.critical(None, "Error", "An error occurred during processing: \n\n" + message)
@@ -271,11 +274,15 @@ class LeadLossApplication:
 
     def cheatLoad(self):
         try:
-            inputFile = "/home/matthew/Code/concordia-applications/LeadLoss/tests/leadLossTest_with_errors.csv"
+            fixture = Path(__file__).resolve().parents[1] / "tests" / "leadLossTest_with_errors.csv"
+            if not fixture.exists():
+                print(f"cheatLoad fixture not found: {fixture}", file=sys.stderr)
+                return
+            inputFile = str(fixture)
             Settings.setCurrentFile(inputFile)
             settings = Settings.get(SettingsType.IMPORT)
             self._importCSV(inputFile, settings)
-        except:
+        except Exception:
             print(traceback.format_exc(), file=sys.stderr)
 
 

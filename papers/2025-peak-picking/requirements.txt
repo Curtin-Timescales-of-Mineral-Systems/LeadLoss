@@ -1,9 +1,0 @@
-# Minimal Python requirements to reproduce the figures/tables in papers/2025-peak-picking
-# (Pin versions as needed for your manuscript/review process.)
-
-numpy>=1.24
-pandas>=2.0
-matplotlib>=3.7
-scipy>=1.10
-scikit-learn>=1.2
-Jinja2>=3.1

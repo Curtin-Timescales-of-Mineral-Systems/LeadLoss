@@ -160,3 +160,12 @@ src/releases/
 # Local virtual environments
 .venv*/
 .venv-paper/
+
+# Claude Code / AI assistant config
+.claude/
+
+# Thesis experiments (not part of the tool)
+experiments/
+
+# Codex worktrees
+.codex-worktrees/

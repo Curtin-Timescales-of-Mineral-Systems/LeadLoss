@@ -64,12 +64,23 @@ class SampleMonteCarloConcordiaAxis(ConcordiaAxis):
         self.axis.add_collection(self.reconstructedLines)
 
     def clearSelectedAge(self):
+        self.selectedAge.set_xdata([])
+        self.selectedAge.set_ydata([])
+        if self.reconstructedLines is not None:
+            try:
+                self.reconstructedLines.remove()
+            except Exception:
+                pass
+            self.reconstructedLines = None
+
+    def clearRunData(self):
         self.concordantData.set_xdata([])
         self.concordantData.set_ydata([])
         self.discordantData.set_xdata([])
         self.discordantData.set_ydata([])
         self.leadLossAge.set_xdata([])
         self.leadLossAge.set_ydata([])
+        self.clearSelectedAge()
 
 
     #############
@@ -77,4 +88,4 @@ class SampleMonteCarloConcordiaAxis(ConcordiaAxis):
     #############
 
     def clearInputData(self):
-        self.clearSelectedAge()
+        self.clearRunData()

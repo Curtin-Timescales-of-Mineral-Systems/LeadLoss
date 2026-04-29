@@ -39,9 +39,9 @@ class SummaryDataPanel(QWidget):
             "Sample",
             "Concordant\npoints",
             "Discordant\npoints",
-            "95%\nlower\nbound",
+            "Lower\nstability\nbound",
             "Pb-loss\nage (Ma)",
-            "95%\nupper\nbound",
+            "Upper\nstability\nbound",
             "d-value",
             "p-value",
             "Score"
@@ -77,9 +77,24 @@ class SummaryDataPanel(QWidget):
         sep = QFrame(); sep.setFrameShape(QFrame.HLine); sep.setFrameShadow(QFrame.Sunken)
 
         # ---- ensemble catalogue (all samples) ----
-        cat_headers = ["Sample", "Peak #", "95% low", "Age (Ma)", "95% high", "Support (%)"]
+        cat_headers = [
+            "Sample", "Peak #", "Lower\nreported\nstability\nbound", "Age (Ma)", "Upper\nreported\nstability\nbound",
+            "Peak\nsupport\n(%)", "Run-optimum\nsupport\n(%)"
+        ]
         self.catalogueTable = QTableWidget(0, len(cat_headers))
         self.catalogueTable.setHorizontalHeaderLabels(cat_headers)
+        self.catalogueTable.horizontalHeaderItem(2).setToolTip(
+            "Lower bound of the reported stability interval."
+        )
+        self.catalogueTable.horizontalHeaderItem(4).setToolTip(
+            "Upper bound of the reported stability interval."
+        )
+        self.catalogueTable.horizontalHeaderItem(5).setToolTip(
+            "Fraction of Monte Carlo runs with an explicit per-run peak inside the reported window."
+        )
+        self.catalogueTable.horizontalHeaderItem(6).setToolTip(
+            "Fraction of run optima that fall inside the reported window."
+        )
 
         hc = self.catalogueTable.horizontalHeader()
         hc.setSectionResizeMode(QHeaderView.Interactive)
@@ -94,14 +109,14 @@ class SummaryDataPanel(QWidget):
         self.catalogueTable.verticalHeader().setVisible(False)
         self.catalogueTable.setMinimumHeight(180)  # gives it some initial presence
 
-        self.exportCatalogueButton = QPushButton("  Export ensemble peaks")
+        self.exportCatalogueButton = QPushButton("  Export ensemble peak catalogue")
         self.exportCatalogueButton.setIcon(Icons.export())
         self.exportCatalogueButton.clicked.connect(self._exportEnsemble)
 
         bottomBox = QWidget()
         bottomLay = QVBoxLayout(bottomBox)
         bottomLay.setContentsMargins(0, 0, 0, 0)
-        bottomLay.addWidget(QLabel("Ensemble peak catalogue (all samples)"))
+        bottomLay.addWidget(QLabel("Ensemble peak catalogue (reported stability bounds; support columns are diagnostics, not confidence levels)"))
         bottomLay.addWidget(sep)
         bottomLay.addWidget(self.catalogueTable)
         bottomLay.addWidget(self.exportCatalogueButton)
@@ -208,17 +223,21 @@ class SummaryDataPanel(QWidget):
     def _normalize_peak(self, peak):
         """
         Accepts either a dict (preferred) or a tuple/list from legacy runs.
-        Returns (age, ci_low, ci_high, support, peak_no) with Nones when unknown.
-        Tuple/list is interpreted as: (age, ci_low, ci_high, support[, peak_no]).
+        Returns (age, ci_low, ci_high, direct_support, winner_support, peak_no, selection)
+        with Nones when unknown.
+        Tuple/list is interpreted as:
+        (age, ci_low, ci_high, support[, peak_no[, selection]]).
         """
         # dict-like (new path)
         if isinstance(peak, dict):
             age = peak.get("age_ma", peak.get("age"))
             lo  = peak.get("ci_low", peak.get("ciLow"))
             hi  = peak.get("ci_high", peak.get("ciHigh"))
-            sup = peak.get("support", peak.get("vote_fraction"))
+            direct_sup = peak.get("direct_support", peak.get("support", peak.get("vote_fraction")))
+            winner_sup = peak.get("winner_support", peak.get("support", peak.get("vote_fraction")))
             pno = peak.get("peak_no", peak.get("peakNo", peak.get("id")))
-            return age, lo, hi, sup, pno
+            sel = peak.get("selection", "strict")
+            return age, lo, hi, direct_sup, winner_sup, pno, sel
 
         # tuple/list (legacy path)
         if isinstance(peak, (tuple, list)):
@@ -227,10 +246,11 @@ class SummaryDataPanel(QWidget):
             hi  = peak[2] if len(peak) > 2 else None
             sup = peak[3] if len(peak) > 3 else None
             pno = peak[4] if len(peak) > 4 else None
-            return age, lo, hi, sup, pno
+            sel = peak[5] if len(peak) > 5 else "strict"
+            return age, lo, hi, sup, sup, pno, sel
 
         # unknown type: ignore gracefully
-        return None, None, None, None, None
+        return None, None, None, None, None, None, None
 
     def _refreshEnsembleTable(self):
         rows = []
@@ -250,6 +270,7 @@ class SummaryDataPanel(QWidget):
                     if len(d) >= 3: tmp["ci_high"] = d[2]
                     if len(d) >= 4: tmp["support"] = d[3]
                     if len(d) >= 5: tmp["peak_no"] = d[4]
+                    if len(d) >= 6: tmp["selection"] = d[5]
                     norm.append(tmp)
 
             # Sort by age so peak numbering is stable if we need to synthesize it
@@ -261,24 +282,25 @@ class SummaryDataPanel(QWidget):
             # Build table rows
             for j, d in enumerate(norm, start=1):
                 age = d.get("age_ma")
-                lo  = d.get("ci_low")
-                hi  = d.get("ci_high")
-                sup = d.get("support")   # fraction 0..1
+                lo  = d.get("stability_low", d.get("ci_low"))
+                hi  = d.get("stability_high", d.get("ci_high"))
+                direct_sup = d.get("direct_support", d.get("support"))   # fraction 0..1
+                winner_sup = d.get("winner_support", d.get("support"))   # fraction 0..1
                 pno = d.get("peak_no") or j  # fallback numbering per sample
-
-                rows.append([s.name, pno, lo, age, hi, sup])
+                rows.append([s.name, pno, lo, age, hi, direct_sup, winner_sup])
 
         # Repopulate table
         self.catalogueTable.setSortingEnabled(False)  # avoid re-sorts while filling
         self.catalogueTable.setRowCount(len(rows))
 
-        for r, (sname, pkno, lo, age, hi, sup) in enumerate(rows):
+        for r, (sname, pkno, lo, age, hi, direct_sup, winner_sup) in enumerate(rows):
             self.catalogueTable.setItem(r, 0, self._cell(sname))
             self.catalogueTable.setItem(r, 1, self._cell("" if pkno is None else pkno))
-            self.catalogueTable.setItem(r, 2, self._cell(self._fmt_ma(lo)))   # 95% low
+            self.catalogueTable.setItem(r, 2, self._cell(self._fmt_ma(lo)))
             self.catalogueTable.setItem(r, 3, self._cell(self._fmt_ma(age)))  # Age
-            self.catalogueTable.setItem(r, 4, self._cell(self._fmt_ma(hi)))   # 95% high
-            self.catalogueTable.setItem(r, 5, self._cell(self._fmt_pct(sup))) # Support (%)
+            self.catalogueTable.setItem(r, 4, self._cell(self._fmt_ma(hi)))
+            self.catalogueTable.setItem(r, 5, self._cell(self._fmt_pct(direct_sup)))
+            self.catalogueTable.setItem(r, 6, self._cell(self._fmt_pct(winner_sup)))
 
         self.catalogueTable.resizeColumnsToContents()
         self.catalogueTable.resizeRowsToContents()

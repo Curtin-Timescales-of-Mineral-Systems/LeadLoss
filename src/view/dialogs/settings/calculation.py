@@ -20,6 +20,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         super().__init__(defaultSettings, *args, **kwargs)
         self.setWindowTitle("Calculation settings")
         self._onDiscordanceTypeChanged()
+        self._syncPeakControls()
         self._alignLabels()
 
     def initMainSettings(self):
@@ -28,7 +29,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         layout.addWidget(self._initSamplingSettings())
         layout.addWidget(self._initDistributionComparisonSettings())
         layout.addWidget(self._initMonteCarloSettings())
-        layout.addWidget(self._initPeakAndClusteringSettings())
+        layout.addWidget(self._initPeakSettings())
         widget = QWidget(); widget.setLayout(layout)
         return widget
 
@@ -101,29 +102,17 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         box = QGroupBox("Monte Carlo sampling"); box.setLayout(form)
         return box
 
-    def _initPeakAndClusteringSettings(self):
+    def _initPeakSettings(self):
         d = self.defaultSettings
-        box = QGroupBox("Peak extraction & clustering")
+        box = QGroupBox("Peak extraction")
         v = QVBoxLayout()
-
-        # Cluster discordant grains
-        self.useClusteringCB = QCheckBox("Cluster discordant grains", self)
-        self.useClusteringCB.setChecked(bool(getattr(d, "use_discordant_clustering", False)))
-        self.useClusteringCB.stateChanged.connect(self._validate)
 
         # Ensemble multi-peak finder
         self.enableEnsembleCB = QCheckBox("Ensemble catalogue", self)
         self.enableEnsembleCB.setChecked(bool(getattr(d, "enable_ensemble_peak_picking", True)))
-        self.enableEnsembleCB.stateChanged.connect(self._validate)
+        self.enableEnsembleCB.stateChanged.connect(self._onEnsembleToggleChanged)
 
-        # Optional population split
-        #self.splitPopulationsCB = QCheckBox("Split by concordant populations", self)
-        # self.splitPopulationsCB.setChecked(bool(getattr(d, "split_by_concordant_population", False)))
-        #self.splitPopulationsCB.stateChanged.connect(self._validate)
-
-        v.addWidget(self.useClusteringCB)
         v.addWidget(self.enableEnsembleCB)
-        #v.addWidget(self.splitPopulationsCB)
         v.addStretch(1)
 
         box.setLayout(v)
@@ -138,6 +127,13 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         self.discordancePercentageCutoffLE.setVisible(perc)
         self.discordanceEllipseSigmasLabel.setVisible(not perc)
         self.discordanceEllipseSigmasRB.setVisible(not perc)  # set True when not perc
+
+    def _syncPeakControls(self):
+        pass
+
+    def _onEnsembleToggleChanged(self):
+        self._syncPeakControls()
+        self._validate()
 
     def getWarning(self, settings):
         if self.pointWithNoErrors and settings.discordanceClassificationMethod == DiscordanceClassificationMethod.ERROR_ELLIPSE:
@@ -161,11 +157,10 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         s.penaliseInvalidAges = self.penaliseInvalidAgesCB.isChecked()
         s.monteCarloRuns      = self.monteCarloRunsInput.value()
 
-        # Clustering & ensemble toggles
-        s.use_discordant_clustering    = self.useClusteringCB.isChecked()
-        # s.relabel_clusters_per_run remains at its default False in the settings class
         s.enable_ensemble_peak_picking = self.enableEnsembleCB.isChecked()
-        # s.split_by_concordant_population = self.splitPopulationsCB.isChecked()
+
+        # Fixed publication-safe defaults (hidden from GUI to reduce user burden)
+        s.conservative_abstain_on_monotonic = True
+        s.merge_nearby_peaks                = False
 
         return s
-

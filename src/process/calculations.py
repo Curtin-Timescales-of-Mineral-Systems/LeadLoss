@@ -21,11 +21,41 @@ LOWER_AGE = 1 * (10 ** 6)
 ## Geological ##
 ################
 
+def _require_positive_finite(value, name):
+    value = float(value)
+    if not math.isfinite(value) or value <= 0.0:
+        raise ValueError(f"{name} must be a positive finite number, got {value!r}")
+    return value
+
 def age_from_u238pb206(u238pb206):
+    u238pb206 = _require_positive_finite(u238pb206, "u238pb206")
     return errors.log(1 / u238pb206 + 1) / U238_DECAY_CONSTANT
 
 def age_from_pb207pb206(pb207pb206):
-    return root_scalar(lambda t : pb207pb206_from_age(t) - pb207pb206, x0=9**10, bracket=[1, 10**10]).root
+    pb207pb206 = _require_positive_finite(pb207pb206, "pb207pb206")
+
+    lower_age = 1.0
+    upper_age = 10.0 ** 10
+
+    def _objective(age):
+        return pb207pb206_from_age(age) - pb207pb206
+
+    lower_value = _objective(lower_age)
+    upper_value = _objective(upper_age)
+    if lower_value == 0:
+        return lower_age
+    if upper_value == 0:
+        return upper_age
+    if lower_value * upper_value > 0:
+        raise ValueError(
+            "pb207pb206 is outside invertible concordia bounds "
+            f"for ages [{lower_age}, {upper_age}] years: {pb207pb206!r}"
+        )
+
+    result = root_scalar(_objective, bracket=[lower_age, upper_age], method="brentq")
+    if not result.converged:
+        raise ValueError(f"Failed to invert pb207pb206 value {pb207pb206!r}")
+    return result.root
 
 def pb206u238_from_age(age):
     return errors.exp(U238_DECAY_CONSTANT * age) - 1
@@ -50,9 +80,18 @@ def u238pb206_from_pb207pb206(pb207pb206):
     return u238pb206_from_age(age)
 
 def discordance(u238pb206, pb207pb206):
-    uPbAge = age_from_u238pb206(u238pb206)
-    pbPbAge = age_from_pb207pb206(pb207pb206)
+    try:
+        uPbAge = age_from_u238pb206(u238pb206)
+        pbPbAge = age_from_pb207pb206(pb207pb206)
+    except Exception:
+        return float("inf")
+
+    if not (math.isfinite(uPbAge) and math.isfinite(pbPbAge)) or pbPbAge == 0:
+        return float("inf")
+
     result = (pbPbAge - uPbAge) / pbPbAge
+    if not math.isfinite(result):
+        return float("inf")
 
     # Get rid of floating point inaccuracies
     if result > 10 ** -10:
@@ -116,11 +155,21 @@ def isConcordantErrorEllipse(uPbValue, uPbError, pbPbValue, pbPbError, ellipseSi
 
     # Handle degenerate cases
     if uPbError == 0:
-        localPbPb = pb207pb206_from_u238pb206(uPbValue)
+        try:
+            localPbPb = pb207pb206_from_u238pb206(uPbValue)
+        except Exception:
+            return False
+        if not math.isfinite(localPbPb):
+            return False
         root_s = math.sqrt(s)
         return abs(localPbPb-pbPbValue) <= pbPbError*root_s
     if pbPbError == 0:
-        localUPb = u238pb206_from_pb207pb206(pbPbValue)
+        try:
+            localUPb = u238pb206_from_pb207pb206(pbPbValue)
+        except Exception:
+            return False
+        if not math.isfinite(localUPb):
+            return False
         root_s = math.sqrt(s)
         return abs(localUPb-uPbValue) <= uPbError*root_s
 

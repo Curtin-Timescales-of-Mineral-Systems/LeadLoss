@@ -46,7 +46,14 @@ def round_to_sf(x, sf=DISPLAY_SF):
             x = float(x)
         except ValueError:
             return x
+    else:
+        try:
+            x = float(x)
+        except (TypeError, ValueError):
+            return x
 
+    if not math.isfinite(x):
+        return x
     if x == 0:
         return 0
     return round(x, sf - int(math.floor(math.log10(abs(x)))) - 1)

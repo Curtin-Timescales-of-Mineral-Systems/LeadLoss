@@ -1,3 +1,5 @@
+import math
+
 from model.column import Column
 from process import calculations
 
@@ -44,6 +46,11 @@ class Spot:
             self.uPbStDev = calculations.to1StdDev(self.uPbValue, self.uPbError, settings.uPbErrorType, settings.uPbErrorSigmas)
             self.pbPbStDev = calculations.to1StdDev(self.pbPbValue, self.pbPbError, settings.pbPbErrorType, settings.pbPbErrorSigmas)
 
+        # Preserve imported display state so repeated processing runs do not
+        # keep appending discordance columns.
+        self._baseDisplayStrings = list(self.displayStrings)
+        self._baseInvalidColumns = list(self.invalidColumns)
+
         self.processed = False
         self.reverseDiscordant = False
 
@@ -53,11 +60,22 @@ class Spot:
         self.concordant = None
         self.discordance = None
         self.reverseDiscordant = False
+        self.displayStrings = list(self._baseDisplayStrings)
+        self.invalidColumns = list(self._baseInvalidColumns)
 
     def updateConcordance(self, concordant, discordance, reverse=False):
         self.processed = True
         self.concordant = None if concordant is None else bool(concordant)
         self.discordance = discordance
         self.reverseDiscordant = bool(reverse)
+        base_n = len(self._baseDisplayStrings)
+        self.displayStrings = list(self.displayStrings[:base_n])
         if discordance is not None:
-            self.displayStrings.append(stringUtils.round_to_sf(discordance * 100))
+            try:
+                discordance_pct = float(discordance) * 100.0
+            except (TypeError, ValueError):
+                discordance_pct = float("nan")
+            if math.isfinite(discordance_pct):
+                self.displayStrings.append(stringUtils.round_to_sf(discordance_pct))
+            else:
+                self.displayStrings.append("N/A")

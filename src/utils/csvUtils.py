@@ -28,12 +28,14 @@ def columnNumberToLetters(number, zeroIndexed):
     if zeroIndexed:
         number += 1
 
+    if number <= 0:
+        raise ValueError("Column number must be >= 1")
+
     letters = ""
-    while True:
-        letters = _numberToLetter(number % 26) + letters
-        number = number // 26
-        if number == 0:
-            return letters
+    while number > 0:
+        number, rem = divmod(number - 1, 26)
+        letters = _numberToLetter(rem + 1) + letters
+    return letters
 
 
 def columnLettersToNumber(letters, zeroIndexed):

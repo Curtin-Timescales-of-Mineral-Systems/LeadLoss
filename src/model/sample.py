@@ -9,9 +9,7 @@ class Sample:
         self.spots = spots
 
         self.peak_catalogue = []
-
-        self.disc_cluster_labels = None        
-        self.disc_cluster_summary = []      
+        self.rejected_peak_candidates = []
 
         self.validSpots = [spot for spot in self.spots if spot.valid]
         self.invalidSpots = [spot for spot in self.spots if not spot.valid]
@@ -31,6 +29,9 @@ class Sample:
         # Goodness curve cache (for exporting curve values)
         self.summedKS_ages_Ma = None       # np.ndarray shape (n,)
         self.summedKS_goodness = None      # np.ndarray shape (n,)
+        self.summedKS_peaks_Ma = None      # np.ndarray shape (k,)
+        self.summedKS_ci_low_Ma = None     # np.ndarray shape (k,)
+        self.summedKS_ci_high_Ma = None    # np.ndarray shape (k,)
 
         self.skip_reason = None
 
@@ -40,10 +41,9 @@ class Sample:
 
     @peak_catalogue.setter
     def peak_catalogue(self, val):
-        if not isinstance(val, list):
-            import traceback
-            print("[CDC] BAD peak_catalogue assignment:", type(val), repr(val))
-            traceback.print_stack(limit=6)
+        if isinstance(val, tuple):
+            val = list(val)
+        elif not isinstance(val, list):
             val = []
         self._peak_catalogue = val
 
@@ -87,19 +87,20 @@ class Sample:
         self.optimalAge = None
         self.monteCarloRuns = []
         self.peak_catalogue = []
-        self.disc_cluster_labels = None
-        self.disc_cluster_summary = []
+        self.rejected_peak_candidates = []
         for spot in self.spots:
             spot.clear()
         self.signals.processingCleared.emit()
         self.summedKS_ages_Ma = None
         self.summedKS_goodness = None
+        self.summedKS_peaks_Ma = None
+        self.summedKS_ci_low_Ma = None
+        self.summedKS_ci_high_Ma = None
 
     def updateConcordance(self, concordancy, discordances, reverse_flags=None):
         for i, (spot, conc, disc) in enumerate(zip(self.validSpots, concordancy, discordances)):
-            spot.updateConcordance(conc, disc)
-            if reverse_flags is not None and i < len(reverse_flags):
-                spot.reverseDiscordant = bool(reverse_flags[i])
+            reverse = bool(reverse_flags[i]) if (reverse_flags is not None and i < len(reverse_flags)) else False
+            spot.updateConcordance(conc, disc, reverse=reverse)
         if self.signals:
             self.signals.concordancyCalculated.emit()
 
@@ -128,15 +129,14 @@ class Sample:
         else:
             pass
 
-        disc_idx = (idx_catalogue + 1) if idx_catalogue is not None else 9
-        if len(args) > disc_idx:
-            payload = args[disc_idx]
-            if isinstance(payload, dict):
-                self.disc_cluster_labels = payload.get("labels")
-                self.disc_cluster_summary = payload.get("summary", [])
-            else:
-                self.disc_cluster_labels = payload
-                self.disc_cluster_summary = args[disc_idx + 1] if len(args) > disc_idx + 1 else []
+        # Optional payload: {"rejected_peak_candidates": [...]}
+        next_idx = (idx_catalogue + 1) if idx_catalogue is not None else 9
+        self.rejected_peak_candidates = []
+        if len(args) > next_idx:
+            maybe_rejected = args[next_idx]
+            if isinstance(maybe_rejected, dict) and "rejected_peak_candidates" in maybe_rejected:
+                self.rejected_peak_candidates = list(maybe_rejected.get("rejected_peak_candidates") or [])
+                next_idx += 1
 
         if self.signals:
             self.signals.optimalAgeCalculated.emit()
