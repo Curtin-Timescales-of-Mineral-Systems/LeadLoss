@@ -4,7 +4,7 @@ message: >-
   public code snapshot. If you use the LeadLoss method in research, please also
   cite the accompanying methods paper listed under references.
 
-title: "LeadLoss: Pb-loss age screening and ensemble CDC tools"
+title: "LeadLoss: Concordant-discordant comparison for estimating the timing of Pb-loss in zircon"
 type: software
 license: MIT
 
@@ -30,7 +30,7 @@ identifiers:
 
 preferred-citation:
   type: software
-  title: "LeadLoss: Pb-loss age screening and ensemble CDC tools"
+  title: "LeadLoss: Concordant-discordant comparison for estimating the timing of Pb-loss in zircon"
   authors:
     - family-names: Mathieson
       given-names: Lucy
