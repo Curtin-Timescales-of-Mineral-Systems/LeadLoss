@@ -29,12 +29,18 @@ identifiers:
     description: "Concept DOI (all versions)"
 
 preferred-citation:
-  type: software
-  title: "LeadLoss: Concordant-discordant comparison for estimating the timing of Pb-loss in zircon"
+  type: article
+  title: "Turning trash into treasure: Extracting meaning from discordant data via a dedicated application"
   authors:
     - family-names: Mathieson
-      given-names: Lucy
-  url: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
+      given-names: Lucy M.
+    - family-names: Kirkland
+      given-names: Christopher L.
+    - family-names: Daggitt
+      given-names: Matthew L.
+  journal: "Geochemistry, Geophysics, Geosystems"
+  year: 2025
+  doi: "10.1029/2024GC012066"
 
 references:
   - type: article
