@@ -76,6 +76,10 @@ If you run from source, confirm your environment is active and dependencies are 
 
 ## Citation
 
-If you use LeadLoss in your research, please cite:
+If you use LeadLoss in your research, please cite the software release:
+
+Mathieson, L. M., & Daggitt, M. (2026). *LeadLoss* (Version 2.0.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.19881094
+
+If you use the LeadLoss method, please also cite:
 
 Mathieson, L. M., Kirkland, C. L., & Daggitt, M. L. (2025). Turning trash into treasure: Extracting meaning from discordant data via a dedicated application. *Geochemistry, Geophysics, Geosystems*, 26, e2024GC012066. https://doi.org/10.1029/2024GC012066
