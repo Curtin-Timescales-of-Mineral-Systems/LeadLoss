@@ -1,6 +1,7 @@
 import numpy as np
 from PyQt5.QtCore import pyqtSignal, QObject
 from controller.signals import ProcessingSignals
+from process.cdcHeatmap import build_density_heatmap_from_runs
 from process import processing
 from utils import config
 from utils.asynchronous import AsyncTask
@@ -223,44 +224,11 @@ class HeatmapAxis:
         if ages_ma.ndim != 1 or S_runs.ndim != 2 or S_runs.shape[1] != ages_ma.size or ages_ma.size == 0:
             return
 
-        resolution = config.HEATMAP_RESOLUTION
-        D_runs = 1.0 - S_runs
-        D_runs = np.clip(D_runs, 0.0, 1.0)
-        y_edges = np.linspace(0.0, 1.0, resolution + 1)
-        data = np.zeros((resolution, ages_ma.size), float)
-        prev_hist = None
-        for col in range(ages_ma.size):
-            vals = np.asarray(D_runs[:, col], float)
-            vals = vals[np.isfinite(vals)]
-            if vals.size == 0:
-                if prev_hist is None:
-                    hist = np.zeros(resolution, float)
-                    hist[resolution // 2] = 1.0
-                else:
-                    hist = prev_hist.copy()
-            else:
-                hist, _ = np.histogram(vals, bins=y_edges)
-                hist = hist.astype(float)
-                total = float(np.sum(hist))
-                if total > 0.0:
-                    hist /= total
-                elif prev_hist is not None:
-                    hist = prev_hist.copy()
-                else:
-                    hist[resolution // 2] = 1.0
-            prev_hist = hist
-            data[:, col] = hist
-
-        if ages_ma.size == 1:
-            step = 1.0
-        else:
-            step = float(np.median(np.diff(ages_ma)))
-            if not np.isfinite(step) or step <= 0.0:
-                step = 1.0
-        x_edges = np.empty(ages_ma.size + 1, float)
-        x_edges[1:-1] = 0.5 * (ages_ma[:-1] + ages_ma[1:])
-        x_edges[0] = ages_ma[0] - 0.5 * step
-        x_edges[-1] = ages_ma[-1] + 0.5 * step
+        x_edges, y_edges, data = build_density_heatmap_from_runs(
+            ages_ma,
+            S_runs,
+            resolution=config.HEATMAP_RESOLUTION,
+        )
 
         self.clearAll(preserve_cache=True)
         self.axis.set_xlim(float(x_edges[0]), float(x_edges[-1]))

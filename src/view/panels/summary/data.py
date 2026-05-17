@@ -78,7 +78,7 @@ class SummaryDataPanel(QWidget):
 
         # ---- ensemble catalogue (all samples) ----
         cat_headers = [
-            "Sample", "Peak #", "Lower\nreported\nstability\nbound", "Age (Ma)", "Upper\nreported\nstability\nbound",
+            "Sample", "Peak #", "Lower\nstability\nbound", "Age (Ma)", "Upper\nstability\nbound",
             "Peak\nsupport\n(%)", "Run-optimum\nsupport\n(%)"
         ]
         self.catalogueTable = QTableWidget(0, len(cat_headers))
@@ -116,7 +116,7 @@ class SummaryDataPanel(QWidget):
         bottomBox = QWidget()
         bottomLay = QVBoxLayout(bottomBox)
         bottomLay.setContentsMargins(0, 0, 0, 0)
-        bottomLay.addWidget(QLabel("Ensemble peak catalogue (reported stability bounds; support columns are diagnostics, not confidence levels)"))
+        bottomLay.addWidget(QLabel("Ensemble peak catalogue"))
         bottomLay.addWidget(sep)
         bottomLay.addWidget(self.catalogueTable)
         bottomLay.addWidget(self.exportCatalogueButton)
@@ -164,6 +164,20 @@ class SummaryDataPanel(QWidget):
             return f"{100.0*float(x):.1f}"
         except Exception:
             return str(x)
+
+    def _apply_catalogue_column_layout(self):
+        self.catalogueTable.resizeColumnsToContents()
+        min_widths = {
+            0: 150,  # Sample
+            1: 70,   # Peak #
+            2: 135,  # Lower stability bound
+            3: 95,   # Age
+            4: 135,  # Upper stability bound
+            5: 110,  # Peak support
+            6: 130,  # Run-optimum support
+        }
+        for col, width in min_widths.items():
+            self.catalogueTable.setColumnWidth(col, max(self.catalogueTable.columnWidth(col), width))
 
     # ---------- legacy table updates ----------
     def _onSampleConcordancyCalculated(self, sample):
@@ -302,7 +316,7 @@ class SummaryDataPanel(QWidget):
             self.catalogueTable.setItem(r, 5, self._cell(self._fmt_pct(direct_sup)))
             self.catalogueTable.setItem(r, 6, self._cell(self._fmt_pct(winner_sup)))
 
-        self.catalogueTable.resizeColumnsToContents()
+        self._apply_catalogue_column_layout()
         self.catalogueTable.resizeRowsToContents()
         self.catalogueTable.setSortingEnabled(True)
 

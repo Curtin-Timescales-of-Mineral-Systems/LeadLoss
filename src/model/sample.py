@@ -32,6 +32,8 @@ class Sample:
         self.summedKS_peaks_Ma = None      # np.ndarray shape (k,)
         self.summedKS_ci_low_Ma = None     # np.ndarray shape (k,)
         self.summedKS_ci_high_Ma = None    # np.ndarray shape (k,)
+        self.display_heatmap_ages_ma = None
+        self.display_heatmap_runs_S = None
 
         self.skip_reason = None
 
@@ -96,6 +98,8 @@ class Sample:
         self.summedKS_peaks_Ma = None
         self.summedKS_ci_low_Ma = None
         self.summedKS_ci_high_Ma = None
+        self.display_heatmap_ages_ma = None
+        self.display_heatmap_runs_S = None
 
     def updateConcordance(self, concordancy, discordances, reverse_flags=None):
         for i, (spot, conc, disc) in enumerate(zip(self.validSpots, concordancy, discordances)):

@@ -6,7 +6,12 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import pyqtSignal
 import csv
 import io
+import numpy as np
 
+from process.cdcHeatmap import (
+    build_density_heatmap_from_runs,
+    build_density_heatmap_from_run_columns,
+)
 from utils import config
 from utils.ui.numericInput import FloatInput, AgeInput
 
@@ -50,6 +55,17 @@ class SampleOutputResultsPanel(QGroupBox):
         form.addRow("Mean score", self.score)
         form.addRow("Ensemble status", self.ensembleStatus)
         self.rootLayout.addWidget(formHost)
+
+        self.plotExportBox = QGroupBox("Plot data exports")
+        plotLayout = QHBoxLayout(self.plotExportBox)
+        self.exportCurveButton = QPushButton("Export goodness curve CSV")
+        self.exportHeatmapButton = QPushButton("Export heatmap CSV")
+        self.exportCurveButton.clicked.connect(self.exportGoodnessCurveCSV)
+        self.exportHeatmapButton.clicked.connect(self.exportHeatmapCSV)
+        plotLayout.addWidget(self.exportCurveButton)
+        plotLayout.addWidget(self.exportHeatmapButton)
+        plotLayout.addStretch(1)
+        self.rootLayout.addWidget(self.plotExportBox)
 
         # ----- Peak catalogue group -----
         self.catBox = QGroupBox("Ensemble catalogue")
@@ -106,9 +122,6 @@ class SampleOutputResultsPanel(QGroupBox):
         self.rejectedBox.setVisible(False)
         self.rootLayout.addWidget(self.rejectedBox)
 
-        self.exportCurveButton = QPushButton("Export curve (CSV)")
-        self.exportCurveButton.clicked.connect(self.exportGoodnessCurveCSV)
-
         # Signals from the Sample
         sample.signals.processingCleared.connect(self._onProcessingCleared)
         sample.signals.optimalAgeCalculated.connect(self._onOptimalAgeCalculated)
@@ -127,7 +140,16 @@ class SampleOutputResultsPanel(QGroupBox):
             QMessageBox.information(
                 self,
                 "No curve available",
-                "No goodness curve values are available yet.\n\nRun processing first, then try again."
+                "No goodness-of-fit curve values are available yet.\n\nRun processing first, then try again."
+            )
+            return
+        ages = np.asarray(ages, float).ravel()
+        y = np.asarray(y, float).ravel()
+        if ages.size == 0 or y.size == 0 or ages.size != y.size:
+            QMessageBox.warning(
+                self,
+                "Curve unavailable",
+                "The current goodness-of-fit curve cache is incomplete."
             )
             return
 
@@ -149,9 +171,73 @@ class SampleOutputResultsPanel(QGroupBox):
         import csv
         with open(path, "w", newline="") as fh:
             w = csv.writer(fh)
-            w.writerow(["age_Ma", "goodness"])
+            w.writerow(["sample", "age_ma", "goodness_s", "d_star"])
             for a, g in zip(ages, y):
-                w.writerow([float(a), float(g)])
+                g = float(g)
+                w.writerow([self.sample.name, float(a), g, float(1.0 - g)])
+
+    def exportHeatmapCSV(self):
+        if self.sample is None:
+            QMessageBox.warning(self, "No sample", "No sample is selected.")
+            return
+
+        try:
+            ages_ma = getattr(self.sample, "display_heatmap_ages_ma", None)
+            S_runs = getattr(self.sample, "display_heatmap_runs_S", None)
+            if ages_ma is not None and S_runs is not None:
+                x_edges, y_edges, density = build_density_heatmap_from_runs(ages_ma, S_runs)
+            else:
+                settings = getattr(self.sample, "calculationSettings", None)
+                if settings is None or not getattr(self.sample, "monteCarloRuns", None):
+                    raise ValueError("no cached heatmap surface or run-level heatmap columns are available")
+                x_edges, y_edges, density = build_density_heatmap_from_run_columns(
+                    self.sample.monteCarloRuns,
+                    settings,
+                )
+        except ValueError as exc:
+            QMessageBox.warning(
+                self,
+                "Heatmap unavailable",
+                f"The current heatmap cache is incomplete.\n\n{exc}"
+            )
+            return
+
+        age_centres = 0.5 * (x_edges[:-1] + x_edges[1:])
+        d_star_centres = 0.5 * (y_edges[:-1] + y_edges[1:])
+        if density.size == 0 or age_centres.size == 0 or d_star_centres.size == 0:
+            QMessageBox.information(
+                self,
+                "No heatmap available",
+                "No heatmap density values are available yet.\n\nRun processing first, then try again."
+            )
+            return
+
+        default_name = "heatmap_density.csv"
+        if getattr(self.sample, "name", ""):
+            default_name = f"{self.sample.name}_heatmap_density.csv"
+
+        path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Export heatmap density (CSV)",
+            default_name,
+            "CSV Files (*.csv)"
+        )
+        if not path:
+            return
+        if not path.lower().endswith(".csv"):
+            path += ".csv"
+
+        with open(path, "w", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(["sample", "age_ma", "d_star", "density"])
+            for col, age_ma in enumerate(age_centres):
+                for row, d_star in enumerate(d_star_centres):
+                    w.writerow([
+                        self.sample.name,
+                        float(age_ma),
+                        float(d_star),
+                        float(density[row, col]),
+                    ])
 
     def _onCatalogueSelectionChanged(self):
         sel = self.catTable.selectionModel().selectedRows()

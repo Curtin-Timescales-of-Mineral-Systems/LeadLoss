@@ -67,6 +67,8 @@ The GUI can export:
 - K–S test statistics (p-values and D-values)
 - individual Monte Carlo sampling results
 - ensemble catalogue of Pb-loss age estimates with empirical 2.5/97.5 percentile stability bounds, age-mode metadata, and support values
+- per-sample goodness-of-fit curve CSV files for custom plotting
+- per-sample heatmap density CSV files for custom plotting
 
 ## Troubleshooting
 
