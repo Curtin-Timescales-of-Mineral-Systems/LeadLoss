@@ -2,6 +2,11 @@ from enum import Enum
 import numpy as np
 
 from process.dissimilarityTests import DissimilarityTest
+from model.settings.ratio import (
+    ConcordiaSpaceSelection,
+    resolve_space_selection,
+    space_selection_from_value,
+)
 from model.settings.type import SettingsType
 
 
@@ -33,6 +38,7 @@ class LeadLossCalculationSettings:
         # Comparison
         self.dissimilarityTest = DissimilarityTest.KOLMOGOROV_SMIRNOV
         self.penaliseInvalidAges = True
+        self.concordiaProjectionGeometry = ConcordiaSpaceSelection.SAME_AS_INPUT
 
         # Legacy multi-peak (UI toggles preserved)
         self.useSummedKS = False
@@ -45,6 +51,28 @@ class LeadLossCalculationSettings:
 
     def rimAges(self):
         return np.linspace(start=self.minimumRimAge, stop=self.maximumRimAge, num=self.rimAgesSampled)
+
+    def getProjectionSelection(self):
+        self.concordiaProjectionGeometry = space_selection_from_value(
+            getattr(self, "concordiaProjectionGeometry", ConcordiaSpaceSelection.SAME_AS_INPUT)
+        )
+        return self.concordiaProjectionGeometry
+
+    def getResolvedProjectionGeometry(self, inputRatioSpace):
+        return resolve_space_selection(self.getProjectionSelection(), inputRatioSpace)
+
+    def ensureCompatibility(self):
+        if not hasattr(self, "concordiaProjectionGeometry"):
+            self.concordiaProjectionGeometry = ConcordiaSpaceSelection.SAME_AS_INPUT
+        else:
+            self.concordiaProjectionGeometry = space_selection_from_value(self.concordiaProjectionGeometry)
+        if not hasattr(self, "enable_ensemble_peak_picking"):
+            self.enable_ensemble_peak_picking = True
+        if not hasattr(self, "conservative_abstain_on_monotonic"):
+            self.conservative_abstain_on_monotonic = True
+        if not hasattr(self, "merge_nearby_peaks"):
+            self.merge_nearby_peaks = False
+        return self
 
     def getNearestSampledAge(self, targetAge):
         return min(self.rimAges(), key=lambda v: abs(v - targetAge))

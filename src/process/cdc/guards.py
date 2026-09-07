@@ -1,11 +1,11 @@
-"""Post-catalogue safety rules and fallback handling for CDC peak outputs.
+"""Post-catalogue safety rules and conditional handling for CDC peak outputs.
 
 This module does not build peaks. It applies defensive logic after the
 candidate catalogue exists:
 - suppress boundary-dominated artefacts
 - inject explicit recent-boundary modes when appropriate
 - snap rows back to the displayed curve
-- create a single-crest fallback when peak detection yields nothing usable
+- retain an explicitly conditional single-crest estimate for inspection
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ from process.cdc.fallbacks import (
     _keep_same,
     _normalise_ci_bounds,
     _remove_edge_degenerate_ci,
-    _single_crest_fallback_row,
+    _conditional_single_crest_row,
     _snap_rows_to_curve,
 )
 from process.cdc.filtering import (
@@ -41,7 +41,7 @@ def _apply_guards_and_fallbacks(
     view_which, ui_surface,
     support_floor,
 ):
-    """Boundary guards, CI cleanup, wide-CI filter, and fallback handling."""
+    """Boundary guards, CI cleanup, and conditional-estimate handling."""
     optima_ma_display = raw.optima_ma if view_which == "raw" else pen.optima_ma
 
     pre_boundary_ui = [dict(r) for r in rows_for_ui]
@@ -77,25 +77,28 @@ def _apply_guards_and_fallbacks(
     )
 
     if not rows_for_ui:
-        fb = _single_crest_fallback_row(
+        qualification_reason = sample.ensemble_abstain_reason or "no_supported_peaks"
+        conditional = _conditional_single_crest_row(
             ages_ma, S_view, optima_ma_display,
             min_support=max(float(support_floor), 0.10),
+            goodness_runs=S_runs_view,
+            qualification_reason=qualification_reason,
         )
-        if fb is not None:
-            rows_for_ui = [dict(fb)]
+        if conditional is not None:
+            rows_for_ui = [dict(conditional)]
             if ui_surface == "RAW":
-                raw.rows = [dict(fb)]
+                raw.rows = [dict(conditional)]
                 pen.rows = []
             else:
-                pen.rows = [dict(fb)]
+                pen.rows = [dict(conditional)]
                 raw.rows = []
-            sample.ensemble_abstain_reason = None
 
     if not rows_for_ui and sample.ensemble_abstain_reason is None:
         sample.ensemble_abstain_reason = "no_supported_peaks"
 
     if isinstance(getattr(sample, "ensemble_surface_flags", None), dict):
         sample.ensemble_surface_flags["view_surface_source"] = "global_all"
+        sample.ensemble_surface_flags["model_space"] = sample.getModelRatioSpace().value
     sample.display_heatmap_ages_ma = np.asarray(ages_ma, float)
     sample.display_heatmap_runs_S = np.asarray(S_runs_view, float)
 

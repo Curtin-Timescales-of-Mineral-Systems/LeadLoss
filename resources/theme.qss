@@ -1,0 +1,274 @@
+/* LeadLoss theme. Visual only: no modelling behaviour changes.
+   Deliberately light-touch: checkboxes, radio buttons and spin boxes are left
+   native so they keep their checkmarks and up/down arrows. */
+
+QMainWindow, QDialog {
+  background: #F4F6F9;
+}
+
+QWidget {
+  color: #1F2937;
+}
+
+QToolTip {
+  background: #0B1F3A;
+  color: #FFFFFF;
+  border: 0;
+  padding: 5px 8px;
+}
+
+/* ---- Section cards ---- */
+QGroupBox {
+  background: #FFFFFF;
+  border: 1px solid #DEE3EC;
+  border-radius: 8px;
+  margin-top: 12px;
+  padding: 12px 10px 10px 10px;
+}
+
+QGroupBox::title {
+  subcontrol-origin: margin;
+  subcontrol-position: top left;
+  left: 12px;
+  padding: 0 4px;
+  color: #0B1F3A;
+  font-weight: 600;
+}
+
+/* Welcome panel is a QGroupBox but should stay a clean centred area, not a card */
+QGroupBox#WelcomePanel {
+  background: transparent;
+  border: 0;
+}
+
+/* ---- Tabs ---- */
+QTabWidget::pane {
+  background: #FFFFFF;
+  border: 1px solid #DEE3EC;
+  border-radius: 6px;
+  top: -1px;
+}
+
+/* Tabs are left at normal weight: Qt sizes each tab using the normal-weight
+   font, so a bold (600) label renders wider than the reserved space and the
+   last character clips. Selected state is shown by colour + navy top-bar. */
+QTabBar::tab {
+  background: #ECEFF4;
+  color: #5B6472;
+  padding: 8px 22px;
+  margin-right: 2px;
+  border: 1px solid #DEE3EC;
+  border-bottom: 0;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+QTabBar::tab:hover:!selected {
+  background: #F3F6FA;
+  color: #1F2937;
+}
+
+QTabBar::tab:selected {
+  background: #FFFFFF;
+  color: #0B1F3A;
+  border-top: 2px solid #1F4E79;
+}
+
+/* ---- Text inputs (spin boxes intentionally excluded) ---- */
+QLineEdit, QComboBox {
+  background: #FFFFFF;
+  border: 1px solid #CBD3E0;
+  border-radius: 6px;
+  padding: 4px 8px;
+  selection-background-color: #D6E4F5;
+  selection-color: #0B1F3A;
+}
+
+QLineEdit:focus, QComboBox:focus {
+  border: 1px solid #1F4E79;
+}
+
+QComboBox QAbstractItemView {
+  background: #FFFFFF;
+  border: 1px solid #DEE3EC;
+  selection-background-color: #E8EEF7;
+  selection-color: #0B1F3A;
+  outline: 0;
+}
+
+/* ---- Buttons ---- */
+QPushButton {
+  background: #FFFFFF;
+  border: 1px solid #C7CFDC;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-weight: 500;
+}
+
+QPushButton:hover {
+  background: #EEF2F8;
+}
+
+QPushButton:pressed {
+  background: #E3E9F2;
+}
+
+QPushButton:disabled {
+  color: #9CA3AF;
+}
+
+QPushButton#PrimaryButton {
+  background: #1F4E79;
+  color: #FFFFFF;
+  border: 1px solid #1A4468;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-weight: 600;
+}
+
+QPushButton#PrimaryButton:hover {
+  background: #235783;
+}
+
+QPushButton#PrimaryButton:pressed {
+  background: #1A4468;
+}
+
+/* ---- Tables ---- */
+QTableView, QTableWidget {
+  background: #FFFFFF;
+  alternate-background-color: #F5F8FC;
+  border: 1px solid #DEE3EC;
+  border-radius: 6px;
+  gridline-color: #EAEEF4;
+  selection-background-color: #D6E4F5;
+  selection-color: #0B1F3A;
+}
+
+QHeaderView::section {
+  background: #EAEFF6;
+  color: #0B1F3A;
+  font-weight: 600;
+  padding: 6px 8px;
+  border: 0;
+  border-right: 1px solid #DEE3EC;
+  border-bottom: 1px solid #D3DBE6;
+}
+
+/* ---- Scrollbars ---- */
+QScrollBar:vertical {
+  background: transparent;
+  width: 10px;
+  margin: 0;
+}
+
+QScrollBar::handle:vertical {
+  background: #C4CCDA;
+  border-radius: 5px;
+  min-height: 28px;
+}
+
+QScrollBar::handle:vertical:hover {
+  background: #AAB4C5;
+}
+
+QScrollBar:horizontal {
+  background: transparent;
+  height: 10px;
+  margin: 0;
+}
+
+QScrollBar::handle:horizontal {
+  background: #C4CCDA;
+  border-radius: 5px;
+  min-width: 28px;
+}
+
+QScrollBar::handle:horizontal:hover {
+  background: #AAB4C5;
+}
+
+QScrollBar::add-line, QScrollBar::sub-line {
+  width: 0;
+  height: 0;
+}
+
+QScrollBar::add-page, QScrollBar::sub-page {
+  background: transparent;
+}
+
+/* ---- Menu bar / menus ---- */
+QMenuBar {
+  background: #FFFFFF;
+  border-bottom: 1px solid #E1E6EE;
+}
+
+QMenuBar::item {
+  background: transparent;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+QMenuBar::item:selected {
+  background: #E8EEF7;
+}
+
+QMenu {
+  background: #FFFFFF;
+  border: 1px solid #DEE3EC;
+  border-radius: 6px;
+  padding: 5px;
+}
+
+QMenu::item {
+  padding: 6px 22px 6px 12px;
+  border-radius: 5px;
+}
+
+QMenu::item:selected {
+  background: #E8EEF7;
+  color: #0B1F3A;
+}
+
+/* ---- Progress bar ---- */
+QProgressBar {
+  background: #E6EBF2;
+  border: 1px solid #CFD7E2;
+  border-radius: 6px;
+  min-height: 14px;
+  text-align: center;
+  color: #0B1F3A;
+  font-size: 9pt;
+}
+
+QProgressBar::chunk {
+  background: #1F4E79;
+  border-radius: 5px;
+}
+
+/* ---- Splitter ---- */
+QSplitter::handle {
+  background: #E1E6EE;
+}
+
+QSplitter::handle:horizontal {
+  width: 5px;
+}
+
+QSplitter::handle:vertical {
+  height: 5px;
+}
+
+QSplitter::handle:hover {
+  background: #C4CCDA;
+}
+
+/* ---- Footer (anchors the Curtin logo + status text at the bottom) ---- */
+QWidget#Footer {
+  background: #FFFFFF;
+  border-top: 1px solid #DEE3EC;
+}
+
+QWidget#Footer QLabel {
+  color: #5B6472;
+}

@@ -100,6 +100,10 @@ def _calculateConcordantAges(signals, sample):
     signals.newTask("Classifying points" + sampleNameText + "...")
 
     settings = sample.calculationSettings
+    settings.ensureCompatibility()
+    model_space = sample.getModelRatioSpace()
+    setattr(settings, "_resolved_concordia_projection", model_space)
+    sample._resolved_concordia_projection = model_space
     n_spots = max(1, len(sample.validSpots))
     timePerRow = TIME_PER_TASK / n_spots
 
@@ -118,12 +122,16 @@ def _calculateConcordantAges(signals, sample):
             concordant = abs(discordance) < settings.discordancePercentageCutoff
         else:
             discordance = None
-            concordant = calculations.isConcordantErrorEllipse(
-                spot.uPbValue,
-                spot.uPbStDev,
-                spot.pbPbValue,
-                spot.pbPbStDev,
+            x, y = spot.getRatioValues(model_space)
+            sx, sy, rho = spot.getRatioStDevs(model_space)
+            concordant = calculations.isConcordantErrorEllipseForSpace(
+                x,
+                sx,
+                y,
+                sy,
                 settings.discordanceEllipseSigmas,
+                model_space,
+                rho,
             )
 
         is_rev_geom = _is_reverse_discordant(spot.uPbValue, spot.pbPbValue)
@@ -136,6 +144,75 @@ def _calculateConcordantAges(signals, sample):
     sample.updateConcordance(concordancy, discordances, reverse_flags)
     signals.progress(ProgressType.CONCORDANCE, 1.0, sample.name, concordancy, discordances, reverse_flags)
     return True, None
+
+
+def _draw_correlated_ratio_samples(x, y, sx, sy, rho, n_samples, rng):
+    """Draw one analysis in its native ratio space, including covariance."""
+    x = float(x)
+    y = float(y)
+    sx = 0.0 if sx is None else max(0.0, float(sx))
+    sy = 0.0 if sy is None else max(0.0, float(sy))
+    rho = 0.0 if rho is None else float(rho)
+    if not np.isfinite(rho):
+        rho = 0.0
+    rho = float(np.clip(rho, -0.999999, 0.999999))
+
+    if sx == 0.0 and sy == 0.0:
+        return np.full(n_samples, x, dtype=float), np.full(n_samples, y, dtype=float)
+    if sx == 0.0:
+        return np.full(n_samples, x, dtype=float), rng.normal(y, sy, n_samples)
+    if sy == 0.0:
+        return rng.normal(x, sx, n_samples), np.full(n_samples, y, dtype=float)
+
+    cov = np.array([[sx * sx, rho * sx * sy], [rho * sx * sy, sy * sy]], dtype=float)
+    draws = rng.multivariate_normal([x, y], cov, n_samples)
+    return draws[:, 0], draws[:, 1]
+
+
+def _sample_spot_coordinates(spots, model_space, rng, n_samples):
+    """Sample in native coordinates, then transform the realised draws.
+
+    The uncorrelated path preserves the historical random-number order for
+    ordinary TW files, so existing analyses remain exactly reproducible.
+    """
+    spots = list(spots)
+    if not spots:
+        return np.empty((n_samples, 0), float), np.empty((n_samples, 0), float)
+
+    native = [spot.getInputRatioStDevs() for spot in spots]
+    all_uncorrelated = all(abs(float(rho or 0.0)) <= 1e-15 for _, _, rho in native)
+
+    if all_uncorrelated:
+        native_x = np.stack(
+            [rng.normal(spot.inputXValue, spot.inputXStDev, n_samples) for spot in spots],
+            axis=1,
+        )
+        native_y = np.stack(
+            [rng.normal(spot.inputYValue, spot.inputYStDev, n_samples) for spot in spots],
+            axis=1,
+        )
+    else:
+        x_columns = []
+        y_columns = []
+        for spot in spots:
+            x, y = spot.getInputRatioValues()
+            sx, sy, rho = spot.getInputRatioStDevs()
+            draw_x, draw_y = _draw_correlated_ratio_samples(x, y, sx, sy, rho, n_samples, rng)
+            x_columns.append(draw_x)
+            y_columns.append(draw_y)
+        native_x = np.stack(x_columns, axis=1)
+        native_y = np.stack(y_columns, axis=1)
+
+    model_x = np.empty_like(native_x, dtype=float)
+    model_y = np.empty_like(native_y, dtype=float)
+    for column, spot in enumerate(spots):
+        model_x[:, column], model_y[:, column] = calculations.convert_ratio_xy_array(
+            native_x[:, column],
+            native_y[:, column],
+            spot.inputRatioSpace,
+            model_space,
+        )
+    return model_x, model_y
 
 
 def _performSingleRun(settings, run):
@@ -154,6 +231,10 @@ def _performRimAgeSampling(signals, sample):
     signals.newTask("Sampling Pb-loss age distributions" + sampleNameText + "...")
 
     settings = sample.calculationSettings
+    settings.ensureCompatibility()
+    model_space = sample.getModelRatioSpace()
+    setattr(settings, "_resolved_concordia_projection", model_space)
+    sample._resolved_concordia_projection = model_space
     setattr(settings, "timing_mode", TIMING_MODE)
     setattr(settings, "write_outputs", CDC_WRITE_OUTPUTS)
 
@@ -174,10 +255,12 @@ def _performRimAgeSampling(signals, sample):
     stabilitySamples = int(settings.monteCarloRuns)
     rng = np.random.default_rng(_seed_from_name(sample.name))
 
-    concordantUPbValues = np.stack([rng.normal(s.uPbValue, s.uPbStDev, stabilitySamples) for s in concordantSpots], axis=1)
-    concordantPbPbValues = np.stack([rng.normal(s.pbPbValue, s.pbPbStDev, stabilitySamples) for s in concordantSpots], axis=1)
-    discordantUPbValues = np.stack([rng.normal(s.uPbValue, s.uPbStDev, stabilitySamples) for s in discordantSpots], axis=1)
-    discordantPbPbValues = np.stack([rng.normal(s.pbPbValue, s.pbPbStDev, stabilitySamples) for s in discordantSpots], axis=1)
+    concordantUPbValues, concordantPbPbValues = _sample_spot_coordinates(
+        concordantSpots, model_space, rng, stabilitySamples,
+    )
+    discordantUPbValues, discordantPbPbValues = _sample_spot_coordinates(
+        discordantSpots, model_space, rng, stabilitySamples,
+    )
 
     per_run_times = []
     t0 = time.perf_counter()
@@ -195,6 +278,7 @@ def _performRimAgeSampling(signals, sample):
             discordantUPbValues[j],
             discordantPbPbValues[j],
             settings=settings,
+            ratio_space=model_space,
         )
         _performSingleRun(settings, run)
         per_run_times.append(time.perf_counter() - t_run)

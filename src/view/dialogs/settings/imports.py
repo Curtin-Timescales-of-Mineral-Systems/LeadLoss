@@ -4,11 +4,13 @@ from PyQt5.QtWidgets import QGridLayout, QWidget, QGroupBox, QLineEdit, QCheckBo
 from model.column import Column
 from utils import stringUtils
 from model.settings.imports import LeadLossImportSettings
+from model.settings.ratio import ConcordiaRatioSpace, ConcordiaSpaceSelection
 from utils.csvUtils import ColumnReferenceType
 from utils.ui import uiUtils
 from utils.ui.columnReferenceInput import ColumnReferenceInput
 from utils.ui.columnReferenceTypeInput import ColumnReferenceTypeInput
 from utils.ui.errorTypeInput import ErrorTypeInput
+from utils.ui.radioButtons import EnumRadioButtonGroup
 from view.dialogs.settings.abstract import AbstractSettingsDialog
 
 
@@ -29,13 +31,16 @@ class LeadLossImportSettingsDialog(AbstractSettingsDialog):
 
     def initMainSettings(self):
         defaults = self.defaultSettings
+        defaults.ensureCompatibility()
         columnRefs = defaults.getDisplayColumnsByRefs()
 
         self._generalSettingsWidget = GeneralSettingsWidget(self._validate, defaults)
+        self._ratioSpaceWidget = RatioSpaceSettingsWidget(self._validate, defaults)
         self._sampleSettingsWidget = SampleSettingsWidget(self._validate, defaults)
 
+        x_label, y_label = stringUtils.getRatioLabels(defaults.getInputRatioSpace(), True)
         self._uPbWidget = ImportedValueErrorWidget(
-            stringUtils.getUPbStr(True),
+            x_label,
             self._validate,
             defaults.columnReferenceType,
             columnRefs[Column.U_PB_VALUE],
@@ -45,7 +50,7 @@ class LeadLossImportSettingsDialog(AbstractSettingsDialog):
         )
 
         self._pbPbWidget = ImportedValueErrorWidget(
-            stringUtils.getPbPbStr(True),
+            y_label,
             self._validate,
             defaults.columnReferenceType,
             columnRefs[Column.PB_PB_VALUE],
@@ -55,15 +60,18 @@ class LeadLossImportSettingsDialog(AbstractSettingsDialog):
         )
 
         self._generalSettingsWidget.columnRefChanged.connect(self._onColumnRefChange)
+        self._ratioSpaceWidget.inputSpaceChanged.connect(self._onInputRatioSpaceChanged)
         self._updateColumnRefs(defaults.columnReferenceType)
+        self._onInputRatioSpaceChanged()
 
         layout = QGridLayout()
         layout.setHorizontalSpacing(15)
         layout.setVerticalSpacing(15)
         layout.addWidget(self._generalSettingsWidget, 0, 0)
         layout.addWidget(self._sampleSettingsWidget, 0, 1)
-        layout.addWidget(self._uPbWidget, 1, 0)
-        layout.addWidget(self._pbPbWidget, 1, 1)
+        layout.addWidget(self._ratioSpaceWidget, 1, 0, 1, 2)
+        layout.addWidget(self._uPbWidget, 2, 0)
+        layout.addWidget(self._pbPbWidget, 2, 1)
 
         widget = QWidget()
         widget.setLayout(layout)
@@ -76,13 +84,25 @@ class LeadLossImportSettingsDialog(AbstractSettingsDialog):
     def _updateColumnRefs(self, newRefType):
         self._uPbWidget.changeColumnReferenceType(newRefType)
         self._pbPbWidget.changeColumnReferenceType(newRefType)
+        self._ratioSpaceWidget.changeColumnReferenceType(newRefType)
         self._sampleSettingsWidget.changeColumnReferenceType(newRefType)
+
+    def _onInputRatioSpaceChanged(self, *args):
+        x_label, y_label = stringUtils.getRatioLabels(self._ratioSpaceWidget.getInputRatioSpace(), True)
+        self._uPbWidget.setTitle(x_label)
+        self._pbPbWidget.setTitle(y_label)
+        self._ratioSpaceWidget.updateRhoVisibility()
+        if hasattr(self, "okButton"):
+            self._validate()
 
     def _createSettings(self):
         settings = LeadLossImportSettings()
         settings.delimiter = self._generalSettingsWidget.getDelimiter()
         settings.hasHeaders = self._generalSettingsWidget.getHasHeaders()
         settings.columnReferenceType = self._generalSettingsWidget.getColumnReferenceType()
+        settings.inputRatioSpace = self._ratioSpaceWidget.getInputRatioSpace()
+        settings.displayRatioSpace = self._ratioSpaceWidget.getDisplayRatioSpace()
+        settings.rhoColumn = self._ratioSpaceWidget.getRhoColumn()
 
         settings.multipleSamples = self._sampleSettingsWidget.getMultipleSamples()
 
@@ -101,6 +121,14 @@ class LeadLossImportSettingsDialog(AbstractSettingsDialog):
         return settings
 
     def getWarning(self, settings):
+        if (
+            settings.getInputRatioSpace() == ConcordiaRatioSpace.WETHERILL
+            and settings.getRhoColumn() is None
+        ):
+            return (
+                "Native Wetherill import without a rho column assumes independent "
+                "207Pb/235U and 206Pb/238U uncertainties."
+            )
         return None
 
 # Widget for displaying general CSV import settings
@@ -136,6 +164,60 @@ class GeneralSettingsWidget(QGroupBox):
 
     def getColumnReferenceType(self):
         return self._columnRefType.selection()
+
+
+class RatioSpaceSettingsWidget(QGroupBox):
+    def __init__(self, validation, defaultSettings):
+        super().__init__("Concordia spaces")
+
+        self._inputRatioSpace = EnumRadioButtonGroup(
+            ConcordiaRatioSpace,
+            validation,
+            defaultSettings.getInputRatioSpace(),
+            rows=None,
+            cols=1,
+        )
+        self._displayRatioSpace = EnumRadioButtonGroup(
+            ConcordiaSpaceSelection,
+            validation,
+            getattr(defaultSettings, "displayRatioSpace", ConcordiaSpaceSelection.SAME_AS_INPUT),
+            rows=None,
+            cols=1,
+        )
+        self.inputSpaceChanged = self._inputRatioSpace.group.buttonReleased
+
+        self._rhoColumnLabel = QLabel("Error correlation (rho) column (optional)")
+        self._rhoColumn = ColumnReferenceInput(
+            validation,
+            defaultSettings.columnReferenceType,
+            defaultSettings.getRhoColumn(),
+            allowEmpty=True,
+        )
+
+        layout = QFormLayout()
+        layout.setHorizontalSpacing(uiUtils.FORM_HORIZONTAL_SPACING)
+        layout.addRow("Input ratios", self._inputRatioSpace)
+        layout.addRow("Display concordia", self._displayRatioSpace)
+        layout.addRow(self._rhoColumnLabel, self._rhoColumn)
+        self.setLayout(layout)
+
+    def getInputRatioSpace(self):
+        return self._inputRatioSpace.selection()
+
+    def getDisplayRatioSpace(self):
+        return self._displayRatioSpace.selection()
+
+    def getRhoColumn(self):
+        return self._rhoColumn.text()
+
+    def updateRhoVisibility(self):
+        # Both coordinate systems may include correlated uncertainties.
+        # Existing TW files may leave this field blank.
+        self._rhoColumnLabel.setVisible(True)
+        self._rhoColumn.setVisible(True)
+
+    def changeColumnReferenceType(self, newReferenceType):
+        self._rhoColumn.changeColumnReferenceType(newReferenceType)
 
 
 class SampleSettingsWidget(QGroupBox):

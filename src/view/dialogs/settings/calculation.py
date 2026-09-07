@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QVBoxLayout, QGroupBox, QFormLayout, QLabel, QWidget
 from process.dissimilarityTests import DissimilarityTest
 from model.settings.type import SettingsType
 from model.settings.calculation import DiscordanceClassificationMethod
+from model.settings.ratio import ConcordiaSpaceSelection
 from utils import stringUtils
 from model.settings.calculation import LeadLossCalculationSettings
 from utils.ui.numericInput import PercentageInput, AgeInput, IntInput
@@ -24,6 +25,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         self._alignLabels()
 
     def initMainSettings(self):
+        self.defaultSettings.ensureCompatibility()
         layout = QVBoxLayout()
         layout.addWidget(self._initDiscordanceSettings())
         layout.addWidget(self._initSamplingSettings())
@@ -82,8 +84,16 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         self.penaliseInvalidAgesCB = QCheckBox(self)
         self.penaliseInvalidAgesCB.setChecked(defaults.penaliseInvalidAges)
         self.penaliseInvalidAgesCB.stateChanged.connect(self._validate)
+        self.projectionGeometryRB = EnumRadioButtonGroup(
+            ConcordiaSpaceSelection,
+            self._validate,
+            defaults.getProjectionSelection(),
+            rows=None,
+            cols=1,
+        )
 
         form = QFormLayout()
+        form.addRow(QLabel("CDC projection"), self.projectionGeometryRB)
         form.addRow(QLabel("Dissimilarity test"), self.dissimilarityTestRB)
         form.addRow(QLabel("Penalise invalid ages"), self.penaliseInvalidAgesCB)
         self._registerFormLayoutForAlignment(form)
@@ -155,6 +165,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
 
         s.dissimilarityTest   = self.dissimilarityTestRB.selection()
         s.penaliseInvalidAges = self.penaliseInvalidAgesCB.isChecked()
+        s.concordiaProjectionGeometry = self.projectionGeometryRB.selection()
         s.monteCarloRuns      = self.monteCarloRunsInput.value()
 
         s.enable_ensemble_peak_picking = self.enableEnsembleCB.isChecked()

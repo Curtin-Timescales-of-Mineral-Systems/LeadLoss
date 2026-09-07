@@ -13,7 +13,6 @@ from process.cdcConfig import (
     FS_SUPPORT,
     FW_WIN_FRAC,
     MONO_DY_EPS_FRAC,
-    MONO_MAX_TURNS,
     PER_RUN_MIN_DIST,
     PER_RUN_MIN_WIDTH,
     PER_RUN_PROM_FRAC,
@@ -56,27 +55,35 @@ def _smooth_frac_for_grid(ages_ma):
 
 def _is_effectively_monotonic(y_curve, delta):
     """
-    Return True when the smoothed ensemble curve is effectively monotonic.
+    Return True when there is no meaningful interior maximum.
 
-    Tiny wiggles are ignored using a derivative epsilon scaled by ensemble
-    dynamic range, so boundary-driven surfaces abstain rather than becoming
-    fake discrete peaks.
+    A previous implementation compared every one-grid-step derivative with a
+    fixed fraction of the full curve range. That incorrectly labelled broad,
+    well-resolved humps as monotonic because their change per grid step was
+    necessarily small. Here a crest is accepted when the curve drops by a
+    meaningful fraction of its total range on both sides. Tiny wiggles and
+    boundary optima still count as effectively monotonic.
     """
     y = np.asarray(y_curve, float)
     if y.size < 4 or (not np.isfinite(y).any()):
         return True
 
-    dy = np.diff(y)
-    eps = max(1e-12, float(MONO_DY_EPS_FRAC) * max(float(delta), 1e-12))
-    sgn = np.zeros_like(dy, dtype=int)
-    sgn[dy > eps] = 1
-    sgn[dy < -eps] = -1
-    sgn = sgn[sgn != 0]
-    if sgn.size == 0:
+    finite = np.isfinite(y)
+    if np.count_nonzero(finite) < 4:
         return True
+    if not np.all(finite):
+        indices = np.arange(y.size, dtype=float)
+        y = np.interp(indices, indices[finite], y[finite])
 
-    turns = int(np.sum(sgn[1:] != sgn[:-1]))
-    return turns <= int(MONO_MAX_TURNS)
+    eps = max(1e-12, float(MONO_DY_EPS_FRAC) * max(float(delta), 1e-12))
+    candidates = np.where((y[1:-1] >= y[:-2]) & (y[1:-1] >= y[2:]))[0] + 1
+    for index in candidates:
+        crest = float(y[index])
+        left_drop = crest - float(np.min(y[: index + 1]))
+        right_drop = crest - float(np.min(y[index:]))
+        if min(left_drop, right_drop) > eps:
+            return False
+    return True
 
 
 def _raw_optimum_age_ma(run) -> float:
@@ -328,6 +335,7 @@ def _initialise_surface_view_state(sample, settings, raw, pen, primary_which):
         pen_monotonic=bool(pen.mono),
         primary_channel=str(primary_which),
         view_surface_source="global_all",
+        model_space=sample.getModelRatioSpace().value,
     )
     sample.ensemble_abstain_reason = None
     return ui_surface, S_view

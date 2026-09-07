@@ -44,6 +44,7 @@ class SampleOutputResultsPanel(QGroupBox):
         self.score = FloatInput(defaultValue=None, sf=config.DISPLAY_SF);  self.score.setReadOnly(True)
         self.ensembleStatus = QLabel("—")
         self.ensembleStatus.setWordWrap(True)
+        self.projectionSpace = QLabel("—")
 
         formHost = QWidget()
         form = QFormLayout(formHost)
@@ -53,7 +54,8 @@ class SampleOutputResultsPanel(QGroupBox):
         form.addRow("Mean p value (KS test)", self.pValue)
         form.addRow("Mean # of invalid ages", self.invalidAges)
         form.addRow("Mean score", self.score)
-        form.addRow("Ensemble status", self.ensembleStatus)
+        form.addRow("Ensemble result", self.ensembleStatus)
+        form.addRow("CDC projection", self.projectionSpace)
         self.rootLayout.addWidget(formHost)
 
         self.plotExportBox = QGroupBox("Plot data exports")
@@ -68,12 +70,23 @@ class SampleOutputResultsPanel(QGroupBox):
         self.rootLayout.addWidget(self.plotExportBox)
 
         # ----- Peak catalogue group -----
-        self.catBox = QGroupBox("Ensemble catalogue")
+        self.catBox = QGroupBox("Ensemble results")
         catLayout = QVBoxLayout(self.catBox)
 
-        self.catTable = QTableWidget(0, 5)
+        self.catTable = QTableWidget(0, 7)
         self.catTable.setHorizontalHeaderLabels(
-            ["#", "Age (Ma)", "95% stability bounds (Ma)", "Direct support", "Winner support"]
+            [
+                "#", "Age (Ma)", "95% stability bounds (Ma)", "CDC projection", "Evidence",
+                "Direct support (%)", "Winner support (%)",
+            ]
+        )
+        self.catTable.horizontalHeaderItem(5).setToolTip(
+            "Percentage of Monte Carlo runs with an accepted per-run peak inside "
+            "this result's stability window."
+        )
+        self.catTable.horizontalHeaderItem(6).setToolTip(
+            "Percentage of Monte Carlo runs in which the peak assigned to this "
+            "stability window is the run's preferred solution."
         )
         self.catTable.verticalHeader().setVisible(False)
         self.catTable.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -111,7 +124,7 @@ class SampleOutputResultsPanel(QGroupBox):
         rejLayout = QVBoxLayout(self.rejectedBox)
         self.rejectedTable = QTableWidget(0, 4)
         self.rejectedTable.setHorizontalHeaderLabels(
-            ["Age (Ma)", "Direct support", "Winner support", "Reason"]
+            ["Age (Ma)", "Direct support (%)", "Winner support (%)", "Reason"]
         )
         self.rejectedTable.verticalHeader().setVisible(False)
         self.rejectedTable.setEditTriggers(QTableWidget.NoEditTriggers)
@@ -248,7 +261,7 @@ class SampleOutputResultsPanel(QGroupBox):
 
     def _abstain_reason_text(self, reason: str) -> str:
         mapping = {
-            "flat_or_monotonic_surface": "No ensemble peak reported: the ensemble surface is flat/monotonic in the tested window.",
+            "flat_or_monotonic_surface": "No ensemble peak reported: the tested window contains no clear interior maximum.",
             "boundary_dominated_surface": "No ensemble peak reported: run optima are boundary-dominated in the tested window.",
             "no_supported_peaks": "No ensemble peak reported: no candidate peak met the support/consistency filters.",
         }
@@ -265,17 +278,31 @@ class SampleOutputResultsPanel(QGroupBox):
 
         rows = getattr(self.sample, "peak_catalogue", []) or []
         if len(rows) > 0:
+            n_conditional = sum(
+                1 for r in rows
+                if isinstance(r, dict) and str(r.get("evidence_class", "")) == "conditional"
+            )
             n_boundary = sum(1 for r in rows if isinstance(r, dict) and str(r.get("mode", "")) == "recent_boundary")
-            n_peaks = len(rows) - n_boundary
+            n_peaks = len(rows) - n_boundary - n_conditional
+            if n_conditional and not n_peaks and not n_boundary:
+                return "Broad best-fit age (support shown below)"
+            if n_conditional:
+                parts = []
+                if n_peaks:
+                    parts.append(f"{n_peaks} ensemble peak{'s' if n_peaks != 1 else ''}")
+                if n_boundary:
+                    parts.append(f"{n_boundary} boundary mode{'s' if n_boundary != 1 else ''}")
+                parts.append(f"{n_conditional} broad best-fit age{'s' if n_conditional != 1 else ''}")
+                return f"Mixed ({' + '.join(parts)})"
             if n_boundary and n_peaks:
-                    return f"Resolved ({n_peaks} interior peak{'s' if n_peaks != 1 else ''} + {n_boundary} boundary mode{'s' if n_boundary != 1 else ''})"
+                return f"Resolved ({n_peaks} interior peak{'s' if n_peaks != 1 else ''} + {n_boundary} boundary mode{'s' if n_boundary != 1 else ''})"
             if n_boundary:
                 return f"Boundary mode only ({n_boundary})"
             return f"Resolved ({len(rows)} peak{'s' if len(rows) != 1 else ''})"
 
         reason = getattr(self.sample, "ensemble_abstain_reason", None)
         if reason == "flat_or_monotonic_surface":
-            return "Unresolved (flat/monotonic surface)"
+            return "Unresolved (no clear interior maximum)"
         if reason == "boundary_dominated_surface":
             return "Unresolved (boundary-dominated)"
         if reason == "no_supported_peaks":
@@ -283,6 +310,30 @@ class SampleOutputResultsPanel(QGroupBox):
         if reason:
             return f"Unresolved ({str(reason).replace('_', ' ')})"
         return "Unresolved"
+
+    def _evidence_text(self, row) -> str:
+        evidence = str(row.get("evidence_class", "")) if isinstance(row, dict) else ""
+        if evidence == "conditional":
+            return "Broad best-fit age"
+        if evidence == "boundary_limited" or (
+            isinstance(row, dict) and str(row.get("mode", "")) == "recent_boundary"
+        ):
+            return "Boundary-limited"
+        return "Ensemble peak"
+
+    def _qualification_reason_text(self, reason: str) -> str:
+        mapping = {
+            "flat_or_monotonic_surface": "the automatic shape check found no clear interior maximum",
+            "boundary_dominated_surface": "run-level best ages were dominated by a search-window boundary",
+            "no_supported_peaks": "the maximum is broad or asymmetric rather than a sharply separated peak",
+        }
+        return mapping.get(str(reason), str(reason).replace("_", " "))
+
+    def _projection_text(self) -> str:
+        try:
+            return self.sample.getModelRatioSpace().value
+        except Exception:
+            return "—"
 
     def _rejected_reason_text(self, code: str) -> str:
         mapping = {
@@ -320,6 +371,7 @@ class SampleOutputResultsPanel(QGroupBox):
         self.invalidAges.setValue(getattr(self.sample, "optimalAgeNumberOfInvalidPoints", None))
         self.score.setValue(getattr(self.sample, "optimalAgeScore", None))
         self.ensembleStatus.setText(self._ensemble_status_text())
+        self.projectionSpace.setText(self._projection_text())
 
     def clear(self):
         self.catTable.setRowCount(0)
@@ -336,6 +388,7 @@ class SampleOutputResultsPanel(QGroupBox):
         self.invalidAges.setValue(None)
         self.score.setValue(None)
         self.ensembleStatus.setText("—")
+        self.projectionSpace.setText("—")
         self.peakRowSelected.emit(-1)
 
     def _catalogue_rows_for_io(self):
@@ -395,8 +448,10 @@ class SampleOutputResultsPanel(QGroupBox):
                 ci_text = f"{lo:,.2f} – {hi:,.2f}"
             self.catTable.setItem(i-1, 1, QTableWidgetItem(age_text))
             self.catTable.setItem(i-1, 2, QTableWidgetItem(ci_text))
-            self.catTable.setItem(i-1, 3, QTableWidgetItem("" if dir_sup != dir_sup else f"{100*dir_sup:.0f}%"))
-            self.catTable.setItem(i-1, 4, QTableWidgetItem("" if win_sup != win_sup else f"{100*win_sup:.0f}%"))
+            self.catTable.setItem(i-1, 3, QTableWidgetItem(str(r.get("model_space", self._projection_text()))))
+            self.catTable.setItem(i-1, 4, QTableWidgetItem(self._evidence_text(r)))
+            self.catTable.setItem(i-1, 5, QTableWidgetItem("n/a" if dir_sup != dir_sup else f"{100*dir_sup:.0f}%"))
+            self.catTable.setItem(i-1, 6, QTableWidgetItem("n/a" if win_sup != win_sup else f"{100*win_sup:.0f}%"))
 
         self.catTable.resizeColumnsToContents()
         self.catTable.resizeRowsToContents()
@@ -408,6 +463,24 @@ class SampleOutputResultsPanel(QGroupBox):
         ensemble_enabled = bool(getattr(st, "enable_ensemble_peak_picking", True))
         reason = getattr(self.sample, "ensemble_abstain_reason", None)
         note_text = self._abstain_reason_text(reason) if (ensemble_enabled and not show) else ""
+        conditional_rows = [
+            r for r in rows
+            if isinstance(r, dict) and str(r.get("evidence_class", "")) == "conditional"
+        ]
+        if show and conditional_rows:
+            notes = []
+            for r in conditional_rows:
+                ds = float(r.get("direct_support", float("nan")))
+                ws = float(r.get("winner_support", float("nan")))
+                ds_text = "an unknown percentage of" if ds != ds else f"{100.0 * ds:.0f}% of"
+                ws_text = "an unknown percentage of" if ws != ws else f"{100.0 * ws:.0f}% of"
+                why = self._qualification_reason_text(r.get("qualification_reason", "no_supported_peaks"))
+                notes.append(
+                    "Broad best-fit age — the ensemble curve has a clear broad maximum, but it did not "
+                    f"pass every automatic peak criterion because {why}. {ds_text} runs contain a "
+                    f"detected peak in this interval, and {ws_text} runs have their best-fitting age there."
+                )
+            note_text = "\n".join(notes)
         if show and any(isinstance(r, dict) and str(r.get("mode", "")) == "recent_boundary" for r in rows):
             extra = "Recent boundary mode rows represent young lower-bound modes without an interior crest; the displayed interval is a one-sided upper bound."
             note_text = f"{note_text}\n{extra}".strip() if note_text else extra
@@ -450,15 +523,26 @@ class SampleOutputResultsPanel(QGroupBox):
         if not rows:
             return
         s = io.StringIO()
-        s.write("rank,age_ma,stability_low,stability_high,direct_support,winner_support\n")
+        w = csv.writer(s)
+        w.writerow([
+            "rank", "age_ma", "stability_low", "stability_high", "model_space",
+            "evidence_class", "qualification_reason", "direct_support", "winner_support",
+            "age_source", "ci_source",
+        ])
         for i, r in enumerate(rows, 1):
-            s.write(
-                f"{i},{float(r.get('age_ma', float('nan'))):.6f},"
-                f"{float(r.get('ci_low', float('nan'))):.6f},"
-                f"{float(r.get('ci_high', float('nan'))):.6f},"
-                f"{float(r.get('direct_support', r.get('support', float('nan')))):.6f},"
-                f"{float(r.get('winner_support', r.get('support', float('nan')))):.6f}\n"
-            )
+            w.writerow([
+                i,
+                float(r.get("age_ma", float("nan"))),
+                float(r.get("ci_low", float("nan"))),
+                float(r.get("ci_high", float("nan"))),
+                r.get("model_space", self._projection_text()),
+                r.get("evidence_class", "formal"),
+                r.get("qualification_reason", ""),
+                float(r.get("direct_support", r.get("support", float("nan")))),
+                float(r.get("winner_support", r.get("support", float("nan")))),
+                r.get("age_source", ""),
+                r.get("ci_source", ""),
+            ])
         QApplication.clipboard().setText(s.getvalue())
 
     def _export_catalogue_csv(self):
@@ -470,15 +554,24 @@ class SampleOutputResultsPanel(QGroupBox):
             return
         with open(path, "w", newline="") as f:
             w = csv.writer(f)
-            w.writerow(["rank", "age_ma", "stability_low", "stability_high", "direct_support", "winner_support"])
+            w.writerow([
+                "rank", "age_ma", "stability_low", "stability_high", "model_space",
+                "evidence_class", "qualification_reason", "direct_support", "winner_support",
+                "age_source", "ci_source",
+            ])
             for i, r in enumerate(rows, 1):
                 w.writerow([
                     i,
                     float(r.get("age_ma", float("nan"))),
                     float(r.get("ci_low", float("nan"))),
                     float(r.get("ci_high", float("nan"))),
+                    r.get("model_space", self._projection_text()),
+                    r.get("evidence_class", "formal"),
+                    r.get("qualification_reason", ""),
                     float(r.get("direct_support", r.get("support", float("nan")))),
                     float(r.get("winner_support", r.get("support", float("nan")))),
+                    r.get("age_source", ""),
+                    r.get("ci_source", ""),
                 ])
 
     # ----- Events -----

@@ -46,7 +46,7 @@ class LeadLossModel:
         self.samples = []
         self.samplesByName = {}
         for id, (sampleName, sampleRows) in enumerate(spotsBySampleName.items()):
-            sample = Sample(id, sampleName, sampleRows)
+            sample = Sample(id, sampleName, sampleRows, importSettings=importSettings)
             self.samples.append(sample)
             self.samplesByName[sampleName] = sample
 

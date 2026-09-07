@@ -1,23 +1,44 @@
-"""Fallback and display-alignment helpers for CDC peak catalogues."""
+"""Conditional-estimate and display-alignment helpers for CDC catalogues."""
 
 from __future__ import annotations
 
 import numpy as np
 
-from process.cdcConfig import DEGENERATE_CI_GRID_FRAC, ENS_DELTA_MIN
+from process.cdcConfig import (
+    DEGENERATE_CI_GRID_FRAC,
+    ENS_DELTA_MIN,
+    FR_RUN_REL,
+    PER_RUN_MIN_DIST,
+    PER_RUN_MIN_WIDTH,
+    PER_RUN_PROM_FRAC,
+)
+from process.ensemble import per_run_peaks
 
 _SINGLE_CREST_PROM_FRAC = 0.03
 
 
-def _single_crest_fallback_row(ages_ma, S_curve, optima_ma, min_support):
-    """Return one conservative row for a single clear interior crest.
+def _conditional_single_crest_row(
+    ages_ma,
+    S_curve,
+    optima_ma,
+    min_support,
+    *,
+    goodness_runs=None,
+    qualification_reason="no_supported_peaks",
+):
+    """Return an explicitly conditional estimate for one interior crest.
 
-    Used after the stricter catalogue pipeline leaves no
-    reportable rows. It doesn't search for multiple peaks. Instead, it asks:
+    Used only after the formal catalogue pipeline leaves no reportable rows.
+    It does not search for multiple peaks. Instead, it asks:
     does the displayed surface still contain one obvious
     interior crest with enough prominence, support on both sides, non-boundary
     run optima, and enough per-run support to justify reporting a single broad
-    peak rather than abstaining completely?
+    estimate for inspection?
+
+    ``winner_support`` is the fraction of run-level best ages in the crest
+    interval. ``direct_support`` is independently calculated as the fraction
+    of run surfaces containing an explicitly detected peak in that interval.
+    This row remains conditional because the formal catalogue abstained.
     """
     x = np.asarray(ages_ma, float)
     y = np.asarray(S_curve, float)
@@ -101,6 +122,51 @@ def _single_crest_fallback_row(ages_ma, S_curve, optima_ma, min_support):
     if winner_support < float(min_support):
         return None
 
+    direct_support = float("nan")
+    run_surfaces = (
+        np.asarray(goodness_runs, float)
+        if goodness_runs is not None
+        else np.empty((0, 0), float)
+    )
+    if (
+        run_surfaces.ndim == 2
+        and run_surfaces.shape[0] > 0
+        and run_surfaces.shape[1] == x.size
+    ):
+        direct_hits = 0
+        for y_run in run_surfaces:
+            peaks_run = per_run_peaks(
+                x,
+                y_run,
+                prom_frac=float(PER_RUN_PROM_FRAC),
+                min_dist=int(PER_RUN_MIN_DIST),
+                min_width_nodes=int(PER_RUN_MIN_WIDTH),
+                require_full_prom=False,
+                fallback_global_max=False,
+            )
+            candidates = np.asarray(peaks_run, float)
+            candidates = candidates[(candidates >= lo_win) & (candidates <= hi_win)]
+            if candidates.size == 0:
+                continue
+
+            finite_run = np.asarray(y_run, float)
+            finite_run = finite_run[np.isfinite(finite_run)]
+            if finite_run.size == 0:
+                continue
+            p5_run, p95_run = np.nanpercentile(finite_run, [5, 95])
+            threshold = float(
+                p5_run + float(FR_RUN_REL) * max(p95_run - p5_run, 0.0)
+            )
+            candidate_indices = [
+                int(np.argmin(np.abs(x - candidate))) for candidate in candidates
+            ]
+            best_index = max(
+                candidate_indices, key=lambda idx: float(y_run[idx])
+            )
+            if np.isfinite(y_run[best_index]) and float(y_run[best_index]) >= threshold:
+                direct_hits += 1
+        direct_support = float(direct_hits / float(run_surfaces.shape[0]))
+
     if in_win.size >= 3:
         ci_low, ci_high = np.nanpercentile(in_win, [2.5, 97.5])
         ci_low = float(max(ci_low, lo_age))
@@ -124,15 +190,23 @@ def _single_crest_fallback_row(ages_ma, S_curve, optima_ma, min_support):
         support_high=float(hi_win),
         stability_low=float(ci_low),
         stability_high=float(ci_high),
-        support=winner_support,
-        direct_support=winner_support,
+        support=direct_support,
+        direct_support=direct_support,
         winner_support=winner_support,
         ci_method="stability_bounds",
         ci_interpretation="bootstrap_percentile_stability_bounds_of_windowed_run_optima",
         stability_method="vote_percentile",
-        selection="fallback",
+        selection="conditional_single_crest",
+        evidence_class="conditional",
+        qualification_reason=str(qualification_reason or "no_supported_peaks"),
+        age_source="ensemble_curve_crest",
+        ci_source="run_optima_within_crest_window",
         peak_no=1,
     )
+
+
+# Compatibility alias retained for existing imports.
+_single_crest_fallback_row = _conditional_single_crest_row
 
 
 def _snap_rows_to_curve(rows, ages_ma, S_view):

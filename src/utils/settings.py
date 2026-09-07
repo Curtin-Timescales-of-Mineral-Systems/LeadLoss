@@ -17,7 +17,10 @@ class Settings:
         self.version = config.VERSION
 
     def __ensureCompatibility(self):
+        changed = self.__ensureCurrentFields()
         if self.version == config.VERSION:
+            if changed:
+                self.__save()
             return
 
         if self.version is None: # v0.5 or before
@@ -28,6 +31,19 @@ class Settings:
 
         self.version = config.VERSION
         self.__save()
+
+    def __ensureCurrentFields(self):
+        changed = False
+        for file_settings in self.per_file_settings.values():
+            for settings in file_settings.values():
+                ensure = getattr(settings, "ensureCompatibility", None)
+                if ensure is None:
+                    continue
+                before = set(vars(settings).keys())
+                ensure()
+                after = set(vars(settings).keys())
+                changed = changed or (before != after)
+        return changed
 
     @classmethod
     def setCurrentFile(cls, file):

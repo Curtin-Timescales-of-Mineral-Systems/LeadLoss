@@ -2,45 +2,65 @@ import math
 
 import numpy as np
 
+from model.settings.ratio import ConcordiaRatioSpace, ratio_space_from_value
 from process import calculations
 from utils import config
-from utils.errorbarPlot import Errorbars
+from utils.covarianceEllipsePlot import CovarianceEllipses
 from view.axes.concordia.abstractConcordiaAxis import ConcordiaAxis
 
 
 class SummaryConcordiaAxis(ConcordiaAxis):
 
     def __init__(self, axis, samples):
-        super().__init__(axis)
-
-        self.selectedSamples = samples
+        self.allSamples = list(samples)
+        self.selectedSamples = list(samples)
         self.unselectedSamples = []
+        super().__init__(axis, self._targetRatioSpace())
 
-        for sample in samples:
+        self._buildSamplePlots()
+
+    def _targetRatioSpace(self):
+        if self.selectedSamples:
+            return self.selectedSamples[0].getDisplayRatioSpace()
+        return ConcordiaRatioSpace.TERA_WASSERBURG
+
+    def _buildSamplePlots(self):
+        self.samples = {}
+        for sample in self.allSamples:
             self.plotSample(sample)
+        if self.allSamples:
+            examplePlot = self.samples[self.allSamples[0]]
+            legendEntries = [
+                (examplePlot.unclassified.line, "Unclassified"),
+                (examplePlot.concordant.line,   "Concordant"),
+                (examplePlot.discordant.line,   "Discordant"),
+                (examplePlot.reverse.line,      "Reverse discordant"),
+                (examplePlot.pbLossAge,         "Pb-loss age"),
+            ]
+            self.axis.legend(*zip(*legendEntries), frameon=False)
 
-        examplePlot = self.samples[samples[0]]
-
-        legendEntries = [
-            (examplePlot.unclassified.line, "Unclassified"),
-            (examplePlot.concordant.line,   "Concordant"),
-            (examplePlot.discordant.line,   "Discordant"),
-            (examplePlot.reverse.line,      "Reverse discordant"),
-            (examplePlot.pbLossAge,         "Pb-loss age"),
-        ]
-        self.axis.legend(*zip(*legendEntries), frameon=False)
+    def _syncRatioSpace(self):
+        if self.setRatioSpace(self._targetRatioSpace()):
+            self._buildSamplePlots()
+            return True
+        return False
 
 
     def plotSample(self, sample):
-        self.samples[sample] = SamplePlot(self.axis, sample)
+        self.samples[sample] = SamplePlot(self.axis, sample, self.ratio_space)
 
     def refreshSample(self, sample):
+        rebuilt = self._syncRatioSpace()
+        if rebuilt:
+            for unselectedSample in self.unselectedSamples:
+                self.samples[unselectedSample].clearData()
         if sample in self.selectedSamples:
             self.samples[sample].plotInputData(sample)
 
     def selectSamples(self, selectedSamples, unselectedSamples):
-        self.selectedSamples = selectedSamples
-        self.unselectedSamples = unselectedSamples
+        self.selectedSamples = list(selectedSamples)
+        self.unselectedSamples = list(unselectedSamples)
+        self._syncRatioSpace()
         
         for sample in selectedSamples:
             self.samples[sample].plotInputData(sample)
@@ -48,14 +68,15 @@ class SummaryConcordiaAxis(ConcordiaAxis):
             self.samples[sample].clearData()
 
 class SamplePlot:
-    def __init__(self, axis, sample):
+    def __init__(self, axis, sample, ratio_space):
         self.axis = axis
         self.sample = sample
+        self.ratio_space = ratio_space_from_value(ratio_space)
 
-        self.unclassified = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.UNCLASSIFIED_COLOUR_1, zorder=2))
-        self.concordant   = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.CONCORDANT_COLOUR_1,   zorder=3))
-        self.discordant   = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.DISCORDANT_COLOUR_1,   zorder=3))
-        self.reverse      = Errorbars(axis.errorbar([], [], xerr=[], yerr=[], fmt='+', linestyle='', color=config.REVERSE_DISCORDANT_COLOUR_1, zorder=4))
+        self.unclassified = CovarianceEllipses(axis, config.UNCLASSIFIED_COLOUR_1, zorder=2)
+        self.concordant   = CovarianceEllipses(axis, config.CONCORDANT_COLOUR_1, zorder=3)
+        self.discordant   = CovarianceEllipses(axis, config.DISCORDANT_COLOUR_1, zorder=3)
+        self.reverse      = CovarianceEllipses(axis, config.REVERSE_DISCORDANT_COLOUR_1, zorder=4)
 
 
 
@@ -73,12 +94,17 @@ class SamplePlot:
         unclassifiedData = []
 
         upper_xlim = 0.0
+        upper_ylim = 0.0
 
         for spot in sample.validSpots:
-            semi_minor = (spot.uPbStDev or 0.0) * rs
-            semi_major = (spot.pbPbStDev or 0.0) * rs
-            if spot.uPbValue is not None:
-                upper_xlim = max(upper_xlim, spot.uPbValue + semi_minor)
+            x, y = spot.getRatioValues(self.ratio_space)
+            sx, sy, rho = spot.getRatioStDevs(self.ratio_space)
+            semi_minor = (sx or 0.0) * rs
+            semi_major = (sy or 0.0) * rs
+            if x is not None:
+                upper_xlim = max(upper_xlim, x + semi_minor)
+            if y is not None:
+                upper_ylim = max(upper_ylim, y + semi_major)
 
             # bucket selection order matters
             if not spot.processed:
@@ -91,24 +117,23 @@ class SamplePlot:
                 bucket = discordantData
 
 
-            bucket.append((spot.uPbValue, spot.pbPbValue, semi_minor, semi_major))
+            bucket.append((x, y, sx or 0.0, sy or 0.0, rho or 0.0))
 
-        if concordantData:   self.concordant.set_data(*zip(*concordantData))
+        if concordantData:   self.concordant.set_data(*zip(*concordantData), confidence_radius=rs)
         else:                self.concordant.clear_data()
-        if discordantData:   self.discordant.set_data(*zip(*discordantData))
+        if discordantData:   self.discordant.set_data(*zip(*discordantData), confidence_radius=rs)
         else:                self.discordant.clear_data()
-        if reverseData:      self.reverse.set_data(*zip(*reverseData))
+        if reverseData:      self.reverse.set_data(*zip(*reverseData), confidence_radius=rs)
         else:                self.reverse.clear_data()
-        if unclassifiedData: self.unclassified.set_data(*zip(*unclassifiedData))
+        if unclassifiedData: self.unclassified.set_data(*zip(*unclassifiedData), confidence_radius=rs)
         else:                self.unclassified.clear_data()
 
         if sample.optimalAge:
-            xMin = calculations.u238pb206_from_age(sample.optimalAgeUpperBound)
-            xMax = calculations.u238pb206_from_age(sample.optimalAgeLowerBound)
-            xs = [xMin] if xMin == xMax else np.arange(xMin, xMax, 0.1)
-            ys = [calculations.pb207pb206_from_u238pb206(x) for x in xs]
-            if xMax is not None:
-                upper_xlim = max(upper_xlim, xMax)
+            ages = np.linspace(sample.optimalAgeLowerBound, sample.optimalAgeUpperBound, 100)
+            xy = [calculations.concordia_xy(age, self.ratio_space) for age in ages]
+            xs, ys = zip(*xy)
+            upper_xlim = max(upper_xlim, max(xs))
+            upper_ylim = max(upper_ylim, max(ys))
             self.pbLossAge.set_xdata([xs[0], xs[-1]])
             self.pbLossAge.set_ydata([ys[0], ys[-1]])
             self.pbLossRange.set_xdata(xs)
@@ -118,6 +143,8 @@ class SamplePlot:
             self.pbLossRange.set_xdata([]); self.pbLossRange.set_ydata([])
 
         self.axis.set_xlim(0, 1.2 * (upper_xlim or 1.0))
+        if self.ratio_space == ConcordiaRatioSpace.WETHERILL:
+            self.axis.set_ylim(0, 1.2 * (upper_ylim or 1.0))
 
     def clearData(self):
         self.concordant.clear_data()

@@ -9,6 +9,7 @@ from typing import Dict, Sequence
 
 import numpy as np
 
+from model.settings.ratio import ConcordiaRatioSpace, ratio_space_from_value
 from process import calculations
 from process.cdcConfig import (
     CATALOGUE_CSV_PEN,
@@ -20,7 +21,6 @@ from process.cdcConfig import (
     RUN_FIELDS,
     RUNLOG,
 )
-from process.cdcTW import age_ma_from_pb207pb206, age_ma_from_u238pb206
 from process.cdcUtils import safe_prefix
 
 try:
@@ -33,18 +33,17 @@ CATALOGUE_CI_METHOD = "stability_bounds"
 CATALOGUE_CI_INTERPRETATION = "bootstrap_percentile_stability_bounds_of_assigned_run_ages"
 
 
-def _spot_age_proxy_ma(spot) -> float:
-    """Stable age proxy (Ma) from TW coordinates for one spot."""
-    t = age_ma_from_pb207pb206(spot.pbPbValue)
-    if np.isfinite(t):
-        return float(t)
-    t2 = age_ma_from_u238pb206(spot.uPbValue)
-    return float(t2) if np.isfinite(t2) else float("nan")
-
-
-def concordant_ages_ma(spots):
+def concordant_ages_ma(spots, ratio_space=ConcordiaRatioSpace.TERA_WASSERBURG):
     """Approximate concordant ages (Ma) used for diagnostics exports."""
-    return np.asarray([_spot_age_proxy_ma(s) for s in spots], float)
+    vals = []
+    ratio_space = ratio_space_from_value(ratio_space)
+    for spot in spots:
+        try:
+            x, y = spot.getRatioValues(ratio_space)
+            vals.append(calculations.concordant_age_for_space(x, y, ratio_space) / 1e6)
+        except Exception:
+            vals.append(float("nan"))
+    return np.asarray(vals, float)
 
 
 def ensure_output_dirs() -> None:
@@ -99,6 +98,8 @@ def append_catalogue_rows(sample_name: str, rows: Sequence[Dict], dest_path: Pat
                 "ci_low",
                 "ci_high",
                 "support",
+                "direct_support",
+                "winner_support",
                 "support_low",
                 "support_high",
                 "stability_low",
@@ -107,6 +108,14 @@ def append_catalogue_rows(sample_name: str, rows: Sequence[Dict], dest_path: Pat
                 "ci_method",
                 "ci_interpretation",
                 "stability_method",
+                "selection",
+                "evidence_class",
+                "qualification_reason",
+                "age_source",
+                "ci_source",
+                "mode",
+                "label",
+                "model_space",
             ],
             extrasaction="ignore",
         )
@@ -121,6 +130,8 @@ def append_catalogue_rows(sample_name: str, rows: Sequence[Dict], dest_path: Pat
                     ci_low=r["ci_low"],
                     ci_high=r["ci_high"],
                     support=r.get("support", float("nan")),
+                    direct_support=r.get("direct_support", r.get("support", float("nan"))),
+                    winner_support=r.get("winner_support", r.get("support", float("nan"))),
                     support_low=r.get("support_low", r["ci_low"]),
                     support_high=r.get("support_high", r["ci_high"]),
                     stability_low=r.get("stability_low", r["ci_low"]),
@@ -129,6 +140,17 @@ def append_catalogue_rows(sample_name: str, rows: Sequence[Dict], dest_path: Pat
                     ci_method=r.get("ci_method", CATALOGUE_CI_METHOD),
                     ci_interpretation=r.get("ci_interpretation", CATALOGUE_CI_INTERPRETATION),
                     stability_method=r.get("stability_method", "vote_percentile"),
+                    selection=r.get("selection", "strict"),
+                    evidence_class=r.get(
+                        "evidence_class",
+                        "boundary_limited" if str(r.get("mode", "")) == "recent_boundary" else "formal",
+                    ),
+                    qualification_reason=r.get("qualification_reason", ""),
+                    age_source=r.get("age_source", "formal_ensemble_peak"),
+                    ci_source=r.get("ci_source", "per_run_detected_peaks"),
+                    mode=r.get("mode", ""),
+                    label=r.get("label", ""),
+                    model_space=r.get("model_space", ""),
                 )
             )
 
@@ -190,29 +212,24 @@ def write_npz_diagnostics(
         )
 
 
-def ks_ui_ages_for_rim_Ma(discordantSpots, rim_Ma: float) -> np.ndarray:
+def ks_ui_ages_for_rim_Ma(
+    discordantSpots,
+    rim_Ma: float,
+    ratio_space=ConcordiaRatioSpace.TERA_WASSERBURG,
+) -> np.ndarray:
     """
     Reconstruct upper-intercept ages (Ma) for a trial lower-intercept age rim_Ma.
 
-    Uses calculations.discordant_age along the chord between the point on
-    TW concordia at rim_Ma and each discordant spot.
+    Uses the selected concordia geometry for the chord between the point on
+    concordia at rim_Ma and each discordant spot.
     """
     t_low = float(rim_Ma) * 1e6
-    x_low = calculations.u238pb206_from_age(t_low)
-    y_low = calculations.pb207pb206_from_age(t_low)
+    ratio_space = ratio_space_from_value(ratio_space)
 
     ui_list = []
     for spot in discordantSpots:
-        x = float(spot.uPbValue)
-        y = float(spot.pbPbValue)
-
-        # calculations.discordant_age expects x1 > x2
-        if x_low > x:
-            x1, y1, x2, y2 = x_low, y_low, x, y
-        else:
-            x1, y1, x2, y2 = x, y, x_low, y_low
-
-        t_up = calculations.discordant_age(x1, y1, x2, y2)  # years or None
+        x, y = spot.getRatioValues(ratio_space)
+        t_up = calculations.discordant_age_for_space(t_low, x, y, ratio_space)
         if t_up is None or not np.isfinite(t_up):
             continue
         if t_up <= t_low:
@@ -320,7 +337,10 @@ def export_legacy_ks(
     if run_optima_years is not None:
         run_optima_by_tag[active_tag] = np.asarray(run_optima_years, float)
 
-    conc_ages = concordant_ages_ma(conc_spots)
+    ratio_space = ratio_space_from_value(
+        getattr(settings, "_resolved_concordia_projection", ConcordiaRatioSpace.TERA_WASSERBURG)
+    )
+    conc_ages = concordant_ages_ma(conc_spots, ratio_space)
     conc_ages = conc_ages[np.isfinite(conc_ages)]
     conc_ages.sort()
 
@@ -399,15 +419,23 @@ def export_legacy_ks(
 
         with (subdir / "concordant.csv").open("w", newline="") as fh:
             w = csv.writer(fh)
-            w.writerow(["uPb", "pbPb"])
+            if ratio_space == ConcordiaRatioSpace.WETHERILL:
+                w.writerow(["pb207u235", "pb206u238"])
+            else:
+                w.writerow(["u238pb206", "pb207pb206"])
             for s in conc_spots:
-                w.writerow([float(s.uPbValue), float(s.pbPbValue)])
+                x, y = s.getRatioValues(ratio_space)
+                w.writerow([float(x), float(y)])
 
         with (subdir / "discordant.csv").open("w", newline="") as fh:
             w = csv.writer(fh)
-            w.writerow(["uPb", "pbPb"])
+            if ratio_space == ConcordiaRatioSpace.WETHERILL:
+                w.writerow(["pb207u235", "pb206u238"])
+            else:
+                w.writerow(["u238pb206", "pb207pb206"])
             for s in disc_spots:
-                w.writerow([float(s.uPbValue), float(s.pbPbValue)])
+                x, y = s.getRatioValues(ratio_space)
+                w.writerow([float(x), float(y)])
 
         with (subdir / "cdf_concordant.csv").open("w", newline="") as fh:
             w = csv.writer(fh)
@@ -417,7 +445,7 @@ def export_legacy_ks(
 
         for rim in (300, rim_opt_int, 1800):
             rim_for_calc = float(rim_opt_ma) if rim == rim_opt_int else float(rim)
-            ui_ma = ks_ui_ages_for_rim_Ma(disc_spots, rim_for_calc)
+            ui_ma = ks_ui_ages_for_rim_Ma(disc_spots, rim_for_calc, ratio_space)
             header = f"# age_Ma_UI_rim{rim_opt_ma:.3f}" if rim == rim_opt_int else f"# age_Ma_UI_rim{rim}"
             with (subdir / f"cdf_UI_{rim}.csv").open("w", newline="") as fh:
                 w = csv.writer(fh)
