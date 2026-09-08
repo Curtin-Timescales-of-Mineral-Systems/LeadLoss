@@ -76,9 +76,12 @@ class SampleOutputResultsPanel(QGroupBox):
         self.catTable = QTableWidget(0, 7)
         self.catTable.setHorizontalHeaderLabels(
             [
-                "#", "Age (Ma)", "95% stability bounds (Ma)", "CDC projection", "Evidence",
+                "#", "Age (Ma)", "95% stability bounds (Ma)", "CDC projection", "Result type",
                 "Direct support (%)", "Winner support (%)",
             ]
+        )
+        self.catTable.horizontalHeaderItem(4).setToolTip(
+            "Whether the row is an ensemble peak, a broad best-fit age, or a boundary-limited result."
         )
         self.catTable.horizontalHeaderItem(5).setToolTip(
             "Percentage of Monte Carlo runs with an accepted per-run peak inside "

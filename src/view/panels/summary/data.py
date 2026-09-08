@@ -98,7 +98,7 @@ class SummaryDataPanel(QWidget):
         )
 
         hc = self.catalogueTable.horizontalHeader()
-        # Nine evidence columns need readable minimum widths. Keep them
+        # Nine result columns need readable minimum widths. Keep them
         # user-resizable and allow horizontal scrolling on smaller screens.
         hc.setSectionResizeMode(QHeaderView.Interactive)
         hc.setDefaultSectionSize(120)
@@ -185,7 +185,7 @@ class SummaryDataPanel(QWidget):
         min_widths = {
             0: 150,  # Sample
             1: 125,  # CDC space
-            2: 125,  # Evidence
+            2: 125,  # Result type
             3: 70,   # Peak #
             4: 135,  # Lower stability bound
             5: 95,   # Age
