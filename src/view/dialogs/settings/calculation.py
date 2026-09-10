@@ -93,7 +93,7 @@ class LeadLossCalculationSettingsDialog(AbstractSettingsDialog):
         )
 
         form = QFormLayout()
-        form.addRow(QLabel("CDC projection"), self.projectionGeometryRB)
+        form.addRow(QLabel("Concordia space"), self.projectionGeometryRB)
         form.addRow(QLabel("Dissimilarity test"), self.dissimilarityTestRB)
         form.addRow(QLabel("Penalise invalid ages"), self.penaliseInvalidAgesCB)
         self._registerFormLayoutForAlignment(form)

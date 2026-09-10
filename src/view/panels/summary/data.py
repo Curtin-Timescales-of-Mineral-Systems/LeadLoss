@@ -37,7 +37,7 @@ class SummaryDataPanel(QWidget):
         # --------- legacy optimal-age table ----------
         legacy_headers = [
             "Sample",
-            "CDC\nspace",
+            "Concordia\nspace",
             "Concordant\npoints",
             "Discordant\npoints",
             "Lower\nstability\nbound",
@@ -79,7 +79,7 @@ class SummaryDataPanel(QWidget):
 
         # ---- ensemble catalogue (all samples) ----
         cat_headers = [
-            "Sample", "CDC space", "Result type", "Peak #", "Lower\nstability\nbound", "Age (Ma)",
+            "Sample", "Concordia space", "Result type", "Peak #", "Lower\nstability\nbound", "Age (Ma)",
             "Upper\nstability\nbound", "Direct\nsupport\n(%)", "Winner\nsupport\n(%)"
         ]
         self.catalogueTable = QTableWidget(0, len(cat_headers))
@@ -184,7 +184,7 @@ class SummaryDataPanel(QWidget):
         self.catalogueTable.resizeColumnsToContents()
         min_widths = {
             0: 150,  # Sample
-            1: 125,  # CDC space
+            1: 125,  # Concordia space
             2: 125,  # Result type
             3: 70,   # Peak #
             4: 135,  # Lower stability bound

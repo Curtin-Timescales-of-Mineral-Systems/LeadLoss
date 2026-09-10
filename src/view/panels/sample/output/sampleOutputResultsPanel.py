@@ -55,7 +55,7 @@ class SampleOutputResultsPanel(QGroupBox):
         form.addRow("Mean # of invalid ages", self.invalidAges)
         form.addRow("Mean score", self.score)
         form.addRow("Ensemble result", self.ensembleStatus)
-        form.addRow("CDC projection", self.projectionSpace)
+        form.addRow("Concordia space", self.projectionSpace)
         self.rootLayout.addWidget(formHost)
 
         self.plotExportBox = QGroupBox("Plot data exports")
@@ -76,7 +76,7 @@ class SampleOutputResultsPanel(QGroupBox):
         self.catTable = QTableWidget(0, 7)
         self.catTable.setHorizontalHeaderLabels(
             [
-                "#", "Age (Ma)", "95% stability bounds (Ma)", "CDC projection", "Result type",
+                "#", "Age (Ma)", "95% stability bounds (Ma)", "Concordia space", "Result type",
                 "Direct support (%)", "Winner support (%)",
             ]
         )
