@@ -1,2 +1,0 @@
-rank,age_ma,stability_low,stability_high,model_space,evidence_class,qualification_reason,direct_support,winner_support,age_source,ci_source
-1,171.76884422110552,103.71243718592963,232.04020100502512,Wetherill,conditional,no_supported_peaks,0.9,1.0,ensemble_curve_crest,run_optima_within_crest_window

@@ -1,2 +1,0 @@
-rank,age_ma,stability_low,stability_high,model_space,evidence_class,qualification_reason,direct_support,winner_support,age_source,ci_source
-1,292.9615430091637,224.25515075376885,352.5164388117056,Tera-Wasserburg,formal,,1.0,0.84,formal_ensemble_peak,per_run_detected_peaks

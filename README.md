@@ -86,7 +86,6 @@ The GUI can export:
 ### Interpreting ensemble results
 
 - **Ensemble peak:** passed the full ensemble peak and support rules.
-- **Broad best-fit age:** one clear interior crest remains useful to inspect, but it did not pass every automatic peak criterion. Its support percentages and broad stability interval remain visible so the user can judge the evidence directly.
 - **Boundary-limited:** the result is concentrated against the young end of the tested search window, so it is reported as a one-sided boundary mode rather than a resolved interior peak.
 
 **Direct support** is the percentage of Monte Carlo runs containing an accepted per-run peak inside the reported stability window. **Winner support** is the percentage of runs in which the peak assigned to that window is the run's preferred solution. A recurring secondary peak can therefore have high direct support but lower winner support. These measures answer different questions; neither is a confidence level.

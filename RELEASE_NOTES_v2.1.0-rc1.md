@@ -17,11 +17,8 @@ tag. It is intended for final testing before a v2.1.0 release.
 - Summary and per-sample concordia plots use the selected geometry and show
   covariance-aware uncertainty ellipses instead of independent error crosses.
 - Output tables and CSV exports record the CDC calculation space.
-- Ensemble results use the plain labels "Ensemble peak", "Broad best-fit age"
-  and "Boundary-limited". Broad best-fit ages remain visible with their two
-  support percentages and stability interval.
-- The broad-crest shape check no longer mislabels a slowly varying interior
-  maximum as a flat/monotonic curve merely because each grid step is small.
+- Ensemble results use the plain labels "Ensemble peak" and
+  "Boundary-limited".
 - Direct support and winner support are calculated and labelled separately,
   consistent with the published ensemble-method terminology.
 - The interface has a restrained visual refresh with no intended modelling
@@ -37,12 +34,9 @@ tag. It is intended for final testing before a v2.1.0 release.
 
 ## Deliberate scope decision
 
-Kolmogorov-Smirnov remains the only production dissimilarity measure in this
-release candidate. Experimental code exists for other measures, but their
-score scaling, sample-size behaviour, false-positive behaviour and effect on
-ensemble thresholds have not yet been calibrated. Exposing them as equivalent
-production choices would make the software look more complete while weakening
-the scientific audit trail.
+Kolmogorov-Smirnov remains the only dissimilarity measure in this release
+candidate. Other measures are not included because their score scaling and
+ensemble thresholds have not been calibrated.
 
 ## Checks completed locally
 
@@ -52,18 +46,15 @@ the scientific audit trail.
 - Covariance transformation and round-trip tests.
 - Wetherill concordia and discordia-intersection tests.
 - Preservation of the historical TW random-draw order for uncorrelated input.
-- Broad-best-fit evidence and CSV-export tests.
-- Regression coverage for slowly varying broad interior maxima, TW rho input
-  and covariance-ellipse geometry.
+- TW rho input and covariance-ellipse geometry tests.
 - Off-screen construction of the themed main window and native-Wetherill
   import dialog.
 - Packaged-GUI imports of a real Tera-Wasserburg CSV and a real native
   Wetherill CSV with rho, including inspection of the tables, concordia plots
   and exported peak catalogues.
-- Frozen real-data comparison against v2.0.3: concordance classifications,
-  optimal ages and goodness-of-fit curves are unchanged on the historical
-  uncorrelated Tera-Wasserburg path. Expected differences are confined to the
-  newer ensemble peak qualification and support accounting.
+- Frozen real-data comparison against v2.0.3 using the historical
+  uncorrelated Tera-Wasserburg path. Concordance classifications, optimal
+  ages, goodness-of-fit curves and ensemble catalogues were unchanged.
 
 ## Final release gates
 

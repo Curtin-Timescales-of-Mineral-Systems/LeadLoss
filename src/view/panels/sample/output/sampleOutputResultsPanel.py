@@ -81,7 +81,7 @@ class SampleOutputResultsPanel(QGroupBox):
             ]
         )
         self.catTable.horizontalHeaderItem(4).setToolTip(
-            "Whether the row is an ensemble peak, a broad best-fit age, or a boundary-limited result."
+            "Whether the row is an ensemble peak or a boundary-limited result."
         )
         self.catTable.horizontalHeaderItem(5).setToolTip(
             "Percentage of Monte Carlo runs with an accepted per-run peak inside "
@@ -281,22 +281,8 @@ class SampleOutputResultsPanel(QGroupBox):
 
         rows = getattr(self.sample, "peak_catalogue", []) or []
         if len(rows) > 0:
-            n_conditional = sum(
-                1 for r in rows
-                if isinstance(r, dict) and str(r.get("evidence_class", "")) == "conditional"
-            )
             n_boundary = sum(1 for r in rows if isinstance(r, dict) and str(r.get("mode", "")) == "recent_boundary")
-            n_peaks = len(rows) - n_boundary - n_conditional
-            if n_conditional and not n_peaks and not n_boundary:
-                return "Broad best-fit age (support shown below)"
-            if n_conditional:
-                parts = []
-                if n_peaks:
-                    parts.append(f"{n_peaks} ensemble peak{'s' if n_peaks != 1 else ''}")
-                if n_boundary:
-                    parts.append(f"{n_boundary} boundary mode{'s' if n_boundary != 1 else ''}")
-                parts.append(f"{n_conditional} broad best-fit age{'s' if n_conditional != 1 else ''}")
-                return f"Mixed ({' + '.join(parts)})"
+            n_peaks = len(rows) - n_boundary
             if n_boundary and n_peaks:
                 return f"Resolved ({n_peaks} interior peak{'s' if n_peaks != 1 else ''} + {n_boundary} boundary mode{'s' if n_boundary != 1 else ''})"
             if n_boundary:
@@ -316,21 +302,11 @@ class SampleOutputResultsPanel(QGroupBox):
 
     def _evidence_text(self, row) -> str:
         evidence = str(row.get("evidence_class", "")) if isinstance(row, dict) else ""
-        if evidence == "conditional":
-            return "Broad best-fit age"
         if evidence == "boundary_limited" or (
             isinstance(row, dict) and str(row.get("mode", "")) == "recent_boundary"
         ):
             return "Boundary-limited"
         return "Ensemble peak"
-
-    def _qualification_reason_text(self, reason: str) -> str:
-        mapping = {
-            "flat_or_monotonic_surface": "the automatic shape check found no clear interior maximum",
-            "boundary_dominated_surface": "run-level best ages were dominated by a search-window boundary",
-            "no_supported_peaks": "the maximum is broad or asymmetric rather than a sharply separated peak",
-        }
-        return mapping.get(str(reason), str(reason).replace("_", " "))
 
     def _projection_text(self) -> str:
         try:
@@ -466,24 +442,6 @@ class SampleOutputResultsPanel(QGroupBox):
         ensemble_enabled = bool(getattr(st, "enable_ensemble_peak_picking", True))
         reason = getattr(self.sample, "ensemble_abstain_reason", None)
         note_text = self._abstain_reason_text(reason) if (ensemble_enabled and not show) else ""
-        conditional_rows = [
-            r for r in rows
-            if isinstance(r, dict) and str(r.get("evidence_class", "")) == "conditional"
-        ]
-        if show and conditional_rows:
-            notes = []
-            for r in conditional_rows:
-                ds = float(r.get("direct_support", float("nan")))
-                ws = float(r.get("winner_support", float("nan")))
-                ds_text = "an unknown percentage of" if ds != ds else f"{100.0 * ds:.0f}% of"
-                ws_text = "an unknown percentage of" if ws != ws else f"{100.0 * ws:.0f}% of"
-                why = self._qualification_reason_text(r.get("qualification_reason", "no_supported_peaks"))
-                notes.append(
-                    "Broad best-fit age — the ensemble curve has a clear broad maximum, but it did not "
-                    f"pass every automatic peak criterion because {why}. {ds_text} runs contain a "
-                    f"detected peak in this interval, and {ws_text} runs have their best-fitting age there."
-                )
-            note_text = "\n".join(notes)
         if show and any(isinstance(r, dict) and str(r.get("mode", "")) == "recent_boundary" for r in rows):
             extra = "Recent boundary mode rows represent young lower-bound modes without an interior crest; the displayed interval is a one-sided upper bound."
             note_text = f"{note_text}\n{extra}".strip() if note_text else extra

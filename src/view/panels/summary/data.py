@@ -103,7 +103,7 @@ class SummaryDataPanel(QWidget):
         hc.setSectionResizeMode(QHeaderView.Interactive)
         hc.setDefaultSectionSize(120)
         hc.setStretchLastSection(False)
-        self.catalogueTable.setSortingEnabled(True)  # optional: allow clicking headers to sort
+        self.catalogueTable.setSortingEnabled(True)
 
 
         self.catalogueTable.setHorizontalScrollMode(self.catalogueTable.ScrollPerPixel)
@@ -125,9 +125,8 @@ class SummaryDataPanel(QWidget):
             "<b>Direct support</b>: percentage of Monte Carlo runs with an accepted per-run peak "
             "inside the reported stability window.<br>"
             "<b>Winner support</b>: percentage of runs in which the peak assigned to this window "
-            "is the run's preferred solution. A recurring secondary peak can therefore have high "
-            "direct support but lower winner support.<br>"
-            "The Result type column distinguishes ensemble peaks, broad best-fit ages and boundary-limited results."
+            "is the run's preferred solution.<br>"
+            "Result type distinguishes ensemble peaks from boundary-limited results."
             "</span>"
         )
         catalogueCaption.setWordWrap(True)
@@ -204,8 +203,6 @@ class SummaryDataPanel(QWidget):
 
     def _evidence_text(self, peak):
         evidence = str(peak.get("evidence_class", "")) if isinstance(peak, dict) else ""
-        if evidence == "conditional":
-            return "Broad best-fit age"
         if evidence == "boundary_limited" or (
             isinstance(peak, dict) and str(peak.get("mode", "")) == "recent_boundary"
         ):

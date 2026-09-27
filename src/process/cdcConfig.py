@@ -48,8 +48,8 @@ FS_SUPPORT: float = 0.10         # Tested.
 RMIN_RUNS: int = 5               # Tested.
 FV_VALLEY_FRAC: float = 0.50     # Tested.
 ENS_DELTA_MIN: float = 0.05      # Tested.
-MONO_DY_EPS_FRAC: float = 0.03   # Minimum two-sided crest drop as a fraction of curve range. Not swept.
-MONO_MAX_TURNS: int = 0          # Deprecated compatibility constant; no longer used.
+MONO_DY_EPS_FRAC: float = 0.03   # Not swept.
+MONO_MAX_TURNS: int = 0          # Not swept.
 COARSE_SIGMA_GRID_FRAC: float = 0.03   # Coarse ensemble smoothing used for major-mode grouping.
 DEGENERATE_CI_GRID_FRAC: float = 0.75  # Treat sub-grid intervals narrower than this as degenerate.
 
