@@ -57,6 +57,13 @@ the scientific audit trail.
   and covariance-ellipse geometry.
 - Off-screen construction of the themed main window and native-Wetherill
   import dialog.
+- Packaged-GUI imports of a real Tera-Wasserburg CSV and a real native
+  Wetherill CSV with rho, including inspection of the tables, concordia plots
+  and exported peak catalogues.
+- Frozen real-data comparison against v2.0.3: concordance classifications,
+  optimal ages and goodness-of-fit curves are unchanged on the historical
+  uncorrelated Tera-Wasserburg path. Expected differences are confined to the
+  newer ensemble peak qualification and support accounting.
 
 ## Final release gates
 

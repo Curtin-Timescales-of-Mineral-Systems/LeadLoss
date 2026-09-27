@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - master
+      - "release/**"
     tags:
       - "v*"
 
@@ -39,7 +40,7 @@ jobs:
 
   build:
     name: Build (${{ matrix.platform }})
-    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+    if: startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/release/') || github.event_name == 'workflow_dispatch'
     needs: [test]
     runs-on: ${{ matrix.os }}
     strategy:
