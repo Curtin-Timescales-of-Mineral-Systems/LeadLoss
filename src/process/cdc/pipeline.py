@@ -1,4 +1,8 @@
-"""Core CDC pipeline orchestration."""
+"""Run the CDC calculation in order from input classification to final output.
+
+The numerical work is divided among the other modules in this package; this
+module connects those stages and reports progress to the GUI.
+"""
 
 from __future__ import annotations
 

@@ -1,3 +1,5 @@
+"""Build CDC goodness-of-fit curves and the initial ensemble peak catalogue."""
+
 from __future__ import annotations
 
 from typing import Dict, List, Optional

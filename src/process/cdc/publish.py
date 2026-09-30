@@ -1,9 +1,7 @@
-"""Final result publication for CDC runs.
+"""Pass finished CDC results to the GUI and optional local output files.
 
-This module translates the internal CDC state into:
-- sample attributes used by the GUI
-- emitted progress/signals payloads
-- CSV and NPZ diagnostics exports
+Here, "publish" means making results available to the rest of the application.
+This module does not upload, release or transmit data outside LeadLoss.
 """
 
 from __future__ import annotations

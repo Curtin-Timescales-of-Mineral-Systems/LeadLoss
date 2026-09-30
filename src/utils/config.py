@@ -3,7 +3,7 @@
 ######################
 
 LEAD_LOSS_TITLE = "Pb-loss"
-VERSION = "2.1.0-rc1"
+VERSION = "2.1.0"
 
 # Size of the displayed analytical-error bounds -- 1 or 2 sigma
 SIGMAS_MIXED_POINT_ERROR = 1

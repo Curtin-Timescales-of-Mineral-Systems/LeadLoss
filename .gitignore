@@ -162,11 +162,5 @@ src/releases/
 .venv*/
 .venv-paper/
 
-# Local development-tool configuration
-.claude/
-
 # Thesis experiments (not part of the tool)
 experiments/
-
-# Local development worktrees
-.codex-worktrees/

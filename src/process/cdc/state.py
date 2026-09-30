@@ -1,3 +1,5 @@
+"""Small data containers shared between stages of the CDC calculation."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -25,4 +27,3 @@ class SurfaceState:
     optima_ma: np.ndarray
     rows: List[Dict] = field(default_factory=list)
     rejected: List[Dict] = field(default_factory=list)
-

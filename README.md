@@ -100,7 +100,7 @@ If you run from source, confirm your environment is active and dependencies are 
 
 If you use LeadLoss in your research, please cite the software release:
 
-Mathieson, L. M., & Daggitt, M. (2026). *LeadLoss* (Version 2.0.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.19881094
+Mathieson, L. M., & Daggitt, M. (2026). *LeadLoss* (Version 2.1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.14039112
 
 If you use the LeadLoss method, please also cite:
 
