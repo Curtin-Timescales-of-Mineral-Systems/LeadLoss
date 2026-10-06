@@ -26,7 +26,7 @@ LeadLoss 2.1.0 adds native Wetherill input and modelling alongside Tera-Wasserbu
 
 ## Scope
 
-Kolmogorov-Smirnov remains the dissimilarity measure used by LeadLoss. Other
+Kolmogorov-Smirnov is still the dissimilarity measure used by LeadLoss. Other
 measures are not included because their score scaling and ensemble thresholds
 have not been calibrated.
 
@@ -45,7 +45,3 @@ Local validation included:
 - packaged-GUI imports of real Tera-Wasserburg and native Wetherill files; and
 - comparison with LeadLoss 2.0.3 using the historical uncorrelated
   Tera-Wasserburg path.
-
-In the frozen Tera-Wasserburg comparison, concordance classifications, optimal
-ages, goodness-of-fit curves and ensemble catalogues were unchanged from
-LeadLoss 2.0.3.
