@@ -1,6 +1,4 @@
-/* LeadLoss theme. Visual only: no modelling behaviour changes.
-   Deliberately light-touch: checkboxes, radio buttons and spin boxes are left
-   native so they keep their checkmarks and up/down arrows. */
+/* LeadLoss theme */
 
 QMainWindow, QDialog {
   background: #F4F6F9;
@@ -35,7 +33,6 @@ QGroupBox::title {
   font-weight: 600;
 }
 
-/* Welcome panel is a QGroupBox but should stay a clean centred area, not a card */
 QGroupBox#WelcomePanel {
   background: transparent;
   border: 0;
@@ -49,9 +46,6 @@ QTabWidget::pane {
   top: -1px;
 }
 
-/* Tabs are left at normal weight: Qt sizes each tab using the normal-weight
-   font, so a bold (600) label renders wider than the reserved space and the
-   last character clips. Selected state is shown by colour + navy top-bar. */
 QTabBar::tab {
   background: #ECEFF4;
   color: #5B6472;
