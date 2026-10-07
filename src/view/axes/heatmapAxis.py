@@ -1,7 +1,7 @@
 import numpy as np
 from PyQt5.QtCore import pyqtSignal, QObject
 from controller.signals import ProcessingSignals
-from process.cdcHeatmap import build_density_heatmap_from_runs
+from process.cdcHeatmap import build_density_heatmap_from_run_columns, build_density_heatmap_from_runs
 from process import processing
 from utils import config
 from utils.asynchronous import AsyncTask
@@ -129,13 +129,9 @@ class HeatmapAxis:
             self.axis.scatter(xs, ys, zorder=32, **_BOUNDARY_STYLE)
 
     def plotRuns(self, runs, settings):
-        # Cancel any in-flight heatmap worker before starting a new one.
-        if self._worker is not None:
-            try:
-                if self._worker.isRunning():
-                    self._worker.halt()
-            except Exception:
-                pass
+        # A redraw request must not start another process while one is active.
+        if self._worker is not None and self._worker.isRunning():
+            return
         self._plot_seq += 1
         seq = int(self._plot_seq)
         self._worker = AsyncTask(
@@ -146,6 +142,22 @@ class HeatmapAxis:
             seq,
         )
         self._worker.start()
+
+    def plotFinalRuns(self, runs, settings):
+        """Draw the completed runs without waiting for another worker process."""
+        self._plot_seq += 1  # Ignore any older incremental redraw.
+        x_edges, y_edges, data = build_density_heatmap_from_run_columns(
+            runs, settings, resolution=config.HEATMAP_RESOLUTION,
+        )
+        self.clearAll(preserve_cache=True)
+        self.axis.set_xlim(float(x_edges[0]), float(x_edges[-1]))
+        self.axis.set_ylim(0.0, 1.0)
+        self.axis.pcolormesh(x_edges, y_edges, data, cmap="viridis", shading="auto")
+        self._draw_curve_overlay()
+        self._draw_boundary_markers()
+        if isinstance(self._peaks_ma, (list, tuple, np.ndarray)) and len(self._peaks_ma):
+            self.axis.scatter(self._peaks_ma, [0.02] * len(self._peaks_ma), zorder=20, **_MARKER_STYLE)
+        self.canvas.draw_idle()
 
     def _plotRuns(self, args):
         if not isinstance(args, tuple):

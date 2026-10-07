@@ -285,7 +285,7 @@ class SampleOutputFigure(AbstractFigure):
                 if self._ens_ages_ma is not None and self._ens_S_view is not None:
                     self.heatmapAxis.set_curve(self._ens_ages_ma, self._ens_S_view)
             else:
-                self.heatmapAxis.plotRuns(self.sample.monteCarloRuns, st)
+                self.heatmapAxis.plotFinalRuns(self.sample.monteCarloRuns, st)
         if not getattr(st, "enable_ensemble_peak_picking", False):
             self.goodnessAxis.set_peak_catalogue([])
             self.goodnessAxis.set_windows([])

@@ -1,4 +1,8 @@
 import multiprocessing
+
+if __name__ == "__main__":
+    multiprocessing.freeze_support()
+
 import sys
 import traceback
 from pathlib import Path
@@ -39,10 +43,6 @@ class LeadLossApplication:
         QMessageBox.critical(None, "Error", str(value))
 
     def __init__(self):
-        # Necessary for building executable with Pyinstaller correctly on Windows
-        # (see https://github.com/pyinstaller/pyinstaller/wiki/Recipe-Multiprocessing)
-        multiprocessing.freeze_support()
-
         # Reroute exceptions to display a message box to the user
         sys.excepthook = self.exception_hook
 
@@ -142,6 +142,7 @@ class LeadLossApplication:
 
         settings.ensureCompatibility()
         Settings.update(settings)
+        self.signals.taskStarted.emit("Starting calculation...")
         for sample in samples:
             sample.setDisplayRatioSpace(settings.getResolvedProjectionGeometry(sample.getInputRatioSpace()))
             sample.clearCalculation()
