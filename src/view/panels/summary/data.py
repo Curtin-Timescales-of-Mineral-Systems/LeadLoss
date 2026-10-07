@@ -37,6 +37,7 @@ class SummaryDataPanel(QWidget):
         # --------- legacy optimal-age table ----------
         legacy_headers = [
             "Sample",
+            "Concordia\nspace",
             "Concordant\npoints",
             "Discordant\npoints",
             "Lower\nstability\nbound",
@@ -78,29 +79,31 @@ class SummaryDataPanel(QWidget):
 
         # ---- ensemble catalogue (all samples) ----
         cat_headers = [
-            "Sample", "Peak #", "Lower\nreported\nstability\nbound", "Age (Ma)", "Upper\nreported\nstability\nbound",
-            "Peak\nsupport\n(%)", "Run-optimum\nsupport\n(%)"
+            "Sample", "Concordia space", "Result type", "Peak #", "Lower\nstability\nbound", "Age (Ma)",
+            "Upper\nstability\nbound", "Direct\nsupport\n(%)", "Winner\nsupport\n(%)"
         ]
         self.catalogueTable = QTableWidget(0, len(cat_headers))
         self.catalogueTable.setHorizontalHeaderLabels(cat_headers)
-        self.catalogueTable.horizontalHeaderItem(2).setToolTip(
+        self.catalogueTable.horizontalHeaderItem(4).setToolTip(
             "Lower bound of the reported stability interval."
         )
-        self.catalogueTable.horizontalHeaderItem(4).setToolTip(
+        self.catalogueTable.horizontalHeaderItem(6).setToolTip(
             "Upper bound of the reported stability interval."
         )
-        self.catalogueTable.horizontalHeaderItem(5).setToolTip(
-            "Fraction of Monte Carlo runs with an explicit per-run peak inside the reported window."
+        self.catalogueTable.horizontalHeaderItem(7).setToolTip(
+            "Percentage of Monte Carlo runs with an accepted per-run peak inside the reported window."
         )
-        self.catalogueTable.horizontalHeaderItem(6).setToolTip(
-            "Fraction of run optima that fall inside the reported window."
+        self.catalogueTable.horizontalHeaderItem(8).setToolTip(
+            "Percentage of runs in which the peak assigned to the reported window is the run's preferred solution."
         )
 
         hc = self.catalogueTable.horizontalHeader()
+        # Nine result columns need readable minimum widths. Keep them
+        # user-resizable and allow horizontal scrolling on smaller screens.
         hc.setSectionResizeMode(QHeaderView.Interactive)
         hc.setDefaultSectionSize(120)
         hc.setStretchLastSection(False)
-        self.catalogueTable.setSortingEnabled(True)  # optional: allow clicking headers to sort
+        self.catalogueTable.setSortingEnabled(True)
 
 
         self.catalogueTable.setHorizontalScrollMode(self.catalogueTable.ScrollPerPixel)
@@ -116,7 +119,18 @@ class SummaryDataPanel(QWidget):
         bottomBox = QWidget()
         bottomLay = QVBoxLayout(bottomBox)
         bottomLay.setContentsMargins(0, 0, 0, 0)
-        bottomLay.addWidget(QLabel("Ensemble peak catalogue (reported stability bounds; support columns are diagnostics, not confidence levels)"))
+        catalogueCaption = QLabel(
+            "<b>Ensemble results</b><br>"
+            "<span style='color:#5B6472'>"
+            "<b>Direct support</b>: percentage of Monte Carlo runs with an accepted per-run peak "
+            "inside the reported stability window.<br>"
+            "<b>Winner support</b>: percentage of runs in which the peak assigned to this window "
+            "is the run's preferred solution.<br>"
+            "Result type distinguishes ensemble peaks from boundary-limited results."
+            "</span>"
+        )
+        catalogueCaption.setWordWrap(True)
+        bottomLay.addWidget(catalogueCaption)
         bottomLay.addWidget(sep)
         bottomLay.addWidget(self.catalogueTable)
         bottomLay.addWidget(self.exportCatalogueButton)
@@ -165,6 +179,36 @@ class SummaryDataPanel(QWidget):
         except Exception:
             return str(x)
 
+    def _apply_catalogue_column_layout(self):
+        self.catalogueTable.resizeColumnsToContents()
+        min_widths = {
+            0: 150,  # Sample
+            1: 125,  # Concordia space
+            2: 125,  # Result type
+            3: 70,   # Peak #
+            4: 135,  # Lower stability bound
+            5: 95,   # Age
+            6: 135,  # Upper stability bound
+            7: 135,  # Direct support
+            8: 145,  # Winner support
+        }
+        for col, width in min_widths.items():
+            self.catalogueTable.setColumnWidth(col, max(self.catalogueTable.columnWidth(col), width))
+
+    def _space_text(self, sample):
+        try:
+            return sample.getModelRatioSpace().value
+        except Exception:
+            return ""
+
+    def _evidence_text(self, peak):
+        evidence = str(peak.get("evidence_class", "")) if isinstance(peak, dict) else ""
+        if evidence == "boundary_limited" or (
+            isinstance(peak, dict) and str(peak.get("mode", "")) == "recent_boundary"
+        ):
+            return "Boundary-limited"
+        return "Ensemble peak"
+
     # ---------- legacy table updates ----------
     def _onSampleConcordancyCalculated(self, sample):
         row = getattr(sample, "id", None)
@@ -173,8 +217,9 @@ class SummaryDataPanel(QWidget):
                 row = self.samples.index(sample)
             except ValueError:
                 return
-        self.dataTable.setItem(row, 1, self._cell(len(sample.concordantSpots())))
-        self.dataTable.setItem(row, 2, self._cell(len(sample.discordantSpots())))
+        self.dataTable.setItem(row, 1, self._cell(self._space_text(sample)))
+        self.dataTable.setItem(row, 2, self._cell(len(sample.concordantSpots())))
+        self.dataTable.setItem(row, 3, self._cell(len(sample.discordantSpots())))
         self.dataTable.resizeColumnsToContents()
 
     def _onOptimalAgeCalculated(self, sample):
@@ -189,12 +234,13 @@ class SummaryDataPanel(QWidget):
         def put(col, val):
             self.dataTable.setItem(row, col, self._cell(self._fmt(val)))
 
-        put(3, sample.optimalAgeLowerBound/(10**6) if sample.optimalAgeLowerBound is not None else None)
-        put(4, sample.optimalAge/(10**6)            if sample.optimalAge is not None else None)
-        put(5, sample.optimalAgeUpperBound/(10**6)  if sample.optimalAgeUpperBound is not None else None)
-        put(6, sample.optimalAgeDValue)
-        put(7, sample.optimalAgePValue)
-        put(8, sample.optimalAgeScore)
+        self.dataTable.setItem(row, 1, self._cell(self._space_text(sample)))
+        put(4, sample.optimalAgeLowerBound/(10**6) if sample.optimalAgeLowerBound is not None else None)
+        put(5, sample.optimalAge/(10**6)            if sample.optimalAge is not None else None)
+        put(6, sample.optimalAgeUpperBound/(10**6)  if sample.optimalAgeUpperBound is not None else None)
+        put(7, sample.optimalAgeDValue)
+        put(8, sample.optimalAgePValue)
+        put(9, sample.optimalAgeScore)
         self.dataTable.resizeColumnsToContents()
 
         self.dataTable.resizeRowsToContents()
@@ -287,22 +333,34 @@ class SummaryDataPanel(QWidget):
                 direct_sup = d.get("direct_support", d.get("support"))   # fraction 0..1
                 winner_sup = d.get("winner_support", d.get("support"))   # fraction 0..1
                 pno = d.get("peak_no") or j  # fallback numbering per sample
-                rows.append([s.name, pno, lo, age, hi, direct_sup, winner_sup])
+                rows.append([
+                    s.name,
+                    d.get("model_space", self._space_text(s)),
+                    self._evidence_text(d),
+                    pno,
+                    lo,
+                    age,
+                    hi,
+                    direct_sup,
+                    winner_sup,
+                ])
 
         # Repopulate table
         self.catalogueTable.setSortingEnabled(False)  # avoid re-sorts while filling
         self.catalogueTable.setRowCount(len(rows))
 
-        for r, (sname, pkno, lo, age, hi, direct_sup, winner_sup) in enumerate(rows):
+        for r, (sname, space, evidence, pkno, lo, age, hi, direct_sup, winner_sup) in enumerate(rows):
             self.catalogueTable.setItem(r, 0, self._cell(sname))
-            self.catalogueTable.setItem(r, 1, self._cell("" if pkno is None else pkno))
-            self.catalogueTable.setItem(r, 2, self._cell(self._fmt_ma(lo)))
-            self.catalogueTable.setItem(r, 3, self._cell(self._fmt_ma(age)))  # Age
-            self.catalogueTable.setItem(r, 4, self._cell(self._fmt_ma(hi)))
-            self.catalogueTable.setItem(r, 5, self._cell(self._fmt_pct(direct_sup)))
-            self.catalogueTable.setItem(r, 6, self._cell(self._fmt_pct(winner_sup)))
+            self.catalogueTable.setItem(r, 1, self._cell(space))
+            self.catalogueTable.setItem(r, 2, self._cell(evidence))
+            self.catalogueTable.setItem(r, 3, self._cell("" if pkno is None else pkno))
+            self.catalogueTable.setItem(r, 4, self._cell(self._fmt_ma(lo)))
+            self.catalogueTable.setItem(r, 5, self._cell(self._fmt_ma(age)))
+            self.catalogueTable.setItem(r, 6, self._cell(self._fmt_ma(hi)))
+            self.catalogueTable.setItem(r, 7, self._cell(self._fmt_pct(direct_sup)))
+            self.catalogueTable.setItem(r, 8, self._cell(self._fmt_pct(winner_sup)))
 
-        self.catalogueTable.resizeColumnsToContents()
+        self._apply_catalogue_column_layout()
         self.catalogueTable.resizeRowsToContents()
         self.catalogueTable.setSortingEnabled(True)
 

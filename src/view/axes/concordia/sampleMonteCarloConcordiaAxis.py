@@ -1,8 +1,9 @@
 from matplotlib.collections import LineCollection
+import numpy as np
 
+from model.settings.ratio import ratio_space_from_value
 from process import calculations
 from utils import config
-from utils.errorbarPlot import Errorbars
 from view.axes.concordia.abstractConcordiaAxis import ConcordiaAxis
 
 
@@ -10,6 +11,9 @@ class SampleMonteCarloConcordiaAxis(ConcordiaAxis):
 
     def __init__(self, axis):
         super().__init__(axis)
+        self._initArtists()
+
+    def _initArtists(self):
 
         self.concordantData = self.axis.plot([], [], marker='x', linewidth=0, color=config.CONCORDANT_COLOUR_1)[0]
         self.discordantData = self.axis.plot([], [], marker='x', linewidth=0, color=config.DISCORDANT_COLOUR_1)[0]
@@ -24,6 +28,8 @@ class SampleMonteCarloConcordiaAxis(ConcordiaAxis):
     ######################
 
     def plotMonteCarloRun(self, monteCarloRun):
+        if self.setRatioSpace(ratio_space_from_value(getattr(monteCarloRun, "modelRatioSpace", self.ratio_space))):
+            self._initArtists()
         self.concordantData.set_xdata(monteCarloRun.concordant_uPb)
         self.concordantData.set_ydata(monteCarloRun.concordant_pbPb)
         self.discordantData.set_xdata(monteCarloRun.discordant_uPb)
@@ -31,17 +37,19 @@ class SampleMonteCarloConcordiaAxis(ConcordiaAxis):
         self.leadLossAge.set_xdata([monteCarloRun.optimal_uPb])
         self.leadLossAge.set_ydata([monteCarloRun.optimal_pbPb])
 
-        upper_xlim = max(
-            max(monteCarloRun.concordant_uPb),
-            max(monteCarloRun.discordant_uPb),
-            monteCarloRun.optimal_uPb)
-        self.axis.set_xlim(0, 1.2*upper_xlim)
+        values_x = list(monteCarloRun.concordant_uPb) + list(monteCarloRun.discordant_uPb) + [monteCarloRun.optimal_uPb]
+        finite_x = [float(v) for v in values_x if v is not None and np.isfinite(float(v))]
+        if finite_x:
+            self.axis.set_xlim(0, 1.2 * max(finite_x))
+        values_y = list(monteCarloRun.concordant_pbPb) + list(monteCarloRun.discordant_pbPb) + [monteCarloRun.optimal_pbPb]
+        finite_y = [float(v) for v in values_y if v is not None and np.isfinite(float(v))]
+        if finite_y:
+            self.axis.set_ylim(0, 1.2 * max(finite_y))
 
     def plotSelectedAge(self, selectedAge, reconstructedAges):
         self.clearSelectedAge()
 
-        uPb = calculations.u238pb206_from_age(selectedAge)
-        pbPb = calculations.pb207pb206_from_age(selectedAge)
+        uPb, pbPb = calculations.concordia_xy(selectedAge, self.ratio_space)
         self.selectedAge.set_xdata([uPb])
         self.selectedAge.set_ydata([pbPb])
 
@@ -51,8 +59,8 @@ class SampleMonteCarloConcordiaAxis(ConcordiaAxis):
                 line = []
             else:
                 line = [
-                    (calculations.u238pb206_from_age(selectedAge), calculations.pb207pb206_from_age(selectedAge)),
-                    (calculations.u238pb206_from_age(reconstructedAge), calculations.pb207pb206_from_age(reconstructedAge))
+                    calculations.concordia_xy(selectedAge, self.ratio_space),
+                    calculations.concordia_xy(reconstructedAge, self.ratio_space)
                 ]
             lines.append(line)
 

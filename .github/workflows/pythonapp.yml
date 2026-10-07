@@ -2,7 +2,12 @@ name: Build LeadLoss executables
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - master
   push:
+    branches:
+      - master
     tags:
       - "v*"
 
@@ -10,8 +15,32 @@ permissions:
   contents: write
 
 jobs:
+  test:
+    name: Test (Linux)
+    runs-on: ubuntu-latest
+    env:
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-app.txt pytest
+
+      - name: Run test suite
+        run: python -m pytest -q
+
   build:
     name: Build (${{ matrix.platform }})
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+    needs: [test]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -20,7 +49,11 @@ jobs:
           - os: windows-latest
             platform: windows
           - os: macos-15-intel
-            platform: macos
+            platform: macos-intel
+            archive: LeadLoss-macos-intel.zip
+          - os: macos-15
+            platform: macos-arm64
+            archive: LeadLoss-macos-arm64.zip
 
     steps:
       - name: Check out code
@@ -43,7 +76,13 @@ jobs:
           # install app deps (no isolation so it doesn't rebuild ad with newer tooling)
           python -m pip install --no-build-isolation -r requirements-app.txt
 
-          python -m pip install pyinstaller pyinstaller-hooks-contrib
+          python -m pip install pytest pyinstaller pyinstaller-hooks-contrib
+
+      - name: Test on target platform
+        shell: bash
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: python -m pytest -q
 
       - name: Build (Windows)
         if: runner.os == 'Windows'
@@ -67,18 +106,9 @@ jobs:
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          pyinstaller --noconfirm --clean --windowed --name LeadLoss \
-            --paths "src" \
-            --collect-submodules utils \
-            --collect-submodules controller \
-            --collect-submodules model \
-            --collect-submodules process \
-            --collect-submodules view \
-            --hidden-import pkg_resources.py2_warn \
-            --add-data "resources:resources" \
-            src/application.py
+          pyinstaller --noconfirm --clean packaging/LeadLoss-macos.spec
 
-          ditto -c -k --sequesterRsrc --keepParent "dist/LeadLoss.app" "LeadLoss-macos.zip"
+          ditto -c -k --sequesterRsrc --keepParent "dist/LeadLoss.app" "${{ matrix.archive }}"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

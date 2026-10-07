@@ -1,11 +1,8 @@
-"""Post-catalogue safety rules and fallback handling for CDC peak outputs.
+"""Check candidate CDC ages before they are reported.
 
-This module does not build peaks. It applies defensive logic after the
-candidate catalogue exists:
-- suppress boundary-dominated artefacts
-- inject explicit recent-boundary modes when appropriate
-- snap rows back to the displayed curve
-- create a single-crest fallback when peak detection yields nothing usable
+This module applies the boundary checks, interval checks and final fallback
+after the ensemble peak catalogue has been built. It does not create the
+initial peak candidates.
 """
 
 from __future__ import annotations
@@ -41,7 +38,7 @@ def _apply_guards_and_fallbacks(
     view_which, ui_surface,
     support_floor,
 ):
-    """Boundary guards, CI cleanup, wide-CI filter, and fallback handling."""
+    """Apply final boundary, interval and fallback checks to catalogue rows."""
     optima_ma_display = raw.optima_ma if view_which == "raw" else pen.optima_ma
 
     pre_boundary_ui = [dict(r) for r in rows_for_ui]

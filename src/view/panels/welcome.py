@@ -8,10 +8,12 @@ class WelcomePanel(QGroupBox):
 
     def __init__(self, controller):
         super().__init__()
+        self.setObjectName("WelcomePanel")
 
         text = QLabel("Welcome to Curtin's Concordia Pb-loss application. Import a CSV file to get started.")
 
         importButton = QPushButton("   Import CSV")
+        importButton.setObjectName("PrimaryButton")
         importButton.clicked.connect(controller.importCSV)
         importButton.setIcon(Icons.importCSV())
         importButton.setMinimumWidth(200)

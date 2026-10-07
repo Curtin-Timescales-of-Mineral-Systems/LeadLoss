@@ -1,9 +1,7 @@
-"""Final result publication for CDC runs.
+"""Pass finished CDC results to the GUI and optional local output files.
 
-This module translates the internal CDC state into:
-- sample attributes used by the GUI
-- emitted progress/signals payloads
-- CSV and NPZ diagnostics exports
+Here, "publish" means making results available to the rest of the application.
+This module does not upload, release or transmit data outside LeadLoss.
 """
 
 from __future__ import annotations
@@ -34,14 +32,14 @@ def reset_output_exports():
     """Reset CSV outputs for a fresh CDC batch run when writing is enabled."""
     if not CDC_WRITE_OUTPUTS:
         return
-    _reset_csv(
-        CATALOGUE_CSV_PEN,
-        "sample,peak_no,age_ma,ci_low,ci_high,support,support_low,support_high,stability_low,stability_high,age_mode,ci_method,ci_interpretation,stability_method",
+    catalogue_header = (
+        "sample,peak_no,age_ma,ci_low,ci_high,support,direct_support,winner_support,"
+        "support_low,support_high,stability_low,stability_high,age_mode,ci_method,"
+        "ci_interpretation,stability_method,selection,evidence_class,"
+        "qualification_reason,age_source,ci_source,mode,label,model_space"
     )
-    _reset_csv(
-        CATALOGUE_CSV_RAW,
-        "sample,peak_no,age_ma,ci_low,ci_high,support,support_low,support_high,stability_low,stability_high,age_mode,ci_method,ci_interpretation,stability_method",
-    )
+    _reset_csv(CATALOGUE_CSV_PEN, catalogue_header)
+    _reset_csv(CATALOGUE_CSV_RAW, catalogue_header)
     _reset_csv(
         RUNLOG,
         "method,phase,sample,tier,R,n_grid,elapsed_s,per_run_median_s,per_run_p95_s,rss_peak_mb,python,numpy",
@@ -150,9 +148,17 @@ def _publish_results(
     meanD, meanP, meanInv, meanSc,
 ):
     """Renumber peaks, export CSVs/NPZs, and publish the final UI payload."""
+    model_space = sample.getModelRatioSpace()
     for row_list in (rows_for_ui, raw.rows, pen.rows):
         for i, r in enumerate(row_list, 1):
             r["peak_no"] = i
+            is_boundary = str(r.get("mode", "")) == "recent_boundary"
+            r.setdefault("model_space", model_space.value)
+            r.setdefault("selection", "boundary_mode" if is_boundary else "strict")
+            r.setdefault("evidence_class", "boundary_limited" if is_boundary else "formal")
+            r.setdefault("qualification_reason", "")
+            r.setdefault("age_source", "recent_boundary_mode" if is_boundary else "formal_ensemble_peak")
+            r.setdefault("ci_source", "one_sided_boundary" if is_boundary else "per_run_detected_peaks")
 
     public_rows_for_ui = _public_interval_rows(rows_for_ui)
     public_raw_rows = _public_interval_rows(raw.rows)
@@ -206,11 +212,19 @@ def _publish_results(
             peak_half_prom_width_frac=r.get("peak_half_prom_width_frac", np.nan),
             peak_right_left_ratio=r.get("peak_right_left_ratio", np.nan),
             selection=r.get("selection", "strict"),
+            evidence_class=r.get(
+                "evidence_class",
+                "boundary_limited" if str(r.get("mode", "")) == "recent_boundary" else "formal",
+            ),
+            qualification_reason=r.get("qualification_reason", ""),
+            age_source=r.get("age_source", "formal_ensemble_peak"),
+            ci_source=r.get("ci_source", "per_run_detected_peaks"),
             mode=r.get("mode", ""),
             label=r.get("label", ""),
             ci_method="stability_bounds",
             ci_interpretation="bootstrap_percentile_stability_bounds_of_assigned_run_ages",
             stability_method=str(r.get("stability_method", "vote_percentile")),
+            model_space=model_space.value,
         )
         for i, (r, (med, lo, hi, sup)) in enumerate(zip(public_rows_for_ui, published_peak_tuples))
     ]

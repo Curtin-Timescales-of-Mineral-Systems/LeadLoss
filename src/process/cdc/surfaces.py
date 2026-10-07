@@ -1,3 +1,5 @@
+"""Build CDC goodness-of-fit curves and the initial ensemble peak catalogue."""
+
 from __future__ import annotations
 
 from typing import Dict, List, Optional
@@ -328,6 +330,7 @@ def _initialise_surface_view_state(sample, settings, raw, pen, primary_which):
         pen_monotonic=bool(pen.mono),
         primary_channel=str(primary_which),
         view_surface_source="global_all",
+        model_space=sample.getModelRatioSpace().value,
     )
     sample.ensemble_abstain_reason = None
     return ui_surface, S_view

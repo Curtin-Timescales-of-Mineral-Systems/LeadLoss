@@ -1,12 +1,24 @@
 from copy import deepcopy
 from PyQt5.QtCore import pyqtSignal, QObject
+from model.settings.ratio import ConcordiaRatioSpace, ratio_space_from_value
 
 
 class Sample:
-    def __init__(self, id, name, spots):
+    def __init__(self, id, name, spots, importSettings=None):
         self.id = id
         self.name = name
         self.spots = spots
+        self.importSettings = importSettings
+        if importSettings is not None:
+            importSettings.ensureCompatibility()
+            self.inputRatioSpace = importSettings.getInputRatioSpace()
+            self.displayRatioSpace = importSettings.getDisplayRatioSpace()
+        elif spots:
+            self.inputRatioSpace = ratio_space_from_value(getattr(spots[0], "inputRatioSpace", ConcordiaRatioSpace.TERA_WASSERBURG))
+            self.displayRatioSpace = ratio_space_from_value(getattr(spots[0], "displayRatioSpace", self.inputRatioSpace))
+        else:
+            self.inputRatioSpace = ConcordiaRatioSpace.TERA_WASSERBURG
+            self.displayRatioSpace = ConcordiaRatioSpace.TERA_WASSERBURG
 
         self.peak_catalogue = []
         self.rejected_peak_candidates = []
@@ -32,6 +44,8 @@ class Sample:
         self.summedKS_peaks_Ma = None      # np.ndarray shape (k,)
         self.summedKS_ci_low_Ma = None     # np.ndarray shape (k,)
         self.summedKS_ci_high_Ma = None    # np.ndarray shape (k,)
+        self.display_heatmap_ages_ma = None
+        self.display_heatmap_runs_S = None
 
         self.skip_reason = None
 
@@ -71,6 +85,24 @@ class Sample:
             if spot.processed and getattr(spot, "reverseDiscordant", False)
         ]
 
+    def getInputRatioSpace(self):
+        return ratio_space_from_value(getattr(self, "inputRatioSpace", ConcordiaRatioSpace.TERA_WASSERBURG))
+
+    def getDisplayRatioSpace(self):
+        return ratio_space_from_value(getattr(self, "displayRatioSpace", self.getInputRatioSpace()))
+
+    def setDisplayRatioSpace(self, ratioSpace):
+        self.displayRatioSpace = ratio_space_from_value(ratioSpace, self.getInputRatioSpace())
+
+    def getModelRatioSpace(self):
+        settings = getattr(self, "calculationSettings", None)
+        if settings is None:
+            return self.getDisplayRatioSpace()
+        resolved = getattr(settings, "_resolved_concordia_projection", None)
+        if resolved is not None:
+            return ratio_space_from_value(resolved)
+        return settings.getResolvedProjectionGeometry(self.getInputRatioSpace())
+
     def setSkipReason(self, reason):
         self.skip_reason = reason
         if self.signals:
@@ -96,6 +128,8 @@ class Sample:
         self.summedKS_peaks_Ma = None
         self.summedKS_ci_low_Ma = None
         self.summedKS_ci_high_Ma = None
+        self.display_heatmap_ages_ma = None
+        self.display_heatmap_runs_S = None
 
     def updateConcordance(self, concordancy, discordances, reverse_flags=None):
         for i, (spot, conc, disc) in enumerate(zip(self.validSpots, concordancy, discordances)):

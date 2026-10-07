@@ -11,11 +11,16 @@ from utils.ui import uiUtils
 class ColumnReferenceInput(QWidget):
     width = 30
 
-    def __init__(self, validation, referenceType, defaultValue):
+    def __init__(self, validation, referenceType, defaultValue, allowEmpty=False):
         super().__init__()
+        self.allowEmpty = bool(allowEmpty)
 
-        letterDefault = csvUtils.columnNumberToLetters(defaultValue, zeroIndexed=True)
-        numberDefault = str(defaultValue + 1)
+        if defaultValue is None and self.allowEmpty:
+            letterDefault = ""
+            numberDefault = ""
+        else:
+            letterDefault = csvUtils.columnNumberToLetters(defaultValue, zeroIndexed=True)
+            numberDefault = str(defaultValue + 1)
 
         self.numberWidget = QLineEdit(numberDefault)
         self.numberWidget.setFixedWidth(self.width)
@@ -46,10 +51,22 @@ class ColumnReferenceInput(QWidget):
 
         if self.currentReferenceType is ColumnReferenceType.LETTERS:
             oldText = self.lettersWidget.text()
+            if oldText == "":
+                self.numberWidget.setText("")
+                self.lettersWidget.setVisible(newReferenceType is ColumnReferenceType.LETTERS)
+                self.numberWidget.setVisible(newReferenceType is ColumnReferenceType.NUMBERS)
+                self.currentReferenceType = newReferenceType
+                return
             newText = str(csvUtils.columnLettersToNumber(oldText, zeroIndexed=False))
             self.numberWidget.setText(newText)
         else:
             oldText = self.numberWidget.text()
+            if oldText == "":
+                self.lettersWidget.setText("")
+                self.lettersWidget.setVisible(newReferenceType is ColumnReferenceType.LETTERS)
+                self.numberWidget.setVisible(newReferenceType is ColumnReferenceType.NUMBERS)
+                self.currentReferenceType = newReferenceType
+                return
             newText = csvUtils.columnNumberToLetters(int(oldText), zeroIndexed=False)
             self.lettersWidget.setText(newText)
 

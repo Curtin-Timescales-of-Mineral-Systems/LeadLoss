@@ -10,14 +10,12 @@ _SINGLE_CREST_PROM_FRAC = 0.03
 
 
 def _single_crest_fallback_row(ages_ma, S_curve, optima_ma, min_support):
-    """Return one conservative row for a single clear interior crest.
+    """Return one broad interior peak when the normal catalogue returns none.
 
-    Used after the stricter catalogue pipeline leaves no
-    reportable rows. It doesn't search for multiple peaks. Instead, it asks:
-    does the displayed surface still contain one obvious
-    interior crest with enough prominence, support on both sides, non-boundary
-    run optima, and enough per-run support to justify reporting a single broad
-    peak rather than abstaining completely?
+    The fallback is used only if the combined curve contains a clear maximum,
+    declines on both sides and is supported by enough run-level optima. It does
+    not rescue flat, monotonic or boundary-dominated results and does not search
+    for several ages. Returned rows remain labelled as fallbacks.
     """
     x = np.asarray(ages_ma, float)
     y = np.asarray(S_curve, float)

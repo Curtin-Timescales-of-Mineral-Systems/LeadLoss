@@ -5,6 +5,7 @@ from process.cdcConfig import (
     PER_RUN_PROM_FRAC,
 )
 from process.ensemble import per_run_peaks
+from model.settings.ratio import ConcordiaRatioSpace, ratio_space_from_value
 import numpy as np
 import math
 from scipy.stats import ks_2samp as _ks2  # exact-parity fallback for KS
@@ -99,13 +100,17 @@ class MonteCarloRun:
                  concordant_pbPb,
                  discordant_uPb,
                  discordant_pbPb,
-                 settings=None):
+                 settings=None,
+                 ratio_space=None):
 
         self.run_number   = run_number
         self.sample_name  = sample_name
         self.settings     = settings
+        if ratio_space is None and settings is not None:
+            ratio_space = getattr(settings, "_resolved_concordia_projection", ConcordiaRatioSpace.TERA_WASSERBURG)
+        self.modelRatioSpace = ratio_space_from_value(ratio_space, ConcordiaRatioSpace.TERA_WASSERBURG)
 
-        # --- keep GUI-facing names ---
+        # These legacy names now hold coordinates in self.modelRatioSpace.
         self.concordant_uPb  = np.asarray(concordant_uPb, float)
         self.concordant_pbPb = np.asarray(concordant_pbPb, float)
         self.discordant_uPb  = np.asarray(discordant_uPb, float)
@@ -121,7 +126,7 @@ class MonteCarloRun:
         self.concordant_ages = []
         for u, p in zip(self.concordant_uPb, self.concordant_pbPb):
             try:
-                t = calculations.concordant_age(float(u), float(p))
+                t = calculations.concordant_age_for_space(float(u), float(p), self.modelRatioSpace)
                 if isinstance(t, (int, float)) and math.isfinite(t):
                     self.concordant_ages.append(float(t))
             except Exception:
@@ -152,13 +157,15 @@ class MonteCarloRun:
 
     def samplePbLossAge(self, leadLossAge, dissimilarity_test, penalise_invalid_ages):
         """Evaluate this run at a given lower intercept age (YEARS)."""
-        xL = calculations.u238pb206_from_age(float(leadLossAge))
-        yL = calculations.pb207pb206_from_age(float(leadLossAge))
-
         # Project all discordant points once for the current lower-intercept age.
         all_ui = np.empty_like(self.discordant_uPb, dtype=float)
         for i, (du, dp) in enumerate(zip(self.discordant_uPb, self.discordant_pbPb)):
-            ui = calculations.discordant_age(xL, yL, float(du), float(dp))
+            ui = calculations.discordant_age_for_space(
+                float(leadLossAge),
+                float(du),
+                float(dp),
+                self.modelRatioSpace,
+            )
             all_ui[i] = np.nan if ui is None else float(ui)
 
         # Store one statistics object per age using all discordant analyses.
@@ -203,8 +210,7 @@ class MonteCarloRun:
         best_age_y = float(ages_year[j])
 
         self.optimal_pb_loss_age = best_age_y
-        self.optimal_uPb  = calculations.u238pb206_from_age(best_age_y)
-        self.optimal_pbPb = calculations.pb207pb206_from_age(best_age_y)
+        self.optimal_uPb, self.optimal_pbPb = calculations.concordia_xy(best_age_y, self.modelRatioSpace)
         if prefer_pen:
             self.optimal_statistic = self.statistics_by_pb_loss_age[best_age_y]
         else:

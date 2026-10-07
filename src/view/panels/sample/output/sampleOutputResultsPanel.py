@@ -6,7 +6,12 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import pyqtSignal
 import csv
 import io
+import numpy as np
 
+from process.cdcHeatmap import (
+    build_density_heatmap_from_runs,
+    build_density_heatmap_from_run_columns,
+)
 from utils import config
 from utils.ui.numericInput import FloatInput, AgeInput
 
@@ -39,6 +44,7 @@ class SampleOutputResultsPanel(QGroupBox):
         self.score = FloatInput(defaultValue=None, sf=config.DISPLAY_SF);  self.score.setReadOnly(True)
         self.ensembleStatus = QLabel("—")
         self.ensembleStatus.setWordWrap(True)
+        self.projectionSpace = QLabel("—")
 
         formHost = QWidget()
         form = QFormLayout(formHost)
@@ -48,16 +54,42 @@ class SampleOutputResultsPanel(QGroupBox):
         form.addRow("Mean p value (KS test)", self.pValue)
         form.addRow("Mean # of invalid ages", self.invalidAges)
         form.addRow("Mean score", self.score)
-        form.addRow("Ensemble status", self.ensembleStatus)
+        form.addRow("Ensemble result", self.ensembleStatus)
+        form.addRow("Concordia space", self.projectionSpace)
         self.rootLayout.addWidget(formHost)
 
+        self.plotExportBox = QGroupBox("Plot data exports")
+        plotLayout = QHBoxLayout(self.plotExportBox)
+        self.exportCurveButton = QPushButton("Export goodness curve CSV")
+        self.exportHeatmapButton = QPushButton("Export heatmap CSV")
+        self.exportCurveButton.clicked.connect(self.exportGoodnessCurveCSV)
+        self.exportHeatmapButton.clicked.connect(self.exportHeatmapCSV)
+        plotLayout.addWidget(self.exportCurveButton)
+        plotLayout.addWidget(self.exportHeatmapButton)
+        plotLayout.addStretch(1)
+        self.rootLayout.addWidget(self.plotExportBox)
+
         # ----- Peak catalogue group -----
-        self.catBox = QGroupBox("Ensemble catalogue")
+        self.catBox = QGroupBox("Ensemble results")
         catLayout = QVBoxLayout(self.catBox)
 
-        self.catTable = QTableWidget(0, 5)
+        self.catTable = QTableWidget(0, 7)
         self.catTable.setHorizontalHeaderLabels(
-            ["#", "Age (Ma)", "95% stability bounds (Ma)", "Direct support", "Winner support"]
+            [
+                "#", "Age (Ma)", "95% stability bounds (Ma)", "Concordia space", "Result type",
+                "Direct support (%)", "Winner support (%)",
+            ]
+        )
+        self.catTable.horizontalHeaderItem(4).setToolTip(
+            "Whether the row is an ensemble peak or a boundary-limited result."
+        )
+        self.catTable.horizontalHeaderItem(5).setToolTip(
+            "Percentage of Monte Carlo runs with an accepted per-run peak inside "
+            "this result's stability window."
+        )
+        self.catTable.horizontalHeaderItem(6).setToolTip(
+            "Percentage of Monte Carlo runs in which the peak assigned to this "
+            "stability window is the run's preferred solution."
         )
         self.catTable.verticalHeader().setVisible(False)
         self.catTable.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -95,7 +127,7 @@ class SampleOutputResultsPanel(QGroupBox):
         rejLayout = QVBoxLayout(self.rejectedBox)
         self.rejectedTable = QTableWidget(0, 4)
         self.rejectedTable.setHorizontalHeaderLabels(
-            ["Age (Ma)", "Direct support", "Winner support", "Reason"]
+            ["Age (Ma)", "Direct support (%)", "Winner support (%)", "Reason"]
         )
         self.rejectedTable.verticalHeader().setVisible(False)
         self.rejectedTable.setEditTriggers(QTableWidget.NoEditTriggers)
@@ -105,9 +137,6 @@ class SampleOutputResultsPanel(QGroupBox):
         rejLayout.addWidget(self.rejectedTable)
         self.rejectedBox.setVisible(False)
         self.rootLayout.addWidget(self.rejectedBox)
-
-        self.exportCurveButton = QPushButton("Export curve (CSV)")
-        self.exportCurveButton.clicked.connect(self.exportGoodnessCurveCSV)
 
         # Signals from the Sample
         sample.signals.processingCleared.connect(self._onProcessingCleared)
@@ -127,7 +156,16 @@ class SampleOutputResultsPanel(QGroupBox):
             QMessageBox.information(
                 self,
                 "No curve available",
-                "No goodness curve values are available yet.\n\nRun processing first, then try again."
+                "No goodness-of-fit curve values are available yet.\n\nRun processing first, then try again."
+            )
+            return
+        ages = np.asarray(ages, float).ravel()
+        y = np.asarray(y, float).ravel()
+        if ages.size == 0 or y.size == 0 or ages.size != y.size:
+            QMessageBox.warning(
+                self,
+                "Curve unavailable",
+                "The current goodness-of-fit curve cache is incomplete."
             )
             return
 
@@ -149,9 +187,73 @@ class SampleOutputResultsPanel(QGroupBox):
         import csv
         with open(path, "w", newline="") as fh:
             w = csv.writer(fh)
-            w.writerow(["age_Ma", "goodness"])
+            w.writerow(["sample", "age_ma", "goodness_s", "d_star"])
             for a, g in zip(ages, y):
-                w.writerow([float(a), float(g)])
+                g = float(g)
+                w.writerow([self.sample.name, float(a), g, float(1.0 - g)])
+
+    def exportHeatmapCSV(self):
+        if self.sample is None:
+            QMessageBox.warning(self, "No sample", "No sample is selected.")
+            return
+
+        try:
+            ages_ma = getattr(self.sample, "display_heatmap_ages_ma", None)
+            S_runs = getattr(self.sample, "display_heatmap_runs_S", None)
+            if ages_ma is not None and S_runs is not None:
+                x_edges, y_edges, density = build_density_heatmap_from_runs(ages_ma, S_runs)
+            else:
+                settings = getattr(self.sample, "calculationSettings", None)
+                if settings is None or not getattr(self.sample, "monteCarloRuns", None):
+                    raise ValueError("no cached heatmap surface or run-level heatmap columns are available")
+                x_edges, y_edges, density = build_density_heatmap_from_run_columns(
+                    self.sample.monteCarloRuns,
+                    settings,
+                )
+        except ValueError as exc:
+            QMessageBox.warning(
+                self,
+                "Heatmap unavailable",
+                f"The current heatmap cache is incomplete.\n\n{exc}"
+            )
+            return
+
+        age_centres = 0.5 * (x_edges[:-1] + x_edges[1:])
+        d_star_centres = 0.5 * (y_edges[:-1] + y_edges[1:])
+        if density.size == 0 or age_centres.size == 0 or d_star_centres.size == 0:
+            QMessageBox.information(
+                self,
+                "No heatmap available",
+                "No heatmap density values are available yet.\n\nRun processing first, then try again."
+            )
+            return
+
+        default_name = "heatmap_density.csv"
+        if getattr(self.sample, "name", ""):
+            default_name = f"{self.sample.name}_heatmap_density.csv"
+
+        path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Export heatmap density (CSV)",
+            default_name,
+            "CSV Files (*.csv)"
+        )
+        if not path:
+            return
+        if not path.lower().endswith(".csv"):
+            path += ".csv"
+
+        with open(path, "w", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(["sample", "age_ma", "d_star", "density"])
+            for col, age_ma in enumerate(age_centres):
+                for row, d_star in enumerate(d_star_centres):
+                    w.writerow([
+                        self.sample.name,
+                        float(age_ma),
+                        float(d_star),
+                        float(density[row, col]),
+                    ])
 
     def _onCatalogueSelectionChanged(self):
         sel = self.catTable.selectionModel().selectedRows()
@@ -162,7 +264,7 @@ class SampleOutputResultsPanel(QGroupBox):
 
     def _abstain_reason_text(self, reason: str) -> str:
         mapping = {
-            "flat_or_monotonic_surface": "No ensemble peak reported: the ensemble surface is flat/monotonic in the tested window.",
+            "flat_or_monotonic_surface": "No ensemble peak reported: the tested window contains no clear interior maximum.",
             "boundary_dominated_surface": "No ensemble peak reported: run optima are boundary-dominated in the tested window.",
             "no_supported_peaks": "No ensemble peak reported: no candidate peak met the support/consistency filters.",
         }
@@ -182,14 +284,14 @@ class SampleOutputResultsPanel(QGroupBox):
             n_boundary = sum(1 for r in rows if isinstance(r, dict) and str(r.get("mode", "")) == "recent_boundary")
             n_peaks = len(rows) - n_boundary
             if n_boundary and n_peaks:
-                    return f"Resolved ({n_peaks} interior peak{'s' if n_peaks != 1 else ''} + {n_boundary} boundary mode{'s' if n_boundary != 1 else ''})"
+                return f"Resolved ({n_peaks} interior peak{'s' if n_peaks != 1 else ''} + {n_boundary} boundary mode{'s' if n_boundary != 1 else ''})"
             if n_boundary:
                 return f"Boundary mode only ({n_boundary})"
             return f"Resolved ({len(rows)} peak{'s' if len(rows) != 1 else ''})"
 
         reason = getattr(self.sample, "ensemble_abstain_reason", None)
         if reason == "flat_or_monotonic_surface":
-            return "Unresolved (flat/monotonic surface)"
+            return "Unresolved (no clear interior maximum)"
         if reason == "boundary_dominated_surface":
             return "Unresolved (boundary-dominated)"
         if reason == "no_supported_peaks":
@@ -197,6 +299,20 @@ class SampleOutputResultsPanel(QGroupBox):
         if reason:
             return f"Unresolved ({str(reason).replace('_', ' ')})"
         return "Unresolved"
+
+    def _evidence_text(self, row) -> str:
+        evidence = str(row.get("evidence_class", "")) if isinstance(row, dict) else ""
+        if evidence == "boundary_limited" or (
+            isinstance(row, dict) and str(row.get("mode", "")) == "recent_boundary"
+        ):
+            return "Boundary-limited"
+        return "Ensemble peak"
+
+    def _projection_text(self) -> str:
+        try:
+            return self.sample.getModelRatioSpace().value
+        except Exception:
+            return "—"
 
     def _rejected_reason_text(self, code: str) -> str:
         mapping = {
@@ -234,6 +350,7 @@ class SampleOutputResultsPanel(QGroupBox):
         self.invalidAges.setValue(getattr(self.sample, "optimalAgeNumberOfInvalidPoints", None))
         self.score.setValue(getattr(self.sample, "optimalAgeScore", None))
         self.ensembleStatus.setText(self._ensemble_status_text())
+        self.projectionSpace.setText(self._projection_text())
 
     def clear(self):
         self.catTable.setRowCount(0)
@@ -250,6 +367,7 @@ class SampleOutputResultsPanel(QGroupBox):
         self.invalidAges.setValue(None)
         self.score.setValue(None)
         self.ensembleStatus.setText("—")
+        self.projectionSpace.setText("—")
         self.peakRowSelected.emit(-1)
 
     def _catalogue_rows_for_io(self):
@@ -309,8 +427,10 @@ class SampleOutputResultsPanel(QGroupBox):
                 ci_text = f"{lo:,.2f} – {hi:,.2f}"
             self.catTable.setItem(i-1, 1, QTableWidgetItem(age_text))
             self.catTable.setItem(i-1, 2, QTableWidgetItem(ci_text))
-            self.catTable.setItem(i-1, 3, QTableWidgetItem("" if dir_sup != dir_sup else f"{100*dir_sup:.0f}%"))
-            self.catTable.setItem(i-1, 4, QTableWidgetItem("" if win_sup != win_sup else f"{100*win_sup:.0f}%"))
+            self.catTable.setItem(i-1, 3, QTableWidgetItem(str(r.get("model_space", self._projection_text()))))
+            self.catTable.setItem(i-1, 4, QTableWidgetItem(self._evidence_text(r)))
+            self.catTable.setItem(i-1, 5, QTableWidgetItem("n/a" if dir_sup != dir_sup else f"{100*dir_sup:.0f}%"))
+            self.catTable.setItem(i-1, 6, QTableWidgetItem("n/a" if win_sup != win_sup else f"{100*win_sup:.0f}%"))
 
         self.catTable.resizeColumnsToContents()
         self.catTable.resizeRowsToContents()
@@ -364,15 +484,26 @@ class SampleOutputResultsPanel(QGroupBox):
         if not rows:
             return
         s = io.StringIO()
-        s.write("rank,age_ma,stability_low,stability_high,direct_support,winner_support\n")
+        w = csv.writer(s)
+        w.writerow([
+            "rank", "age_ma", "stability_low", "stability_high", "model_space",
+            "evidence_class", "qualification_reason", "direct_support", "winner_support",
+            "age_source", "ci_source",
+        ])
         for i, r in enumerate(rows, 1):
-            s.write(
-                f"{i},{float(r.get('age_ma', float('nan'))):.6f},"
-                f"{float(r.get('ci_low', float('nan'))):.6f},"
-                f"{float(r.get('ci_high', float('nan'))):.6f},"
-                f"{float(r.get('direct_support', r.get('support', float('nan')))):.6f},"
-                f"{float(r.get('winner_support', r.get('support', float('nan')))):.6f}\n"
-            )
+            w.writerow([
+                i,
+                float(r.get("age_ma", float("nan"))),
+                float(r.get("ci_low", float("nan"))),
+                float(r.get("ci_high", float("nan"))),
+                r.get("model_space", self._projection_text()),
+                r.get("evidence_class", "formal"),
+                r.get("qualification_reason", ""),
+                float(r.get("direct_support", r.get("support", float("nan")))),
+                float(r.get("winner_support", r.get("support", float("nan")))),
+                r.get("age_source", ""),
+                r.get("ci_source", ""),
+            ])
         QApplication.clipboard().setText(s.getvalue())
 
     def _export_catalogue_csv(self):
@@ -384,15 +515,24 @@ class SampleOutputResultsPanel(QGroupBox):
             return
         with open(path, "w", newline="") as f:
             w = csv.writer(f)
-            w.writerow(["rank", "age_ma", "stability_low", "stability_high", "direct_support", "winner_support"])
+            w.writerow([
+                "rank", "age_ma", "stability_low", "stability_high", "model_space",
+                "evidence_class", "qualification_reason", "direct_support", "winner_support",
+                "age_source", "ci_source",
+            ])
             for i, r in enumerate(rows, 1):
                 w.writerow([
                     i,
                     float(r.get("age_ma", float("nan"))),
                     float(r.get("ci_low", float("nan"))),
                     float(r.get("ci_high", float("nan"))),
+                    r.get("model_space", self._projection_text()),
+                    r.get("evidence_class", "formal"),
+                    r.get("qualification_reason", ""),
                     float(r.get("direct_support", r.get("support", float("nan")))),
                     float(r.get("winner_support", r.get("support", float("nan")))),
+                    r.get("age_source", ""),
+                    r.get("ci_source", ""),
                 ])
 
     # ----- Events -----

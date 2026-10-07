@@ -3,7 +3,7 @@ import sys
 import traceback
 from pathlib import Path
 
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QColor, QIcon, QPalette
 from PyQt5.QtWidgets import QMessageBox, QApplication, QStyleFactory
 
 from utils.csvUtils import write_monte_carlo_output
@@ -60,6 +60,25 @@ class LeadLossApplication:
 
         app = QApplication(sys.argv)
         app.setStyle(QStyleFactory.create('Fusion'))
+
+        palette = QPalette()
+        palette.setColor(QPalette.Window, QColor("#F4F6F9"))
+        palette.setColor(QPalette.WindowText, QColor("#1F2937"))
+        palette.setColor(QPalette.Base, QColor("#FFFFFF"))
+        palette.setColor(QPalette.AlternateBase, QColor("#F5F8FC"))
+        palette.setColor(QPalette.Text, QColor("#1F2937"))
+        palette.setColor(QPalette.Button, QColor("#FFFFFF"))
+        palette.setColor(QPalette.ButtonText, QColor("#1F2937"))
+        palette.setColor(QPalette.Highlight, QColor("#D6E4F5"))
+        palette.setColor(QPalette.HighlightedText, QColor("#0B1F3A"))
+        app.setPalette(palette)
+
+        try:
+            with open(resourceUtils.getResourcePath("theme.qss"), "r", encoding="utf-8") as f:
+                app.setStyleSheet(f.read())
+        except Exception as error:
+            print("Theme not loaded:", error)
+
         app.setWindowIcon(QIcon(self.get_icon()))
 
         self.model = LeadLossModel(self.signals)
@@ -121,8 +140,10 @@ class LeadLossApplication:
         if not settings:
             return
 
+        settings.ensureCompatibility()
         Settings.update(settings)
         for sample in samples:
+            sample.setDisplayRatioSpace(settings.getResolvedProjectionGeometry(sample.getInputRatioSpace()))
             sample.clearCalculation()
 
         clonedSamples = []

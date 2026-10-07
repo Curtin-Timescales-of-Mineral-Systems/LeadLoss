@@ -68,7 +68,10 @@ class LeadLossView(QMainWindow):
 
 
     def _createBottomPanel(self):
-        return StatusBarWidget(self.controller.signals)
+        panel = StatusBarWidget(self.controller.signals)
+        panel.setObjectName("Footer")
+        panel.setAttribute(Qt.WA_StyledBackground, True)
+        return panel
 
     #############
     ## Actions ##
@@ -81,15 +84,15 @@ class LeadLossView(QMainWindow):
 
         self.bottomPanel.setParent(None)
         self.layout.removeWidget(self.bottomPanel)
-        self.layout.addWidget(self.welcomePanel)
-        self.layout.addWidget(self.bottomPanel)
+        self.layout.addWidget(self.welcomePanel, 1)
+        self.layout.addWidget(self.bottomPanel, 0)
 
     def showMainPanel(self, file, samples):
         uiUtils.clearChildren(self.layout)
 
         self.mainPanel = MainPanel(self.controller, file, samples)
-        self.layout.addWidget(self.mainPanel)
-        self.layout.addWidget(self.bottomPanel)
+        self.layout.addWidget(self.mainPanel, 1)
+        self.layout.addWidget(self.bottomPanel, 0)
 
     ############
     ## Events ##

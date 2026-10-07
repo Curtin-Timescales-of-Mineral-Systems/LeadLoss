@@ -14,9 +14,8 @@ authors:
 repository-code: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
 url: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
 
-version: "2.0.1"
-doi: "10.5281/zenodo.19881094"
-date-released: "2026-01-12"
+version: "2.1.0"
+doi: "10.5281/zenodo.14039112"
 
 keywords:
   - U-Pb geochronology
@@ -25,11 +24,6 @@ keywords:
   - peak picking
   - uncertainty
   - bootstrap
-
-identifiers:
-  - type: doi
-    value: "10.5281/zenodo.14039112"
-    description: "Concept DOI (all versions)"
 
 references:
   - type: article

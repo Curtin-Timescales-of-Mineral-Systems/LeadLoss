@@ -9,6 +9,8 @@ from utils.config import DISPLAY_SF
 
 U_PB_STR = "²³⁸U/²⁰⁶Pb"
 PB_PB_STR = "²⁰⁷Pb/²⁰⁶Pb"
+PB207_U235_STR = "²⁰⁷Pb/²³⁵U"
+PB206_U238_STR = "²⁰⁶Pb/²³⁸U"
 
 ERROR_SIGMA_OPTIONS = [2, 1]
 ERROR_TYPE_OPTIONS = ["Absolute", "Percentage"]
@@ -34,6 +36,25 @@ def getPbPbStr(useSuperscripts):
     if useSuperscripts:
         return PB_PB_STR
     return "207Pb/206Pb"
+
+
+def getPb207U235Str(useSuperscripts):
+    if useSuperscripts:
+        return PB207_U235_STR
+    return "207Pb/235U"
+
+
+def getPb206U238Str(useSuperscripts):
+    if useSuperscripts:
+        return PB206_U238_STR
+    return "206Pb/238U"
+
+
+def getRatioLabels(ratioSpace, useSuperscripts):
+    value = getattr(ratioSpace, "value", ratioSpace)
+    if str(value).strip().lower() == "wetherill":
+        return getPb207U235Str(useSuperscripts), getPb206U238Str(useSuperscripts)
+    return getUPbStr(useSuperscripts), getPbPbStr(useSuperscripts)
 
 
 def print_warning(message):

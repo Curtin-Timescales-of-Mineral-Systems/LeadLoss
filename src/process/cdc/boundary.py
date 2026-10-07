@@ -1,4 +1,11 @@
-"""Boundary-dominance handling for CDC peak catalogues."""
+"""Handle candidate ages concentrated at the limits of the trial-age range.
+
+A maximum at the first or last tested age is not a fully resolved peak because
+the curve has not been evaluated beyond that limit. When Monte Carlo optima
+accumulate at a boundary, these routines avoid reporting the boundary as an
+exact event age. A strong young-boundary result can instead be retained as a
+one-sided constraint.
+"""
 
 from __future__ import annotations
 
@@ -13,7 +20,13 @@ _BOUNDARY_FAR_GRID_STEPS = 5.0
 
 
 def _apply_boundary_dominance_guard(rows, optima_ma, ages_ma):
-    """Suppress near-edge peaks when per-run optima are boundary-dominated."""
+    """Remove near-edge peaks when most runs prefer the same search limit.
+
+    This prevents smoothing or peak grouping from turning a boundary-controlled
+    result into an apparently resolved interior age. Explicit one-sided
+    ``recent_boundary`` results are retained. If nothing else remains, the
+    sample is recorded as boundary dominated rather than assigned an age.
+    """
     if (not rows) or (len(rows) == 0):
         return rows, None
 
@@ -89,6 +102,11 @@ def _recent_boundary_mode_row(
     total_runs: int,
     ages_ma: np.ndarray,
 ) -> Optional[Dict]:
+    """Return a one-sided row when run optima cluster at the young boundary.
+
+    This means the preferred disturbance is at or younger than the lower limit
+    of the search, not that it occurred exactly at the first trial age.
+    """
     vals = np.asarray(optima_ma, float)
     vals = vals[np.isfinite(vals)]
     if vals.size == 0:
@@ -139,6 +157,11 @@ def _inject_recent_boundary_mode(
     total_runs: int,
     ages_ma: np.ndarray,
 ) -> Tuple[List[Dict], Optional[Dict]]:
+    """Replace a strong young-edge peak with a one-sided boundary result.
+
+    Nearby ordinary rows are removed so the same feature is not reported both
+    as a resolved age and as a boundary-limited constraint.
+    """
     if not rows:
         return [], None
 
