@@ -138,3 +138,4 @@ def calculateHeatmapData(signals, runs, settings, request_id=None):
         signals.progress(data, settings)
     else:
         signals.progress(request_id, data, settings)
+    signals.completed()
