@@ -10,6 +10,8 @@ authors:
     given-names: "Lucy M."
   - family-names: "Daggitt"
     given-names: "Matthew"
+  - family-names: "Kirkland"
+    given-names: "Christopher L."
 
 repository-code: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
 url: "https://github.com/Curtin-Timescales-of-Mineral-Systems/LeadLoss"
